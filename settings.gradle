@@ -1,0 +1,3 @@
+rootProject.name = 'k-commons-root'
+include 'k-commons'
+
