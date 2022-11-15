@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Base logback configuration provided for compatibility with Spring Boot 1.1
+-->
+<included>
+    <include resource="com/kylinhunter/plat/commons/kylinhunter-default.xml"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="com/kylinhunter/plat/commons/kylinhunter-console-appender.xml"/>
+    <include resource="com/kylinhunter/plat/commons/kylinhunter-file-appender.xml"/>
+    <root level="${logging.log_level}">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="ASYNC_INFO"/>
+        <appender-ref ref="ASYNC_ERR"/>
+    </root>
+</included>
