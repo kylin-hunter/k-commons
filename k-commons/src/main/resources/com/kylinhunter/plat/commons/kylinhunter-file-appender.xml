@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+File appender logback configuration provided for import, equivalent to the programmatic
+initialization performed by Boot
+-->
+
+<included>
+	<appender name="INFO_RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>${logging.log_level}</level>
+		</filter>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<Pattern>
+				${logging.log_pattern}
+			</Pattern>
+		</encoder>
+		<file>${log_file_path_prefix}-${HOSTNAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
+			<!-- rollover daily and when the file reaches 10 MegaBytes -->
+			<fileNamePattern>
+				${log_file_path_prefix}-${HOSTNAME}.log.%d{yyyy-MM-dd}.gz
+			</fileNamePattern>
+			<maxHistory>${logging.max_history}</maxHistory>
+			<!-- <totalSizeCap>${logging.total_size_cap:-10GB}</totalSizeCap> -->
+			<!-- <maxFileSize>${logging.max_log_file_size:-1G}</maxFileSize> -->
+		</rollingPolicy>
+	</appender>
+
+	<appender name="ASYNC_INFO" class="ch.qos.logback.classic.AsyncAppender">
+		<!-- 设置为不丢失日志,默认如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+		<discardingThreshold>20</discardingThreshold>
+		<!-- 更改默认的队列的深度,默认值为256 -->
+		<queueSize>1024</queueSize>
+		<appender-ref ref="INFO_RollingFile"/>
+	</appender>
+
+	<appender name="ERR_RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log_file_path_prefix}-${HOSTNAME}.err.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>
+				${log_file_path_prefix}-${HOSTNAME}.err.log.%d{yyyy-MM-dd}.gz
+			</fileNamePattern>
+			<maxHistory>${logging.max_history}</maxHistory>
+		</rollingPolicy>
+
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<encoder>
+			<Pattern>
+				${logging.log_pattern}
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNC_ERR" class="ch.qos.logback.classic.AsyncAppender">
+		<!-- 设置为不丢失日志,默认如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+		<discardingThreshold>0</discardingThreshold>
+		<!-- 更改默认的队列的深度,默认值为256 -->
+		<queueSize>1024</queueSize>
+		<appender-ref ref="ERR_RollingFile"/>
+	</appender>
+</included>

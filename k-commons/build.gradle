@@ -1,4 +1,6 @@
 dependencies {
+    api("com.fasterxml.jackson.core:jackson-databind")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     api(rootProject.dep['commons-io'])
     api(rootProject.dep['commons-lang3'])
     api(rootProject.dep['guava'])
@@ -7,6 +9,10 @@ dependencies {
     api(rootProject.dep['reflections'])
     api 'org.dom4j:dom4j:2.1.3'
     api 'jaxen:jaxen:1.2.0'
+    api("org.jodd:jodd-core:5.1.6")
+    implementation 'commons-codec:commons-codec:1.15'
+    implementation 'org.springframework:spring-beans'
+    implementation 'org.springframework:spring-context'
     api 'org.apache.commons:commons-compress:1.22'
 
     implementation(rootProject.dep['jsoup'])
