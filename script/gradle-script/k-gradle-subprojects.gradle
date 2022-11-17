@@ -1,23 +1,6 @@
-buildscript {
-    repositories {
-        mavenLocal()
-//        maven {
-//            url "https://maven.aliyun.com/repository/public-snapshots"
-//        }
-        maven {
-            url "https://maven.aliyun.com/repository/public"
-        }
-	mavenCentral()
-    }
-    dependencies {
-        classpath(app_plugins['spring-boot-gradle-plugin'])
-        classpath(app_plugins['gradle-docker-plugin'])
-    }
-}
-
 ext {
     changeActiveProfile = { profile ->
-
+        println("@@ change active profile ==> " + "$buildDir/resources/main/application.yml")
         File applicaitonFile = new File("$buildDir/resources/main/application.yml")
         if (applicaitonFile.exists()&&applicaitonFile.getAbsolutePath().indexOf("server")>0) {
             def list = []
@@ -42,23 +25,19 @@ ext {
             }
         }
 
-        File applicaitonDevFile = new File("$buildDir/resources/main/application-dev.yml")
-        if (!"".equals(project.DEV_DUBBO_GROUP)&&applicaitonDevFile.exists()&&applicaitonDevFile.getAbsolutePath().indexOf("server")>0) {
+        File bootstrapFile = new File("$buildDir/resources/main/bootstrap.yml")
+        if (bootstrapFile.exists()&&bootstrapFile.getAbsolutePath().indexOf("server")>0) {
             def list = []
-            println("@@ change dubbo.group  ==> "+ project.name +":" + project.DEV_DUBBO_GROUP)
-            applicaitonDevFile.withReader('UTF-8') { reader ->
+            println("@@ change spring.cloud.nacos.config.config ==> " + profile)
+            bootstrapFile.withReader('UTF-8') { reader ->
                 reader.eachLine {
-                    if (it.startsWith('    group:')) {
-                        it = "    group: $project.DEV_DUBBO_GROUP"
-                        println("@@ change dubbo.group success ==> " + it)
-                    }
-                    if (it.startsWith('#    host:') &&  !"".equals(project.DEV_DUBBO_HOST)) {
-                        it = "    host: $project.DEV_DUBBO_HOST"
-                        println("@@ change dubbo.host success ==> " + it)
+                    if (it.startsWith('        namespace:')) {
+                        it = "        namespace: $profile"
+                        println("@@ change spring.cloud.nacos.config.config success ==> " + profile)
                     }
                     list.add(it)
                 }
-                applicaitonDevFile.withWriter('UTF-8') { writer ->
+                bootstrapFile.withWriter('UTF-8') { writer ->
                     list.each {
                         writer.writeLine(it)
                     }

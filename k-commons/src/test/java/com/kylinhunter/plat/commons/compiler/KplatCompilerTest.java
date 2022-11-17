@@ -10,7 +10,6 @@ import com.kylinhunter.plat.commons.io.file.UserDirUtils;
 
 class KplatCompilerTest {
 
-    @Test
     public void compile() throws Exception {
         KplatCompiler kplatCompiler = new KplatCompiler();
 

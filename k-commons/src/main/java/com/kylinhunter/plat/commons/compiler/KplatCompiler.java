@@ -40,7 +40,6 @@ public class KplatCompiler {
     }
 
     public void compile() throws IOException {
-
         JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sources.toArray(new File[0]));

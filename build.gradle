@@ -1,15 +1,19 @@
+group 'io.github.kylin-hunter'
+//    version '1.0.0-SNAPSHOT'
+version '1.0.5'
 buildscript {
-    apply from: "./script/gradle-script/ext-config.gradle"
-    apply from: "./script/gradle-script/ext-version.gradle"
-    apply from: "./script/gradle-script/ext-func-allprojects.gradle"
+    apply from: "./script/gradle-script/k-gradle-config.gradle"
+    apply from: "./script/gradle-script/k-gradle-version.gradle"
     repositories {
         mavenLocal()
 //        maven {
 //            url "https://maven.aliyun.com/repository/public-snapshots"
 //        }
+
         maven {
             url "https://maven.aliyun.com/repository/public"
         }
+
         mavenCentral()
     }
     dependencies {
@@ -20,20 +24,19 @@ buildscript {
 }
 
 
-plugins {
-    id 'java-library'
-    id 'maven-publish'
-
-}
 
 allprojects {
-    group 'io.github.kylin-hunter'
-//    version '1.0.0-SNAPSHOT'
-    version '1.0.5'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply from: "$rootProject.rootDir/script/gradle-script/k-gradle-allprojects.gradle"
+
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
     repositories {
         mavenLocal()
+//        maven {
+//            url "https://maven.aliyun.com/repository/public-snapshots"
+//        }
         maven {
             url "https://maven.aliyun.com/repository/public"
         }
@@ -46,13 +49,11 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java-library'
-    apply plugin: 'maven-publish'
+
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'signing'
-
-    apply from: "$rootProject.rootDir/script/gradle-script/ext-func-subprojects.gradle"
+    apply from: "$rootProject.rootDir/script/gradle-script/k-gradle-subprojects.gradle"
 
 
     jar {
@@ -66,28 +67,18 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok'
 
 
-
-
-
         testImplementation("org.projectlombok:lombok")
         testAnnotationProcessor 'org.projectlombok:lombok'
 
         testImplementation('org.springframework.boot:spring-boot-starter-test')
-
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-        testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-
-        testImplementation 'org.junit.platform:junit-platform-suite-api:1.8.2'
-        testImplementation 'org.junit.platform:junit-platform-suite:1.8.2'
-        testImplementation 'org.junit.platform:junit-platform-engine:1.8.2'
-        testImplementation 'org.junit.platform:junit-platform-commons:1.8.2'
-        testImplementation 'org.junit.platform:junit-platform-launcher:1.8.2'
+        testImplementation 'org.junit.platform:junit-platform-suite'
 
 
-        testImplementation 'org.junit.vintage:junit-vintage-engine:5.8.2'
-        testImplementation(rootProject.dep['jmockit'])
+
+
+
+
+        testImplementation(rootProject.dependency_management['jmockit'])
 
     }
 
