@@ -1473,10 +1473,10 @@ fileTypes:
     desc: 'Norton Anti-Virus quarantined virus file'
   - id: none_CEFA
     extensions: 
-    desc: 'Apple OS X ABI Mach-O binary file (32-bit, where target system has reverse byte ordering from host running compiler)'
+    desc: 'Apple OS X ABI Mach-O binary file (32-bit, where target system has direction byte ordering from host running compiler)'
   - id: none_CFFA
     extensions: 
-    desc: 'Apple OS X ABI Mach-O binary file (64-bit, where target system has reverse byte ordering from host running compiler)'
+    desc: 'Apple OS X ABI Mach-O binary file (64-bit, where target system has direction byte ordering from host running compiler)'
   - id: none_D4C3
     extensions: 
     desc: 'WinDump (winpcap) capture file (Windows)'

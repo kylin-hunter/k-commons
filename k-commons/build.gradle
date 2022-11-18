@@ -1,6 +1,7 @@
 dependencies {
     api("com.fasterxml.jackson.core:jackson-databind")
     api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    api(rootProject.dependency_management['reflections'])
     api(rootProject.dependency_management['commons-io'])
     api(rootProject.dependency_management['commons-lang3'])
     api(rootProject.dependency_management['guava'])
@@ -16,7 +17,6 @@ dependencies {
     api 'org.apache.commons:commons-compress:1.22'
 
     implementation(rootProject.dependency_management['jsoup'])
-
 
 
 }
