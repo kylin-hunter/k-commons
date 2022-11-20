@@ -69,6 +69,7 @@ public class FileReaderUtils {
      * @author BiJi'an
      * @date 2022-01-01 01:48
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static <T> T process(File file, String encoding, DefaultLineProcessor<T> processor) {
 
         try (InputStream input = new FileInputStream(file)) {

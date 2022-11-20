@@ -5,14 +5,20 @@ import java.util.Arrays;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.internal.StringUtil;
 
+import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.util.StringPool;
+import lombok.Data;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-01-01 14:39
  **/
+@C
+@Data
 public class NCSnakeToCamelUpperFirst implements NamingConvertor {
+    private NCStrategy ncStrategy = NCStrategy.SNAKE_TO_CAMEL;
+
     public String convert(String name) {
         if (StringUtils.isBlank(name)) {
             return StringPool.EMPTY;

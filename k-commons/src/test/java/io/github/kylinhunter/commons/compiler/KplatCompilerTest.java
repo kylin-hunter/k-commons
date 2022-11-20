@@ -3,12 +3,15 @@ package io.github.kylinhunter.commons.compiler;
 import java.io.File;
 import java.util.Set;
 
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.Sets;
 
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 
 class KplatCompilerTest {
 
+    @Test
     public void compile() throws Exception {
         KplatCompiler kplatCompiler = new KplatCompiler();
 
@@ -20,11 +23,11 @@ class KplatCompilerTest {
             System.out.println("classpath=" + e);
         });
 
-        File source = UserDirUtils.getFile("/src/main/java/com/kylinhunter/plat/commons"
+        File source = UserDirUtils.getFile("/src/main/java/io/github/kylinhunter/commons"
                 + "/compiler/KplatCompiler.java");
         File compile = UserDirUtils.getTmpDir();
 
-        kplatCompiler.getSources().add(source);
+        kplatCompiler.addSource(source);
         kplatCompiler.setOutput(compile);
 
         kplatCompiler.compile();

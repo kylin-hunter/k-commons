@@ -14,8 +14,9 @@ dependencies {
     api 'jaxen:jaxen:1.2.0'
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-context'
-
+    implementation files(org.gradle.internal.jvm.Jvm.current().toolsJar)
     implementation(rootProject.dependency_management['jsoup'])
+
 
 
 }

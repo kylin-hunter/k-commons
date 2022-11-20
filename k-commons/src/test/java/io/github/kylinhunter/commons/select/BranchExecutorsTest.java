@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.tools.select;
+package io.github.kylinhunter.commons.select;
 
 import java.util.List;
 

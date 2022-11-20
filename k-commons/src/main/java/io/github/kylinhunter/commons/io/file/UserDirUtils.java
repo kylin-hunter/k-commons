@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
@@ -57,7 +58,7 @@ public class UserDirUtils {
             }
         } else {
             if (create) {
-                FileUtil.forceMkdir(file);
+                forceMkdir(file);
             }
         }
         return file;
@@ -83,7 +84,7 @@ public class UserDirUtils {
             }
         } else {
             if (!file.getParentFile().exists() && createParent) {
-                FileUtil.forceMkdir(file.getParentFile());
+                forceMkdir(file.getParentFile());
             }
         }
         return file;
@@ -169,7 +170,6 @@ public class UserDirUtils {
 
     }
 
-
     /**
      * @param file the file to delete
      * @title deleteQuietly
@@ -189,6 +189,22 @@ public class UserDirUtils {
 
         return getDir(USER_DIR_TMP_RESOURCE, true);
 
+    }
+
+    /**
+     * @param directory the dir
+     * @title forceMkdir
+     * @description
+     * @author BiJi'an
+     * @date 2022-01-01 01:58
+     */
+    private static void forceMkdir(final File directory) {
+
+        try {
+            FileUtils.forceMkdir(directory);
+        } catch (IOException e) {
+            throw new KIOException("forceMkdir  error", e);
+        }
     }
 
 }

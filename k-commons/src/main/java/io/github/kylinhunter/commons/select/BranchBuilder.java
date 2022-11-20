@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.tools.select;
+package io.github.kylinhunter.commons.select;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -11,10 +11,9 @@ import java.util.function.Predicate;
 public interface BranchBuilder<P, T> {
 
     /**
-     * @param factory
-     * @return   io.github.kylinhunter.commons.tools.select.Branch<P, T>
-     * @throws
-     * @title 使用一个值工厂构造出一个分支
+     * @param factory factory
+     * @return io.github.kylinhunter.commons.tools.select.Branch<P, T>
+     * @title
      * @description
      * @author BiJi'an
      * @date 2022/01/01 4:49 下午
@@ -22,10 +21,9 @@ public interface BranchBuilder<P, T> {
     Branch<P, T> then(Function<P, T> factory);
 
     /**
-     * @param value
-     * @return   io.github.kylinhunter.commons.tools.select.Branch<P, T>
-     * @throws
-     * @title 从值构建出一个分支
+     * @param value value
+     * @return io.github.kylinhunter.commons.tools.select.Branch<P, T>
+     * @title
      * @description
      * @author BiJi'an
      * @date 2022/01/01 4:50 下午
@@ -35,10 +33,9 @@ public interface BranchBuilder<P, T> {
     }
 
     /**
-     * @param tester
-     * @return   io.github.kylinhunter.commons.tools.select.BranchBuilder<P, T>
-     * @throws
-     * @title 工厂函数，用于创建分支构建者
+     * @param tester tester
+     * @return io.github.kylinhunter.commons.tools.select.BranchBuilder<P, T>
+     * @title
      * @description
      * @author BiJi'an
      * @date 2022/01/01 4:50 下午

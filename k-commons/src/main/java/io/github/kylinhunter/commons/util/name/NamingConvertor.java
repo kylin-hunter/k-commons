@@ -7,4 +7,6 @@ package io.github.kylinhunter.commons.util.name;
  **/
 public interface NamingConvertor {
     String convert(String name);
+
+    NCStrategy getNcStrategy();
 }

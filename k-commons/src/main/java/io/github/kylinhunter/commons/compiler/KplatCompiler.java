@@ -30,15 +30,33 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class KplatCompiler {
 
-
     private List<File> sources = Lists.newArrayList();
 
     private File output;
 
+    public void addSource(File file) {
+        this.sources.add(file);
+    }
+
+    /**
+     * @param sourceFiles sourceFiles
+     * @return void
+     * @title addSources
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-21 00:48
+     */
     public void addSources(Collection<File> sourceFiles) {
         this.sources.addAll(sourceFiles);
     }
 
+    /**
+     * @return void
+     * @title compile
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-21 00:48
+     */
     public void compile() throws IOException {
         JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
@@ -51,6 +69,15 @@ public class KplatCompiler {
 
     }
 
+    /**
+     * @param prefix prefix
+     * @param paths  paths
+     * @return void
+     * @title findClassPath
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-21 00:48
+     */
     public static void findClassPath(String prefix, Set<String> paths) throws IOException {
         ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
         Enumeration<URL> resources = systemClassLoader.getResources(prefix);

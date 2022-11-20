@@ -3,14 +3,11 @@ package io.github.kylinhunter.commons.io;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.exception.inner.ParamException;
-
+import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +30,13 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2022-01-21 00:52
      */
-    private static PathInfo getPathInfo(String path) {
+    private static PathInfo toPathInfo(String path) {
         if (path.startsWith(CLASSPATH_TAG)) {
-            return new PathInfo(PathType.CLASSPATH, path.substring(CLASSPATH_TAG.length()));
+            return PathInfo.of(PathType.CLASSPATH, path.substring(CLASSPATH_TAG.length()));
         } else if (path.startsWith(USER_DIR_TAG)) {
-            return new PathInfo(PathType.FILESYSTEM, path.replace(USER_DIR_TAG, UserDirUtils.get().getAbsolutePath()));
+            return PathInfo.of(PathType.FILESYSTEM, path.replace(USER_DIR_TAG, UserDirUtils.get().getAbsolutePath()));
         } else {
-            return new PathInfo(PathType.FILESYSTEM, path);
+            return PathInfo.of(PathType.CLASSPATH, path);
         }
 
     }
@@ -47,14 +44,13 @@ public class ResourceHelper {
     /**
      * @param path path
      * @return java.io.InputStream
-     * @throws
      * @title getInputStream
      * @description
      * @author BiJi'an
      * @date 2022-01-01 02:11
      */
     public static InputStream getInputStream(String path) {
-        PathInfo pathInfo = getPathInfo(path);
+        PathInfo pathInfo = toPathInfo(path);
         PathType pathType = pathInfo.getPathType();
         if (pathType == PathType.CLASSPATH) {
             return ResourceHelper.getInputStreamInClassPath(pathInfo.getPath());
@@ -79,7 +75,7 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2022-01-01 02:10
      */
-    public static InputStream getInputStreamInClassPath(String classPath) {
+    private static InputStream getInputStreamInClassPath(String classPath) {
         InputStream in = ResourceHelper.class.getClassLoader().getResourceAsStream(classPath);
         if (in != null) {
             return in;
@@ -87,18 +83,6 @@ public class ResourceHelper {
             return ResourceHelper.class.getResourceAsStream(classPath);
         }
 
-    }
-
-    /**
-     * @param classPath classPath
-     * @return java.io.InputStreamReader
-     * @title getStreamReaderInClassPath
-     * @description
-     * @author BiJi'an
-     * @date 2022-01-01 02:11
-     */
-    public static InputStreamReader getStreamReaderInClassPath(String classPath, String charset) throws IOException {
-        return new InputStreamReader(getInputStreamInClassPath(classPath), "UTF-8");
     }
 
     /**
@@ -110,7 +94,7 @@ public class ResourceHelper {
      * @date 2022-01-21 00:52
      */
     public static File getFile(String path) {
-        PathInfo pathInfo = getPathInfo(path);
+        PathInfo pathInfo = toPathInfo(path);
         PathType pathType = pathInfo.getPathType();
         if (pathType == PathType.CLASSPATH) {
             return getFileInClassPath(pathInfo.getPath());
@@ -132,7 +116,7 @@ public class ResourceHelper {
      * @date 2022-01-01 02:12
      */
 
-    public static File getFileInClassPath(String classPath) {
+    private static File getFileInClassPath(String classPath) {
         URL url = ResourceHelper.class.getClassLoader().getResource(classPath);
         if (url == null) {
             url = ResourceHelper.class.getResource(classPath);
@@ -175,9 +159,13 @@ public class ResourceHelper {
      **/
     @Data
     @AllArgsConstructor
-    public static class PathInfo {
+    private static class PathInfo {
         private PathType pathType;
         private String path;
+
+        public static PathInfo of(PathType pathType, String path) {
+            return new PathInfo(pathType, path);
+        }
 
     }
 
@@ -186,7 +174,7 @@ public class ResourceHelper {
      * @description
      * @date 2022-01-01 02:14
      **/
-    public enum PathType {
-        CLASSPATH, FILESYSTEM;
+    private enum PathType {
+        CLASSPATH, FILESYSTEM
     }
 }
