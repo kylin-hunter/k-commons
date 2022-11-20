@@ -2,8 +2,10 @@ package io.github.kylinhunter.commons.util.name;
 
 import java.util.Arrays;
 
-import jodd.util.StringPool;
-import jodd.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.internal.StringUtil;
+
+import io.github.kylinhunter.commons.util.StringPool;
 
 /**
  * @author BiJi'an
@@ -12,7 +14,7 @@ import jodd.util.StringUtil;
  **/
 public class NCSnakeToCamelUpperFirst implements NamingConvertor {
     public String convert(String name) {
-        if (StringUtil.isBlank(name)) {
+        if (StringUtils.isBlank(name)) {
             return StringPool.EMPTY;
         }
 

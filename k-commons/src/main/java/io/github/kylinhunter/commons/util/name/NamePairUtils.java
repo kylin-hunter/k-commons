@@ -1,9 +1,9 @@
 package io.github.kylinhunter.commons.util.name;
 
-import io.github.kylinhunter.commons.exception.inner.ParamException;
+import org.apache.commons.lang3.StringUtils;
 
-import jodd.util.StringPool;
-import jodd.util.StringUtil;
+import io.github.kylinhunter.commons.exception.inner.ParamException;
+import io.github.kylinhunter.commons.util.StringPool;
 
 /**
  * @author BiJi'an
@@ -13,7 +13,7 @@ import jodd.util.StringUtil;
 public class NamePairUtils {
 
     public static NamePair toNamePair(String str) {
-        if (!StringUtil.isEmpty(str)) {
+        if (!StringUtils.isEmpty(str)) {
             NamePair namePair = new NamePair();
             if (str.indexOf(StringPool.UNDERSCORE) > 0) {
                 namePair.setSnake(str);

@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.util.name;
 
 import org.apache.commons.lang3.StringUtils;
 
-import jodd.util.StringPool;
+import io.github.kylinhunter.commons.util.StringPool;
 
 /**
  * @description
@@ -13,7 +13,7 @@ public class NCCamelToSnake implements NamingConvertor {
     public String convert(String name) {
 
         if (StringUtils.isBlank(name)) {
-            return StringPool.EMPTY;
+            return StringUtils.EMPTY;
         }
         int len = name.length();
         StringBuilder sb = new StringBuilder(len);

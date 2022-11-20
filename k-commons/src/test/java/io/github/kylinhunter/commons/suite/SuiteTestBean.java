@@ -10,7 +10,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  * @date 2022-05-13 22:41
  **/
 @Suite
-@SuiteDisplayName("SuiteTestForBean")
+@SuiteDisplayName("SuiteTestBean")
 @SelectPackages("io.github.kylinhunter.commons.bean")
-public class SuiteTestForBean {
+public class SuiteTestBean {
 }

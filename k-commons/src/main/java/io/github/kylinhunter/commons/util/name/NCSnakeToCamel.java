@@ -1,7 +1,8 @@
 package io.github.kylinhunter.commons.util.name;
 
-import jodd.util.StringPool;
-import jodd.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import io.github.kylinhunter.commons.util.StringPool;
 
 /**
  * @author BiJi'an
@@ -12,7 +13,7 @@ public class NCSnakeToCamel extends NCSnakeToCamelUpperFirst {
 
     @Override
     public String convert(String name) {
-        if (StringUtil.isBlank(name)) {
+        if (StringUtils.isBlank(name)) {
             return StringPool.EMPTY;
         }
 

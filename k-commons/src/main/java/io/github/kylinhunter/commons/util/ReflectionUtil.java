@@ -9,9 +9,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Maps;
-import io.github.kylinhunter.commons.exception.inner.GeneralException;
 
-import jodd.util.ClassLoaderUtil;
+import io.github.kylinhunter.commons.exception.inner.GeneralException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -93,13 +92,6 @@ public class ReflectionUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> loadClass(String clazz) {
-        try {
-            return ClassLoaderUtil.loadClass(clazz);
-        } catch (Exception e) {
-            throw new GeneralException("loadClass error", e);
-        }
-    }
 
     public static <T> T newInstance(Class<T> clazz) {
         try {
