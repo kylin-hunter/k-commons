@@ -42,7 +42,7 @@ public class ExceptionFinder {
      * @param e              e
      * @param acceptSubClass acceptSubClass
      * @param samples        samples
-     * @return com.kylinhunter.plat.commons.exception.ExceptionHelper.ExceptionFind
+     * @return io.github.kylinhunter.commons.exception.ExceptionHelper.ExceptionFind
      * @title 找到第一个需要的异常
      * @description
      * @author BiJi'an

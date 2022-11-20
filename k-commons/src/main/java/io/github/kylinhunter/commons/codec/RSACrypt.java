@@ -80,7 +80,7 @@ public class RSACrypt {
 
     /**
      * @param modulus modulus
-     * @return com.kylinhunter.plat.commons.codec.RSACrypt.RSAKeyPair
+     * @return io.github.kylinhunter.commons.codec.RSACrypt.RSAKeyPair
      * @title generateRSAKeyPair
      * @description
      * @author BiJi'an

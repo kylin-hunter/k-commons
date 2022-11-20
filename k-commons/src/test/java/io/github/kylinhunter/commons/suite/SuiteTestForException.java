@@ -10,6 +10,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  * @date 2022-05-13 22:41
  **/
 @Suite
-@SelectPackages("com.kylinhunter.plat.commons.exception")
+@SelectPackages("io.github.kylinhunter.commons.exception")
 public class SuiteTestForException {
 }

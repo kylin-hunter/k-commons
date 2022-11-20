@@ -17,7 +17,7 @@ public interface Branch<P, T> {
     /**
      * @param tester  tester
      * @param factory factory
-     * @return com.kylinhunter.plat.commons.tools.select.Branch<P, T>
+     * @return io.github.kylinhunter.commons.tools.select.Branch<P, T>
      * @title of
      * @description
      * @author BiJi'an

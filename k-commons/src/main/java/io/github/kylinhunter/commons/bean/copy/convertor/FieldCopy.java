@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface FieldCopy {
     /**
-     * @return com.kylinhunter.plat.commons.bean.copy.convertor.ConvertType
+     * @return io.github.kylinhunter.commons.bean.copy.convertor.ConvertType
      * @title value
      * @description
      * @author BiJi'an

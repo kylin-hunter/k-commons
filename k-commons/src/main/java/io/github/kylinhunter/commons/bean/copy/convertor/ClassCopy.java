@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ClassCopy {
     /**
-     * @return java.lang.Class<? extends com.kylinhunter.plat.commons.bean.copy.convertor.ClassConvertor < ?, ?>>
+     * @return java.lang.Class<? extends io.github.kylinhunter.commons.bean.copy.convertor.ClassConvertor < ?, ?>>
      * @title value
      * @description
      * @author BiJi'an

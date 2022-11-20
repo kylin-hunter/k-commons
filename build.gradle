@@ -24,7 +24,6 @@ buildscript {
 }
 
 
-
 allprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
@@ -74,10 +73,6 @@ subprojects {
         testImplementation 'org.junit.platform:junit-platform-suite'
 
 
-
-
-
-
         testImplementation(rootProject.dependency_management['jmockit'])
 
     }
@@ -86,10 +81,9 @@ subprojects {
 //        exclude 'com/kylinhunter/**/Suite**'
         useJUnitPlatform()
         testLogging {
-            outputs.upToDateWhen { false }
+            outputs.upToDateWhen { true }
             showStandardStreams = true
         }
-
     }
 
     task taskChangeActiveProfile {
@@ -101,7 +95,7 @@ subprojects {
     addDockerBuildTask(project.name)
 
 
-    java{
+    java {
         withSourcesJar()
         withJavadocJar()
 
@@ -173,7 +167,6 @@ subprojects {
     signing {
         sign publishing.publications.mavenJava
     }
-
 
 
 }

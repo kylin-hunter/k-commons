@@ -41,7 +41,7 @@ public class ExceptionExplainer {
 
     /**
      * @param throwable throwable
-     * @return com.kylinhunter.plat.commons.exception.explain.ExplainInfo
+     * @return io.github.kylinhunter.commons.exception.explain.ExplainInfo
      * @title explain explain
      * @description
      * @author BiJi'an

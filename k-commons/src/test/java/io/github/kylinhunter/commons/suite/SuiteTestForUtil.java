@@ -11,6 +11,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  **/
 @Suite
 @SuiteDisplayName("SuiteTestForUtil")
-@SelectPackages("com.kylinhunter.plat.commons.util")
+@SelectPackages("io.github.kylinhunter.commons.util")
 public class SuiteTestForUtil {
 }

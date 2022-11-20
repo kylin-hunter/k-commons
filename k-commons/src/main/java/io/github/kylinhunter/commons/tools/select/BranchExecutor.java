@@ -23,7 +23,7 @@ public class BranchExecutor<P, T> {
 
     /**
      * @param param
-     * @return   com.kylinhunter.plat.commons.tools.select.BranchExecutor<P, T>
+     * @return   io.github.kylinhunter.commons.tools.select.BranchExecutor<P, T>
      * @throws
      * @title 使用指定的参数创建选择器
      * @description
@@ -36,7 +36,7 @@ public class BranchExecutor<P, T> {
 
     /**
      * @param branch
-     * @return   com.kylinhunter.plat.commons.tools.select.BranchExecutor<P, T>
+     * @return   io.github.kylinhunter.commons.tools.select.BranchExecutor<P, T>
      * @throws
      * @title 传入一个新的分支，判定这个分支满足条件
      * @description

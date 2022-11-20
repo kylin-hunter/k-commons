@@ -41,7 +41,7 @@ public class BeanCopyCache {
     /**
      * @param sourceClass sourceClass
      * @param targetClass targetClass
-     * @return com.kylinhunter.plat.commons.utils.bean.BeanCopy
+     * @return io.github.kylinhunter.commons.utils.bean.BeanCopy
      * @title getBeanCopy
      * @description
      * @author BiJi'an
@@ -65,7 +65,7 @@ public class BeanCopyCache {
     /**
      * @param sourceClass sourceClass
      * @param targetClass targetClass
-     * @return com.kylinhunter.plat.commons.bean.copy.BeanCopy
+     * @return io.github.kylinhunter.commons.bean.copy.BeanCopy
      * @title init
      * @description
      * @author BiJi'an
@@ -86,7 +86,7 @@ public class BeanCopyCache {
     /**
      * @param sourceClass sourceClass
      * @param targetClass targetClass
-     * @return com.kylinhunter.plat.commons.bean.copy.convertor.ClassConvertor<java.lang.Object, java.lang.Object>
+     * @return io.github.kylinhunter.commons.bean.copy.convertor.ClassConvertor<java.lang.Object, java.lang.Object>
      * @title initClassConvertor
      * @description
      * @author BiJi'an
@@ -120,7 +120,7 @@ public class BeanCopyCache {
     /**
      * @param sourceClass sourceClass
      * @param targetClass targetClass
-     * @return com.kylinhunter.plat.commons.utils.bean.BeanCopy
+     * @return io.github.kylinhunter.commons.utils.bean.BeanCopy
      * @title initFieldConvertor
      * @description
      * @author BiJi'an
@@ -182,7 +182,7 @@ public class BeanCopyCache {
      * @param targetClass targetClass
      * @param fieldName   fieldName
      * @param convertType convertType
-     * @return com.kylinhunter.plat.commons.bean.copy.convertor.FieldConvertor
+     * @return io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor
      * @title processJson
      * @description
      * @author BiJi'an

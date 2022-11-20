@@ -9,8 +9,8 @@ public class BranchExecutors {
 
     /**
      * @param p p
-     * @return com.kylinhunter.plat.commons.tools.select.BranchExecutor<java.lang.reflect.Field,
-            * com.kylinhunter.plat.generator.core.configuration.bean.EntityField>
+     * @return io.github.kylinhunter.commons.tools.select.BranchExecutor<java.lang.reflect.Field,
+            * io.github.kylinhunter.generator.core.configuration.bean.EntityField>
      * @title use
      * @description
      * @author BiJi'an
