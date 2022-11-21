@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.util.name;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.exception.inner.ParamException;
-import io.github.kylinhunter.commons.util.StringPool;
+import io.github.kylinhunter.commons.util.StringConst;
 
 /**
  * @author BiJi'an
@@ -15,7 +15,7 @@ public class NamePairUtils {
     public static NamePair toNamePair(String str) {
         if (!StringUtils.isEmpty(str)) {
             NamePair namePair = new NamePair();
-            if (str.indexOf(StringPool.UNDERSCORE) > 0) {
+            if (str.indexOf(StringConst.UNDERSCORE) > 0) {
                 namePair.setSnake(str);
                 namePair.setCamel(NamingConvertors.convert(NCStrategy.SNAKE_TO_CAMEL, str));
             } else {

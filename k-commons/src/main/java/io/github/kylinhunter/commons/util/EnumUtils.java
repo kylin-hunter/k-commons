@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022/1/1
  **/
 @Slf4j
-public class EnumUtil {
+public class EnumUtils {
     private static final Map<Class<?>, Map<Integer, EnumCode>> ENUM_CODES = new HashMap<>();
     private static final Map<Class<?>, Map<String, EnumLabel>> ENUM_LABELS = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class EnumUtil {
         try {
             Map<String, EnumLabel> enumLabels = ENUM_LABELS.get(enumType);
             if (enumLabels == null) {
-                synchronized(EnumUtil.class) {
+                synchronized(EnumUtils.class) {
                     if ((enumLabels = ENUM_LABELS.get(enumType)) == null) {
                         enumLabels = Maps.newHashMap();
                         ENUM_LABELS.put(enumType, enumLabels);
@@ -134,7 +134,7 @@ public class EnumUtil {
         try {
             Map<Integer, EnumCode> enumCodes = ENUM_CODES.get(enumType);
             if (enumCodes == null) {
-                synchronized(EnumUtil.class) {
+                synchronized(EnumUtils.class) {
                     if ((enumCodes = ENUM_CODES.get(enumType)) == null) {
                         enumCodes = Maps.newHashMap();
                         ENUM_CODES.put(enumType, enumCodes);

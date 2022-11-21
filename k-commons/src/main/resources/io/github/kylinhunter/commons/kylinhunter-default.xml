@@ -19,7 +19,10 @@ initialization performed by Boot
 	<property name="logging.log_level"  value="INFO"/>
 	<property name="logging.max_log_file_size"  value="50MB"/>
 	<property name="logging.max_history"   value="30"/>
-	<property name="logging.log_pattern"   value="%d{ISO8601} [%t] %-5level %X{x-current-user} - %X{x-trace-id} %C{1.}[%line]\: %msg%n%throwable"/>
+	<property name="logging.log_pattern"
+			  value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %X{x-current-user} - %X{x-trace-id} %logger{12} [%line]: %msg%n"/>
+	<property name="logging.console_pattern"
+			  value="%black(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%blue(%t)] %highlight(%-5level) %X{x-current-user} - %X{x-trace-id} %yellow(%C{36}[%line]): %msg%n"/>
 	<property name="log_file_path_prefix"   value="./logs/${application.name}"/>
 
 	<springProperty name="logging.log_level" scope="context" source="app.logging.log_level" defaultValue="DEBUG"/>

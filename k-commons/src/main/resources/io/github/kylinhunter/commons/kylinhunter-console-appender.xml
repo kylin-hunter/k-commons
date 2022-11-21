@@ -9,8 +9,7 @@ initialization performed by Boot
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <Pattern>
-                %black(%d{ISO8601}) [%blue(%t)] %highlight(%-5level) %X{x-current-user} - %X{x-trace-id}
-                %yellow(%C{1.}[%line]): %msg%n%throwable
+                ${logging.console_pattern}
             </Pattern>
         </encoder>
     </appender>

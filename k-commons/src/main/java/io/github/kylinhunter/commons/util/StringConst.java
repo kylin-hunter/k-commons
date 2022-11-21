@@ -5,7 +5,7 @@ package io.github.kylinhunter.commons.util;
  * @description
  * @date 2022-11-21 00:11
  **/
-public interface StringPool {
+public interface StringConst {
     String JODD        		= "jodd";
     String AMPERSAND        = "&";
     String AND              = "and";
@@ -72,9 +72,4 @@ public interface StringPool {
     String HTML_LT 			= "&lt;";
     String HTML_GT 			= "&gt;";
 
-    // ---------------------------------------------------------------- array
-
-    String[] EMPTY_ARRAY = new String[0];
-
-    byte[] BYTES_NEW_LINE = "\n".getBytes();
 }

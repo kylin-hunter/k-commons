@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.util.StringPool;
+import io.github.kylinhunter.commons.util.StringConst;
 import lombok.Data;
 
 /**
@@ -20,7 +20,7 @@ public class NCSnakeToCamelUpperFirst implements NamingConvertor {
 
     public String convert(String name) {
         if (StringUtils.isBlank(name)) {
-            return StringPool.EMPTY;
+            return StringConst.EMPTY;
         }
 
         return snakeToCamel(name).toString();
@@ -29,7 +29,7 @@ public class NCSnakeToCamelUpperFirst implements NamingConvertor {
 
     protected StringBuilder snakeToCamel(String name) {
         StringBuilder result = new StringBuilder();
-        String[] camels = name.split(StringPool.UNDERSCORE);
+        String[] camels = name.split(StringConst.UNDERSCORE);
         // 处理驼峰片段
         Arrays.stream(camels).filter(camel -> !StringUtils.isBlank(camel)).forEach(camel -> {
             result.append(Character.toUpperCase(camel.charAt(0)) + camel.substring(1).toLowerCase());

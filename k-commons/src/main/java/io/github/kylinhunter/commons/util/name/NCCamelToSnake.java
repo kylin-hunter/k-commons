@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.util.name;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.util.StringPool;
+import io.github.kylinhunter.commons.util.StringConst;
 import lombok.Data;
 
 /**
@@ -28,7 +28,7 @@ public class NCCamelToSnake implements NamingConvertor {
         for (int i = 0; i < len; i++) {
             char c = name.charAt(i);
             if (Character.isUpperCase(c) && i > 0) {
-                sb.append(StringPool.UNDERSCORE);
+                sb.append(StringConst.UNDERSCORE);
             }
             sb.append(Character.toLowerCase(c));
         }
