@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.util;
+package io.github.kylinhunter.commons.json;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -7,13 +7,10 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
-import io.github.kylinhunter.commons.json.JsonOptions;
-import io.github.kylinhunter.commons.json.JsonUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -77,9 +74,7 @@ public class JsonUtilsTest {
                 throw new RuntimeException("mock writeValueAsString error");
             }
         };
-        Assertions.assertThrows(KRuntimeException.class, () -> {
-            JsonUtils.writeToString(testBean);
-        });
+        Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.writeToString(testBean));
 
         Assertions.assertEquals("", JsonUtils.writeToString(testBean, JsonOptions.NO_FAIL));
     }
@@ -95,37 +90,32 @@ public class JsonUtilsTest {
             }
         };
 
-        Assertions.assertThrows(KRuntimeException.class, () -> {
-            JsonUtils.wirteToBytes(testBean, JsonOptions.DEFAULT);
-        });
+        Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.wirteToBytes(testBean, JsonOptions.DEFAULT));
 
         Assertions.assertEquals(0, JsonUtils.wirteToBytes(testBean, JsonOptions.NO_FAIL).length);
 
     }
 
     @Test
-    public void testToMap() throws KRuntimeException {
+    public void testReadToMap() throws KRuntimeException {
         String text = JsonUtils.writeToString(testBean);
         Assertions.assertEquals("keyValue", JsonUtils.readToMap(text).get("key"));
     }
 
     @Test
-    public void testToListMap() throws KRuntimeException {
-        String text = JsonUtils.writeToString(Lists.newArrayList(testBean, testBean));
-        Assertions.assertEquals("keyValue",
-                JsonUtils.toList(text, Map.class, JsonOptions.DEFAULT).get(0).get("key"));
-        Assertions.assertEquals("keyValue",
-                JsonUtils.toList(text, Map.class, JsonOptions.DEFAULT).get(1).get("key"));
-    }
+    public void testReadToListObject() {
 
-    @Test
-    public void testToLis() throws KRuntimeException, JsonProcessingException {
-        String text = JsonUtils.writeToString(Lists.newArrayList(testBean));
-        System.out.println("text:" + text);
-        List<TestBean> testBeans = JsonUtils.toList(text, TestBean.class, JsonOptions.DEFAULT);
+        String text1 = JsonUtils.writeToString(Lists.newArrayList(testBean, testBean));
+        Assertions.assertEquals("keyValue", JsonUtils.readToListObject(text1, Map.class).get(0).get("key"));
+        Assertions.assertEquals("keyValue", JsonUtils.readToListObject(text1, Map.class).get(1).get("key"));
+
+        String text2 = JsonUtils.writeToString(Lists.newArrayList(testBean, testBean));
+        System.out.println("text:" + text2);
+        List<TestBean> testBeans = JsonUtils.readToListObject(text2, TestBean.class);
         System.out.println("testBeans:" + testBeans);
 
-        Assertions.assertEquals(true, testBeans.get(0) instanceof TestBean);
+        Assertions.assertEquals("keyValue", testBeans.get(0).getKey());
+        Assertions.assertEquals("keyValue", testBeans.get(1).getKey());
     }
 
 }

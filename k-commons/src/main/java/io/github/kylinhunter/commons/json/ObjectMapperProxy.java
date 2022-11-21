@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -28,14 +30,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ObjectMapperProxy {
 
-    public static ObjectMapper objectMapper;
-    public static ObjectMapper objectMapperSnake;
+    public static ObjectMapper defaultObjectMapper;
+    public static ObjectMapper snakeObjectMapper;
     public static final byte[] EMPTY_BYTES = new byte[0];
 
     static {
-        objectMapper = createObjectMapper();
-        objectMapperSnake = createObjectMapper();
-        objectMapperSnake.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        defaultObjectMapper = createDefaultObjectMapper();
+        snakeObjectMapper = createSnakeObjectMapper();
+    }
+
+    /**
+     * @return com.fasterxml.jackson.databind.ObjectMapper
+     * @title createSnakeObjectMapper
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-21 23:30
+     */
+    private static ObjectMapper createSnakeObjectMapper() {
+        snakeObjectMapper = createDefaultObjectMapper();
+        snakeObjectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        return snakeObjectMapper;
     }
 
     /**
@@ -45,7 +59,7 @@ public class ObjectMapperProxy {
      * @author BiJi'an
      * @date 2022-11-21 19:10
      */
-    private static ObjectMapper createObjectMapper() {
+    private static ObjectMapper createDefaultObjectMapper() {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
@@ -77,9 +91,9 @@ public class ObjectMapperProxy {
      */
     public static ObjectMapper getObjectMapper(JsonOption jsonOption) {
         if (jsonOption != null && jsonOption.isSnake()) {
-            return objectMapperSnake;
+            return snakeObjectMapper;
         } else {
-            return objectMapper;
+            return defaultObjectMapper;
         }
     }
 
@@ -90,8 +104,8 @@ public class ObjectMapperProxy {
      * @author BiJi'an
      * @date 2022-11-21 20:43
      */
-    public static ObjectMapper getObjectMapper() {
-        return objectMapper;
+    public static ObjectMapper getDefaultObjectMapper() {
+        return defaultObjectMapper;
     }
 
     /**
@@ -185,7 +199,7 @@ public class ObjectMapperProxy {
                 log.error("json readValue error", e);
             }
         }
-        return null;
+        return StringUtils.EMPTY;
     }
 
     /**

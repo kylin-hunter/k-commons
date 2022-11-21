@@ -1,11 +1,11 @@
 package io.github.kylinhunter.commons.json;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JavaType;
 
-import io.github.kylinhunter.commons.exception.inner.FormatException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
  **/
 @Slf4j
 public class JsonUtils {
-
 
     /**
      * @param content    content
@@ -134,6 +133,8 @@ public class JsonUtils {
      * @author BiJi'an
      * @date 2022/01/01 4:30 下午
      */
+
+    @SuppressWarnings("unchecked")
     public static Map<String, Object> readToMap(String content, JsonOption jsonOption) {
         return ObjectMapperProxy.readValue(content, Map.class, jsonOption);
     }
@@ -148,6 +149,35 @@ public class JsonUtils {
      */
     public static Map<String, Object> readToMap(String content) {
         return readToMap(content, JsonOptions.DEFAULT);
+    }
+
+    /**
+     * @param content    content
+     * @param clazz      clazz
+     * @param jsonOption jsonOption
+     * @return java.util.List<T>
+     * @title toList
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-21 20:45
+     */
+
+    public static <T> List<T> readToListObject(String content, Class<T> clazz, JsonOption jsonOption) {
+        JavaType javaType = constructCollectionType(List.class, clazz);
+        return ObjectMapperProxy.readValue(content, javaType, jsonOption);
+    }
+
+    /**
+     * @param content content
+     * @param clazz   clazz
+     * @return java.util.List<T>
+     * @title readToListObject
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-21 23:18
+     */
+    public static <T> List<T> readToListObject(String content, Class<T> clazz) {
+        return readToListObject(content, clazz, JsonOptions.DEFAULT);
     }
 
     /**
@@ -167,48 +197,21 @@ public class JsonUtils {
     }
 
     /**
-     * @param content   content
-     * @param valueType valueType
+     * @param content  content
+     * @param javaType javaType
      * @return T
      * @title readValue
      * @description
      * @author BiJi'an
-     * @date 2022-11-21 20:44
+     * @date 2022-11-21 23:36
      */
-    public static <T> T readValue(String content, JavaType valueType) {
-        return readValue(content, valueType, JsonOptions.DEFAULT);
-
+    public static <T> T readValue(String content, JavaType javaType) {
+        return readValue(content, javaType, JsonOptions.DEFAULT);
     }
 
     /**
-     * @param content
-     * @param clazz
-     * @param jsonOption
-     * @return java.util.List<T>
-     * @throws
-     * @title toList
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-21 20:45
-     */
-
-    public static <T> List<T> toList(String content, Class<T> clazz, JsonOption jsonOption) {
-        try {
-            JavaType javaType =
-                    ObjectMapperProxy.getObjectMapper().getTypeFactory().constructCollectionType(List.class, clazz);
-            return ObjectMapperProxy.readValue(content, javaType, jsonOption);
-        } catch (Exception e) {
-            log.error("json readValue error", e);
-            if (jsonOption.isThrowIfFailed()) {
-                throw new FormatException("json readValue error", e);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param parametrized     parametrized
-     * @param parameterClasses parameterClasses
+     * @param collectionClass collectionClass
+     * @param elementClass    elementClass
      * @return com.fasterxml.jackson.databind.JavaType
      * @title constructParametricType
      * @description
@@ -216,9 +219,10 @@ public class JsonUtils {
      * @date 2022-11-21 16:44
      */
 
-    public static JavaType constructCollectionType(Class<?> parametrized, Class<?>... parameterClasses) {
-        return ObjectMapperProxy.getObjectMapper(null).getTypeFactory()
-                .constructParametricType(parametrized, parameterClasses);
+    @SuppressWarnings("rawtypes")
+    public static JavaType constructCollectionType(Class<? extends Collection> collectionClass, Class<?> elementClass) {
+        return ObjectMapperProxy.getDefaultObjectMapper().getTypeFactory()
+                .constructCollectionType(collectionClass, elementClass);
     }
 
 }

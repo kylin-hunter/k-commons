@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JavaType;
 
 import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
-import io.github.kylinhunter.commons.json.JsonOptions;
 import io.github.kylinhunter.commons.json.JsonUtils;
 
 /**
@@ -48,7 +47,7 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
         Object sourceValue = this.read(source);
         Object targetValue;
         if (targetType != null) {
-            targetValue = JsonUtils.readValue(String.valueOf(sourceValue), targetType, JsonOptions.DEFAULT);
+            targetValue = JsonUtils.readValue(String.valueOf(sourceValue), targetType);
         } else {
             targetValue = JsonUtils.readToObject(String.valueOf(sourceValue), targetPD.getPropertyType());
         }
