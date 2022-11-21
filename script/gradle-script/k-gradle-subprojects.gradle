@@ -108,4 +108,31 @@ ext {
 
 }
 
+task taskReadSecretProperties {
+
+    def localProperties = new Properties()
+    def dis = null
+
+    try {
+        def localFile = rootProject.file('/Users/bijian/gradle-secret.properties')
+        if (localFile.exists()) {
+            dis = localFile.newDataInputStream();
+            localProperties.load(dis)
+        }
+    } catch (Exception ignored) {
+        println ignored
+    } finally {
+        if (dis != null) {
+            dis.close()
+        }
+    }
+
+    sonatypeUsername = localProperties.getProperty("sonatypeUsername")
+    sonatypePassword = localProperties.getProperty("sonatypePassword")
+
+    println sonatypeUsername
+    println sonatypePassword
+
+}
+
 

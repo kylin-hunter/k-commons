@@ -1,6 +1,5 @@
-group 'io.github.kylin-hunter'
 //    version '1.0.0-SNAPSHOT'
-version '1.0.5'
+
 buildscript {
     apply from: "./script/gradle-script/k-gradle-config.gradle"
     apply from: "./script/gradle-script/k-gradle-version.gradle"
@@ -54,7 +53,8 @@ subprojects {
     apply plugin: 'signing'
     apply from: "$rootProject.rootDir/script/gradle-script/k-gradle-subprojects.gradle"
 
-
+    group 'io.github.kylin-hunter'
+    version '1.0.1'
     jar {
         manifest.attributes provider: 'gradle'
     }
@@ -91,7 +91,7 @@ subprojects {
             changeActiveProfile(project.profile)
         }
     }
-    classes.finalizedBy(taskChangeActiveProfile)
+    classes.finalizedBy(taskChangeActiveProfile,taskReadSecretProperties)
     addDockerBuildTask(project.name)
 
 
@@ -124,9 +124,9 @@ subprojects {
                 from components.java
                 pom {
 
-                    name = 'k-file-detector'
-                    description = 'a tool for detect file type'
-                    url = 'https://github.com/kylin-hunter/k-file-detector'
+                    name = 'k-commons'
+                    description = 'k-commonse'
+                    url = 'https://github.com/kylin-hunter/commons'
                     licenses {
                         license {
                             name = 'The Apache Software License, Version 2.0'
@@ -141,9 +141,9 @@ subprojects {
                         }
                     }
                     scm {
-                        url = 'https://github.com/kylin-hunter/k-file-detector'
-                        connection = 'scm:git:https://github.com/kylin-hunter/k-file-detector.git'
-                        developerConnection = 'scm:git:https://github.com/kylin-hunter/k-file-detector.git'
+                        url = 'https://github.com/kylin-hunter/k-commons'
+                        connection = 'scm:git:https://github.com/kylin-hunter/k-commons.git'
+                        developerConnection = 'scm:git:https://github.com/kylin-hunter/k-commons.git'
                     }
                 }
             }
