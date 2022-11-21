@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.util.name;
+package io.github.kylinhunter.commons.name;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

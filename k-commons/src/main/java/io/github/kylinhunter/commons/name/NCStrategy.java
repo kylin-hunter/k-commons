@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.util.name;
+package io.github.kylinhunter.commons.name;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

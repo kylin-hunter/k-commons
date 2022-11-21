@@ -1,11 +1,11 @@
-package io.github.kylinhunter.commons.util.name;
+package io.github.kylinhunter.commons.name;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-01-01 14:39
  **/
-public interface NamingConvertor {
+public interface NameConvertor {
     String convert(String name);
 
     NCStrategy getNcStrategy();

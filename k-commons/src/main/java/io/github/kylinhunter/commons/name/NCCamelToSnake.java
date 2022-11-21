@@ -1,9 +1,9 @@
-package io.github.kylinhunter.commons.util.name;
+package io.github.kylinhunter.commons.name;
 
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.util.StringConst;
+import io.github.kylinhunter.commons.strings.StringConst;
 import lombok.Data;
 
 /**
@@ -14,10 +14,18 @@ import lombok.Data;
 
 @C
 @Data
-public class NCCamelToSnake implements NamingConvertor {
+public class NCCamelToSnake implements NameConvertor {
     private NCStrategy ncStrategy = NCStrategy.CAMEL_TO_SNAKE;
 
-
+    /**
+     * @param name name
+     * @return java.lang.String
+     * @title convert
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-22 01:25
+     */
+    @Override
     public String convert(String name) {
 
         if (StringUtils.isBlank(name)) {

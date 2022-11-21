@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.util;
+package io.github.kylinhunter.commons.strings;
 
 /**
  * @author BiJi'an
