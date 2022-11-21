@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -75,6 +74,7 @@ class EnumUtilTest {
 
     }
 
+    @RequiredArgsConstructor
     public enum TestEnumCode implements EnumUtil.EnumCode {
         TEST1(1),
 
@@ -82,10 +82,6 @@ class EnumUtilTest {
 
         @Getter
         private final int code;
-
-        TestEnumCode(int code) {
-            this.code = code;
-        }
 
     }
 

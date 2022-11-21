@@ -5,6 +5,6 @@ package io.github.kylinhunter.commons.sys;
  * @description
  * @date 2022-01-01 19:43
  **/
-public class KPlat {
-    public static final String BASE_PACKAGE = "io.github.kylinhunter";
+public class KConst {
+    public static final String K_BASE_PACKAGE = "io.github.kylinhunter";
 }

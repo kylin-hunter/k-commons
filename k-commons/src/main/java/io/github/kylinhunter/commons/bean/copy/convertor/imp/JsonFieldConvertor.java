@@ -9,8 +9,9 @@ import java.util.List;
 import com.fasterxml.jackson.databind.JavaType;
 
 import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
-import io.github.kylinhunter.commons.util.JsonUtils;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
+import io.github.kylinhunter.commons.json.JsonOptions;
+import io.github.kylinhunter.commons.json.JsonUtils;
 
 /**
  * @author BiJi'an
@@ -29,7 +30,7 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
             if (returnType instanceof ParameterizedType) {
                 ParameterizedType type = (ParameterizedType) returnType;
                 Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
-                targetType = JsonUtils.constructParametricType(List.class, clazz);
+                targetType = JsonUtils.constructCollectionType(List.class, clazz);
             }
 
         }
@@ -38,7 +39,7 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
     @Override
     public void forword(Object source, Object target) {
         Object sourceValue = this.read(source);
-        String targetValue = JsonUtils.toString(sourceValue, true);
+        String targetValue = JsonUtils.writeToString(sourceValue);
         this.write(target, targetValue);
     }
 
@@ -47,9 +48,9 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
         Object sourceValue = this.read(source);
         Object targetValue;
         if (targetType != null) {
-            targetValue = JsonUtils.readValue(String.valueOf(sourceValue), targetType, true);
+            targetValue = JsonUtils.readValue(String.valueOf(sourceValue), targetType, JsonOptions.DEFAULT);
         } else {
-            targetValue = JsonUtils.toObject(String.valueOf(sourceValue), targetPD.getPropertyType(), true);
+            targetValue = JsonUtils.readToObject(String.valueOf(sourceValue), targetPD.getPropertyType());
         }
         this.write(target, targetValue);
     }

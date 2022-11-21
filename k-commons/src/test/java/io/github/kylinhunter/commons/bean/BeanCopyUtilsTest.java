@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 
-import io.github.kylinhunter.commons.util.JsonUtils;
+import io.github.kylinhunter.commons.json.JsonUtils;
 
 class BeanCopyUtilsTest {
 
@@ -26,8 +26,8 @@ class BeanCopyUtilsTest {
 
         Assertions.assertEquals("name1", bean2.getName1());
         Assertions.assertEquals("name21", bean2.getName2());
-        Assertions.assertEquals(JsonUtils.toString(beanJson), bean2.getJson());
-        Assertions.assertEquals(JsonUtils.toString(Lists.newArrayList(beanJson)), bean2.getJsons());
+        Assertions.assertEquals(JsonUtils.writeToString(beanJson), bean2.getJson());
+        Assertions.assertEquals(JsonUtils.writeToString(Lists.newArrayList(beanJson)), bean2.getJsons());
 
         Bean1 bean1Reverse = new Bean1();
         BeanCopyUtils.copyProperties(bean2, bean1Reverse);

@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.util.date;
+package io.github.kylinhunter.commons.date;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,15 +26,15 @@ public class DateFormat {
     DateFormat(String pattern) {
         this.pattern = pattern;
 
-        if (pattern.equals(DatePatterns.DATE_TIME_MILLIS_NO_SEP)) {
-            this.dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern(DatePatterns.DATE_TIME_NO_SEP)
+        if (pattern.equals(DatePatterns.BARE_DATE_MILLIS)) {
+            this.dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern(DatePatterns.BARE_DATE_TIME)
                     .appendValue(ChronoField.MILLI_OF_SECOND, 3).toFormatter();
         } else {
             this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
 
         }
-        this.parseByLocalDate = pattern.equals(DatePatterns.DATE) || pattern.equals(DatePatterns.DATE_SLASH) || pattern
-                .equals(DatePatterns.DATE_NO_SEP);
+        this.parseByLocalDate = pattern.equals(DatePatterns.DATE) || pattern.equals(DatePatterns.SLASH_DATE) || pattern
+                .equals(DatePatterns.BARE_DATE);
 
     }
 

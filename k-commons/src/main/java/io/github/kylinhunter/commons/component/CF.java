@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
@@ -19,6 +18,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import io.github.kylinhunter.commons.exception.inner.InitException;
+import io.github.kylinhunter.commons.sys.KConst;
 
 /**
  * @author BiJi'an
@@ -28,14 +28,12 @@ import io.github.kylinhunter.commons.exception.inner.InitException;
 public class CF {
     private static final Map<Class<?>, Object> ALL_COMPONENTS = Maps.newHashMap();
     private static final Map<Class<?>, Set<Object>> ALL_I_COMPONENTS = Maps.newHashMap();
-    private static final Map<Class<?>, CConstructor> ALL_CCONSTRUCTORS = Maps.newHashMap();
-    private static final Map<Type, Set<CConstructor>> ALL_I_CCONSTRUCTORS = Maps.newHashMap();
+    private static final Map<Class<?>, CC> ALL_CCONSTRUCTORS = Maps.newHashMap();
+    private static final Map<Type, Set<CC>> ALL_I_CCONSTRUCTORS = Maps.newHashMap();
     private static final Map<Class<?>, Set<Class<?>>> ALL_DEPENDENCIES = Maps.newHashMap();
 
-    private static final String DEFAULT_PKG = "io.github.kylinhunter";
-
     static {
-        init(DEFAULT_PKG);
+        init(KConst.K_BASE_PACKAGE);
     }
 
     private static void clear() {
@@ -53,22 +51,23 @@ public class CF {
      * @author BiJi'an
      * @date 2022-11-08 21:38
      */
-    public static void init(String pkg) {
-        clear();
-        if (StringUtils.isEmpty(pkg)) {
-            pkg = DEFAULT_PKG;
-        }
-
-        Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
-        Set<Class<?>> allComponentClazzes = reflections.getTypesAnnotatedWith(C.class);
+    public static void init(String... pkgs) {
 
         try {
+
+            clear();
+            Set<Class<?>> allComponentClazzes = Sets.newHashSet();
+            for (String pkg : pkgs) {
+                Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
+                allComponentClazzes = reflections.getTypesAnnotatedWith(C.class);
+            }
+
             for (Class<?> c : allComponentClazzes) {
-                CConstructor cconstructor = new CConstructor(c, c.getConstructors()[0]);
+                CC cconstructor = new CC(c, c.getConstructors()[0]);
                 ALL_CCONSTRUCTORS.put(c, cconstructor);
                 Class<?>[] interfaces = c.getInterfaces();
                 for (Class<?> anInterface : interfaces) {
-                    if (anInterface.getName().startsWith(pkg)) {
+                    if (validPkg(anInterface, pkgs)) {
                         ALL_I_CCONSTRUCTORS.compute(anInterface, (k, v) -> {
                             if (v == null) {
                                 v = Sets.newHashSet();
@@ -81,15 +80,15 @@ public class CF {
                 }
             }
 
-            for (Map.Entry<Class<?>, CConstructor> entry : ALL_CCONSTRUCTORS.entrySet()) {
-                CConstructor CConstructor = entry.getValue();
-                calDependencies(CConstructor);
+            for (Map.Entry<Class<?>, CC> entry : ALL_CCONSTRUCTORS.entrySet()) {
+                CC CC = entry.getValue();
+                calDependencies(CC);
             }
 
-            List<CConstructor> sortedCConstructors = ALL_CCONSTRUCTORS.values().stream()
-                    .sorted(Comparator.comparingInt(CConstructor::getDepLevel)).collect(Collectors.toList());
+            List<CC> sortedCCS = ALL_CCONSTRUCTORS.values().stream()
+                    .sorted(Comparator.comparingInt(CC::getDepLevel)).collect(Collectors.toList());
 
-            for (CConstructor cconstructor : sortedCConstructors) {
+            for (CC cconstructor : sortedCCS) {
                 Constructor<?> constructor = cconstructor.getConstructor();
                 Class<?> clazz = cconstructor.getClazz();
                 int parameterCount = constructor.getParameterCount();
@@ -114,11 +113,11 @@ public class CF {
                             if (type instanceof ParameterizedType) {
                                 Type[] actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
                                 for (Type actualTypeArgument : actualTypeArguments) {
-                                    Set<CConstructor> allCConstructors = ALL_I_CCONSTRUCTORS.get(actualTypeArgument);
+                                    Set<CC> allCCS = ALL_I_CCONSTRUCTORS.get(actualTypeArgument);
                                     List<Object> objs = Lists.newArrayList();
-                                    if (allCConstructors != null) {
-                                        for (CConstructor tmpCConstructor : allCConstructors) {
-                                            Object tmpObj = ALL_COMPONENTS.get(tmpCConstructor.getClazz());
+                                    if (allCCS != null) {
+                                        for (CC tmpCC : allCCS) {
+                                            Object tmpObj = ALL_COMPONENTS.get(tmpCC.getClazz());
                                             if (tmpObj != null) {
                                                 objs.add(tmpObj);
                                             }
@@ -154,7 +153,7 @@ public class CF {
                 if (component != null) {
                     Class<?>[] interfaces = componentClazz.getInterfaces();
                     for (Class<?> i : interfaces) {
-                        if (i.getPackage().getName().startsWith(pkg)) {
+                        if (validPkg(i, pkgs)) {
                             ALL_I_COMPONENTS.compute(i, (k, v) -> {
                                 if (v == null) {
                                     v = Sets.newHashSet();
@@ -179,6 +178,16 @@ public class CF {
 
     }
 
+    private static boolean validPkg(Class<?> clazz, String[] pkgs) {
+
+        for (String p : pkgs) {
+            if (clazz.getName().startsWith(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @param cconstructor cconstructor
      * @return void
@@ -187,7 +196,7 @@ public class CF {
      * @author BiJi'an
      * @date 2022-11-08 20:06
      */
-    private static void calDependencies(CConstructor cconstructor) {
+    private static void calDependencies(CC cconstructor) {
 
         Class<?> clazz = cconstructor.getClazz();
         calDependencies(clazz, clazz, null);
@@ -204,28 +213,28 @@ public class CF {
      * @date 2022-11-08 20:21
      */
     private static void calDependencies(Class<?> oriClazz, Class<?> depClazz, Type type) {
-        Set<CConstructor> allCConstructors = Sets.newHashSet();
-        CConstructor existCConstructor = ALL_CCONSTRUCTORS.get(depClazz);
-        if (existCConstructor != null) {
-            allCConstructors.add(existCConstructor);
+        Set<CC> allCCS = Sets.newHashSet();
+        CC existCC = ALL_CCONSTRUCTORS.get(depClazz);
+        if (existCC != null) {
+            allCCS.add(existCC);
 
         } else {
             if (type instanceof ParameterizedType) {
                 Type[] actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
                 for (Type actualTypeArgument : actualTypeArguments) {
-                    allCConstructors = ALL_I_CCONSTRUCTORS.get(actualTypeArgument);
-                    if (allCConstructors != null) {
+                    allCCS = ALL_I_CCONSTRUCTORS.get(actualTypeArgument);
+                    if (allCCS != null) {
                         break;
                     }
                 }
             }
-            if (allCConstructors == null) {
-                throw new InitException("no existCConstructor for :" + depClazz.getName());
+            if (allCCS == null) {
+                throw new InitException("no existCC for :" + depClazz.getName());
 
             }
         }
 
-        for (CConstructor cconstructor : allCConstructors) {
+        for (CC cconstructor : allCCS) {
 
             ALL_DEPENDENCIES.compute(oriClazz, (k, v) -> {
                 if (v == null) {
