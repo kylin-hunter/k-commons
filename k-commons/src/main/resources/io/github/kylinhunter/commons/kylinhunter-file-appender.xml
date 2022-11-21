@@ -8,24 +8,24 @@ initialization performed by Boot
 <included>
 	<appender name="INFO_RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>${logging.log_level}</level>
+			<level>${app.logging.log_level}</level>
 		</filter>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<charset>UTF-8</charset>
 			<Pattern>
-				${logging.log_pattern}
+				${app.logging.log_pattern}
 			</Pattern>
 		</encoder>
-		<file>${log_file_path_prefix}-${HOSTNAME}.log</file>
+		<file>${app.logging.log_file_path_prefix}-${HOSTNAME}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
 			<!-- rollover daily and when the file reaches 10 MegaBytes -->
 			<fileNamePattern>
-				${log_file_path_prefix}-${HOSTNAME}.log.%d{yyyy-MM-dd}.gz
+				${app.logging.log_file_path_prefix}-${HOSTNAME}.log.%d{yyyy-MM-dd}.gz
 			</fileNamePattern>
-			<maxHistory>${logging.max_history}</maxHistory>
+			<maxHistory>${app.logging.max_history}</maxHistory>
 			<!-- <totalSizeCap>${logging.total_size_cap:-10GB}</totalSizeCap> -->
-			<!-- <maxFileSize>${logging.max_log_file_size:-1G}</maxFileSize> -->
+			<!-- <maxFileSize>${app.logging.max_log_file_size:-1G}</maxFileSize> -->
 		</rollingPolicy>
 	</appender>
 
@@ -38,12 +38,12 @@ initialization performed by Boot
 	</appender>
 
 	<appender name="ERR_RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${log_file_path_prefix}-${HOSTNAME}.err.log</file>
+		<file>${app.logging.log_file_path_prefix}-${HOSTNAME}.err.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>
-				${log_file_path_prefix}-${HOSTNAME}.err.log.%d{yyyy-MM-dd}.gz
+				${app.logging.log_file_path_prefix}-${HOSTNAME}.err.log.%d{yyyy-MM-dd}.gz
 			</fileNamePattern>
-			<maxHistory>${logging.max_history}</maxHistory>
+			<maxHistory>${app.logging.max_history}</maxHistory>
 		</rollingPolicy>
 
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -51,7 +51,7 @@ initialization performed by Boot
 		</filter>
 		<encoder>
 			<Pattern>
-				${logging.log_pattern}
+				${app.logging.log_pattern}
 			</Pattern>
 		</encoder>
 	</appender>

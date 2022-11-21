@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="true">
-    <property name="application.name" value="plat-server-storage"/>
-    <include resource="io/github/kylinhunter/commons/kylinhunter.xml"/>
+    <include resource="io/github/kylinhunter/commons/kylinhunter-app-default.xml"/>
+    <property name="app.name" value="k-commons"/>
+    <property name="app.logging.log_file_path_prefix" value="./logs/${app.name}"/>
+    <include resource="io/github/kylinhunter/commons/kylinhunter-app.xml"/>
 </configuration>
