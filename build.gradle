@@ -50,9 +50,7 @@ subprojects {
     group 'io.github.kylin-hunter'
     version "${KYLIN_VERION}"
     kylinLoadSecretProperties()
-    jar {
-        manifest.attributes provider: 'gradle'
-    }
+
 
     dependencies {
 
@@ -72,16 +70,10 @@ subprojects {
 
     }
 
-    test {
-//        exclude 'com/kylinhunter/**/Suite**'
-        useJUnitPlatform()
-        testLogging {
-            outputs.upToDateWhen { true }
-            showStandardStreams = true
-        }
+    jar {
+        archiveClassifier = ''
+        manifest.attributes provider: 'gradle'
     }
-
-    classes.finalizedBy(kylinTaskChangeActiveProfile)
 
     java {
         withSourcesJar()
@@ -100,6 +92,20 @@ subprojects {
         failOnError = false
 
     }
+    classes.finalizedBy(kylinTaskChangeActiveProfile)
+
+
+    test {
+//        exclude 'com/kylinhunter/**/Suite**'
+        useJUnitPlatform()
+        testLogging {
+            outputs.upToDateWhen { true }
+            showStandardStreams = true
+        }
+    }
+
+
+
 
     publishing {
 
