@@ -1,13 +1,10 @@
-//    version '1.0.0-SNAPSHOT'
-
 buildscript {
     apply from: "./script/gradle-script/k-gradle-config.gradle"
     apply from: "./script/gradle-script/k-gradle-version.gradle"
+
+
     repositories {
         mavenLocal()
-//        maven {
-//            url "https://maven.aliyun.com/repository/public-snapshots"
-//        }
 
         maven {
             url "https://maven.aliyun.com/repository/public"
@@ -22,7 +19,6 @@ buildscript {
 
 }
 
-
 allprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
@@ -32,9 +28,6 @@ allprojects {
     targetCompatibility = JavaVersion.VERSION_1_8
     repositories {
         mavenLocal()
-//        maven {
-//            url "https://maven.aliyun.com/repository/public-snapshots"
-//        }
         maven {
             url "https://maven.aliyun.com/repository/public"
         }
@@ -50,11 +43,13 @@ subprojects {
 
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.bmuschko.docker-remote-api'
     apply plugin: 'signing'
     apply from: "$rootProject.rootDir/script/gradle-script/k-gradle-subprojects.gradle"
 
     group 'io.github.kylin-hunter'
     version '1.0.1'
+    kylinLoadSecretProperties()
     jar {
         manifest.attributes provider: 'gradle'
     }
@@ -86,14 +81,7 @@ subprojects {
         }
     }
 
-    task taskChangeActiveProfile {
-        doLast {
-            changeActiveProfile(project.profile)
-        }
-    }
-    classes.finalizedBy(taskChangeActiveProfile,taskReadSecretProperties)
-    addDockerBuildTask(project.name)
-
+    classes.finalizedBy(kylinTaskChangeActiveProfile)
 
     java {
         withSourcesJar()
@@ -101,8 +89,6 @@ subprojects {
 
     }
 
-
-    // 解决javadoc打包乱码
     javadoc {
         options {
             encoding = "UTF-8"
@@ -116,6 +102,8 @@ subprojects {
     }
 
     publishing {
+
+
         publications {
             mavenJava(MavenPublication) {
                 groupId project.group
@@ -124,38 +112,38 @@ subprojects {
                 from components.java
                 pom {
 
-                    name = 'k-commons'
-                    description = 'k-commonse'
-                    url = 'https://github.com/kylin-hunter/commons'
+                    name = "${KYLIN_MVN_CONFIG.name}"
+                    description = "${KYLIN_MVN_CONFIG.description}"
+                    url = "${KYLIN_MVN_CONFIG.url}"
                     licenses {
                         license {
-                            name = 'The Apache Software License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            name = "${KYLIN_MVN_CONFIG.license.name}"
+                            url = "${KYLIN_MVN_CONFIG.license.url}"
                         }
                     }
-                    // 开发者信息
                     developers {
                         developer {
-                            name = 'kylin-hunter'
-                            email = 'kylinhunter@163.com'
+                            name = "${KYLIN_MVN_CONFIG.developer.name}"
+                            email = "${KYLIN_MVN_CONFIG.developer.email}"
                         }
                     }
                     scm {
-                        url = 'https://github.com/kylin-hunter/k-commons'
-                        connection = 'scm:git:https://github.com/kylin-hunter/k-commons.git'
-                        developerConnection = 'scm:git:https://github.com/kylin-hunter/k-commons.git'
+                        url =  "${KYLIN_MVN_CONFIG.url}"
+                        connection =  "${KYLIN_MVN_CONFIG.connection}"
+                        developerConnection =  "${KYLIN_MVN_CONFIG.developerConnection}"
                     }
                 }
             }
         }
-
-        // 定义发布到哪里
         repositories {
-            maven {
 
+
+            maven {
 //                url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
                 url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
                 credentials {
+
+                    println "maven=>${sonatypeUsername} : ${sonatypePassword}"
                     username = "${sonatypeUsername}"
                     password = "${sonatypePassword}"
                 }
@@ -163,6 +151,7 @@ subprojects {
         }
 
     }
+
 
     signing {
         sign publishing.publications.mavenJava

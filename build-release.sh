@@ -4,7 +4,7 @@ set -e
 
 ./script/build-script/build-before.sh
 
-#gradle clean build dockerImageBuild -x test -Pprofile=release
+#gradle clean build kylinTaskDockerImageBuild -x test -Pprofile=release
 
 ./gradlew clean build  -x test -Pprofile=release
 
