@@ -1,3 +1,5 @@
+import org.gradle.internal.jvm.Jvm
+
 dependencies {
 
     api(rootProject.dependency_management['reflections'])
@@ -5,15 +7,14 @@ dependencies {
     api(rootProject.dependency_management['commons-lang3'])
     api(rootProject.dependency_management['guava'])
 
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    api("com.fasterxml.jackson.core:jackson-databind")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-context'
-
-
     implementation(rootProject.dependency_management['commons-codec'])
     implementation(rootProject.dependency_management['commons-compress'])
-    implementation files(org.gradle.internal.jvm.Jvm.current().toolsJar)
+    testImplementation files(Jvm.current().toolsJar)
 
 
 

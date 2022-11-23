@@ -3,81 +3,125 @@ package io.github.kylinhunter.commons.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.exception.inner.KIOException;
 
 class ResourceHelperTest {
 
     @Test
     void getFile() {
-
-        File classPathFile = UserDirUtils.getFile("/build/resources/test/test/test.txt", false);
-
-        String path = "/test/test.txt";
+        String path = "/test/file/test1.txt";
         File file = ResourceHelper.getFile(path);
-        Assertions.assertEquals(classPathFile.getAbsolutePath(), Objects.requireNonNull(file).getAbsolutePath());
+        Assertions.assertNotNull(file);
 
-        path = "classpath:/test/test.txt";
+        path = "classpath:/test/file/test1.txt";
         file = ResourceHelper.getFile(path);
-        Assertions.assertEquals(classPathFile.getAbsolutePath(), Objects.requireNonNull(file).getAbsolutePath());
+        Assertions.assertNotNull(file);
 
-        path = "$user.dir$/src/test/resources/test/test.txt";
-        classPathFile = UserDirUtils.getFile("src/test/resources/test/test.txt", false);
+        path = "$user.dir$/src/test/resources/test/file/test1.txt";
         file = ResourceHelper.getFile(path);
-        Assertions.assertEquals(classPathFile.getAbsolutePath(), Objects.requireNonNull(file).getAbsolutePath());
+        Assertions.assertNotNull(file);
 
-        path = "classpath:org/apache/commons/lang3/StringUtils.class";
+        path = "file://" + file.getAbsolutePath();
         file = ResourceHelper.getFile(path);
-        Assertions.assertNull(file);
+        Assertions.assertNotNull(file);
+        String pathErr = "file://" + file.getParent();
+        Assertions.assertThrows(KIOException.class, () -> ResourceHelper.getFile(pathErr));
 
-        path = "classpath:test/test1.txt";
-        file = ResourceHelper.getFile(path);
-        Assertions.assertNull(file);
-
-        path = "$user.dir$/src/test/resources/test/test1.txt";
+        //==
+        path = "org/apache/commons/lang3/StringUtils.class";
         file = ResourceHelper.getFile(path);
         Assertions.assertNull(file);
+
+        file = ResourceHelper.getFile(path + "1");
+        Assertions.assertNull(file);
+
+    }
+
+    @Test
+    void getFileInClassPath() {
+
+        String path = "/test/file/test1.txt";
+        File file = ResourceHelper.getFileInClassPath(path);
+        Assertions.assertNotNull(file);
+
+        file = ResourceHelper.getFileInClassPath(path + "1");
+        Assertions.assertNull(file);
+
+    }
+
+    @Test
+    void getDir() {
+        String path = "/test/file/test1.txt";
+        File file = ResourceHelper.getFile(path);
+
+        path = "/test/file";
+        File dir = ResourceHelper.getDir(path);
+        Assertions.assertNotNull(dir);
+
+        path = "classpath:/test/file";
+        dir = ResourceHelper.getDir(path);
+        Assertions.assertNotNull(dir);
+
+        path = "$user.dir$/src/test/resources/test/file";
+        dir = ResourceHelper.getDir(path);
+        Assertions.assertNotNull(dir);
+
+        path = "file://" + dir.getAbsolutePath();
+        dir = ResourceHelper.getDir(path);
+        Assertions.assertNotNull(dir);
+
+        String pathErr = "file://" + file.getAbsolutePath();
+        Assertions.assertThrows(KIOException.class, () -> ResourceHelper.getDir(pathErr));
+
+        //==
+        path = "org/apache/commons/lang3/StringUtils.class";
+        dir = ResourceHelper.getDir(path);
+        Assertions.assertNull(dir);
+
+        dir = ResourceHelper.getDir(path + "1");
+        Assertions.assertNull(dir);
+
+    }
+
+    @Test
+    void getDirInClassPath() {
+
+        String path = "/test/file";
+        File file = ResourceHelper.getDirInClassPath(path);
+        Assertions.assertNotNull(file);
+
+        file = ResourceHelper.getDirInClassPath(path + "1");
+        Assertions.assertNull(file);
+
     }
 
     @Test
     void getInputStream() throws IOException {
 
-        String path = "/test/test.txt";
+        String path = "/test/file/test1.txt";
         try (InputStream input = ResourceHelper.getInputStream(path)) {
             Assertions.assertNotNull(input);
 
         }
-
-        path = "classpath:/test/test.txt";
+        path = "classpath:/test/file/test1.txt";
         try (InputStream input = ResourceHelper.getInputStream(path)) {
             Assertions.assertNotNull(input);
-
         }
-        path = "$user.dir$/src/test/resources/test/test.txt";
+        path = "$user.dir$/src/test/resources/test/file/test1.txt";
         try (InputStream input = ResourceHelper.getInputStream(path)) {
             Assertions.assertNotNull(input);
-
         }
-        path = "classpath:org/apache/commons/lang3/StringUtils.class";
-        try (InputStream input = ResourceHelper.getInputStream(path)) {
+        //==
+        path = "org/apache/commons/lang3/StringUtils.class";
+        try (InputStream input = ResourceHelper.getInputStreamInClassPath(path)) {
             Assertions.assertNotNull(input);
-
         }
-
-        path = "classpath:test/test1.txt";
-        try (InputStream input = ResourceHelper.getInputStream(path)) {
+        try (InputStream input = ResourceHelper.getInputStreamInClassPath(path + "1")) {
             Assertions.assertNull(input);
-
-        }
-
-        path = "$user.dir$/src/test/resources/test/test1.txt";
-        try (InputStream input = ResourceHelper.getInputStream(path)) {
-            Assertions.assertNull(input);
-
         }
     }
 

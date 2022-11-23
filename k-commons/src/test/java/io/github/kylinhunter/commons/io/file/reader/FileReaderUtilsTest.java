@@ -13,7 +13,7 @@ class FileReaderUtilsTest {
 
     @Test
     void process() {
-        String path = "classpath:/test/test.txt";
+        String path = "classpath:/test/file/test1.txt";
         File distFile = ResourceHelper.getFile(path);
         AtomicInteger lines = new AtomicInteger(0);
         FileReaderUtils.process(distFile, "UTF-8", (line -> lines.incrementAndGet()));

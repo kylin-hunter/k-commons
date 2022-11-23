@@ -34,9 +34,10 @@ class MD5UtilsTest {
 
     @Test
     void md5File() {
-        File file = ResourceHelper.getFile("test/test.txt");
+        File file = ResourceHelper.getFile("test/file/test1.txt");
+        Assertions.assertNotNull(file);
         String md5 = MD5Utils.md5(file);
         System.out.println(md5);
-        Assertions.assertEquals("098f6bcd4621d373cade4e832627b4f6", md5);
+        Assertions.assertEquals("5a105e8b9d40e1329780d62ea2265d8a", md5);
     }
 }
