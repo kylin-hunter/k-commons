@@ -4,7 +4,7 @@ import java.beans.PropertyDescriptor;
 
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
-import io.github.kylinhunter.commons.exception.inner.InternalException;
+import io.github.kylinhunter.commons.exception.builtin.InternalException;
 
 import lombok.Data;
 

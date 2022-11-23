@@ -17,7 +17,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import io.github.kylinhunter.commons.exception.inner.InitException;
+import io.github.kylinhunter.commons.exception.builtin.InitException;
 import io.github.kylinhunter.commons.sys.KConst;
 
 /**

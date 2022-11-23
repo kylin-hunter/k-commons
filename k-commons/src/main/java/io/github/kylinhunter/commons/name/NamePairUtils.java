@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.name;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.component.CF;
-import io.github.kylinhunter.commons.exception.inner.ParamException;
+import io.github.kylinhunter.commons.exception.builtin.ParamException;
 import io.github.kylinhunter.commons.strings.StringConst;
 
 /**

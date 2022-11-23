@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
-import io.github.kylinhunter.commons.exception.inner.biz.BizException;
+import io.github.kylinhunter.commons.exception.builtin.biz.BizException;
 
 public class ExceptionConverterTest {
     public static ExceptionExplainer exceptionExplainer = new ExceptionExplainer();
-    public static ErrInfo errInfoInfoTest = new ErrInfo(-99, -99, "default msg");
+    public static ErrInfo errInfoInfoTest = new ErrInfo(-99,  "default msg");
 
     @BeforeAll
     static void init() {

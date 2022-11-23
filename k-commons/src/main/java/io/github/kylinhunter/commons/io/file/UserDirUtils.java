@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import io.github.kylinhunter.commons.exception.inner.KIOException;
+import io.github.kylinhunter.commons.exception.builtin.KIOException;
 
 /**
  * @author BiJi'an

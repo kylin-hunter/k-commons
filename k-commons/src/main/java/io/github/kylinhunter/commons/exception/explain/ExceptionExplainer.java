@@ -20,8 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExceptionExplainer {
 
-    private final Map<Class<? extends Throwable>, Explain<Throwable>> exceptionExplains =
-            Maps.newHashMap();
+    private final Map<Class<? extends Throwable>, Explain<Throwable>> exceptionExplains = Maps.newHashMap();
     public Set<Class<? extends Throwable>> allExceptions = Sets.newHashSet();
 
     /**

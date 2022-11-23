@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 
-import io.github.kylinhunter.commons.exception.inner.ParamException;
+import io.github.kylinhunter.commons.exception.builtin.ParamException;
 
 import lombok.Getter;
 import lombok.Setter;

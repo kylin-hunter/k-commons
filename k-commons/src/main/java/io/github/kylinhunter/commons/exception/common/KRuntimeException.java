@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.exception.common;
 
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
-
 import lombok.Getter;
 import lombok.Setter;
 

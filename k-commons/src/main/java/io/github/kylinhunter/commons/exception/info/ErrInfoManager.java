@@ -3,13 +3,17 @@ package io.github.kylinhunter.commons.exception.info;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.reflections.ReflectionUtils;
+import org.reflections.Reflections;
+import org.reflections.scanners.Scanners;
 
 import com.google.common.collect.Maps;
 
-import io.github.kylinhunter.commons.exception.inner.InitException;
-
+import io.github.kylinhunter.commons.exception.builtin.InitException;
+import io.github.kylinhunter.commons.sys.KConst;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -21,46 +25,78 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ErrInfoManager {
     public static final Map<Integer, ErrInfo> ERR_INFOS = Maps.newLinkedHashMap();
-    private static final ErrInfoManager singleton = new ErrInfoManager();
 
+    static {
+        init(KConst.K_BASE_PACKAGE);
+    }
+
+    /**
+     * @param pkgs pkgs
+     * @return void
+     * @title init
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-24 01:30
+     */
+    public static void init(String... pkgs) {
+        for (String pkg : pkgs) {
+            Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
+            Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ErrInfoAware.class);
+            classes.forEach(clazz -> {
+                Set<Field> allFields = ReflectionUtils.getAllFields(clazz);
+                allFields.forEach(field -> {
+
+                    int modifiers = field.getModifiers();
+                    if (field.getType() == ErrInfo.class && Modifier.isStatic(modifiers)) {
+                        try {
+                            ErrInfo errInfo = (ErrInfo) field.get(null);
+                            if (StringUtils.isEmpty(errInfo.getDefaultMsg())) {
+                                errInfo.setDefaultMsg(field.getName());
+                            }
+                            if (ERR_INFOS.containsKey(errInfo.getCode())) {
+                                throw new InitException(" error code is used:" + errInfo.getCode());
+                            } else {
+                                ERR_INFOS.put(errInfo.getCode(), errInfo);
+                            }
+
+                        } catch (Exception ex) {
+                            throw new InitException("init ErrInfoManager error", ex);
+                        }
+
+                    }
+                });
+            });
+        }
+
+    }
+
+    /**
+     * @param code code
+     * @return java.lang.String
+     * @title getDefaultMsg
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-24 01:30
+     */
     public static String getDefaultMsg(int code) {
         return ERR_INFOS.getOrDefault(code, ErrInfos.UNKNOWN).getDefaultMsg();
     }
 
-    static {
-        singleton.init(ErrInfos.class);
-    }
-
-    private void register(ErrInfo errInfo) {
-        if (ERR_INFOS.containsKey(errInfo.getCode())) {
-            throw new InitException(" error code is used:" + errInfo.getCode());
-        } else {
-            ERR_INFOS.put(errInfo.getCode(), errInfo);
-        }
-    }
-
-    public void init(Class<?> cls) {
-        for (Field field : cls.getDeclaredFields()) {
-            if (field.getType() == ErrInfo.class && Modifier.isFinal(field.getModifiers())) {
-                try {
-                    ErrInfo errInfo = (ErrInfo) field.get(null);
-                    if (StringUtils.isEmpty(errInfo.getDefaultMsg())) {
-                        errInfo.setDefaultMsg(field.getName());
-                    }
-                    register(errInfo);
-
-                } catch (Exception e) {
-                    throw new InitException("init ErrInfoManager error", e);
-                }
-
-            }
-        }
-    }
-
+    /**
+     * @return void
+     * @title println
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-24 01:30
+     */
     public static void println() {
         log.info("print errInfo code ");
         ERR_INFOS.forEach((errCode, defaultMsg) -> log.info("erroCode={},defaultMsg={}", errCode, defaultMsg));
 
+    }
+
+    public static void main(String[] args) {
+        ErrInfoManager.println();
     }
 
 }

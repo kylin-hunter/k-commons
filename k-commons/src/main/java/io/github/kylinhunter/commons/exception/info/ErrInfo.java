@@ -11,23 +11,21 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ErrInfo {
-    private int classCode;
     private int code;
     private String defaultMsg;
 
-    public ErrInfo(ErrInfoClassify errInfoClassify) {
-        this.classCode = errInfoClassify.getCode();
-        this.code = errInfoClassify.next();
-    }
-
-    public ErrInfo(ErrInfoClassify errInfoClassify, String defaultMsg) {
-        this.classCode = errInfoClassify.getCode();
-        this.code = errInfoClassify.next();
-        this.defaultMsg = defaultMsg;
-    }
-
-    public ErrInfo(int code, String defaultMsg) {
+    public ErrInfo(int code) {
         this.code = code;
-        this.defaultMsg = defaultMsg;
+    }
+
+    /**
+     * @return int
+     * @title next
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-24 01:37
+     */
+    protected int next() {
+        return code + 1;
     }
 }

@@ -24,7 +24,7 @@ import io.github.kylinhunter.commons.bean.copy.convertor.ConvertType;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldCopy;
-import io.github.kylinhunter.commons.exception.inner.InitException;
+import io.github.kylinhunter.commons.exception.builtin.InitException;
 
 import lombok.Data;
 

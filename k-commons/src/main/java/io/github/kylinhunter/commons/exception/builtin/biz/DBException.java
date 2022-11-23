@@ -1,8 +1,8 @@
-package io.github.kylinhunter.commons.exception.inner.biz.ex;
+package io.github.kylinhunter.commons.exception.builtin.biz;
 
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
-import io.github.kylinhunter.commons.exception.inner.biz.BizException;
+import io.github.kylinhunter.commons.exception.builtin.biz.BizException;
 
 /**
  * @author BiJi'an

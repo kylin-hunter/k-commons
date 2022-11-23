@@ -5,7 +5,7 @@ import java.util.Base64;
 
 import javax.crypto.Cipher;
 
-import io.github.kylinhunter.commons.exception.inner.CryptException;
+import io.github.kylinhunter.commons.exception.builtin.CryptException;
 import lombok.Getter;
 
 /**

@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.exception.inner.biz;
+package io.github.kylinhunter.commons.exception.builtin.biz;
 
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
