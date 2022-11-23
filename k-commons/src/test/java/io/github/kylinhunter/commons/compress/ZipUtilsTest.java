@@ -36,8 +36,13 @@ class ZipUtilsTest {
     @Order(2)
     public void testUnZip() throws IOException {
         File file = UserDirUtils.getFile("/tmp/test_unzip/testzip.zip", false);
-        File dir = UserDirUtils.getDir("/tmp/test_unzip/testzip", true);
-        FileUtils.forceDelete(dir);
-        ZipUtils.unzip(file, dir);
+        File dir1 = UserDirUtils.getDir("/tmp/test_unzip/testzip1", true);
+        FileUtils.forceDelete(dir1);
+        ZipUtils.unzip(file, dir1);
+
+
+        File dir2 = UserDirUtils.getDir("/tmp/test_unzip/testzip2", true);
+        FileUtils.forceDelete(dir2);
+        ZipUtils.unzip(FileUtils.readFileToByteArray(file), dir2);
     }
 }

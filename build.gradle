@@ -91,6 +91,7 @@ subprojects {
             author = true
             version = true
             locale = "en_US"
+            tags = [ "description","date","title" ]
         }
         failOnError = false
 
