@@ -8,7 +8,7 @@ initialization performed by Boot
 <included>
 	<appender name="INFO_RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>${app.logging.log_level}</level>
+			<level>INFO</level>
 		</filter>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<charset>UTF-8</charset>
