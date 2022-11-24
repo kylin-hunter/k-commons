@@ -1,0 +1,27 @@
+package io.github.kylinhunter.commons.exception.explain;
+
+import io.github.kylinhunter.commons.exception.info.ErrInfo;
+
+/**
+ * @author BiJi'an
+ * @description
+ * @date 2022-11-24 02:11
+ **/
+public class TestExplainerSupplier extends AbstractExplainerSupplier {
+
+    public static ErrInfo errInfoInfoTest2 = new ErrInfo(-100, "errInfo2-msg");
+
+    @Override
+    public void customize() {
+
+        this.createExplain()
+                .setSource(TestException2.class)
+                .setExplainer(e -> {
+                    Explainer.ExplainResult explainResult = new Explainer.ExplainResult(errInfoInfoTest2);
+                    explainResult.setExtra("extra");
+                    return explainResult;
+                });
+
+    }
+
+}

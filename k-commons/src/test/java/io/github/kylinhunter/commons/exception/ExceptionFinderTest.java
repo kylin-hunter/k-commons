@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Sets;
-import io.github.kylinhunter.commons.exception.explain.ExceptionFinder;
+
 import io.github.kylinhunter.commons.exception.common.KException;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 
@@ -26,6 +26,7 @@ class ExceptionFinderTest {
         assertEquals(KRuntimeException.class, e.getClass());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void findExcetions() {
 
@@ -34,7 +35,8 @@ class ExceptionFinderTest {
         KRuntimeException e3 = new KRuntimeException(e2);
         KException e4 = new KException(e3);
 
-        ExceptionFinder.ExceptionFind exceptionFind = ExceptionFinder.find(e4, false, Sets.newHashSet(RuntimeException.class));
+        ExceptionFinder.ExceptionFind exceptionFind =
+                ExceptionFinder.find(e4, false, Sets.newHashSet(RuntimeException.class));
         assertEquals(RuntimeException.class, exceptionFind.getTarget().getClass());
         assertEquals(RuntimeException.class, exceptionFind.getSource());
 

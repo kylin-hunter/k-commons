@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
- * @description 错误代码管理
+ * @description ErrInfo Manager
  * @date 2022/01/01
  **/
 
@@ -38,11 +38,12 @@ public class ErrInfoManager {
      * @author BiJi'an
      * @date 2022-11-24 01:30
      */
+    @SuppressWarnings("unchecked")
     public static void init(String... pkgs) {
         for (String pkg : pkgs) {
             Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
             Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ErrInfoAware.class);
-            classes.forEach(clazz -> {
+            for (Class<?> clazz : classes) {
                 Set<Field> allFields = ReflectionUtils.getAllFields(clazz);
                 allFields.forEach(field -> {
 
@@ -65,7 +66,7 @@ public class ErrInfoManager {
 
                     }
                 });
-            });
+            }
         }
 
     }

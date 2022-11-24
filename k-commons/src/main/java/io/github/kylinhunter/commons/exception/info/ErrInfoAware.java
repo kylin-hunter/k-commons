@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
-* @description  abbreviations  for component
+* @description  ErrInfoAware
 *
 * @author BiJi'an
 *

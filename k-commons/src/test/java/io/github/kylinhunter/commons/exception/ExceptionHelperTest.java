@@ -3,18 +3,19 @@ package io.github.kylinhunter.commons.exception;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.kylinhunter.commons.exception.explain.ExceptionConverterTest;
+import io.github.kylinhunter.commons.exception.explain.TestException1;
+import io.github.kylinhunter.commons.exception.explain.TestException2;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 
 class ExceptionHelperTest {
     @Test
     void test() {
 
-        ExceptionConverterTest.TestException1 testException1 =
-                new ExceptionConverterTest.TestException1("TestException1's msg", new RuntimeException());
+        TestException1 testException1 =
+                new TestException1("TestException1's msg", new RuntimeException());
 
-        ExceptionConverterTest.TestException2 testException2 =
-                new ExceptionConverterTest.TestException2("the-unkown-msg", new RuntimeException());
+        TestException2 testException2 =
+                new TestException2("the-unkown-msg", new RuntimeException());
 
         Assertions.assertEquals(ErrInfos.BIZ.getCode(), ExceptionHelper.getErrCode(testException1));
 

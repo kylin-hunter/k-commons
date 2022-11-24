@@ -18,14 +18,4 @@ public class ErrInfo {
         this.code = code;
     }
 
-    /**
-     * @return int
-     * @title next
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-24 01:37
-     */
-    protected int next() {
-        return code + 1;
-    }
 }
