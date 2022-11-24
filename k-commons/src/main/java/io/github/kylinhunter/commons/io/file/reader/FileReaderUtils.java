@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 import org.apache.commons.io.Charsets;
 
-import io.github.kylinhunter.commons.exception.builtin.KIOException;
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 
 /**
  * @author BiJi'an

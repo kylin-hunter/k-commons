@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.Md5Crypt;
 
-import io.github.kylinhunter.commons.exception.builtin.CryptException;
+import io.github.kylinhunter.commons.exception.embed.CryptException;
 
 /**
  * @author BiJi'an

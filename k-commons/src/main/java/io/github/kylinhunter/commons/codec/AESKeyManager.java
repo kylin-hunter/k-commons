@@ -13,7 +13,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
-import io.github.kylinhunter.commons.exception.builtin.CryptException;
+import io.github.kylinhunter.commons.exception.embed.CryptException;
 import lombok.Getter;
 
 /**

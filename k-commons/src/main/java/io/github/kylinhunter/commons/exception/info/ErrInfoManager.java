@@ -12,7 +12,7 @@ import org.reflections.scanners.Scanners;
 
 import com.google.common.collect.Maps;
 
-import io.github.kylinhunter.commons.exception.builtin.InitException;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.sys.KConst;
 import lombok.extern.slf4j.Slf4j;
 

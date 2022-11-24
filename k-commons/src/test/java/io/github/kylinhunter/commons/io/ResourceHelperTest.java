@@ -7,7 +7,7 @@ import java.io.InputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.kylinhunter.commons.exception.builtin.KIOException;
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 
 class ResourceHelperTest {
 

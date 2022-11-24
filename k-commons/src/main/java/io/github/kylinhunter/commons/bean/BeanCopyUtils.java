@@ -4,7 +4,7 @@ import org.springframework.beans.BeanUtils;
 
 import io.github.kylinhunter.commons.bean.copy.BeanCopy;
 import io.github.kylinhunter.commons.bean.copy.BeanCopyCache;
-import io.github.kylinhunter.commons.exception.builtin.FormatException;
+import io.github.kylinhunter.commons.exception.embed.FormatException;
 
 import lombok.extern.slf4j.Slf4j;
 

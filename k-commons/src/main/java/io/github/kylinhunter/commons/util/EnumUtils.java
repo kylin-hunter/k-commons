@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import io.github.kylinhunter.commons.exception.builtin.ParamException;
+import io.github.kylinhunter.commons.exception.embed.ParamException;
 import lombok.extern.slf4j.Slf4j;
 
 /**

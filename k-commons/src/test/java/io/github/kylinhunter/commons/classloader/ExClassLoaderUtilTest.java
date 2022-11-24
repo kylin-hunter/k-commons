@@ -5,7 +5,7 @@ import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.kylinhunter.commons.exception.builtin.GeneralException;
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 
 class ExClassLoaderUtilTest {

@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 
-import io.github.kylinhunter.commons.exception.builtin.KIOException;
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;

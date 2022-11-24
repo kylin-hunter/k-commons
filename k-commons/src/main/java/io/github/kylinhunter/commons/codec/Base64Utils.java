@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import io.github.kylinhunter.commons.exception.builtin.CryptException;
+import io.github.kylinhunter.commons.exception.embed.CryptException;
 
 /**
  * @author BiJi'an

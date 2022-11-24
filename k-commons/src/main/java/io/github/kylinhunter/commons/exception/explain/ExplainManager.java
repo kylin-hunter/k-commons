@@ -12,7 +12,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import io.github.kylinhunter.commons.exception.ExceptionFinder;
-import io.github.kylinhunter.commons.exception.builtin.InitException;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.exception.common.KThrowable;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 import io.github.kylinhunter.commons.sys.KConst;

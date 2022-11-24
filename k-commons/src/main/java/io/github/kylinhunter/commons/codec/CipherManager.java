@@ -5,7 +5,7 @@ import java.security.Key;
 
 import javax.crypto.Cipher;
 
-import io.github.kylinhunter.commons.exception.builtin.InitException;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 
 /**
  * @author BiJi'an

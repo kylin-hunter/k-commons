@@ -5,8 +5,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 
-import io.github.kylinhunter.commons.exception.builtin.GeneralException;
-import io.github.kylinhunter.commons.exception.builtin.SystemException;
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
+import io.github.kylinhunter.commons.exception.embed.SystemException;
 import lombok.extern.slf4j.Slf4j;
 
 /**

@@ -19,7 +19,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import io.github.kylinhunter.commons.date.DatePatterns;
-import io.github.kylinhunter.commons.exception.builtin.FormatException;
+import io.github.kylinhunter.commons.exception.embed.FormatException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
