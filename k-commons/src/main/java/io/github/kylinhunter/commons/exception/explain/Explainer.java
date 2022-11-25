@@ -17,9 +17,9 @@ import lombok.experimental.Accessors;
  **/
 @Data
 @Accessors(chain = true)
-public class Explainer {
-    private Class<? extends Throwable> source;
-    private Function<Throwable, ExplainResult> explainer;
+public class Explainer<T extends Throwable> {
+    private final Class<T> source;
+    private Function<T, ExplainResult> explainer;
 
     /**
      * @author BiJi'an

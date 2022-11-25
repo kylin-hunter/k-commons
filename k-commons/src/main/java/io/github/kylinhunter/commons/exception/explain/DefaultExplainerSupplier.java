@@ -11,8 +11,7 @@ public class DefaultExplainerSupplier extends AbstractExplainerSupplier {
 
     @Override
     public void customize() {
-        this.createExplain()
-                .setSource(IllegalArgumentException.class)
+        this.createExplain(IllegalArgumentException.class)
                 .setExplainer(e -> new Explainer.ExplainResult(ErrInfos.PARAM, e.getMessage()));
 
     }

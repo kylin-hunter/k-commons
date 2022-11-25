@@ -22,9 +22,9 @@ public abstract class AbstractExplainerSupplier implements ExplainerSupplier {
      * @author BiJi'an
      * @date 2022-11-24 02:59
      */
-    public Explainer createExplain() {
-        Explainer explainer = new Explainer();
-        explainers.add(explainer);
+    public <T extends Throwable> Explainer<T> createExplain(Class<T> clazz) {
+        Explainer explainer = new Explainer<T>(clazz);
+         explainers.add(explainer);
         return explainer;
     }
 

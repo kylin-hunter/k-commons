@@ -14,8 +14,7 @@ public class TestExplainerSupplier extends AbstractExplainerSupplier {
     @Override
     public void customize() {
 
-        this.createExplain()
-                .setSource(TestException2.class)
+        this.createExplain(TestException2.class)
                 .setExplainer(e -> {
                     Explainer.ExplainResult explainResult = new Explainer.ExplainResult(errInfoInfoTest2);
                     explainResult.setExtra("extra");
