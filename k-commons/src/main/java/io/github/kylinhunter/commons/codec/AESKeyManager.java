@@ -2,16 +2,10 @@ package io.github.kylinhunter.commons.codec;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 
 import io.github.kylinhunter.commons.exception.embed.CryptException;
 import lombok.Getter;
@@ -27,21 +21,11 @@ public class AESKeyManager {
     @Getter
     private final String defaultKeyStr;
     private static final String DEFAULT_SEED = "kplat";
-    private final LoadingCache<String, SecretKey> keyCache;
+    private final AESKeyCache keyCache = new AESKeyCache();
 
     public AESKeyManager() {
         this.defaultKey = this.newKey();
         this.defaultKeyStr = this.keyToString(this.defaultKey);
-        this.keyCache = CacheBuilder.newBuilder()
-                .expireAfterWrite(10000, TimeUnit.DAYS)
-                .maximumSize(10000).build(new CacheLoader<String, SecretKey>() {
-                    @SuppressWarnings("NullableProblems")
-                    @Override
-                    public SecretKey load(String key) {
-                        return AESKeyManager.this.restoreKey(key);
-                    }
-
-                });
     }
 
     /**
@@ -92,20 +76,6 @@ public class AESKeyManager {
 
     /**
      * @param key key
-     * @return javax.crypto.SecretKey
-     * @title restoreKey
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-20 17:15
-     */
-    private SecretKey restoreKey(String key) {
-
-        return new SecretKeySpec(Base64Utils.decode(key), "AES");
-
-    }
-
-    /**
-     * @param key key
      * @return java.lang.String
      * @title stringKey
      * @description
@@ -125,12 +95,7 @@ public class AESKeyManager {
      * @date 2022-11-20 17:15
      */
     public SecretKey toKey(String key) {
-        try {
-            return keyCache.get(key);
-        } catch (ExecutionException e) {
-            throw new CryptException("toKey error", e);
-
-        }
+        return keyCache.get(key);
     }
 
 }

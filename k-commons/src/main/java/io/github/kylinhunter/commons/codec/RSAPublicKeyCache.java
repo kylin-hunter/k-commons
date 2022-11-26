@@ -1,0 +1,28 @@
+package io.github.kylinhunter.commons.codec;
+
+import java.security.KeyFactory;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.X509EncodedKeySpec;
+
+import io.github.kylinhunter.commons.cache.GuavaCache;
+import io.github.kylinhunter.commons.exception.embed.CryptException;
+
+/**
+ * @author BiJi'an
+ * @description
+ * @date 2022-11-27 02:22
+ **/
+public class RSAPublicKeyCache extends GuavaCache<String, RSAPublicKey> {
+
+    @Override
+    public RSAPublicKey load(String key) {
+        try {
+            KeyFactory keyFactory = KeyFactory.getInstance(RSAKeyManager.ALGORITHM_RSA);
+            X509EncodedKeySpec spec = new X509EncodedKeySpec(Base64Utils.decode(key));
+            return (RSAPublicKey) keyFactory.generatePublic(spec);
+        } catch (Exception e) {
+            throw new CryptException("restorePublicKey error", e);
+        }
+    }
+
+}
