@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.cache;
+package io.github.kylinhunter.commons.cache.guava;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,15 +11,11 @@ import lombok.Getter;
  * @date 2022-08-16 19:57
  **/
 @Data
-public class GuavaCacheConfig {
+public class CacheConfig {
 
     @Getter
-    private static GuavaCacheConfig defaultConfig = new GuavaCacheConfig();
+    private static CacheConfig defaultConfig = new CacheConfig();
 
-    static {
-
-        defaultConfig.setRefreshAfterWrite(1);
-    }
 
     /**
      * maxSize

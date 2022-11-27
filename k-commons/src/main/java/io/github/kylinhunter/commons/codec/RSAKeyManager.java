@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
-import io.github.kylinhunter.commons.cache.KCache;
+import io.github.kylinhunter.commons.cache.guava.Cache;
 import io.github.kylinhunter.commons.exception.embed.CryptException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,9 @@ public class RSAKeyManager {
     @Getter
     private final RSAPublicKey defaultPubKey;
 
-    private final KCache<String, RSAPublicKey> rsaPublicKeyCache = new RSAPublicKeyCache();
+    private final Cache<RSAPublicKey> rsaPublicKeyCache = new RSAPublicKeyCache();
 
-    private final KCache<String, RSAPrivateKey> rsaPrivateKeyCache = new RSAPrivateKeyCache();
+    private final Cache<RSAPrivateKey> rsaPrivateKeyCache = new RSAPrivateKeyCache();
 
     public RSAKeyManager() {
         RSAKeyPair rsaKeyPair = this.newKeyPair();

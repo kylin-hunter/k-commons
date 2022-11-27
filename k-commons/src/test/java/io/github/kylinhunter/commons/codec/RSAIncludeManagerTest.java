@@ -6,7 +6,7 @@ import java.security.interfaces.RSAPublicKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class RSAKeyManagerTest {
+class RSAIncludeManagerTest {
     @Test
     void test() {
         RSAKeyManager rsaKeyManager = new RSAKeyManager();

@@ -3,18 +3,20 @@ package io.github.kylinhunter.commons.codec;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import io.github.kylinhunter.commons.cache.GuavaCache;
+import io.github.kylinhunter.commons.cache.guava.CacheKey;
+import io.github.kylinhunter.commons.cache.guava.AbstractGuavaCache;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-11-27 02:22
  **/
-public class AESKeyCache extends GuavaCache<String, SecretKey> {
+public class AESKeyCache extends AbstractGuavaCache<SecretKey> {
 
     @Override
-    public SecretKey load(String key) {
-        return new SecretKeySpec(Base64Utils.decode(key), "AES");
+    public SecretKey load(CacheKey key) {
+        return new SecretKeySpec(Base64Utils.decode((String) key.getParams()[0]), "AES");
     }
+
 
 }
