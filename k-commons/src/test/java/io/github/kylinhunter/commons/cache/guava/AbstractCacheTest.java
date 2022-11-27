@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import io.github.kylinhunter.commons.util.TheadHelper;
 
-public class AbstractGuavaCacheTest {
+public class AbstractCacheTest {
 
     @Test
     void testCache1() {

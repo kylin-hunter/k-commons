@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
  * @description
  * @date 2022-11-27 13:36
  **/
-class TestCache2Imp extends AbstractGuavaCache<Long> implements TestCache2 {
+class TestCache2Imp extends AbstractCache<Long> implements TestCache2 {
 
     long l = 0;
 

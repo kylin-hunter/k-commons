@@ -4,8 +4,8 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
+import io.github.kylinhunter.commons.cache.guava.AbstractCache;
 import io.github.kylinhunter.commons.cache.guava.CacheKey;
-import io.github.kylinhunter.commons.cache.guava.AbstractGuavaCache;
 import io.github.kylinhunter.commons.exception.embed.CryptException;
 
 /**
@@ -13,12 +13,12 @@ import io.github.kylinhunter.commons.exception.embed.CryptException;
  * @description
  * @date 2022-11-27 02:22
  **/
-public class RSAPublicKeyCache extends AbstractGuavaCache<RSAPublicKey> {
+public class RSAPublicKeyCache extends AbstractCache<RSAPublicKey> {
 
     @Override
     public RSAPublicKey load(CacheKey cacheKey) {
         try {
-            String key= (String) cacheKey.getParams()[0];
+            String key = cacheKey.getString(0);
             KeyFactory keyFactory = KeyFactory.getInstance(RSAKeyManager.ALGORITHM_RSA);
             X509EncodedKeySpec spec = new X509EncodedKeySpec(Base64Utils.decode(key));
             return (RSAPublicKey) keyFactory.generatePublic(spec);

@@ -2,6 +2,8 @@ package io.github.kylinhunter.commons.cache.guava;
 
 import com.google.common.base.Preconditions;
 
+import io.github.kylinhunter.commons.exception.embed.ParamException;
+import io.github.kylinhunter.commons.util.ObjectValues;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,6 +22,15 @@ public class CacheKey {
     public CacheKey(Object... params) {
         Preconditions.checkArgument(params != null && params.length > 0, "param eror");
         this.params = params;
+    }
+
+    public String getString(int index) {
+        if (index < params.length) {
+            return ObjectValues.getString(params[index]);
+        } else {
+            throw new ParamException("invalid index" + index);
+        }
+
     }
 
 }

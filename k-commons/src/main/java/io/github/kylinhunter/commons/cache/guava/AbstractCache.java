@@ -15,11 +15,11 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022-08-16 19:54
  **/
 @Slf4j
-public abstract class AbstractGuavaCache<V> extends CacheLoader<CacheKey, V> implements Cache<V> {
+public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implements Cache<V> {
 
     private final LoadingCache<CacheKey, V> cache;
 
-    public AbstractGuavaCache() {
+    public AbstractCache() {
         this.cache = this.buildCache();
     }
 
