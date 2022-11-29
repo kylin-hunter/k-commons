@@ -132,7 +132,7 @@ public class BeanCopyCache {
             List<FieldConvertor> fieldConvertors = Lists.newArrayList();
             Set<Field> allSourceFields = ReflectionUtils.getAllFields(sourceClass);
             Map<String, Field> targetFields = ReflectionUtils.getAllFields(targetClass).stream()
-                    .collect(Collectors.toMap(Field::getName, e -> e));
+                    .collect(Collectors.toMap(Field::getName, e -> e,(o,n)-> n));
 
             for (Field sourceField : allSourceFields) {
                 String fieldName = sourceField.getName();
