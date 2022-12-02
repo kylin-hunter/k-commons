@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
-import org.apache.commons.compress.utils.Lists;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
