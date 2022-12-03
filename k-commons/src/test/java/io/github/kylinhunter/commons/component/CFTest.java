@@ -8,8 +8,14 @@ class CFTest {
     void get() {
         A a = CF.get(A.class);
         a.println();
+        I i = CF.get(IT.CA);
+        i.println();
+
         B b = CF.get(B.class);
         b.println();
+        i = CF.get(IT.CB);
+        i.println();
+
 
     }
 

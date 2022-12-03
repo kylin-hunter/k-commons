@@ -272,6 +272,18 @@ public class CF {
     }
 
     /**
+     * @param ct ct
+     * @return T
+     * @title get
+     * @description
+     * @author BiJi'an
+     * @date 2022-12-03 20:08
+     */
+    public static <T> T get(CT<T> ct) {
+        return get(ct.getClazz(), true);
+    }
+
+    /**
      * @param clazz    clazz
      * @param required required
      * @return T

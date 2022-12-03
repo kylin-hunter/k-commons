@@ -6,7 +6,7 @@ package io.github.kylinhunter.commons.component;
  * @date 2022-11-21 02:14
  **/
 @C
-public class A {
+public class A  implements I{
     public void println() {
         System.out.println("a");
     }
