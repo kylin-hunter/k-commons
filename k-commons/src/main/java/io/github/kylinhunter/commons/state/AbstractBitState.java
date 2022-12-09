@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.bit;
+package io.github.kylinhunter.commons.state;
 
 import java.util.StringJoiner;
 
@@ -42,9 +42,9 @@ public abstract class AbstractBitState<E extends Enum<E>> {
     }
 
     /**
-     * @param states states
+     * @param states states the enum states to set
      * @return void
-     * @title setState
+     * @title set state
      * @description
      * @author BiJi'an
      * @date 2022-12-09 00:35
@@ -60,9 +60,9 @@ public abstract class AbstractBitState<E extends Enum<E>> {
     }
 
     /**
-     * @param states states
+     * @param states states the enum states to remove
      * @return void
-     * @title hasStatus
+     * @title removeState remove the  enum states if existed
      * @description
      * @author BiJi'an
      * @date 2022-12-08 16:46
@@ -79,9 +79,9 @@ public abstract class AbstractBitState<E extends Enum<E>> {
     }
 
     /**
-     * @param states states
+     * @param states states the enum states
      * @return boolean
-     * @title hasStatus
+     * @title hasStatus whether a enum states exists
      * @description
      * @author BiJi'an
      * @date 2022-12-08 16:46

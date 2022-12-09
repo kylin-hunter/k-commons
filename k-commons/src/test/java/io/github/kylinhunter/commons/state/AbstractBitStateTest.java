@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.bit;
+package io.github.kylinhunter.commons.state;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
