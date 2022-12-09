@@ -30,7 +30,7 @@ Use bit operation and java enumeration type to manage state
 
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>io.github.kylin-hunter:k-commons</artifactId>
+            <artifactId>k-commons</artifactId>
           <version>1.0.6</version>
         </dependency>
 

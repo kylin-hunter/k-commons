@@ -30,7 +30,7 @@
 
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>io.github.kylin-hunter:k-commons</artifactId>
+            <artifactId>k-commons</artifactId>
           <version>1.0.6</version>
         </dependency>
 
@@ -143,7 +143,7 @@ public final boolean hasState(E... states)
 
 ```java
 
-    // 定义一个基于枚举类型的状态
+    // 定义一个基于枚举类型的状态 65个状态
     public enum TestState2 {
         STATE1,
         STATE2,
