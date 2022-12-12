@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SnowFlakeIdWorker {
 
-    private static final long twepoch = 1632499200000L; // initialized time stamp
+    private static final long INIT_EPOCH = 1632499200000L; // initialized time stamp
 
     @Getter
     @Setter
@@ -98,7 +98,7 @@ public class SnowFlakeIdWorker {
 
         lastTimestamp = timestamp;
 
-        return ((timestamp - twepoch) << timestampShift) | (datacenterId << datacenterIdShift)
+        return ((timestamp - INIT_EPOCH) << timestampShift) | (datacenterId << datacenterIdShift)
                 | (workerId << workerIdShift) | sequence;
     }
 
