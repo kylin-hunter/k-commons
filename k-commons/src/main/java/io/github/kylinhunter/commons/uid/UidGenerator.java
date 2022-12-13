@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.uid;
 
-import io.github.kylinhunter.commons.date.DateUtils;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import lombok.Getter;
@@ -148,8 +147,7 @@ public class UidGenerator {
 
         lastTimestamp = timestamp;
 
-                log.info("{},{},{},{},{}", sequence, type, workerId, datacenterId, DateUtils.format(timestamp));
-
+        //        log.info("{},{},{},{},{}", sequence, type, workerId, datacenterId, DateUtils.format(timestamp));
         return ((timestamp - INIT_EPOCH) << TIMESTAMP_SHIFT) | (datacenterId << DATA_CENTER_ID_SHIFT)
                 | (workerId << WORKER_ID_SHIFT) | (type << TYPE_SHIFT) | sequence;
     }
