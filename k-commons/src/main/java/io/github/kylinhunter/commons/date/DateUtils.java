@@ -42,6 +42,18 @@ public class DateUtils {
     }
 
     /**
+     * @title format
+     * @description
+     * @author BiJi'an
+     * @param timestamp timestamp
+     * @date 2022-12-13 14:50
+     * @return java.lang.String
+     */
+    public static String format(long timestamp) {
+        return format(DateUtils.toLocalDateTime(timestamp));
+    }
+
+    /**
      * @return java.lang.String
      * @title format
      * @description
