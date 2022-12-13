@@ -23,14 +23,18 @@ public class SnowFlakeIdWorker {
     @Setter
     private long sequence; //  sequence
 
-    private final long sequenceMask;
-    private final int workerIdShift;  // work id shift , default: 12bit
-    private final int datacenterIdShift; // datacenter id shift ,default: 12+5=17bit
-    private final int timestampShift; // time stamp shift ,default: 12+10 = 22bit
-
     @Getter
     @Setter
     private long lastTimestamp = -1L; // last time stamp
+
+    private final int WORKER_ID_SHIFT;  // work id shift , default: 12bit
+    private final int DATA_CENTER_ID_SHIFT; // datacenter id shift ,default: 12+5=17bit
+    private final int TIMESTAMP_SHIFT; // time stamp shift ,default: 12+10 = 22bit
+
+    private final long SEQUENCE_MAX;
+    private final int WORKER_ID_MAX;
+    private final int DATA_CENTER_ID_MAX;
+    private final long TIMESTAMP_MAX;
 
     public SnowFlakeIdWorker(long workerId, long datacenterId) {
         this(12, 5, 5, workerId, datacenterId);
@@ -45,28 +49,32 @@ public class SnowFlakeIdWorker {
         if (datacenterIdBits < 2 || datacenterIdBits > 8) {
             throw new GeneralException("datacenterIdBits must between [2-5]");
         }
+
         if (sequenceBits < 10 || sequenceBits > 18) {
             throw new GeneralException("sequenceBits must between [5-20]");
         }
-        if (workerIdBits + datacenterIdBits + sequenceBits > 22) {
-            throw new GeneralException("workerIdBits + datacenterIdBits + sequenceBits must <=22");
+        int bits = workerIdBits + datacenterIdBits + sequenceBits;
+        if (bits < 18 || bits > 26) {
+            throw new GeneralException("workerIdBits + datacenterIdBits + sequenceBits between [18-26]");
 
         }
-        long maxWorkerId = ~(-1L << workerIdBits);  // max worker id
-        long maxDatacenterId = ~(-1L << datacenterIdBits); //max datacenter id
-        sequenceMask = ~(-1L << sequenceBits);
+        this.WORKER_ID_MAX = ~(-1 << workerIdBits);  // max worker id
+        this.DATA_CENTER_ID_MAX = ~(-1 << datacenterIdBits); //max datacenter id
+        SEQUENCE_MAX = ~(-1L << sequenceBits);
 
-        workerIdShift = sequenceBits;  // work id shift 12bit
-        datacenterIdShift = sequenceBits + workerIdBits; // datacenter id shift 12+5=17bit
-        timestampShift = sequenceBits + workerIdBits + datacenterIdBits; // time stamp shift 12+10 = 22bit
+        WORKER_ID_SHIFT = sequenceBits;  // work id shift 12bit
+        DATA_CENTER_ID_SHIFT = sequenceBits + workerIdBits; // datacenter id shift 12+5=17bit
+        TIMESTAMP_SHIFT = sequenceBits + workerIdBits + datacenterIdBits; // time stamp shift 12+10 = 22bit
         long timestampBits = 63 - sequenceBits - workerIdBits - datacenterIdBits;
         log.info("timestampBits {}, datacenterIdBits {}, workerIdBits {}, sequenceBits {}",
                 timestampBits, datacenterIdBits, workerIdBits, sequenceBits);
-        if (workerId > maxWorkerId || workerId < 0) {
-            throw new ParamException("worker Id can't less than 0 or great than " + maxWorkerId);
+        TIMESTAMP_MAX = ~(-1L << timestampBits);
+
+        if (workerId > WORKER_ID_MAX || workerId < 0) {
+            throw new ParamException("worker Id can't less than 0 or great than " + WORKER_ID_MAX);
         }
-        if (datacenterId > maxDatacenterId || datacenterId < 0) {
-            throw new ParamException("datacenterId Id can't less than 0 or great than " + maxDatacenterId);
+        if (datacenterId > DATA_CENTER_ID_MAX || datacenterId < 0) {
+            throw new ParamException("datacenterId Id can't less than 0 or great than " + DATA_CENTER_ID_MAX);
         }
 
         this.workerId = workerId;
@@ -88,7 +96,7 @@ public class SnowFlakeIdWorker {
         }
 
         if (lastTimestamp == timestamp) {
-            sequence = (sequence + 1) & sequenceMask;
+            sequence = (sequence + 1) & SEQUENCE_MAX;
             if (sequence == 0) {
                 timestamp = nextMillis(lastTimestamp);
             }
@@ -98,8 +106,8 @@ public class SnowFlakeIdWorker {
 
         lastTimestamp = timestamp;
 
-        return ((timestamp - INIT_EPOCH) << timestampShift) | (datacenterId << datacenterIdShift)
-                | (workerId << workerIdShift) | sequence;
+        return ((timestamp - INIT_EPOCH) << TIMESTAMP_SHIFT) | (datacenterId << DATA_CENTER_ID_SHIFT)
+                | (workerId << WORKER_ID_SHIFT) | sequence;
     }
 
     /**
@@ -116,6 +124,14 @@ public class SnowFlakeIdWorker {
             timestamp = System.currentTimeMillis();
         }
         return timestamp;
+    }
+
+    public SnowFlakerInfo parse(long id) {
+        long sequence = id & SEQUENCE_MAX;
+        long workerId = id >> WORKER_ID_SHIFT & WORKER_ID_MAX;
+        long datacenterId = id >> DATA_CENTER_ID_SHIFT & DATA_CENTER_ID_MAX;
+        long timestamp = (id >> TIMESTAMP_SHIFT & TIMESTAMP_MAX) + INIT_EPOCH;
+        return new SnowFlakerInfo(sequence, workerId, datacenterId, timestamp);
     }
 
 }

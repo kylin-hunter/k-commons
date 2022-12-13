@@ -7,9 +7,13 @@ class SnowFlakeIdWorkerTest {
     @Test
     void nextId() {
 
-        SnowFlakeIdWorker worker = new SnowFlakeIdWorker(18, 2, 2, 1, 1);
-        for (int i = 0; i < 30; i++) {
-            System.out.println(worker.nextId());
+        SnowFlakeIdWorker worker = new SnowFlakeIdWorker(18, 2, 2, 2, 1);
+        for (int i = 0; i < 300; i++) {
+            long nextId = worker.nextId();
+            System.out.println(nextId);
+            SnowFlakerInfo parse = worker.parse(nextId);
+            System.out.println(parse);
+
         }
 
     }
