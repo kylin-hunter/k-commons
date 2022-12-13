@@ -116,7 +116,7 @@ public UidInfo parse(long uid);
 
 ```java
 
-        2022-12-13 16:54:26.177 [Test worker] INFO   -  i.g.k.commons.uid.UidGenerator[107]: timestampBits 41, datacenterIdBits 2, workerIdBits 4,typeBits 4, sequenceBits 12
+        2022-12-11 22:54:26.177 [Test worker] INFO   -  i.g.k.commons.uid.UidGenerator[107]: timestampBits 41,datacenterIdBits 2, workerIdBits 4,typeBits 4, sequenceBits 12
         161155503589961728=>UidInfo[sequence=0, type=3, workerId=4, datacenterId=1, timestamp=1670921666180/2022-12-13 16:54:26]
         161155503644487680=>UidInfo[sequence=0, type=3, workerId=4, datacenterId=1, timestamp=1670921666193/2022-12-13 16:54:26]
         161155503648681984=>UidInfo[sequence=0, type=3, workerId=4, datacenterId=1, timestamp=1670921666194/2022-12-13 16:54:26]
