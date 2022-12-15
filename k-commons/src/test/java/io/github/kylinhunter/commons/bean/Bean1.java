@@ -27,4 +27,11 @@ public class Bean1 {
     @FieldCopy(value = ConvertType.JSON, targets = {Bean2.class})
     private List<BeanJson> jsons;
 
+
+    @FieldCopy(value = ConvertType.BYTES, targets = {Bean2.class})
+    private BeanJson bytes1;
+
+    @FieldCopy(value = ConvertType.BYTES, targets = {Bean2.class})
+    private List<BeanJson> bytes2;
+
 }

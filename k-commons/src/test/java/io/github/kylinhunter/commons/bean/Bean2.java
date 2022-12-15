@@ -1,7 +1,5 @@
 package io.github.kylinhunter.commons.bean;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +15,7 @@ public class Bean2 {
     private String name2;
     private String json;
     private String jsons;
+    private byte[] bytes1;
+    private byte[] bytes2;
 
 }

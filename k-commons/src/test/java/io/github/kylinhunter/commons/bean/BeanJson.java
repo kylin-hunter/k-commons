@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.bean;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +12,6 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public class BeanJson {
+public class BeanJson implements Serializable {
     private String json;
 }

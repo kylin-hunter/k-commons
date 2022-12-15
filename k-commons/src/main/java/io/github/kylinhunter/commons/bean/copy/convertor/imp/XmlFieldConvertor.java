@@ -17,25 +17,22 @@ import io.github.kylinhunter.commons.json.JsonUtils;
  * @description
  * @date 2022-01-01 19:09
  **/
-public class JsonFieldConvertor extends AbstractFieldConvertor {
+public class XmlFieldConvertor extends AbstractFieldConvertor {
 
     private JavaType targetType;
 
-    public JsonFieldConvertor(Direction direction, PropertyDescriptor sourcePD, PropertyDescriptor targetPD) {
+    public XmlFieldConvertor(Direction direction, PropertyDescriptor sourcePD, PropertyDescriptor targetPD) {
         super(direction, sourcePD, targetPD);
-        if (direction == Direction.BACKEND) {
-            Method readMethod = targetPD.getReadMethod();
-            if (List.class.isAssignableFrom(readMethod.getReturnType())) {
-                Type returnType = readMethod.getGenericReturnType();
-                if (returnType instanceof ParameterizedType) {
-                    ParameterizedType type = (ParameterizedType) returnType;
-                    Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
-                    targetType = JsonUtils.constructCollectionType(List.class, clazz);
-                }
-
+        Method readMethod = targetPD.getReadMethod();
+        if (List.class.isAssignableFrom(readMethod.getReturnType())) {
+            Type returnType = readMethod.getGenericReturnType();
+            if (returnType instanceof ParameterizedType) {
+                ParameterizedType type = (ParameterizedType) returnType;
+                Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
+                targetType = JsonUtils.constructCollectionType(List.class, clazz);
             }
-        }
 
+        }
     }
 
     @Override
