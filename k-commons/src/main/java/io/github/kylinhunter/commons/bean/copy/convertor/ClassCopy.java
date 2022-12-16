@@ -26,5 +26,5 @@ public @interface ClassCopy {
      * @author BiJi'an
      * @date 2022-11-19 01:04
      */
-    Class<?>[] targets();
+    Class<?>[] targets() default {};
 }

@@ -26,6 +26,6 @@ public @interface FieldCopy {
      * @author BiJi'an
      * @date 2022-11-19 01:05
      */
-    Class<?>[] targets();
+    Class<?>[] targets()  default {};
 
 }

@@ -28,9 +28,10 @@ public abstract class AbstractFieldConvertor implements FieldConvertor {
      * @author BiJi'an
      * @date 2022-11-19 01:03
      */
-    public Object read(Object source) {
+    @SuppressWarnings("unchecked")
+    public <T> T read(Object source) {
         try {
-            return sourcePD.getReadMethod().invoke(source);
+            return (T) sourcePD.getReadMethod().invoke(source);
         } catch (Exception e) {
             throw new InternalException("read error", e);
         }

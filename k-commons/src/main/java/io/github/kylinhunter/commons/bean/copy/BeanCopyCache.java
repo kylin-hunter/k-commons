@@ -25,7 +25,6 @@ import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldCopy;
 import io.github.kylinhunter.commons.exception.embed.InitException;
-
 import lombok.Data;
 
 /**
@@ -132,7 +131,7 @@ public class BeanCopyCache {
             List<FieldConvertor> fieldConvertors = Lists.newArrayList();
             Set<Field> allSourceFields = ReflectionUtils.getAllFields(sourceClass);
             Map<String, Field> targetFields = ReflectionUtils.getAllFields(targetClass).stream()
-                    .collect(Collectors.toMap(Field::getName, e -> e,(o,n)-> n));
+                    .collect(Collectors.toMap(Field::getName, e -> e, (o, n) -> n));
 
             for (Field sourceField : allSourceFields) {
                 String fieldName = sourceField.getName();
@@ -141,14 +140,13 @@ public class BeanCopyCache {
                     FieldCopy fieldCopy = sourceField.getAnnotation(FieldCopy.class);
                     if (fieldCopy != null) {
                         ConvertType convertType = fieldCopy.value();
-                        List<Class<?>> targets = Arrays.asList(fieldCopy.targets());
-                        if (targets.contains(targetClass)) {
-                            FieldConvertor fieldConvertor = initFieldConvertor(Direction.FORWARD,
-                                    sourceClass, targetClass, fieldName, convertType);
-                            if (fieldConvertor != null) {
-                                fieldConvertors.add(fieldConvertor);
-                            }
+
+                        FieldConvertor fieldConvertor = initFieldConvertor(Direction.FORWARD,
+                                sourceClass, targetClass, fieldName, convertType);
+                        if (fieldConvertor != null) {
+                            fieldConvertors.add(fieldConvertor);
                         }
+
                     } else {
 
                         FieldCopy targetFieldCopy = targetField.getAnnotation(FieldCopy.class);

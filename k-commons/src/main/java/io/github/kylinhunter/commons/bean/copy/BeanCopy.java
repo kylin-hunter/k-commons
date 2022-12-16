@@ -32,13 +32,14 @@ public class BeanCopy {
      * @date 2022-11-19 01:14
      */
     public void copy(Object source, Object target) throws ConvertExcetion {
-        if (classConvertor != null) {
-            classConvertor.convert(source, target);
-        }
+
         if (fieldConvertors != null && !fieldConvertors.isEmpty()) {
             for (FieldConvertor fieldConvertor : fieldConvertors) {
                 fieldConvertor.convert(source, target);
             }
+        }
+        if (classConvertor != null) {
+            classConvertor.convert(source, target);
         }
     }
 }

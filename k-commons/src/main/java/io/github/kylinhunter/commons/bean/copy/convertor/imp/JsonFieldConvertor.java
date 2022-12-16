@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JavaType;
 
 import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.json.JsonUtils;
 
 /**
@@ -23,12 +24,18 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
 
     public JsonFieldConvertor(Direction direction, PropertyDescriptor sourcePD, PropertyDescriptor targetPD) {
         super(direction, sourcePD, targetPD);
+        Class<?> returnType = direction == Direction.FORWARD ? targetPD.getPropertyType() : sourcePD.getPropertyType();
+        if (returnType != String.class) {
+            throw new InitException(" not a String type");
+        }
+
         if (direction == Direction.BACKEND) {
+
             Method readMethod = targetPD.getReadMethod();
             if (List.class.isAssignableFrom(readMethod.getReturnType())) {
-                Type returnType = readMethod.getGenericReturnType();
-                if (returnType instanceof ParameterizedType) {
-                    ParameterizedType type = (ParameterizedType) returnType;
+                Type targetReturnType = readMethod.getGenericReturnType();
+                if (targetReturnType instanceof ParameterizedType) {
+                    ParameterizedType type = (ParameterizedType) targetReturnType;
                     Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
                     targetType = JsonUtils.constructCollectionType(List.class, clazz);
                 }

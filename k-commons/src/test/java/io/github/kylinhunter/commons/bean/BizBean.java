@@ -2,6 +2,8 @@ package io.github.kylinhunter.commons.bean;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +14,7 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public class BeanJson implements Serializable {
-    private String json;
+@XmlRootElement
+public class BizBean implements Serializable {
+    private String text;
 }

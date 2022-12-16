@@ -1,16 +1,11 @@
 package io.github.kylinhunter.commons.bean.copy.convertor.imp;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
-
-import com.fasterxml.jackson.databind.JavaType;
 
 import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
-import io.github.kylinhunter.commons.json.JsonUtils;
+import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.xml.JAXBHelper;
 
 /**
  * @author BiJi'an
@@ -19,38 +14,27 @@ import io.github.kylinhunter.commons.json.JsonUtils;
  **/
 public class XmlFieldConvertor extends AbstractFieldConvertor {
 
-    private JavaType targetType;
-
     public XmlFieldConvertor(Direction direction, PropertyDescriptor sourcePD, PropertyDescriptor targetPD) {
         super(direction, sourcePD, targetPD);
-        Method readMethod = targetPD.getReadMethod();
-        if (List.class.isAssignableFrom(readMethod.getReturnType())) {
-            Type returnType = readMethod.getGenericReturnType();
-            if (returnType instanceof ParameterizedType) {
-                ParameterizedType type = (ParameterizedType) returnType;
-                Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
-                targetType = JsonUtils.constructCollectionType(List.class, clazz);
-            }
-
+        Class<?> returnType = direction == Direction.FORWARD ? targetPD.getPropertyType() : sourcePD.getPropertyType();
+        if (returnType != String.class) {
+            throw new InitException(" not a String type");
         }
     }
 
     @Override
     public void forword(Object source, Object target) {
         Object sourceValue = this.read(source);
-        String targetValue = JsonUtils.writeToString(sourceValue);
-        this.write(target, targetValue);
+        if (sourceValue != null) {
+            this.write(target, JAXBHelper.marshal(sourceValue));
+        }
     }
 
     @Override
     public void backward(Object source, Object target) {
-        Object sourceValue = this.read(source);
-        Object targetValue;
-        if (targetType != null) {
-            targetValue = JsonUtils.readValue(String.valueOf(sourceValue), targetType);
-        } else {
-            targetValue = JsonUtils.readToObject(String.valueOf(sourceValue), targetPD.getPropertyType());
+        String sourceValue = this.read(source);
+        if (sourceValue != null) {
+            this.write(target, JAXBHelper.unmarshal(this.targetPD.getPropertyType(), sourceValue));
         }
-        this.write(target, targetValue);
     }
 }

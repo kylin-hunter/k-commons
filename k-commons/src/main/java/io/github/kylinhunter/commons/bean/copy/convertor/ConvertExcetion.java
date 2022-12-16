@@ -1,13 +1,13 @@
 package io.github.kylinhunter.commons.bean.copy.convertor;
 
-import io.github.kylinhunter.commons.exception.common.KException;
+import io.github.kylinhunter.commons.exception.embed.biz.BizException;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2022-12-16 00:05
+ * @date 2022-12-10 00:05
  **/
-public class ConvertExcetion extends KException {
+public class ConvertExcetion extends BizException {
 
     public ConvertExcetion(String message, Throwable cause) {
         super(message, cause);

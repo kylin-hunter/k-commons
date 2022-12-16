@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ConvertType {
-    JSON(JsonFieldConvertor.class),// to json
-    BYTES(BytesFieldConvertor.class),// to byte array
+    JSON(JsonFieldConvertor.class), // to text
+    BYTES(BytesFieldConvertor.class), // to byte array
     XML(XmlFieldConvertor.class); // to xml
     @Getter
     private final Class<? extends FieldConvertor> clazz;
