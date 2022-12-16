@@ -24,8 +24,8 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
 
     public JsonFieldConvertor(Direction direction, PropertyDescriptor sourcePD, PropertyDescriptor targetPD) {
         super(direction, sourcePD, targetPD);
-        Class<?> returnType = direction == Direction.FORWARD ? targetPD.getPropertyType() : sourcePD.getPropertyType();
-        if (returnType != String.class) {
+        Class<?> propertyType = direction == Direction.FORWARD ? targetPD.getPropertyType() : sourcePD.getPropertyType();
+        if (propertyType != String.class) {
             throw new InitException(" not a String type");
         }
 
