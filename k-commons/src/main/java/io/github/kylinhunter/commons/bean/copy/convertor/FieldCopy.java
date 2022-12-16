@@ -19,13 +19,4 @@ public @interface FieldCopy {
      */
     ConvertType value();
 
-    /**
-     * @return java.lang.Class<?>[]
-     * @title targets
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-19 01:05
-     */
-    Class<?>[] targets()  default {};
-
 }

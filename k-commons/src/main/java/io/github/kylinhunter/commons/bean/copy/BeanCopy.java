@@ -2,10 +2,8 @@ package io.github.kylinhunter.commons.bean.copy;
 
 import java.util.List;
 
-import io.github.kylinhunter.commons.bean.copy.convertor.ClassConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertExcetion;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
-
 import lombok.Data;
 
 /**
@@ -15,11 +13,10 @@ import lombok.Data;
  **/
 @Data
 public class BeanCopy {
-    private ClassConvertor<Object, Object> classConvertor;
     private List<FieldConvertor> fieldConvertors;
 
     public boolean isEmpty() {
-        return classConvertor == null && (fieldConvertors == null || fieldConvertors.isEmpty());
+        return (fieldConvertors == null || fieldConvertors.isEmpty());
     }
 
     /**
@@ -37,9 +34,6 @@ public class BeanCopy {
             for (FieldConvertor fieldConvertor : fieldConvertors) {
                 fieldConvertor.convert(source, target);
             }
-        }
-        if (classConvertor != null) {
-            classConvertor.convert(source, target);
         }
     }
 }

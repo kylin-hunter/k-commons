@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.bean;
 
 import java.util.List;
 
-import io.github.kylinhunter.commons.bean.copy.convertor.ClassCopy;
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertType;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldCopy;
 import lombok.Getter;
@@ -15,27 +14,26 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-@ClassCopy(value = Bean1ClassConvertor.class, targets = Bean2.class)
 public class Bean1 {
     private String name1;
     private String name2;
 
-    @FieldCopy(value = ConvertType.JSON, targets = {Bean2.class})
+    @FieldCopy(value = ConvertType.JSON)
     private BizBean json;
 
-    @FieldCopy(value = ConvertType.JSON, targets = {Bean2.class})
+    @FieldCopy(value = ConvertType.JSON)
     private List<BizBean> jsonList;
 
-    @FieldCopy(value = ConvertType.BYTES, targets = {Bean2.class})
+    @FieldCopy(value = ConvertType.BYTES)
     private BizBean bytes;
 
-    @FieldCopy(value = ConvertType.BYTES, targets = {Bean2.class})
+    @FieldCopy(value = ConvertType.BYTES)
     private List<BizBean> bytesList;
 
-    @FieldCopy(value = ConvertType.XML, targets = {Bean2.class})
+    @FieldCopy(value = ConvertType.XML)
     private BizBean xml;
 
-    //    @FieldCopy(value = ConvertType.XML, targets = {Bean2.class})
+    //    @FieldCopy(value = ConvertType.XML)
     //    private List<BizBean> xmlList;
 
 }
