@@ -22,6 +22,10 @@
 
         implementation 'io.github.kylin-hunter:k-commons:1.0.9'
 
+        implementation 'org.yaml:snakeyaml:1.29' // 如果需要支持yaml 才需要引用
+
+        implementation 'org.dom4j:dom4j:2.1.3' // 如果需要支持xml 才需要引用
+
 ```
 
 #### 3、maven (maven.apache.org)
@@ -30,8 +34,18 @@
 
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>k-commons</artifactId>
+          <artifactId>k-commons</artifactId>
           <version>1.0.9</version>
+        </dependency>
+        <dependency>  <!-- 如果需要支持yaml 才需要引用-->
+          <groupId>org.yaml</groupId>
+          <artifactId>snakeyaml</artifactId>
+          <version>1.29</version>
+        </dependency>
+        <dependency> <!-- 如果需要支持xml 才需要引用-->
+          <groupId>org.dom4j</groupId>
+          <artifactId>dom4j</artifactId>
+          <version>2.1.3</version>
         </dependency>
 
 ```
@@ -44,39 +58,17 @@
 
 ```java
 
-
 /**
- * @param states 枚举状态
+ * @param source           原始bean
+ * @param target           目标bean
+ * @param ignoreProperties 忽略的属性
  * @return void
- * @title 设置枚举状态 
- * @description
+ * @title 拷贝属性
+ * @description 拷贝属性，支持xml、json、bytes、yaml等属性的拷贝
  * @author BiJi'an
- * @date 2022-12-09 00:35
+ * @date 2021/8/22 22:22
  */
-@SafeVarargs
-public final void setState(E... states) ;
-
-/**
- * @param states   枚举状态
- * @return void
- * @title removeState 清空指定的枚举状态
- * @description
- * @author BiJi'an
- * @date 2022-12-08 16:46
- */
-@SafeVarargs
-public final void removeState(E... states) ;
-
-/**
- * @param states 枚举状态
- * @return boolean
- * @title hasStatus 枚举状态是否存在
- * @description
- * @author BiJi'an
- * @date 2022-12-08 16:46
- */
-@SafeVarargs
-public final boolean hasState(E... states)
+public static void copyProperties(Object source, Object target, String... ignoreProperties)
 
 ```
 
@@ -87,190 +79,117 @@ public final boolean hasState(E... states)
 
 ```java
 
-    // 定义一个基于枚举类型的状态
-    public enum TestState {
-        STATE1,
-        STATE2,
-        STATE3
+@Data
+public class Bean1 {
+
+    private String name;
+
+    private String nameIgnore;
+
+    @FieldCopy(ConvertType.NUM_STR) // 支持数字和字符串之间的转换
+    private int intValue1;
+
+    @FieldCopy(ConvertType.BYTES) // 支持对象和字节数组之间的转换
+    private SubBean bytes;
+
+    @FieldCopy(ConvertType.JSON) // 支持对象和json字符串之间的转换
+    private SubBean json;
+
+    @FieldCopy(ConvertType.XML)  //支持对象和xml字符串之间的转换
+    private SubBean xml;
+
+    @FieldCopy(ConvertType.YAML) // 支持对象和yaml字符串之间的转换
+    private SubBean yaml;
+
+}
+
+@Data
+public class Bean2 {
+    private String name;
+    private String nameIgnore;
+    private String intValue1;
+    private byte[] bytes;
+    private String json;
+    private String xml;
+    private String yaml;
+
+}
+
+@XmlRootElement
+@Data
+public class SubBean implements Serializable {
+    private int id;
+    private String text;
+}
+
+
+class BeanCopyUtilsTest {
+    public static void main(String[] args) {
+
+        SubBean subBean = new SubBean();
+        subBean.setId(99);
+        subBean.setText("text");
+
+        Bean1 bean1 = new Bean1();
+        bean1.setName("name");
+        bean1.setNameIgnore("nameIgnore");
+        bean1.setIntValue1(1);
+        bean1.setBytes(subBean);
+        bean1.setJson(subBean);
+        bean1.setXml(subBean);
+        bean1.setYaml(subBean);
+
+        Bean2 bean2 = new Bean2();
+        BeanCopyUtils.copyProperties(bean1, bean2, "nameIgnore");
+        System.out.println("name=>" + bean2.getName());
+        System.out.println("nameIgnore=>" + bean2.getNameIgnore());
+        System.out.println("intValue1=>" + bean2.getIntValue1());
+        System.out.println("bytes=>" + Arrays.toString(bean2.getBytes()));
+        System.out.println("json=>" + bean2.getJson());
+        System.out.println("xml=>" + bean2.getXml());
+        System.out.println("yaml=>" + bean2.getYaml());
+
+        Bean1 bean1Reverse = new Bean1();
+        bean2.setNameIgnore("name2");
+        BeanCopyUtils.copyProperties(bean2, bean1Reverse);
+
+        System.out.println("name=>" + bean1Reverse.getName());
+        System.out.println("nameIgnore=>" + bean1Reverse.getNameIgnore());
+        System.out.println("intValue1=>" + bean1Reverse.getIntValue1());
+        System.out.println("bytes=>" + bean1Reverse.getBytes());
+        System.out.println("json=>" + bean1Reverse.getJson());
+        System.out.println("xml=>" + bean1Reverse.getXml());
+        System.out.println("yaml=>" + bean1Reverse.getYaml());
+
     }
 
-    // 继承 io.github.kylinhunter.commons.state.AbstractBitState 类
-    public static class TestStateBitState extends AbstractBitState<TestState> {
-
-    }
-    // 测试用例
-    TestStateBitState abstractBitState = new TestStateBitState();
-    abstractBitState.setState(TestState.STATE1);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState.STATE1));
-    assertFalse(abstractBitState.hasState(TestState.STATE2));
-    assertFalse(abstractBitState.hasState(TestState.STATE3));
-
-    abstractBitState.setState(TestState.STATE2);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState.STATE1));
-    assertTrue(abstractBitState.hasState(TestState.STATE2));
-    assertFalse(abstractBitState.hasState(TestState.STATE3));
-
-    abstractBitState.setState(TestState.STATE3);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState.STATE1));
-    assertTrue(abstractBitState.hasState(TestState.STATE2));
-    assertTrue(abstractBitState.hasState(TestState.STATE3));
-
-    abstractBitState.removeState(TestState.STATE3, TestState.STATE1);
-    System.out.println(abstractBitState);
-
-    assertFalse(abstractBitState.hasState(TestState.STATE1));
-    assertTrue(abstractBitState.hasState(TestState.STATE2));
-    assertFalse(abstractBitState.hasState(TestState.STATE3));
+}
        
 ```
 
 ###### 1.2.2 打印结果
 
 ```java
-    AbstractBitState[bitStates[0]=1]
-    AbstractBitState[bitStates[0]=11]
-    AbstractBitState[bitStates[0]=111]
-    AbstractBitState[bitStates[0]=10]
+
+        name=>name
+        nameIgnore=>null
+        intValue1=>1
+        bytes=>[-84, -19, 0, 5, 115, 114, 0, 42, 105, 111, 46, 103, 105, 116, 104, 117, 98, 46, 107, 121, 108, 105, 110, 104, 117, 110, 116, 101, 114, 46, 99, 111, 109, 109, 111, 110, 115, 46, 98, 101, 97, 110, 46, 83, 117, 98, 66, 101, 97, 110, -9, -93, 3, 11, -8, 96, 40, 82, 2, 0, 2, 73, 0, 2, 105, 100, 76, 0, 4, 116, 101, 120, 116, 116, 0, 18, 76, 106, 97, 118, 97, 47, 108, 97, 110, 103, 47, 83, 116, 114, 105, 110, 103, 59, 120, 112, 0, 0, 0, 99, 116, 0, 4, 116, 101, 120, 116]
+        json=>{"id":99,"text":"text"}
+        xml=><?xml version="1.0" encoding="UTF-8" standalone="yes"?><subBean><id>99</id><text>text</text></subBean>
+        yaml=>id: 99
+        text: text
+
+        name=>name
+        nameIgnore=>name2
+        intValue1=>1
+        bytes=>SubBean(id=99, text=text)
+        json=>SubBean(id=99, text=text)
+        xml=>SubBean(id=99, text=text)
+        yaml=>SubBean(id=99, text=text)
 
 ```
 
-##### 1.3 示例2
-
-###### 1.3.1 代码
-
-```java
-
-    // 定义一个基于枚举类型的状态 65个状态
-    public enum TestState2 {
-        STATE1,
-        STATE2,
-        STATE3,
-        STATE4,
-        STATE5,
-        STATE6,
-        STATE7,
-        STATE8,
-        STATE9,
-        STATE10,
-        STATE11,
-        STATE12,
-        STATE13,
-        STATE14,
-        STATE15,
-        STATE16,
-        STATE17,
-        STATE18,
-        STATE19,
-        STATE20,
-        STATE21,
-        STATE22,
-        STATE23,
-        STATE24,
-        STATE25,
-        STATE26,
-        STATE27,
-        STATE28,
-        STATE29,
-        STATE30,
-        STATE31,
-        STATE32,
-        STATE33,
-        STATE34,
-        STATE35,
-        STATE36,
-        STATE37,
-        STATE38,
-        STATE39,
-        STATE40,
-        STATE41,
-        STATE42,
-        STATE43,
-        STATE44,
-        STATE45,
-        STATE46,
-        STATE47,
-        STATE48,
-        STATE49,
-        STATE50,
-        STATE51,
-        STATE52,
-        STATE53,
-        STATE54,
-        STATE55,
-        STATE56,
-        STATE57,
-        STATE58,
-        STATE59,
-        STATE60,
-        STATE61,
-        STATE62,
-        STATE63,
-        STATE64,
-        STATE65
-    }
-
-    // 继承 io.github.kylinhunter.commons.state.AbstractBitState 类
-    public static class TestStateBitState2 extends AbstractBitState<TestState> {
-
-    }
-
-    TestStateBitState2 abstractBitState = new TestStateBitState2();
-    abstractBitState.setState(TestState2.STATE1);
-    abstractBitState.setState(TestState2.STATE63);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState2.STATE1));
-    assertFalse(abstractBitState.hasState(TestState2.STATE2));
-    assertFalse(abstractBitState.hasState(TestState2.STATE3));
-
-    assertTrue(abstractBitState.hasState(TestState2.STATE63));
-    assertFalse(abstractBitState.hasState(TestState2.STATE64));
-    assertFalse(abstractBitState.hasState(TestState2.STATE65));
-
-    abstractBitState.setState(TestState2.STATE2);
-    abstractBitState.setState(TestState2.STATE64);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState2.STATE1));
-    assertTrue(abstractBitState.hasState(TestState2.STATE2));
-    assertFalse(abstractBitState.hasState(TestState2.STATE3));
-    assertTrue(abstractBitState.hasState(TestState2.STATE63));
-    assertTrue(abstractBitState.hasState(TestState2.STATE64));
-    assertFalse(abstractBitState.hasState(TestState2.STATE65));
-
-    abstractBitState.setState(TestState2.STATE3);
-    abstractBitState.setState(TestState2.STATE65);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState2.STATE1));
-    assertTrue(abstractBitState.hasState(TestState2.STATE2));
-    assertTrue(abstractBitState.hasState(TestState2.STATE3));
-    assertTrue(abstractBitState.hasState(TestState2.STATE63));
-    assertTrue(abstractBitState.hasState(TestState2.STATE64));
-    assertTrue(abstractBitState.hasState(TestState2.STATE65));
-
-    abstractBitState.removeState(TestState2.STATE1, TestState2.STATE3,TestState2.STATE63,TestState2.STATE65);
-    System.out.println(abstractBitState);
-
-    assertFalse(abstractBitState.hasState(TestState2.STATE1));
-    assertTrue(abstractBitState.hasState(TestState2.STATE2));
-    assertFalse(abstractBitState.hasState(TestState2.STATE3));
-
-    assertFalse(abstractBitState.hasState(TestState2.STATE63));
-    assertTrue(abstractBitState.hasState(TestState2.STATE64));
-    assertFalse(abstractBitState.hasState(TestState2.STATE65));
-       
-```
-
-###### 1.3.2 打印结果
-
-```java
-    AbstractBitState[bitStates[0]=100000000000000000000000000000000000000000000000000000000000001, bitStates[1]=0]
-    AbstractBitState[bitStates[0]=1100000000000000000000000000000000000000000000000000000000000011, bitStates[1]=0]
-    AbstractBitState[bitStates[0]=1100000000000000000000000000000000000000000000000000000000000111, bitStates[1]=1]
-    AbstractBitState[bitStates[0]=1000000000000000000000000000000000000000000000000000000000000010, bitStates[1]=0]
-
-```
 
 ### 版权 | License
 
