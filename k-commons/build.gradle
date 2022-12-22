@@ -14,6 +14,9 @@ dependencies {
     implementation 'org.springframework:spring-context'
     implementation(rootProject.dependency_management['commons-codec'])
     implementation(rootProject.dependency_management['commons-compress'])
+    implementation(rootProject.dependency_management['dom4j'])
+    implementation('org.yaml:snakeyaml')
+
     testImplementation files(Jvm.current().toolsJar)
 
 

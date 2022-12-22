@@ -124,9 +124,9 @@ public class ObjectMapperProxy {
             return getObjectMapper(jsonOption).readValue(content, javaType);
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
-                throw new FormatException("json readValue error", e);
+                throw new FormatException("text readValue error", e);
             } else {
-                log.error("json readValue error", e);
+                log.error("text readValue error", e);
             }
         }
         return null;
@@ -148,9 +148,9 @@ public class ObjectMapperProxy {
             return getObjectMapper(jsonOption).readValue(content, valueType);
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
-                throw new FormatException("json readValue error", e);
+                throw new FormatException("text readValue error", e);
             } else {
-                log.error("json readValue error", e);
+                log.error("text readValue error", e);
             }
         }
         return null;
@@ -172,9 +172,9 @@ public class ObjectMapperProxy {
             return getObjectMapper(jsonOption).readValue(content, valueType);
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
-                throw new FormatException("json readValue error", e);
+                throw new FormatException("text readValue error", e);
             } else {
-                log.error("json readValue error", e);
+                log.error("text readValue error", e);
             }
         }
         return null;
@@ -194,9 +194,9 @@ public class ObjectMapperProxy {
             return getObjectMapper(jsonOption).writeValueAsString(content);
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
-                throw new FormatException("json readValue error", e);
+                throw new FormatException("text readValue error", e);
             } else {
-                log.error("json readValue error", e);
+                log.error("text readValue error", e);
             }
         }
         return StringUtils.EMPTY;
@@ -216,9 +216,9 @@ public class ObjectMapperProxy {
             return getObjectMapper(jsonOption).writeValueAsBytes(content);
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
-                throw new FormatException("json readValue error", e);
+                throw new FormatException("text readValue error", e);
             } else {
-                log.error("json readValue error", e);
+                log.error("text readValue error", e);
             }
         }
         return EMPTY_BYTES;

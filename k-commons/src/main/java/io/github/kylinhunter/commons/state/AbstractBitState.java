@@ -13,7 +13,6 @@ import lombok.Data;
  * @description
  * @date 2022/12/8
  **/
-@Component
 @Data
 public abstract class AbstractBitState<E extends Enum<E>> {
 

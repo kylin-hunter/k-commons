@@ -2,10 +2,10 @@ package io.github.kylinhunter.commons.bean.copy;
 
 import java.beans.PropertyDescriptor;
 
-import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
+import io.github.kylinhunter.commons.bean.copy.convertor.ConvertExcetion;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
+import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.exception.embed.InternalException;
-
 import lombok.Data;
 
 /**
@@ -28,9 +28,10 @@ public abstract class AbstractFieldConvertor implements FieldConvertor {
      * @author BiJi'an
      * @date 2022-11-19 01:03
      */
-    public Object read(Object source) {
+    @SuppressWarnings("unchecked")
+    public <T> T read(Object source) {
         try {
-            return sourcePD.getReadMethod().invoke(source);
+            return (T) sourcePD.getReadMethod().invoke(source);
         } catch (Exception e) {
             throw new InternalException("read error", e);
         }
@@ -55,11 +56,17 @@ public abstract class AbstractFieldConvertor implements FieldConvertor {
     }
 
     @Override
-    public void convert(Object source, Object target) {
-        if (direction == Direction.FORWARD) {
-            this.forword(source, target);
-        } else {
-            this.backward(source, target);
+    public void convert(Object source, Object target) throws ConvertExcetion {
+        try {
+            if (direction == Direction.FORWARD) {
+                this.forword(source, target);
+            } else {
+                this.backward(source, target);
+            }
+        } catch (ConvertExcetion convertExcetion) {
+            throw convertExcetion;
+        } catch (Exception e) {
+            throw new ConvertExcetion("convert error", e);
         }
     }
 
@@ -72,7 +79,7 @@ public abstract class AbstractFieldConvertor implements FieldConvertor {
      * @author BiJi'an
      * @date 2022-11-19 01:14
      */
-    public abstract void forword(Object source, Object target);
+    public abstract void forword(Object source, Object target) throws ConvertExcetion;
 
     /**
      * @param source source
@@ -83,6 +90,6 @@ public abstract class AbstractFieldConvertor implements FieldConvertor {
      * @author BiJi'an
      * @date 2022-11-19 01:14
      */
-    public abstract void backward(Object source, Object target);
+    public abstract void backward(Object source, Object target) throws ConvertExcetion;
 
 }

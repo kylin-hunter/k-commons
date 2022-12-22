@@ -20,7 +20,7 @@ Use bit operation and java enumeration type to manage state
 
 ```java
 
-        implementation 'io.github.kylin-hunter:k-commons:1.0.6'
+        implementation 'io.github.kylin-hunter:k-commons:1.0.9'
 
 ```
 
@@ -31,7 +31,7 @@ Use bit operation and java enumeration type to manage state
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
             <artifactId>k-commons</artifactId>
-          <version>1.0.6</version>
+          <version>1.0.9</version>
         </dependency>
 
 ```

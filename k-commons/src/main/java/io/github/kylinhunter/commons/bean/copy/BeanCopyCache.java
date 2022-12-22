@@ -5,7 +5,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,14 +17,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.bean.BeanCopyUtils;
-import io.github.kylinhunter.commons.bean.copy.convertor.ClassConvertor;
-import io.github.kylinhunter.commons.bean.copy.convertor.ClassCopy;
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertType;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldCopy;
 import io.github.kylinhunter.commons.exception.embed.InitException;
-
 import lombok.Data;
 
 /**
@@ -74,46 +70,11 @@ public class BeanCopyCache {
     private static BeanCopy init(Class<?> sourceClass, Class<?> targetClass) {
 
         BeanCopy beanCopy = new BeanCopy();
-        beanCopy.setClassConvertor(initClassConvertor(sourceClass, targetClass));
         beanCopy.setFieldConvertors(initFieldConvertor(sourceClass, targetClass));
         if (!beanCopy.isEmpty()) {
             return beanCopy;
         } else {
             return DEFAULT_BEAN_COPY;
-        }
-    }
-
-    /**
-     * @param sourceClass sourceClass
-     * @param targetClass targetClass
-     * @return io.github.kylinhunter.commons.bean.copy.convertor.ClassConvertor<java.lang.Object, java.lang.Object>
-     * @title initClassConvertor
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-19 01:28
-     */
-    @SuppressWarnings("unchecked")
-    private static ClassConvertor<Object, Object> initClassConvertor(Class<?> sourceClass, Class<?> targetClass) {
-        ClassCopy classCopy = sourceClass.getAnnotation(ClassCopy.class);
-        try {
-            if (classCopy != null) {
-                Constructor<?> constructor = classCopy.value().getConstructor(Direction.class);
-                return (ClassConvertor<Object, Object>) constructor.newInstance(Direction.FORWARD);
-            } else {
-                classCopy = targetClass.getAnnotation(ClassCopy.class);
-                if (classCopy != null) {
-                    Class<?>[] targets = classCopy.targets();
-                    for (Class<?> target : targets) {
-                        if (target == sourceClass) {
-                            Constructor<?> constructor = classCopy.value().getConstructor(Direction.class);
-                            return (ClassConvertor<Object, Object>) constructor.newInstance(Direction.BACKEND);
-                        }
-                    }
-                }
-            }
-            return null;
-        } catch (Exception e) {
-            throw new InitException("init class convertor error", e);
         }
     }
 
@@ -132,7 +93,7 @@ public class BeanCopyCache {
             List<FieldConvertor> fieldConvertors = Lists.newArrayList();
             Set<Field> allSourceFields = ReflectionUtils.getAllFields(sourceClass);
             Map<String, Field> targetFields = ReflectionUtils.getAllFields(targetClass).stream()
-                    .collect(Collectors.toMap(Field::getName, e -> e,(o,n)-> n));
+                    .collect(Collectors.toMap(Field::getName, e -> e, (o, n) -> n));
 
             for (Field sourceField : allSourceFields) {
                 String fieldName = sourceField.getName();
@@ -141,28 +102,24 @@ public class BeanCopyCache {
                     FieldCopy fieldCopy = sourceField.getAnnotation(FieldCopy.class);
                     if (fieldCopy != null) {
                         ConvertType convertType = fieldCopy.value();
-                        List<Class<?>> targets = Arrays.asList(fieldCopy.targets());
-                        if (targets.contains(targetClass)) {
-                            FieldConvertor fieldConvertor = initFieldConvertor(Direction.FORWARD,
-                                    sourceClass, targetClass, fieldName, convertType);
-                            if (fieldConvertor != null) {
-                                fieldConvertors.add(fieldConvertor);
-                            }
+
+                        FieldConvertor fieldConvertor = initFieldConvertor(Direction.FORWARD,
+                                sourceClass, targetClass, fieldName, convertType);
+                        if (fieldConvertor != null) {
+                            fieldConvertors.add(fieldConvertor);
                         }
+
                     } else {
 
                         FieldCopy targetFieldCopy = targetField.getAnnotation(FieldCopy.class);
                         if (targetFieldCopy != null) {
                             ConvertType convertType = targetFieldCopy.value();
-                            List<Class<?>> targets = Arrays.asList(targetFieldCopy.targets());
-                            if (targets.contains(sourceClass)) {
-                                FieldConvertor fieldConvertor = initFieldConvertor(Direction.BACKEND,
-                                        sourceClass, targetClass, fieldName, convertType);
-                                if (fieldConvertor != null) {
-                                    fieldConvertors.add(fieldConvertor);
-                                }
-
+                            FieldConvertor fieldConvertor = initFieldConvertor(Direction.BACKEND,
+                                    sourceClass, targetClass, fieldName, convertType);
+                            if (fieldConvertor != null) {
+                                fieldConvertors.add(fieldConvertor);
                             }
+
                         }
 
                     }

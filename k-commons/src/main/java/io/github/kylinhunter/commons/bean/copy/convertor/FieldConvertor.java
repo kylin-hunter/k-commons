@@ -16,5 +16,5 @@ public interface FieldConvertor {
      * @author BiJi'an
      * @date 2022-11-19 01:02
      */
-    void convert(Object source, Object target);
+    void convert(Object source, Object target) throws ConvertExcetion;
 }

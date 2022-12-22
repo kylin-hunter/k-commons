@@ -35,7 +35,7 @@ public class UserDirUtils {
      * @description  getDir
      * @date  2022/1/24 2:12
      * @author  BiJi'an
-     * @Param child
+     * @Param children
      * @return java.io.File
      */
     public static File getDir(String child) {
@@ -43,7 +43,7 @@ public class UserDirUtils {
     }
 
     /**
-     * @param child the child file
+     * @param child the children file
      * @return java.io.File
      * @title getUserDir
      * @description
@@ -69,7 +69,7 @@ public class UserDirUtils {
     }
 
     /**
-     * @param child the child file
+     * @param child the children file
      * @return java.io.File
      * @title getUserDir
      * @description
@@ -106,7 +106,7 @@ public class UserDirUtils {
     }
 
     /**
-     * @param child  the child file
+     * @param child  the children file
      * @param create whether to create file or dir
      * @return java.io.File
      * @title getUserDirTmp
@@ -124,7 +124,7 @@ public class UserDirUtils {
     }
 
     /**
-     * @param child the child file
+     * @param child the children file
      * @return java.io.File
      * @title getUserDir
      * @description
