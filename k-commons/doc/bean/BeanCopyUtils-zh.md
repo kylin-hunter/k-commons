@@ -2,11 +2,11 @@
 
 ### 介绍
 
-一个基于位运算的状态管理工具
+一个基于spring BeanUtils的扩展工具
 
 ### 软件架构
 
-利用位运算，以及java的枚举类型，管理状态
+一个基于spring BeanUtils的扩展工具
 
 ### 安装教程
 
@@ -20,7 +20,7 @@
 
 ```java
 
-        implementation 'io.github.kylin-hunter:k-commons:1.0.8'
+        implementation 'io.github.kylin-hunter:k-commons:1.0.9'
 
 ```
 
@@ -31,7 +31,7 @@
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
             <artifactId>k-commons</artifactId>
-          <version>1.0.8</version>
+          <version>1.0.9</version>
         </dependency>
 
 ```

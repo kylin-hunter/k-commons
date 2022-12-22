@@ -2,11 +2,11 @@
 
 ### Description
 
-A state management tool based on bit operation
+A bean copy util  based on spring BeanUtil
 
 ### Software Architecture
 
-Use bit operation and java enumeration type to manage state
+A bean copy util  based on spring BeanUtil
 
 ### Installation
 
@@ -20,7 +20,7 @@ Use bit operation and java enumeration type to manage state
 
 ```java
 
-        implementation 'io.github.kylin-hunter:k-commons:1.0.8'
+        implementation 'io.github.kylin-hunter:k-commons:1.0.9'
 
 ```
 
@@ -31,7 +31,7 @@ Use bit operation and java enumeration type to manage state
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
             <artifactId>k-commons</artifactId>
-          <version>1.0.8</version>
+          <version>1.0.9</version>
         </dependency>
 
 ```
@@ -44,39 +44,17 @@ Use bit operation and java enumeration type to manage state
 
 ```java
 
-
 /**
- * @param states states the enum states to set
+ * @param source           the source bean
+ * @param target           the target bean
+ * @param ignoreProperties array of property names to ignore
  * @return void
- * @title set state
- * @description
+ * @title copyProperties
+ * @description Copy the property values of the given source bean into the given target bean
  * @author BiJi'an
- * @date 2022-12-09 00:35
+ * @date 2021/8/13 8:52 下午
  */
-@SafeVarargs
-public final void setState(E... states) ;
-
-/**
- * @param states states the enum states to remove
- * @return void
- * @title removeState remove the  enum states if existed
- * @description
- * @author BiJi'an
- * @date 2022-12-08 16:46
- */
-@SafeVarargs
-public final void removeState(E... states) ;
-
-/**
- * @param states states the enum states
- * @return boolean
- * @title hasStatus whether a enum states exists
- * @description
- * @author BiJi'an
- * @date 2022-12-08 16:46
- */
-@SafeVarargs
-public final boolean hasState(E... states)
+public static void copyProperties(Object source, Object target, String... ignoreProperties)
 
 ```
 

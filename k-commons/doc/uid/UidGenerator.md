@@ -20,7 +20,7 @@ Based on Snowflake Algorithm
 
 ```java
 
-    implementation'io.github.kylin-hunter:k-commons:1.0.8'
+    implementation'io.github.kylin-hunter:k-commons:1.0.9'
 
 ```
 
@@ -31,7 +31,7 @@ Based on Snowflake Algorithm
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
             <artifactId>io.github.kylin-hunter:k-commons</artifactId>
-          <version>1.0.8</version>
+          <version>1.0.9</version>
         </dependency>
 
 ```

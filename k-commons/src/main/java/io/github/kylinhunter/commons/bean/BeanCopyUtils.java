@@ -5,7 +5,6 @@ import org.springframework.beans.BeanUtils;
 import io.github.kylinhunter.commons.bean.copy.BeanCopy;
 import io.github.kylinhunter.commons.bean.copy.BeanCopyCache;
 import io.github.kylinhunter.commons.exception.embed.FormatException;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -17,11 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 public class BeanCopyUtils {
 
     /**
-     * @param source source
-     * @param target target
+     * @param source           the source bean
+     * @param target           the target bean
+     * @param ignoreProperties array of property names to ignore
      * @return void
      * @title copyProperties
-     * @description
+     * @description Copy the property values of the given source bean into the given target bean
      * @author BiJi'an
      * @date 2021/8/13 8:52 下午
      */
