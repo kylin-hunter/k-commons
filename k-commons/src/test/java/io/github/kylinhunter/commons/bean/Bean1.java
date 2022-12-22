@@ -18,52 +18,50 @@ public class Bean1 {
     private String name1;
     private String name2;
 
-
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private int intValue1;
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private Integer intValue2;
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private Integer intValue3;
 
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private long longValue1;
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private Long longValue2;
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private Long longValue3;
 
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private float floatValue1;
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private Float floatValue2;
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private Float floatValue3;
 
-
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private double doubleValue1;
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private Double doubleValue2;
-    @FieldCopy(value = ConvertType.NUM_STR)
+    @FieldCopy(ConvertType.NUM_STR)
     private Double doubleValue3;
 
-    @FieldCopy(value = ConvertType.JSON)
+    @FieldCopy(ConvertType.JSON)
     private BizBean json;
 
-    @FieldCopy(value = ConvertType.JSON)
+    @FieldCopy(ConvertType.JSON)
     private List<BizBean> jsonList;
 
-    @FieldCopy(value = ConvertType.BYTES)
+    @FieldCopy(ConvertType.BYTES)
     private BizBean bytes;
 
-    @FieldCopy(value = ConvertType.BYTES)
+    @FieldCopy(ConvertType.BYTES)
     private List<BizBean> bytesList;
 
-    @FieldCopy(value = ConvertType.XML)
+    @FieldCopy(ConvertType.XML)
     private BizBean xml;
 
-    //    @FieldCopy(value = ConvertType.XML)
+    //    @FieldCopy(ConvertType.XML)
     //    private List<BizBean> xmlList;
 
 }
