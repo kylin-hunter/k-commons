@@ -15,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @XmlRootElement
-public class BizBean implements Serializable {
+public class SubBean implements Serializable {
+    private int id;
     private String text;
 }

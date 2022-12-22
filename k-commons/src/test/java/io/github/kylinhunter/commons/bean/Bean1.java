@@ -47,21 +47,21 @@ public class Bean1 {
     private Double doubleValue3;
 
     @FieldCopy(ConvertType.JSON)
-    private BizBean json;
+    private SubBean json;
 
     @FieldCopy(ConvertType.JSON)
-    private List<BizBean> jsonList;
+    private List<SubBean> jsonList;
 
     @FieldCopy(ConvertType.BYTES)
-    private BizBean bytes;
+    private SubBean bytes;
 
     @FieldCopy(ConvertType.BYTES)
-    private List<BizBean> bytesList;
+    private List<SubBean> bytesList;
 
     @FieldCopy(ConvertType.XML)
-    private BizBean xml;
+    private SubBean xml;
 
-    //    @FieldCopy(ConvertType.XML)
-    //    private List<BizBean> xmlList;
+    @FieldCopy(ConvertType.YAML)
+    private SubBean yaml;
 
 }

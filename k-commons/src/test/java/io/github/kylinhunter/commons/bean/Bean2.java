@@ -35,6 +35,6 @@ public class Bean2 {
     private byte[] bytes;
     private byte[] bytesList;
     private String xml;
-    //    private String xmlList;
+    private String yaml;
 
 }

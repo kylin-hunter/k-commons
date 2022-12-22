@@ -20,7 +20,7 @@
 
 ```java
 
-    implementation'io.github.kylin-hunter:k-commons:1.0.7'
+    implementation'io.github.kylin-hunter:k-commons:1.0.8'
 
 ```
 
@@ -31,7 +31,7 @@
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
             <artifactId>io.github.kylin-hunter:k-commons</artifactId>
-          <version>1.0.7</version>
+          <version>1.0.8</version>
         </dependency>
 
 ```

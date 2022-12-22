@@ -10,14 +10,16 @@ import com.google.common.collect.Lists;
 import io.github.kylinhunter.commons.json.JsonUtils;
 import io.github.kylinhunter.commons.serialize.ObjectBytesSerializer;
 import io.github.kylinhunter.commons.xml.JAXBHelper;
+import io.github.kylinhunter.commons.yaml.YamlHelper;
 
 class BeanCopyUtilsTest {
 
     @Test
     public void test() {
 
-        BizBean bizBean = new BizBean();
-        bizBean.setText("text");
+        SubBean subBean = new SubBean();
+        subBean.setId(99);
+        subBean.setText("text");
 
         Bean1 bean1 = new Bean1();
         bean1.setName1("name1");
@@ -30,27 +32,28 @@ class BeanCopyUtilsTest {
         bean1.setFloatValue2(0.123F);
         bean1.setDoubleValue1(1.123D);
         bean1.setDoubleValue2(0.123D);
-        bean1.setJson(bizBean);
-        bean1.setJsonList(Lists.newArrayList(bizBean));
-        bean1.setBytes(bean1.getJson());
-        bean1.setBytesList(bean1.getJsonList());
+        bean1.setJson(subBean);
+        bean1.setJsonList(Lists.newArrayList(subBean));
+        bean1.setBytes(subBean);
+        bean1.setBytesList(Lists.newArrayList(subBean));
 
-        bean1.setXml(bean1.getJson());
-        //        bean1.setXmlList(bean1.getJsonList());
+        bean1.setXml(subBean);
+        bean1.setYaml(subBean);
 
         Bean2 bean2 = new Bean2();
         BeanCopyUtils.copyProperties(bean1, bean2, "name2");
 
         Assertions.assertEquals(bean1.getName1(), bean2.getName1());
         Assertions.assertEquals(null, bean2.getName2());
-        Assertions.assertEquals(JsonUtils.writeToString(bizBean), bean2.getJson());
-        Assertions.assertEquals(JsonUtils.writeToString(Lists.newArrayList(bizBean)), bean2.getJsonList());
-        Assertions.assertEquals(bizBean.getText(),
-                ((BizBean) ObjectBytesSerializer.deserialize(bean2.getBytes())).getText());
-        Assertions.assertEquals(Lists.newArrayList(bizBean).get(0).getText(),
-                ((List<BizBean>) ObjectBytesSerializer.deserialize(bean2.getBytesList())).get(0).getText()
+        Assertions.assertEquals(JsonUtils.writeToString(subBean), bean2.getJson());
+        Assertions.assertEquals(JsonUtils.writeToString(Lists.newArrayList(subBean)), bean2.getJsonList());
+        Assertions.assertEquals(subBean.getText(),
+                ((SubBean) ObjectBytesSerializer.deserialize(bean2.getBytes())).getText());
+        Assertions.assertEquals(Lists.newArrayList(subBean).get(0).getText(),
+                ((List<SubBean>) ObjectBytesSerializer.deserialize(bean2.getBytesList())).get(0).getText()
         );
-        Assertions.assertEquals(bizBean.getText(), JAXBHelper.unmarshal(BizBean.class, bean2.getXml()).getText());
+        Assertions.assertEquals(subBean.getText(), JAXBHelper.unmarshal(SubBean.class, bean2.getXml()).getText());
+        Assertions.assertEquals(subBean.getText(), YamlHelper.loadFromText(SubBean.class, bean2.getYaml()).getText());
 
         Bean1 bean1Reverse = new Bean1();
         bean2.setName2("name2");
@@ -80,6 +83,7 @@ class BeanCopyUtilsTest {
         Assertions.assertEquals(bean1.getBytesList().get(0).getText(), bean1Reverse.getBytesList().get(0).getText());
 
         Assertions.assertEquals(bean1.getXml().getText(), bean1Reverse.getXml().getText());
+        Assertions.assertEquals(bean1.getYaml().getText(), bean1Reverse.getYaml().getText());
 
     }
 
