@@ -19,51 +19,51 @@ public class Bean1 {
     private String name2;
 
 
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private int intValue1;
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private Integer intValue2;
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private Integer intValue3;
 
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private long longValue1;
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private Long longValue2;
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private Long longValue3;
 
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private float floatValue1;
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private Float floatValue2;
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private Float floatValue3;
 
 
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private double doubleValue1;
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private Double doubleValue2;
-    @FieldCopy(value = ConvertType.NUM_2_STR)
+    @FieldCopy(value = ConvertType.NUM_STR)
     private Double doubleValue3;
 
-    @FieldCopy(value = ConvertType.OBJ_2_JSON)
+    @FieldCopy(value = ConvertType.JSON)
     private BizBean json;
 
-    @FieldCopy(value = ConvertType.OBJ_2_JSON)
+    @FieldCopy(value = ConvertType.JSON)
     private List<BizBean> jsonList;
 
-    @FieldCopy(value = ConvertType.OBJ_2_BYTES)
+    @FieldCopy(value = ConvertType.BYTES)
     private BizBean bytes;
 
-    @FieldCopy(value = ConvertType.OBJ_2_BYTES)
+    @FieldCopy(value = ConvertType.BYTES)
     private List<BizBean> bytesList;
 
-    @FieldCopy(value = ConvertType.OBJ_2_XML)
+    @FieldCopy(value = ConvertType.XML)
     private BizBean xml;
 
-    //    @FieldCopy(value = ConvertType.OBJ_2_XML)
+    //    @FieldCopy(value = ConvertType.XML)
     //    private List<BizBean> xmlList;
 
 }
