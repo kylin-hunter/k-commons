@@ -1,3 +1,4 @@
 rootProject.name = 'k-commons-parent'
 include 'k-commons'
+include 'k-clazz'
 
