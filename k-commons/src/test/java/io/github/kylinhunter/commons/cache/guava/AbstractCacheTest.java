@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.kylinhunter.commons.util.TheadHelper;
+import io.github.kylinhunter.commons.util.ThreadHelper;
 
 public class AbstractCacheTest {
 
@@ -19,7 +19,7 @@ public class AbstractCacheTest {
 
             value = guavaCache.get(new Integer(1), new Integer(2));
             System.out.println(value);
-            TheadHelper.sleep(100, TimeUnit.MILLISECONDS);
+            ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
         }
         guavaCache.put(100L, new Integer(1), new Integer(2));
         value = guavaCache.get(new Integer(1), new Integer(2));
@@ -41,7 +41,7 @@ public class AbstractCacheTest {
 
             value = guavaCache.get(new TestParam1("1"), new TestParam2("parm2"));
             System.out.println(value);
-            TheadHelper.sleep(100, TimeUnit.MILLISECONDS);
+            ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
         }
         guavaCache.put(100L, new TestParam1("1"), new TestParam2("parm2"));
         value = guavaCache.get(new TestParam1("1"), new TestParam2("parm2"));
