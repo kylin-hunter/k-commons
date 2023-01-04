@@ -1,6 +1,6 @@
 import org.gradle.internal.jvm.Jvm
 dependencies {
-    api project(":k-commons")
+    api 'org.javassist:javassist:3.18.0-GA'
     testImplementation files(Jvm.current().toolsJar)
 }
 
