@@ -3,7 +3,6 @@ package io.github.kylinhunter.commons.yaml;
 import java.util.List;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author BiJi'an
@@ -11,9 +10,13 @@ import lombok.EqualsAndHashCode;
  * @date 2022-12-02 20:28
  **/
 @Data
-public class YamlBean {
+public class YamlBean implements Cloneable {
     private int id;
     private String name;
     List<String> values;
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

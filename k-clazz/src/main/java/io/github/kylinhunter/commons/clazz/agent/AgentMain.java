@@ -20,7 +20,6 @@ public class AgentMain {
      */
     public static void agentmain(String agentArgs, Instrumentation inst) {
         System.out.println("agentmain start");
-
         System.out.println(agentArgs);
     }
 }
