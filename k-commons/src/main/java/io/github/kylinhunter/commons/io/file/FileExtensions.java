@@ -8,5 +8,6 @@ package io.github.kylinhunter.commons.io.file;
 public class FileExtensions {
     public static final String JAVA = "java";
     public static final String DOT_JAVA = ".java";
+    public static final String DOT_VM = ".vm";
 
 }

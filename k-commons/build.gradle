@@ -7,8 +7,11 @@ dependencies {
     api(rootProject.dependency_management['commons-lang3'])
     api(rootProject.dependency_management['guava'])
 
-    api("com.fasterxml.jackson.core:jackson-databind")
-    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation(rootProject.dependency_management['velocity-engine-core'])
+    implementation(rootProject.dependency_management['velocity-tools-generic'])
+
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-context'

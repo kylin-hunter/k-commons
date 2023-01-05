@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import io.github.kylinhunter.commons.clazz.Animal;
-import io.github.kylinhunter.commons.clazz.Dog;
 import io.github.kylinhunter.commons.clazz.exception.ClazzException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

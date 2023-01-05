@@ -15,16 +15,13 @@ public class Dog implements Animal {
     @Override
     public void speak() {
         System.out.println("woof");
-        sleep(100);
-        System.out.println("woof");
-    }
 
-    private void sleep(long millis) {
         try {
-            Thread.sleep(millis);
+            Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("woof");
     }
 
     @Override

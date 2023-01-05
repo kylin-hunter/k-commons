@@ -43,7 +43,7 @@ public class TimeCostHelper {
             } else {
                 ctMethod = ctClass.getDeclaredMethod(method);
             }
-            final CtClass ctClass1 = ClassPool.getDefault().getCtClass("java.lang.Long");
+            final CtClass longCtClass = ClassPool.getDefault().getCtClass("java.lang.Long");
             long start = System.currentTimeMillis();
             long end = System.currentTimeMillis();
             long cost = end;
@@ -51,13 +51,14 @@ public class TimeCostHelper {
             ctMethod.addLocalVariable("start", CtClass.longType);
             ctMethod.addLocalVariable("cost", CtClass.longType);
 
-            ctMethod.insertBefore("long start = System.currentTimeMillis();");
+            ctMethod.insertBefore(" start = System.currentTimeMillis();");
 
-            ctMethod.insertAfter(" System.out.println(\"time cost:\"+(System.currentTimeMillis()-start));");
-            //
-            //            CtClass etype = ClassPool.getDefault().get("java.lang.Exception");
-            //            ctMethod.addCatch("{ System.out.println($e); throw $e; }", etype);
+            ctMethod.insertAfter(" cost =System.currentTimeMillis()-start;");
 
+                        ctMethod.insertAfter(" System.out.println(\"time cost:\"+cost);");
+
+            CtClass etype = ClassPool.getDefault().get("java.lang.Exception");
+            ctMethod.addCatch("{ System.out.println($e); throw $e; }", etype);
         } catch (Exception e) {
             throw new ClazzException("init", e);
         }

@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.exception.check;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import io.github.kylinhunter.commons.exception.embed.ParamException;
@@ -41,6 +42,21 @@ public class ExceptionChecker {
      */
     public static void checkNotEmpty(Collection<?> collection, String errorMessage) {
         if (CollectionUtils.isEmpty(collection)) {
+            throw new ParamException(errorMessage);
+        }
+    }
+
+    /**
+     * @param name         name
+     * @param errorMessage errorMessage
+     * @return void
+     * @title checkNotEmpty
+     * @description
+     * @author BiJi'an
+     * @date 2023-01-06 00:31
+     */
+    public static void checkNotEmpty(String name, String errorMessage) {
+        if (StringUtils.isEmpty(name)) {
             throw new ParamException(errorMessage);
         }
     }
