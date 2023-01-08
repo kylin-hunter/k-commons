@@ -32,8 +32,8 @@ public class YamlHelper {
     }
 
     /**
-     * @param clazz clazz clazz
-     * @param path  path path
+     * @param clazz clazz
+     * @param path  path
      * @return T
      * @title loadFromClassPath
      * @description

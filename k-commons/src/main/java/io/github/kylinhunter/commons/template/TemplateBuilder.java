@@ -1,48 +1,76 @@
 package io.github.kylinhunter.commons.template;
 
-import java.io.File;
+import io.github.kylinhunter.commons.template.bean.Output;
+import io.github.kylinhunter.commons.template.bean.OutputBuilder;
+import io.github.kylinhunter.commons.template.config.TemplateConfig;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-05 22:01
  **/
-public interface TemplateBuilder<T> {
+public interface TemplateBuilder {
+
+    TemplateConfig getTemplateConfig();
 
     /**
      * @param key   key
      * @param value value
-     * @return java.lang.Object
      * @title put
      * @description
      * @author BiJi'an
      * @date 2023-01-05 22:02
      */
-    Object putContext(String key, Object value);
+    void putContext(String key, Object value);
+
+    /**
+     * @param outputProcessor outputProcessor
+     * @return void
+     * @title output
+     * @description
+     * @author BiJi'an
+     * @date 2023-01-08 23:43
+     */
+    void output(OutputProcessor outputProcessor);
+
+    /**
+     * @return void
+     * @title output
+     * @description
+     * @author BiJi'an
+     * @date 2023-01-08 23:43
+     */
+    void output();
 
     /**
      * @param name     name
      * @param encoding encoding
      * @return void
-     * @title add
+     * @title addTemplate
      * @description
      * @author BiJi'an
-     * @date 2023-01-05 23:12
+     * @date 2023-01-08 22:56
      */
-    void addTemplate(String name, String encoding, File file);
+    OutputBuilder tmplate(String name, String encoding);
 
     /**
      * @param name name
+     * @return io.github.kylinhunter.commons.template.bean.OutputBuilder
+     * @title tmplate
+     * @description
+     * @author BiJi'an
+     * @date 2023-01-08 23:00
+     */
+    OutputBuilder tmplate(String name);
+
+    /**
+     * @param output output
      * @return void
      * @title add
      * @description
      * @author BiJi'an
-     * @date 2023-01-05 23:12
+     * @date 2023-01-09 02:08
      */
-    void addTemplate(String name, File file);
-
-    void output(AfterOutputProcessor afterOutputProcessor);
-
-    void output();
+    void addOutput(Output output);
 
 }

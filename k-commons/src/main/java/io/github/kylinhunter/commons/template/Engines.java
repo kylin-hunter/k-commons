@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum Engines implements CT<TemplateEngine> {
     VELOCITY(VelocityTemplateEngine.class);
+
     private Class<? extends TemplateEngine> clazz;
 
     Engines(Class<? extends TemplateEngine> clazz) {

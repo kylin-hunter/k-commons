@@ -12,6 +12,8 @@ import io.github.kylinhunter.commons.template.AbstractTemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateBuilder;
 import io.github.kylinhunter.commons.template.constant.VelocityConst;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
@@ -20,6 +22,8 @@ import lombok.Data;
  **/
 @C
 @Data
+@EqualsAndHashCode(callSuper = false)
+@Slf4j
 public class VelocityTemplateEngine extends AbstractTemplateEngine {
     private VelocityEngine velocityEngine;
     private ToolManager toolManager;
@@ -28,18 +32,23 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
 
         Properties properties = new Properties();
         properties.setProperty(Velocity.RESOURCE_LOADERS, "class,file");
+        properties.setProperty(Velocity.INPUT_ENCODING, Velocity.ENCODING_DEFAULT);
+
+        // resource.loader.class
         properties.setProperty(VelocityConst.KEY_RESOURCE_LOADER_CLASS_CLASS,
                 VelocityConst.VALUE_RESOURCE_LOADER_CLASS_CLASS);
 
         properties.setProperty(VelocityConst.KEY_RESOURCE_LOADER_FILE_CLASS,
                 VelocityConst.VALUE_RESOURCE_LOADER_FILE_CLASS);
 
-        properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH,
-                UserDirUtils.getDir("template", true).getAbsolutePath());
+        // resource.loader.file
+        String templatePath = UserDirUtils.getDir("template", true).getAbsolutePath();
+        log.info("resource.loader.file.path=>" + templatePath);
+        properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, templatePath);
 
         properties.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, "false");
         properties.setProperty("resource.loader.file.modification_check_interval", "0");
-        properties.setProperty(Velocity.INPUT_ENCODING, Velocity.ENCODING_DEFAULT);
+
         this.velocityEngine = new VelocityEngine();
         this.velocityEngine.init(properties);
 

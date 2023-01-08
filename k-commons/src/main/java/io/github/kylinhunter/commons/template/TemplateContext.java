@@ -5,7 +5,7 @@ package io.github.kylinhunter.commons.template;
  * @description
  * @date 2023-01-05 22:01
  **/
-public interface TemplateContext<T> {
+public interface TemplateContext {
 
     /**
      * @param key   key

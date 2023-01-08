@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.template;
 
-import io.github.kylinhunter.commons.template.config.GlobalConfig;
+import io.github.kylinhunter.commons.template.config.ConfigCustomize;
+import io.github.kylinhunter.commons.template.config.TemplateConfig;
 import lombok.Data;
 
 /**
@@ -10,6 +11,14 @@ import lombok.Data;
  **/
 @Data
 public abstract class AbstractTemplateEngine implements TemplateEngine {
-    protected GlobalConfig globalConfig = new GlobalConfig();
+    protected TemplateConfig templateConfig = new TemplateConfig();
+
+    /**
+     * @see io.github.kylinhunter.commons.template.TemplateEngine#customize
+     */
+    @Override
+    public void customize(ConfigCustomize<TemplateConfig> configCustomize) {
+        configCustomize.customize(this.templateConfig);
+    }
 
 }

@@ -14,17 +14,38 @@ import io.github.kylinhunter.commons.template.TemplateEngine;
 class VelocityTemplateBuilderTest {
 
     @Test
-    void test() {
+    void testTemplateInClass() {
+        String templateInClass = "template_in_class";
         TemplateEngine templateEngine = CF.get(Engines.VELOCITY);
         TemplateBuilder templateBuilder = templateEngine.createTemplateBuilder();
-        File tmpFile = UserDirUtils.getTmpFile("test1.html");
-        System.out.println(tmpFile.getAbsolutePath());
-        templateBuilder.addTemplate("test", tmpFile);
         templateBuilder.putContext("now", LocalDateTime.now());
-        templateBuilder.output((t) -> {
-            System.out.println(t);
+
+        templateBuilder.tmplate(templateInClass).outputRelativePath("output1_result1.html").build();
+        File outpuFile = UserDirUtils.getTmpFile("template_output2/output2_result1.html");
+        templateBuilder.tmplate(templateInClass).outputToFile(outpuFile).build();
+        templateBuilder.tmplate(templateInClass).build();
+        templateBuilder.output(System.out::println);
+
+    }
+
+    @Test
+    void testTemplateInFile() {
+
+        String templateInFile = "template_in_file";
+        TemplateEngine templateEngine = CF.get(Engines.VELOCITY);
+        TemplateBuilder templateBuilder = templateEngine.createTemplateBuilder();
+        templateBuilder.putContext("now", LocalDateTime.now());
+
+        //  template_in_file  and setDefaultOutputDir
+        templateEngine.customize(config -> {
+            File defaultDir = UserDirUtils.getTmpDir("template_output3");
+            config.setDefaultOutputDir(defaultDir.toPath());
+            config.setDefaultOutputDirClean(true);
 
         });
+        templateBuilder.tmplate(templateInFile).outputRelativePath("output3_result1.html").build();
+        templateBuilder.output(System.out::println);
+
     }
 
 }

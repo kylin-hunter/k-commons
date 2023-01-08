@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.template;
 
-import io.github.kylinhunter.commons.template.config.GlobalConfig;
+import io.github.kylinhunter.commons.template.config.ConfigCustomize;
+import io.github.kylinhunter.commons.template.config.TemplateConfig;
 
 /**
  * @author BiJi'an
@@ -11,5 +12,5 @@ public interface TemplateEngine {
 
     TemplateBuilder createTemplateBuilder();
 
-    GlobalConfig getGlobalConfig();
+    void customize(ConfigCustomize<TemplateConfig> globalConfig);
 }

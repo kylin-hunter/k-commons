@@ -1,0 +1,8 @@
+<html>
+<head></head>
+<body>
+template_in_class.vm
+当前的时间  ：$date.get('yyyy-MM-dd HH:mm:ss')
+格式化时间  ：$date.format($now)
+</body>
+</html>
