@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.util;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.compress.utils.Lists;
+import com.google.common.collect.Lists;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,24 +1,26 @@
 package io.github.kylinhunter.commons.template.velocity;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolContext;
 
+import com.google.common.collect.Lists;
+
+import io.github.kylinhunter.commons.io.file.FileExtensions;
 import io.github.kylinhunter.commons.template.OutputProcessor;
-import io.github.kylinhunter.commons.template.TemplateBuilder;
+import io.github.kylinhunter.commons.template.TemplateExecutor;
 import io.github.kylinhunter.commons.template.bean.Output;
 import io.github.kylinhunter.commons.template.bean.OutputBuilder;
+import io.github.kylinhunter.commons.template.bean.TemplateInfo;
 import io.github.kylinhunter.commons.template.config.TemplateConfig;
 import io.github.kylinhunter.commons.template.exception.TemplateException;
 import lombok.Data;
@@ -31,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  **/
 @Data
 @Slf4j
-public class VelocityTemplateBuilder implements TemplateBuilder {
+public class VelocityTemplateExecutor implements TemplateExecutor {
 
     private VelocityEngine velocityEngine;
     private ToolContext toolContext;
@@ -39,7 +41,7 @@ public class VelocityTemplateBuilder implements TemplateBuilder {
     private TemplateConfig templateConfig;
     private List<Output> outputs = Lists.newArrayList();
 
-    public VelocityTemplateBuilder(VelocityTemplateEngine velocityTemplateEngine) {
+    public VelocityTemplateExecutor(VelocityTemplateEngine velocityTemplateEngine) {
         this.velocityTemplateEngine = velocityTemplateEngine;
         this.velocityEngine = this.velocityTemplateEngine.getVelocityEngine();
         this.toolContext = this.velocityTemplateEngine.getToolManager().createContext();
@@ -70,19 +72,26 @@ public class VelocityTemplateBuilder implements TemplateBuilder {
      * @date 2023-01-08 22:56
      */
     public OutputBuilder tmplate(String name, String encoding) {
-        return new OutputBuilder(this, name, encoding);
+        TemplateInfo templateInfo = new TemplateInfo(name, encoding, FileExtensions.DOT_VM);
+        return tmplate(templateInfo);
     }
 
     /**
      * @param name name
-     * @return io.github.kylinhunter.commons.template.bean.OutputBuilder
+     * @return io.github.kylinhunter.commons.templateInfo.bean.OutputBuilder
      * @title tmplate
      * @description
      * @author BiJi'an
      * @date 2023-01-08 23:00
      */
     public OutputBuilder tmplate(String name) {
-        return tmplate(name, null);
+        TemplateInfo templateInfo = new TemplateInfo(name, null, FileExtensions.DOT_VM);
+        return tmplate(templateInfo);
+    }
+
+    public OutputBuilder tmplate(TemplateInfo templateInfo) {
+        return new OutputBuilder(this, templateInfo);
+
     }
 
     @Override
@@ -116,17 +125,16 @@ public class VelocityTemplateBuilder implements TemplateBuilder {
             }
 
             for (Output output : outputs) {
-                String name = output.getName();
-                String encoding = output.getEncoding();
-                Path outputPath = output.getOutputPath();
+                final TemplateInfo templateInfo = output.getTemplateInfo();
+                String templateName = templateInfo.getName();
+                final String templateEncoding = templateInfo.getEncoding();
 
-                Template template = !StringUtils.isEmpty(encoding) ?
-                        this.velocityEngine.getTemplate(name, encoding) : this.velocityEngine.getTemplate(name);
+                Template template = this.velocityEngine.getTemplate(templateName, templateEncoding);
 
                 StringWriter stringWriter = new StringWriter();
                 template.merge(toolContext, stringWriter);
                 String resultText = stringWriter.toString();
-
+                Path outputPath = output.getOutputPath();
                 if (outputPath != null) {
                     File toFile = outputPath.toFile();
                     if (!toFile.getParentFile().exists()) {
@@ -138,14 +146,14 @@ public class VelocityTemplateBuilder implements TemplateBuilder {
                         } else {
                             if (templateConfig.isOutputOverride()) {
                                 log.warn(" override file=>" + toFile.getAbsolutePath());
-                                writeToFile(toFile, resultText);
+                                writeToFile(toFile, resultText, output.getEncoding());
 
                             } else {
                                 log.warn(" skip outputOverride file=>" + toFile.getAbsolutePath());
                             }
                         }
                     } else {
-                        writeToFile(toFile, resultText);
+                        writeToFile(toFile, resultText, output.getEncoding());
                     }
 
                 }
@@ -168,14 +176,13 @@ public class VelocityTemplateBuilder implements TemplateBuilder {
      * @title writeToFile
      * @description
      * @author BiJi'an
-     * @date 2023-01-09 00:51
+     * @date 2023-01-08 00:51
      */
 
-    private void writeToFile(File file, String resultText) throws IOException {
+    private void writeToFile(File file, String resultText, Charset encoding) throws IOException {
         log.info("output to file=> {}", file.getAbsolutePath());
-        try (FileWriter fileWriter = new FileWriter(file)) {
-            fileWriter.write(resultText);
-        }
+        encoding = encoding == null ? templateConfig.getOutputDefaultEncoding() : encoding;
+        FileUtils.writeStringToFile(file, resultText, encoding);
     }
 
 }

@@ -9,7 +9,7 @@ import org.apache.velocity.tools.ToolManager;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.template.AbstractTemplateEngine;
-import io.github.kylinhunter.commons.template.TemplateBuilder;
+import io.github.kylinhunter.commons.template.TemplateExecutor;
 import io.github.kylinhunter.commons.template.constant.VelocityConst;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,15 +58,15 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
     }
 
     /**
-     * @return io.github.kylinhunter.commons.template.context.TemplateBuilder
+     * @return io.github.kylinhunter.commons.templateInfo.context.TemplateExecutor
      * @title createContext
      * @description
      * @author BiJi'an
      * @date 2023-01-05 22:14
      */
     @Override
-    public TemplateBuilder createTemplateBuilder() {
-        return new VelocityTemplateBuilder(this);
+    public TemplateExecutor createTemplateExecutor() {
+        return new VelocityTemplateExecutor(this);
     }
 
 }

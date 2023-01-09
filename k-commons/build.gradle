@@ -6,7 +6,7 @@ dependencies {
     api(rootProject.dependency_management['commons-io'])
     api(rootProject.dependency_management['commons-lang3'])
     api(rootProject.dependency_management['guava'])
-
+    api(rootProject.dependency_management['commons-collections4'])
     implementation(rootProject.dependency_management['velocity-engine-core'])
     implementation(rootProject.dependency_management['velocity-tools-generic'])
 
@@ -19,6 +19,11 @@ dependencies {
     implementation(rootProject.dependency_management['commons-compress'])
     implementation(rootProject.dependency_management['dom4j'])
     implementation('org.yaml:snakeyaml')
+
+    implementation(rootProject.dependency_management['mysql-connector-java'])
+    implementation(rootProject.dependency_management['HikariCP'])
+    implementation(rootProject.dependency_management['commons-dbutils'])
+
 
     testImplementation files(Jvm.current().toolsJar)
 

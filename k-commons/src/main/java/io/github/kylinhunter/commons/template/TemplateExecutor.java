@@ -9,7 +9,7 @@ import io.github.kylinhunter.commons.template.config.TemplateConfig;
  * @description
  * @date 2023-01-05 22:01
  **/
-public interface TemplateBuilder {
+public interface TemplateExecutor {
 
     TemplateConfig getTemplateConfig();
 
@@ -55,7 +55,7 @@ public interface TemplateBuilder {
 
     /**
      * @param name name
-     * @return io.github.kylinhunter.commons.template.bean.OutputBuilder
+     * @return io.github.kylinhunter.commons.templateInfo.bean.OutputBuilder
      * @title tmplate
      * @description
      * @author BiJi'an
@@ -69,7 +69,7 @@ public interface TemplateBuilder {
      * @title add
      * @description
      * @author BiJi'an
-     * @date 2023-01-09 02:08
+     * @date 2023-01-08 02:08
      */
     void addOutput(Output output);
 

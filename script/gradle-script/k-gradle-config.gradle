@@ -3,7 +3,7 @@ ext {
     KYLIN_VERIONS = [
             "k-commons": '1.0.9',
             "k-clazz": '1.0.1',
-            "k-code-generator": '1.0.1'
+            "k-generator": '1.0.1'
     ]
     KYLIN_IMAGE_REPO = "私服地址"
     KYLIN_IMAGE_VERSION = "v1"

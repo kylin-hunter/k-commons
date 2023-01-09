@@ -1,6 +1,8 @@
 package io.github.kylinhunter.commons.template.config;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -20,6 +22,7 @@ public class TemplateConfig {
     private boolean defaultOutputDirClean = false;
     private boolean defaultOutputDirAutoCreate = true;
     private boolean outputOverride = true;
+    private Charset outputDefaultEncoding = StandardCharsets.UTF_8;
 
     /**
      * @param defaultOutputDir defaultOutputDir

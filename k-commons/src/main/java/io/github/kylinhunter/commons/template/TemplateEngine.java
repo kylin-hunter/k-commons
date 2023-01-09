@@ -10,7 +10,7 @@ import io.github.kylinhunter.commons.template.config.TemplateConfig;
  **/
 public interface TemplateEngine {
 
-    TemplateBuilder createTemplateBuilder();
+    TemplateExecutor createTemplateExecutor();
 
     void customize(ConfigCustomize<TemplateConfig> globalConfig);
 }

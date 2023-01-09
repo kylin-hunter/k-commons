@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.reflections.ReflectionUtils;
 import org.yaml.snakeyaml.Yaml;
 
+import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 
@@ -42,11 +43,16 @@ public class YamlHelper {
      */
     public static <T> T loadFromClassPath(Class<T> clazz, String path, LoadCorrector loadCorrector) {
         try (InputStream inputStream = ResourceHelper.getInputStreamInClassPath(path)) {
+            if (inputStream == null) {
+                throw new ParamException(" inputStream is null ,invalid path: " + path);
+            }
             if (loadCorrector != null) {
                 String text = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                 return loadFromText(clazz, text, loadCorrector);
             }
             return new Yaml().loadAs(inputStream, clazz);
+        } catch (KRuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new ParamException("loadFromClassPath error ,invalid path: " + path, e);
         }

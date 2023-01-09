@@ -1,0 +1,30 @@
+dependencies {
+    api project(":k-commons")
+    implementation(rootProject.dependency_management['mysql-connector-java'])
+    implementation(rootProject.dependency_management['HikariCP'])
+    implementation(rootProject.dependency_management['commons-dbutils'])
+    implementation(rootProject.dependency_management['springfox-swagger2'])
+}
+
+
+jar.enabled = true
+bootJar.enabled(false)
+
+
+jar {
+    exclude("logback.xml")
+
+}
+sourceSets {
+    main {
+        java.srcDirs += ['src_auto_generator']
+    }
+}
+test {
+    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    println jvmArgs
+}
+
+
+
+
