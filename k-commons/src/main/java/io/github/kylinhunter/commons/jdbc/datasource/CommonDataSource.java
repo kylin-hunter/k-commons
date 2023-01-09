@@ -11,32 +11,34 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import io.github.kylinhunter.commons.yaml.YamlHelper;
+import lombok.Getter;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-08 16:12
  **/
-public class DataSourceHelper {
-    static DataSource defaultDataSource;
+@Getter
+public class CommonDataSource {
+    private final DataSource dataSource;
     static String DEFAULT_PATH = "kylinhunter/db-config.yaml";
 
-    static {
-        init();
+    public CommonDataSource() {
+        this(null);
     }
 
-    static void init() {
-        init(null);
+    public CommonDataSource(String path) {
+        this.dataSource = init(path);
     }
 
-    static void init(String path) {
+    public HikariDataSource init(String path) {
         path = StringUtils.defaultString(path, DEFAULT_PATH);
         DBConfig dbConfig = YamlHelper.loadFromClassPath(DBConfig.class, path);
         HikariConfig hikariConfig = buildConfig(dbConfig);
-        defaultDataSource = new HikariDataSource(hikariConfig);
+        return new HikariDataSource(hikariConfig);
     }
 
-    private static HikariConfig buildConfig(DBConfig dbConfig) {
+    private HikariConfig buildConfig(DBConfig dbConfig) {
 
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(dbConfig.getDriverClassName());
@@ -64,9 +66,7 @@ public class DataSourceHelper {
         }
         Map<String, String> dataSourceProperties = dbConfig.getDataSourceProperties();
         if (!MapUtils.isEmpty(dataSourceProperties)) {
-            dataSourceProperties.forEach((k, v) -> {
-                hikariConfig.addDataSourceProperty(k, v);
-            });
+            dataSourceProperties.forEach(hikariConfig::addDataSourceProperty);
         }
         return hikariConfig;
     }
