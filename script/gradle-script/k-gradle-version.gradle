@@ -11,6 +11,8 @@ ext {
             "spring-boot-gradle-plugin": "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     ]
     dependency_management = [
+
+            'ojdbc8'                          : 'com.oracle.ojdbc:ojdbc8:19.3.0.0',
             'commons-dbutils'                 : 'commons-dbutils:commons-dbutils:1.7',
             'HikariCP'                        : 'com.zaxxer:HikariCP:3.4.5',
             "javassist"                       : "org.javassist:javassist:3.29.2-GA",

@@ -1,5 +1,10 @@
 rootProject.name = 'k-commons-parent'
-include 'k-commons'
-include 'k-generator'
-include 'k-clazz'
+fileTree('.') {
+    include '*/build.gradle'
+}.collect {
+    relativePath(it.parent).replace(File.separator, ':')
+}.each {
+    include(it)
+}
+
 

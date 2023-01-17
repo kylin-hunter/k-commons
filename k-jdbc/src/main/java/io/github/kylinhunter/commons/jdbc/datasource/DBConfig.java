@@ -24,15 +24,12 @@ public class DBConfig {
     private int connectionTimeout; //default 30000
 
     private int idleTimeout; // Default: 600000 (10 minutes)
-
     private int maxLifetime; // Default: 1800000 (30 minutes)
-
     private int validationTimeout; // Default: 5000
 
-    private int connectionTestQuery; // SELECT 1 FROM DUAL
+    private String connectionTestQuery; // SELECT 1 FROM DUAL
 
     private Map<String, String> dataSourceProperties;
-
 
 }
 

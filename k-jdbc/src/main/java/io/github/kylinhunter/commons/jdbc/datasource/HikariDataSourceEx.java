@@ -2,8 +2,6 @@ package io.github.kylinhunter.commons.jdbc.datasource;
 
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,26 +17,25 @@ import lombok.Getter;
  * @date 2023-01-08 16:12
  **/
 @Getter
-public class CommonDataSource {
-    private final DataSource dataSource;
-    static String DEFAULT_PATH = "kylinhunter/db-config.yaml";
+public class HikariDataSourceEx extends HikariDataSource {
+    static String DEFAULT_PATH = "k-db-config.yaml";
 
-    public CommonDataSource() {
+    public HikariDataSourceEx() {
         this(null);
     }
 
-    public CommonDataSource(String path) {
-        this.dataSource = init(path);
+    public HikariDataSourceEx(String path) {
+        super(buildConfig(path));
+
     }
 
-    public HikariDataSource init(String path) {
+    private static HikariConfig buildConfig(String path) {
         path = StringUtils.defaultString(path, DEFAULT_PATH);
         DBConfig dbConfig = YamlHelper.loadFromClassPath(DBConfig.class, path);
-        HikariConfig hikariConfig = buildConfig(dbConfig);
-        return new HikariDataSource(hikariConfig);
+        return buildConfig(dbConfig);
     }
 
-    private HikariConfig buildConfig(DBConfig dbConfig) {
+    private static HikariConfig buildConfig(DBConfig dbConfig) {
 
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(dbConfig.getDriverClassName());
@@ -70,4 +67,5 @@ public class CommonDataSource {
         }
         return hikariConfig;
     }
+
 }

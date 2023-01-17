@@ -20,13 +20,12 @@ dependencies {
     implementation(rootProject.dependency_management['dom4j'])
     implementation('org.yaml:snakeyaml')
 
-    implementation(rootProject.dependency_management['mysql-connector-java'])
-    implementation(rootProject.dependency_management['HikariCP'])
-    implementation(rootProject.dependency_management['commons-dbutils'])
+
+
+    implementation fileTree(dir: 'lib', includes: ['*.jar'])
 
 
     testImplementation files(Jvm.current().toolsJar)
-
 
 
 }
@@ -34,7 +33,7 @@ dependencies {
 jar.enabled = true
 bootJar.enabled(false)
 
-jar{
+jar {
     exclude("logback.xml")
 }
 test {

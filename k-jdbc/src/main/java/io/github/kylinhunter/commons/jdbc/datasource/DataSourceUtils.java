@@ -14,7 +14,6 @@ public class DataSourceUtils {
     private static final DataSource defaultDataSource;
 
     static {
-        CommonDataSource commonDataSource = new CommonDataSource();
-        defaultDataSource = commonDataSource.getDataSource();
+        defaultDataSource = new HikariDataSourceEx();
     }
 }

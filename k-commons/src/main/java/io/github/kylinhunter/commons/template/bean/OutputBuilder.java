@@ -62,7 +62,7 @@ public class OutputBuilder {
 
     /**
      * @param charset charset
-     * @return io.github.kylinhunter.commons.template.bean.OutputBuilder
+     * @return io.github.kylinhunter.commons.clazz.template.bean.OutputBuilder
      * @title encoding
      * @description
      * @author BiJi'an

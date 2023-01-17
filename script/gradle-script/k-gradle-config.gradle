@@ -2,6 +2,7 @@ ext {
     profile = "local"
     KYLIN_VERIONS = [
             "k-commons": '1.0.9',
+            "k-jdbc": '1.0.1',
             "k-clazz": '1.0.1',
             "k-generator": '1.0.1'
     ]

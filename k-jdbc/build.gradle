@@ -1,0 +1,25 @@
+dependencies {
+    api project(":k-commons")
+    implementation(rootProject.dependency_management['mysql-connector-java'])
+    implementation(rootProject.dependency_management['ojdbc8'])
+    implementation(rootProject.dependency_management['HikariCP'])
+    implementation(rootProject.dependency_management['commons-dbutils'])
+
+}
+
+
+jar.enabled = true
+bootJar.enabled(false)
+
+
+jar {
+    exclude("logback.xml")
+}
+test {
+    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    println jvmArgs
+}
+
+
+
+

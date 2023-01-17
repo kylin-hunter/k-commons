@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.clazz;
+package io.github.kylinhunter.commons;
 
 import java.util.List;
 

@@ -14,7 +14,7 @@ public abstract class AbstractTemplateEngine implements TemplateEngine {
     protected TemplateConfig templateConfig = new TemplateConfig();
 
     /**
-     * @see io.github.kylinhunter.commons.template.TemplateEngine#customize
+     * @see TemplateEngine#customize
      */
     @Override
     public void customize(ConfigCustomize<TemplateConfig> configCustomize) {
