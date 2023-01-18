@@ -4,6 +4,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import io.github.kylinhunter.commons.cache.guava.AbstractCache;
+import io.github.kylinhunter.commons.cache.guava.CacheConfig;
 import io.github.kylinhunter.commons.cache.guava.CacheKey;
 
 /**
@@ -18,4 +19,8 @@ public class AESKeyCache extends AbstractCache<SecretKey> {
         return new SecretKeySpec(Base64Utils.decode(key.getString(0)), "AES");
     }
 
+    @Override
+    protected void custom(CacheConfig cacheConfig) {
+
+    }
 }

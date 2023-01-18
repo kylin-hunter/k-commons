@@ -13,9 +13,11 @@ import java.lang.annotation.Target;
  **/
 public interface Cache<V> {
 
-    void put(V v, String key);
+    void put(String key, V v);
 
-    void put(V v, Object... keys);
+    void put(Object key, V v);
+
+    void put(Object[] keys, V v);
 
     V get(String key);
 

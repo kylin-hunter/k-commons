@@ -66,6 +66,9 @@ public class CF {
                 CC cconstructor = new CC(c, c.getConstructors()[0]);
                 ALL_CCONSTRUCTORS.put(c, cconstructor);
                 Class<?>[] interfaces = c.getInterfaces();
+                if (interfaces.length == 0) {
+                    interfaces = c.getSuperclass().getInterfaces();
+                }
                 for (Class<?> anInterface : interfaces) {
                     if (validPkg(anInterface, pkgs)) {
                         ALL_I_CCONSTRUCTORS.compute(anInterface, (k, v) -> {
@@ -109,25 +112,35 @@ public class CF {
                         if (obj != null) {
                             parameterObj[i] = obj;
                         } else {
+
                             Type type = genericParameterTypes[i];
                             if (type instanceof ParameterizedType) {
-                                Type[] actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
-                                for (Type actualTypeArgument : actualTypeArguments) {
-                                    Set<CC> allCCS = ALL_I_CCONSTRUCTORS.get(actualTypeArgument);
-                                    List<Object> objs = Lists.newArrayList();
-                                    if (allCCS != null) {
-                                        for (CC tmpCC : allCCS) {
-                                            Object tmpObj = ALL_COMPONENTS.get(tmpCC.getClazz());
-                                            if (tmpObj != null) {
-                                                objs.add(tmpObj);
+                                ParameterizedType parameterizedType = (ParameterizedType) type;
+
+                                Set<CC> allCCS = ALL_I_CCONSTRUCTORS.get(parameterizedType.getRawType());
+                                if (allCCS != null) {
+                                    parameterObj[i] = ALL_COMPONENTS.get(allCCS.iterator().next().getClazz());
+
+                                } else {
+                                    Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+                                    for (Type actualTypeArgument : actualTypeArguments) {
+                                        allCCS = ALL_I_CCONSTRUCTORS.get(actualTypeArgument);
+                                        List<Object> objs = Lists.newArrayList();
+                                        if (allCCS != null) {
+                                            for (CC tmpCC : allCCS) {
+                                                Object tmpObj = ALL_COMPONENTS.get(tmpCC.getClazz());
+                                                if (tmpObj != null) {
+                                                    objs.add(tmpObj);
+                                                }
                                             }
                                         }
-                                    }
-                                    if (objs.size() > 0) {
-                                        parameterObj[i] = objs;
-                                    }
+                                        if (objs.size() > 0) {
+                                            parameterObj[i] = objs;
+                                        }
 
+                                    }
                                 }
+
                             }
 
                             if (parameterObj[i] == null) {
@@ -220,16 +233,21 @@ public class CF {
 
         } else {
             if (type instanceof ParameterizedType) {
-                Type[] actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
-                for (Type actualTypeArgument : actualTypeArguments) {
-                    allCCS = ALL_I_CCONSTRUCTORS.get(actualTypeArgument);
-                    if (allCCS != null) {
-                        break;
+                ParameterizedType parameterizedType = (ParameterizedType) type;
+                allCCS = ALL_I_CCONSTRUCTORS.get(parameterizedType.getRawType());
+                if (allCCS == null) {
+                    Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+                    for (Type actualTypeArgument : actualTypeArguments) {
+                        allCCS = ALL_I_CCONSTRUCTORS.get(actualTypeArgument);
+                        if (allCCS != null) {
+                            break;
+                        }
                     }
                 }
+
             }
             if (allCCS == null) {
-                throw new InitException("no existCC for :" + depClazz.getName());
+                throw new InitException("no exist CC for :" + depClazz.getName());
 
             }
         }

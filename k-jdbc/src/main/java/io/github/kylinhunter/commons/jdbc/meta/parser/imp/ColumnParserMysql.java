@@ -1,0 +1,34 @@
+package io.github.kylinhunter.commons.jdbc.meta.parser.imp;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.mysql.cj.MysqlType;
+
+import io.github.kylinhunter.commons.component.C;
+import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.jdbc.meta.parser.ColumnParser;
+
+/**
+ * @author BiJi'an
+ * @description
+ * @date 2023-01-10 11:11
+ **/
+@C
+public class ColumnParserMysql implements ColumnParser {
+
+    /**
+     * @see ColumnParser#calJavaClass(int)
+     */
+    public Class<?> calJavaClass(int dataType) {
+        try {
+            MysqlType mysqlType = MysqlType.getByJdbcType(dataType);
+            String className = mysqlType.getClassName();
+            if (!StringUtils.isEmpty(className)) {
+                return Class.forName(className);
+            }
+        } catch (Exception e) {
+            throw new InitException("can't get javaClass");
+        }
+        return null;
+    }
+}

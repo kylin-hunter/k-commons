@@ -31,4 +31,14 @@ public class BeanCreator {
         }
 
     }
+
+    public static <T> T createBean(Class<T> clazz) {
+        try {
+            Constructor<T> constructor = clazz.getConstructor();
+            return constructor.newInstance();
+        } catch (Exception e) {
+            throw new InitException("init createBean error", e);
+        }
+
+    }
 }

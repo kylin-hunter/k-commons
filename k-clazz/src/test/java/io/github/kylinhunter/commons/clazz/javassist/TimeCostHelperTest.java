@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import io.github.kylinhunter.commons.Animal;
-import io.github.kylinhunter.commons.exception.ClazzException;
+import io.github.kylinhunter.commons.clazz.exception.ClazzException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TimeCostHelperTest {

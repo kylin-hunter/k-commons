@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.jdbc.meta.bean;
 
 import java.sql.JDBCType;
 import java.util.Map;
-import java.util.StringJoiner;
 
 import com.google.common.collect.Maps;
 
@@ -15,14 +14,13 @@ import lombok.ToString;
  * @date 2023-01-10 11:11
  **/
 @Data
-@ToString(exclude="rawMetadatas")
-public class ColumnMetaData {
+@ToString(exclude = "rawMetadatas")
+public class ColumnMeta {
 
     private Map<String, Object> rawMetadatas = Maps.newHashMap();
     private String tableName;
     private String columnName;
 
-    private JDBCType jdbcType;
     private int dataType;
     private String typeName;
     private int columnSize;
@@ -32,10 +30,7 @@ public class ColumnMetaData {
     private boolean nullable;
     private String remarks;
 
-    public void setDataType(int dataType) {
-        this.dataType = dataType;
-        this.jdbcType=JDBCType.valueOf(dataType);
-    }
-
+    private JDBCType jdbcType;
+    private Class<?> javaClass;
 
 }

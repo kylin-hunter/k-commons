@@ -1,6 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.datasource;
-
-import java.util.Map;
+package io.github.kylinhunter.commons.jdbc.datasource.bean;
 
 import lombok.Data;
 
@@ -10,12 +8,7 @@ import lombok.Data;
  * @date 2023-01-08 20:09
  **/
 @Data
-public class DBConfig {
-
-    private String driverClassName;
-    private String jdbcUrl;
-    private String username;
-    private String password;
+public class PoolInfo {
 
     private int poolName; //  Default: auto-generated
 
@@ -28,8 +21,6 @@ public class DBConfig {
     private int validationTimeout; // Default: 5000
 
     private String connectionTestQuery; // SELECT 1 FROM DUAL
-
-    private Map<String, String> dataSourceProperties;
 
 }
 

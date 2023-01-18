@@ -23,10 +23,8 @@ class TestCache1Imp extends AbstractCache<Long> {
     }
 
     @Override
-    public CacheConfig loadConfig() {
-        CacheConfig cacheConfig = new CacheConfig();
+    protected void custom(CacheConfig cacheConfig) {
         cacheConfig.setRefreshAfterWrite(2); //
         cacheConfig.setRefreshTimeUnit(TimeUnit.MILLISECONDS);
-        return cacheConfig;
     }
 }

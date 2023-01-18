@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.meta.bean;
 
-import io.github.kylinhunter.commons.exception.embed.ParamException;
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
  * @date 2023-01-10 11:11
  **/
 @Data
-public class DbMetaData {
+public class DatabaseMeta {
     private String url;
     private String productName;
     private String version;
@@ -24,14 +24,17 @@ public class DbMetaData {
 
     private DbType calDbType(String jdbcUrl) {
 
-        if (jdbcUrl != null) {
-            if (jdbcUrl.toLowerCase().contains("mysql")) {
-                return DbType.MYSQL;
-            } else {
-                return DbType.OTHERS;
-            }
+        ExceptionChecker.checkNotEmpty(jdbcUrl, "jdbcUrl can't be  empty");
+        String lowerCaseJdbcUrl = jdbcUrl.toLowerCase();
+        if (lowerCaseJdbcUrl.contains("mysql")) {
+            return DbType.MYSQL;
+        } else if (lowerCaseJdbcUrl.contains("oracle")) {
+            return DbType.ORACLE;
+        } else if (lowerCaseJdbcUrl.contains("sqlserver")) {
+            return DbType.SQL_SERVER;
         } else {
-            throw new ParamException("jdbcUrl can't be null");
+            return DbType.OTHERS;
         }
+
     }
 }

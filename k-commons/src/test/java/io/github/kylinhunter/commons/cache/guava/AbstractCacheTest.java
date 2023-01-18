@@ -21,7 +21,7 @@ public class AbstractCacheTest {
             System.out.println(value);
             ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
         }
-        guavaCache.put(100L, new Integer(1), new Integer(2));
+        guavaCache.put(new Object[] {new Integer(1), new Integer(2)}, 100L);
         value = guavaCache.get(new Integer(1), new Integer(2));
         System.out.println(value);
         guavaCache.invalidate(new Integer(1), new Integer(2));
@@ -32,7 +32,7 @@ public class AbstractCacheTest {
 
     @Test
     void testCache2() {
-        Cache<Long> guavaCache = new TestCache1Imp();
+        TestCache2 guavaCache = new TestCache2Imp();
 
         Long value;
 
@@ -43,7 +43,8 @@ public class AbstractCacheTest {
             System.out.println(value);
             ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
         }
-        guavaCache.put(100L, new TestParam1("1"), new TestParam2("parm2"));
+        guavaCache.put(new TestParam1("1"), new TestParam2("parm2"), 100L);
+
         value = guavaCache.get(new TestParam1("1"), new TestParam2("parm2"));
         System.out.println(value);
         guavaCache.invalidate(new TestParam1("1"), new TestParam2("parm2"));
