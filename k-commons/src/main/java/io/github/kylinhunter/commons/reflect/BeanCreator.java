@@ -32,9 +32,26 @@ public class BeanCreator {
 
     }
 
+    /**
+     * @param clazz clazz
+     * @return T
+     * @title createBean
+     * @description
+     * @author BiJi'an
+     * @date 2023-01-20 00:10
+     */
     public static <T> T createBean(Class<T> clazz) {
         try {
             Constructor<T> constructor = clazz.getConstructor();
+            return constructor.newInstance();
+        } catch (Exception e) {
+            throw new InitException("init createBean error", e);
+        }
+
+    }
+
+    public static <T> T createBean(Constructor<T> constructor) {
+        try {
             return constructor.newInstance();
         } catch (Exception e) {
             throw new InitException("init createBean error", e);
