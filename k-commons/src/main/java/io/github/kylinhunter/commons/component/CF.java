@@ -3,7 +3,6 @@ package io.github.kylinhunter.commons.component;
 import java.util.Objects;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.sys.KConst;
 
 /**
  * @author BiJi'an
@@ -11,9 +10,7 @@ import io.github.kylinhunter.commons.sys.KConst;
  * @date 2022-10-22 01:48
  **/
 public class CF {
-    private static final ComponentAssistant componentAssistant = new ComponentAssistant(KConst.K_BASE_PACKAGE);
-    private static final ConstructorManager cconstructorManager = new ConstructorManager(componentAssistant);
-    private static final ComponentManager componentManager = new ComponentManager(cconstructorManager);
+    private static final CompManager COMP_MANAGER = new CompManager();
 
     static {
         init();
@@ -29,12 +26,8 @@ public class CF {
     public static void init(String... pkgs) {
 
         try {
-            if (pkgs.length > 0) {
-                componentAssistant.setPkgs(pkgs);
-            }
-            componentManager.clear();
-            cconstructorManager.clear();
-            componentManager.calComponent(cconstructorManager.initConstructors());
+            COMP_MANAGER.init(pkgs);
+            COMP_MANAGER.calComponent();
 
         } catch (Throwable e) {
             throw new InitException("init component factory error", e);
@@ -43,7 +36,7 @@ public class CF {
     }
 
     /**
-     * @param clazz clazz
+     * @param clazz compClazz
      * @return T
      * @title get
      * @description
@@ -67,7 +60,7 @@ public class CF {
     }
 
     /**
-     * @param clazz    clazz
+     * @param clazz    compClazz
      * @param required required
      * @return T
      * @title get
@@ -77,8 +70,8 @@ public class CF {
      */
     @SuppressWarnings("unchecked")
     public static <T, S extends T> T get(Class<S> clazz, boolean required) {
-        Objects.requireNonNull(clazz, "clazz can't be null");
-        Object manager = componentManager.getComponent(clazz);
+        Objects.requireNonNull(clazz, "compClazz can't be null");
+        Object manager = COMP_MANAGER.getComponent(clazz);
         if (manager == null && required) {
             throw new InitException("no component for :" + clazz);
         }

@@ -17,15 +17,15 @@ import lombok.Data;
  **/
 
 @Data
-public class ComponentAssistant {
+public class CompTools {
     private String[] pkgs;
 
-    public ComponentAssistant(String... pkgs) {
+    public CompTools(String... pkgs) {
         this.pkgs = pkgs;
     }
 
     /**
-     * @param clazz clazz
+     * @param clazz compClazz
      * @return java.util.Set<java.lang.Class < ?>>
      * @title getAllInterface
      * @description
@@ -38,7 +38,7 @@ public class ComponentAssistant {
     }
 
     /**
-     * @param clazz clazz
+     * @param clazz compClazz
      * @return boolean
      * @title isValid
      * @description
@@ -56,17 +56,17 @@ public class ComponentAssistant {
 
     /**
      * @return java.util.Set<java.lang.Class < ?>>
-     * @title getAllComponentClazzes
+     * @title getCompClazzes
      * @description
      * @author BiJi'an
      * @date 2023-01-19 02:59
      */
-    public Set<Class<?>> calAllComponentClazzes() {
-        Set<Class<?>> allComponentClazzes = Sets.newHashSet();
+    public Set<Class<?>> calAllCompClazzes() {
+        Set<Class<?>> allCompClazzes = Sets.newHashSet();
         for (String pkg : pkgs) {
             Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
-            allComponentClazzes = reflections.getTypesAnnotatedWith(C.class);
+            allCompClazzes = reflections.getTypesAnnotatedWith(C.class);
         }
-        return allComponentClazzes;
+        return allCompClazzes;
     }
 }

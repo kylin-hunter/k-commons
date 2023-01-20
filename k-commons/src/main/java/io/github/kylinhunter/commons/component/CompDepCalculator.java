@@ -20,14 +20,14 @@ import lombok.Data;
  **/
 
 @Data
-public class DependencyCalculator {
+public class CompDepCalculator {
     private final Map<Class<?>, Set<Class<?>>> allDependencies = Maps.newHashMap();
-    private ConstructorManager cconstructorManager;
-    private ComponentAssistant componentAssistant;
+    private CompConstructorManager compConstructorManager;
+    private CompTools compTools;
 
-    public DependencyCalculator(ConstructorManager cconstructorManager) {
-        this.cconstructorManager = cconstructorManager;
-        this.componentAssistant = cconstructorManager.getComponentAssistant();
+    public CompDepCalculator(CompConstructorManager compConstructorManager) {
+        this.compConstructorManager = compConstructorManager;
+        this.compTools = compConstructorManager.getCompTools();
     }
 
     /**
@@ -49,23 +49,23 @@ public class DependencyCalculator {
      * @date 2023-01-19 23:25
      */
     public void calDependencies() {
-        for (CConstructor cconstructor : cconstructorManager.getAllCConstructors().values()) {
-            this.calDependencies(cconstructor);
+        for (CompConstructor compConstructor : compConstructorManager.getCompConstructors().values()) {
+            this.calDependencies(compConstructor);
         }
     }
 
     /**
-     * @param constructor constructor
+     * @param compConstructor compConstructor
      * @return void
      * @title calDependencies
      * @description
      * @author BiJi'an
      * @date 2022-11-08 20:06
      */
-    private void calDependencies(CConstructor constructor) {
-        Class<?> clazz = constructor.getClazz();
-        calDependencies(clazz, clazz, null);
-        constructor.setDepLevel(allDependencies.get(clazz).size());
+    private void calDependencies(CompConstructor compConstructor) {
+        Class<?> compClazz = compConstructor.getCompClazz();
+        calDependencies(compClazz, compClazz, null);
+        compConstructor.setDepLevel(allDependencies.get(compClazz).size());
     }
 
     /**
@@ -77,12 +77,12 @@ public class DependencyCalculator {
      * @author BiJi'an
      * @date 2022-11-08 20:21
      */
-    public void calDependencies(Class<?> oriClazz, Class<?> depClazz, Type genericParameterType) {
-        Set<CConstructor> allCConstructors = Sets.newHashSet();
-        if (componentAssistant.isValidClazz(depClazz)) {
-            CConstructor existCConstructor = cconstructorManager.getCConstructor(depClazz);
-            if (existCConstructor != null) {
-                allCConstructors.add(existCConstructor);
+    private void calDependencies(Class<?> oriClazz, Class<?> depClazz, Type genericParameterType) {
+        Set<CompConstructor> allCompConstructors = Sets.newHashSet();
+        if (compTools.isValidClazz(depClazz)) {
+            CompConstructor existCompConstructor = compConstructorManager.getCompConstructor(depClazz);
+            if (existCompConstructor != null) {
+                allCompConstructors.add(existCompConstructor);
             }
         }
 
@@ -91,10 +91,10 @@ public class DependencyCalculator {
             Type rawType = parameterizedType.getRawType();
             if (rawType instanceof Class<?>) {
                 Class<?> rawTypeClazz = (Class<?>) rawType;
-                if (componentAssistant.isValidClazz(rawTypeClazz)) {
-                    Set<CConstructor> cconstructors = cconstructorManager.getCConstructorByInterface(rawTypeClazz);
+                if (compTools.isValidClazz(rawTypeClazz)) {
+                    Set<CompConstructor> cconstructors = compConstructorManager.getCompConstructorByInterface(rawTypeClazz);
                     if (cconstructors != null) {
-                        allCConstructors.addAll(cconstructors);
+                        allCompConstructors.addAll(cconstructors);
                     }
 
                 } else if (List.class.isAssignableFrom(rawTypeClazz)) {
@@ -102,10 +102,10 @@ public class DependencyCalculator {
                     for (Type actualTypeArgument : actualTypeArguments) {
                         if (actualTypeArgument instanceof Class<?>) {
                             Class<?> actualTypeArgumentClazz = (Class<?>) actualTypeArgument;
-                            Set<CConstructor> cconstructors =
-                                    cconstructorManager.getCConstructorByInterface(actualTypeArgumentClazz);
+                            Set<CompConstructor> cconstructors =
+                                    compConstructorManager.getCompConstructorByInterface(actualTypeArgumentClazz);
                             if (cconstructors != null) {
-                                allCConstructors.addAll(cconstructors);
+                                allCompConstructors.addAll(cconstructors);
                             }
                         }
 
@@ -115,15 +115,15 @@ public class DependencyCalculator {
             }
         }
 
-        if (allCConstructors.size() <= 0) {
-            throw new InitException("no exist CConstructor for :" + depClazz.getName());
+        if (allCompConstructors.size() <= 0) {
+            throw new InitException("no exist CompConstructor for :" + depClazz.getName());
         }
-        for (CConstructor cconstructor : allCConstructors) {
+        for (CompConstructor cconstructor : allCompConstructors) {
             allDependencies.compute(oriClazz, (k, v) -> {
                 if (v == null) {
                     v = Sets.newHashSet();
                 }
-                v.add(cconstructor.getClazz());
+                v.add(cconstructor.getCompClazz());
                 return v;
             });
 

@@ -10,13 +10,13 @@ import lombok.Data;
  * @date 2022-10-25 23:17
  **/
 @Data
-class CConstructor {
-    private Class<?> clazz;
+class CompConstructor {
+    private Class<?> compClazz;
     private Constructor<?> constructor;
     private int depLevel;
 
-    public CConstructor(Class<?> clazz, Constructor<?> constructor) {
-        this.clazz = clazz;
+    public CompConstructor(Class<?> compClazz, Constructor<?> constructor) {
+        this.compClazz = compClazz;
         this.constructor = constructor;
     }
 

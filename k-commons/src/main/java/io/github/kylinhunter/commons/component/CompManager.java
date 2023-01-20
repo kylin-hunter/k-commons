@@ -13,6 +13,7 @@ import com.google.common.collect.Sets;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.BeanCreator;
+import io.github.kylinhunter.commons.sys.KConst;
 
 /**
  * @author BiJi'an
@@ -20,47 +21,47 @@ import io.github.kylinhunter.commons.reflect.BeanCreator;
  * @date 2022-10-25 23:17
  **/
 
-class ComponentManager {
+class CompManager {
     private final Map<Class<?>, Object> allComponents = Maps.newHashMap();
     private final Map<Class<?>, Set<Object>> allInterfaceComponents = Maps.newHashMap();
-    private final ConstructorManager constructorManager;
-    private final ComponentAssistant componentAssistant;
-
-    public ComponentManager(ConstructorManager constructorManager) {
-        this.constructorManager = constructorManager;
-        this.componentAssistant = constructorManager.getComponentAssistant();
-    }
+    private CompTools compTools = new CompTools(KConst.K_BASE_PACKAGE);
+    private CompConstructorManager compConstructorManager = new CompConstructorManager(compTools);
 
     /**
+     * @param pkgs pkgs
      * @return void
-     * @title clear
+     * @title init
      * @description
      * @author BiJi'an
-     * @date 2023-01-20 00:15
+     * @date 2023-01-21 00:06
      */
-    public void clear() {
+    public void init(String... pkgs) {
+        compConstructorManager.clear();
         allComponents.clear();
         allInterfaceComponents.clear();
+        if (pkgs != null && pkgs.length > 0) {
+            compTools.setPkgs(pkgs);
+        }
     }
 
     /**
-     * @param allCConstructors allCConstructors
      * @return void
      * @title calComponents
      * @description
      * @author BiJi'an
      * @date 2023-01-20 00:27
      */
-    public void calComponent(List<CConstructor> allCConstructors) {
-        for (CConstructor cconstructor : allCConstructors) {
-            calComponent(cconstructor);
+    public void calComponent() {
+        List<CompConstructor> compConstructors = compConstructorManager.calCompConstructor();
+        for (CompConstructor compConstructor : compConstructors) {
+            calComponent(compConstructor);
         }
 
-        Set<Class<?>> allComponentClazzes = constructorManager.getAllComponentClazzes();
-        for (Class<?> componentClazz : allComponentClazzes) {
-            Object component = allComponents.get(componentClazz);
+        Set<Class<?>> compClazzes = compConstructorManager.getCompClazzes();
+        for (Class<?> compClazz : compClazzes) {
+            Object component = allComponents.get(compClazz);
             if (component != null) {
-                Set<Class<?>> interfaces = componentAssistant.getAllInterface(componentClazz);
+                Set<Class<?>> interfaces = compTools.getAllInterface(compClazz);
                 for (Class<?> i : interfaces) {
                     allInterfaceComponents.compute(i, (k, v) -> {
                         if (v == null) {
@@ -74,15 +75,23 @@ class ComponentManager {
             }
 
         }
-        if (allComponents.size() != allComponentClazzes.size()) {
+        if (allComponents.size() != compClazzes.size()) {
             throw new InitException("no all  component be initialized ");
 
         }
     }
 
-    public void calComponent(CConstructor cconstructor) {
+    /**
+     * @param cconstructor cconstructor
+     * @return void
+     * @title calComponent
+     * @description
+     * @author BiJi'an
+     * @date 2023-01-21 00:37
+     */
+    public void calComponent(CompConstructor cconstructor) {
         Constructor<?> constructor = cconstructor.getConstructor();
-        Class<?> clazz = cconstructor.getClazz();
+        Class<?> clazz = cconstructor.getCompClazz();
         int parameterCount = constructor.getParameterCount();
         if (parameterCount <= 0) {
             allComponents.put(clazz, BeanCreator.createBean(constructor));
@@ -105,11 +114,11 @@ class ComponentManager {
                         Type rawType = parameterizedType.getRawType();
                         if (rawType instanceof Class<?>) {
                             Class<?> rawTypeClazz = (Class<?>) rawType;
-                            if (componentAssistant.isValidClazz(rawTypeClazz)) {
-                                Set<CConstructor> cconstructors =
-                                        constructorManager.getCConstructorByInterface(rawTypeClazz);
+                            if (compTools.isValidClazz(rawTypeClazz)) {
+                                Set<CompConstructor> cconstructors =
+                                        compConstructorManager.getCompConstructorByInterface(rawTypeClazz);
                                 if (cconstructors != null) {
-                                    parameterObj[i] = allComponents.get(cconstructors.iterator().next().getClazz());
+                                    parameterObj[i] = allComponents.get(cconstructors.iterator().next().getCompClazz());
                                 }
                             } else if (List.class.isAssignableFrom(rawTypeClazz)) {
                                 Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
@@ -117,12 +126,13 @@ class ComponentManager {
                                     if (actualTypeArgument instanceof Class<?>) {
                                         Class<?> actualTypeArgumentClazz = (Class<?>) actualTypeArgument;
 
-                                        Set<CConstructor> cconstructors =
-                                                constructorManager.getCConstructorByInterface(actualTypeArgumentClazz);
+                                        Set<CompConstructor> cconstructors =
+                                                compConstructorManager
+                                                        .getCompConstructorByInterface(actualTypeArgumentClazz);
                                         List<Object> objs = Lists.newArrayList();
                                         if (cconstructors != null) {
-                                            for (CConstructor tmpCConstructor : cconstructors) {
-                                                Object tmpObj = allComponents.get(tmpCConstructor.getClazz());
+                                            for (CompConstructor tmpCompConstructor : cconstructors) {
+                                                Object tmpObj = allComponents.get(tmpCompConstructor.getCompClazz());
                                                 if (tmpObj != null) {
                                                     objs.add(tmpObj);
                                                 }
@@ -158,7 +168,7 @@ class ComponentManager {
     }
 
     /**
-     * @param clazz clazz
+     * @param clazz compClazz
      * @return java.lang.Object
      * @title getComponent
      * @description
