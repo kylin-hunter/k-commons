@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.reflect.ReflectUtil;
 import lombok.Data;
 
 /**
@@ -22,12 +23,12 @@ import lombok.Data;
 @Data
 public class CompDepCalculator {
     private final Map<Class<?>, Set<Class<?>>> allDependencies = Maps.newHashMap();
-    private CompConstructorManager compConstructorManager;
+    private CompConstructorManager constructorManager;
     private CompTools compTools;
 
-    public CompDepCalculator(CompConstructorManager compConstructorManager) {
-        this.compConstructorManager = compConstructorManager;
-        this.compTools = compConstructorManager.getCompTools();
+    public CompDepCalculator(CompConstructorManager constructorManager) {
+        this.constructorManager = constructorManager;
+        this.compTools = constructorManager.getCompTools();
     }
 
     /**
@@ -49,7 +50,7 @@ public class CompDepCalculator {
      * @date 2023-01-19 23:25
      */
     public void calDependencies() {
-        for (CompConstructor compConstructor : compConstructorManager.getCompConstructors().values()) {
+        for (CompConstructor compConstructor : constructorManager.getAll().values()) {
             this.calDependencies(compConstructor);
         }
     }
@@ -63,7 +64,7 @@ public class CompDepCalculator {
      * @date 2022-11-08 20:06
      */
     private void calDependencies(CompConstructor compConstructor) {
-        Class<?> compClazz = compConstructor.getCompClazz();
+        Class<?> compClazz = compConstructor.getClazz();
         calDependencies(compClazz, compClazz, null);
         compConstructor.setDepLevel(allDependencies.get(compClazz).size());
     }
@@ -79,58 +80,46 @@ public class CompDepCalculator {
      */
     private void calDependencies(Class<?> oriClazz, Class<?> depClazz, Type genericParameterType) {
         Set<CompConstructor> allCompConstructors = Sets.newHashSet();
-        if (compTools.isValidClazz(depClazz)) {
-            CompConstructor existCompConstructor = compConstructorManager.getCompConstructor(depClazz);
+        if (compTools.isValid(depClazz)) {
+            CompConstructor existCompConstructor = constructorManager.get(depClazz);
             if (existCompConstructor != null) {
                 allCompConstructors.add(existCompConstructor);
             }
         }
 
-        if (genericParameterType instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) genericParameterType;
-            Type rawType = parameterizedType.getRawType();
-            if (rawType instanceof Class<?>) {
-                Class<?> rawTypeClazz = (Class<?>) rawType;
-                if (compTools.isValidClazz(rawTypeClazz)) {
-                    Set<CompConstructor> cconstructors = compConstructorManager.getCompConstructorByInterface(rawTypeClazz);
-                    if (cconstructors != null) {
-                        allCompConstructors.addAll(cconstructors);
-                    }
+        ParameterizedType parameterizedType = ReflectUtil.toParameterizedType(genericParameterType);
+        if (parameterizedType != null) {
+            Class<?> rawTypeClazz = ReflectUtil.getRawTypeClass(parameterizedType);
+            if (rawTypeClazz != null) {
+                if (compTools.isValid(rawTypeClazz)) {
+                    allCompConstructors.addAll(constructorManager.getAllByInterface(rawTypeClazz));
 
                 } else if (List.class.isAssignableFrom(rawTypeClazz)) {
-                    Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-                    for (Type actualTypeArgument : actualTypeArguments) {
-                        if (actualTypeArgument instanceof Class<?>) {
-                            Class<?> actualTypeArgumentClazz = (Class<?>) actualTypeArgument;
-                            Set<CompConstructor> cconstructors =
-                                    compConstructorManager.getCompConstructorByInterface(actualTypeArgumentClazz);
-                            if (cconstructors != null) {
-                                allCompConstructors.addAll(cconstructors);
-                            }
-                        }
-
+                    Class<?>[] actualTypeArgumentClasses = ReflectUtil.getActualTypeArgumentClasses(parameterizedType);
+                    for (Class<?> actualTypeArgumentClass : actualTypeArgumentClasses) {
+                        allCompConstructors.addAll(constructorManager.getAllByInterface(actualTypeArgumentClass));
                     }
                 }
-
             }
+
         }
 
         if (allCompConstructors.size() <= 0) {
             throw new InitException("no exist CompConstructor for :" + depClazz.getName());
         }
-        for (CompConstructor cconstructor : allCompConstructors) {
+        for (CompConstructor compConstructor : allCompConstructors) {
             allDependencies.compute(oriClazz, (k, v) -> {
                 if (v == null) {
                     v = Sets.newHashSet();
                 }
-                v.add(cconstructor.getCompClazz());
+                v.add(compConstructor.getClazz());
                 return v;
             });
 
-            Constructor<?> constructor = cconstructor.getConstructor();
+            Constructor<?> constructor = compConstructor.getConstructor();
             if (constructor.getParameterCount() > 0) {
-                Type[] genericParameterTypes = constructor.getGenericParameterTypes();
                 Class<?>[] parameterTypes = constructor.getParameterTypes();
+                Type[] genericParameterTypes = constructor.getGenericParameterTypes();
                 for (int i = 0; i < parameterTypes.length; i++) {
                     calDependencies(oriClazz, parameterTypes[i], genericParameterTypes[i]);
                 }

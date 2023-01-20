@@ -25,7 +25,7 @@ public class CompTools {
     }
 
     /**
-     * @param clazz compClazz
+     * @param clazz clazz
      * @return java.util.Set<java.lang.Class < ?>>
      * @title getAllInterface
      * @description
@@ -34,18 +34,18 @@ public class CompTools {
      */
     @SuppressWarnings("unchecked")
     public Set<Class<?>> getAllInterface(Class<?> clazz) {
-        return ReflectionUtils.getAllSuperTypes(clazz, c -> c.isInterface() && isValidClazz(c));
+        return ReflectionUtils.getAllSuperTypes(clazz, c -> c.isInterface() && isValid(c));
     }
 
     /**
-     * @param clazz compClazz
+     * @param clazz clazz
      * @return boolean
      * @title isValid
      * @description
      * @author BiJi'an
      * @date 2023-01-19 22:07
      */
-    public boolean isValidClazz(Class<?> clazz) {
+    public boolean isValid(Class<?> clazz) {
         for (String pkg : pkgs) {
             if (clazz.getPackage().getName().contains(pkg)) {
                 return true;

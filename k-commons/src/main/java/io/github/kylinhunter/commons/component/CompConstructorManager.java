@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.component;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +19,11 @@ import lombok.Getter;
  **/
 
 class CompConstructorManager {
-    @Getter
+
     private final Map<Class<?>, CompConstructor> compConstructors = Maps.newHashMap();
-    @Getter
+
     private final Map<Class<?>, Set<CompConstructor>> interfaceCompConstructors = Maps.newHashMap();
+
     @Getter
     private final Set<Class<?>> compClazzes = Sets.newHashSet();
 
@@ -32,6 +34,17 @@ class CompConstructorManager {
     public CompConstructorManager(CompTools compTools) {
         this.compTools = compTools;
         this.compDepCalculator = new CompDepCalculator(this);
+    }
+
+    /**
+     * @return java.util.Map<java.lang.Class < ?>,io.github.kylinhunter.commons.component.CompConstructor>
+     * @title getAll
+     * @description
+     * @author BiJi'an
+     * @date 2023-01-21 02:15
+     */
+    public Map<Class<?>, CompConstructor> getAll() {
+        return compConstructors;
     }
 
     /**
@@ -67,7 +80,7 @@ class CompConstructorManager {
     }
 
     /**
-     * @param compClazz compClazz
+     * @param compClazz clazz
      * @return void
      * @title calConstructor
      * @description
@@ -75,14 +88,14 @@ class CompConstructorManager {
      * @date 2023-01-19 23:53
      */
     private void calCompConstructor(Class<?> compClazz) {
-        CompConstructor compConstructor = new CompConstructor(compClazz, compClazz.getConstructors()[0]);
+        C c = compClazz.getAnnotation(C.class);
+        CompConstructor compConstructor = new CompConstructor(compClazz, c.primary(), compClazz.getConstructors()[0]);
         compConstructors.put(compClazz, compConstructor);
-
         Set<Class<?>> interfaces = compTools.getAllInterface(compClazz);
         for (Class<?> interfaceClazz : interfaces) {
             interfaceCompConstructors.compute(interfaceClazz, (k, v) -> {
                 if (v == null) {
-                    v = Sets.newHashSet();
+                    v = Sets.newTreeSet(Comparator.comparing((constructor) -> constructor.getClazz().getName()));
                 }
                 v.add(compConstructor);
                 return v;
@@ -91,15 +104,15 @@ class CompConstructorManager {
     }
 
     /**
-     * @param componentClazz componentClazz
+     * @param compClazz compClazz
      * @return io.github.kylinhunter.commons.component.CompConstructor
      * @title get
      * @description
      * @author BiJi'an
      * @date 2023-01-19 23:56
      */
-    public CompConstructor getCompConstructor(Class<?> componentClazz) {
-        return compConstructors.get(componentClazz);
+    public CompConstructor get(Class<?> compClazz) {
+        return compConstructors.get(compClazz);
     }
 
     /**
@@ -110,7 +123,32 @@ class CompConstructorManager {
      * @author BiJi'an
      * @date 2023-01-19 23:56
      */
-    public Set<CompConstructor> getCompConstructorByInterface(Class<?> interfaceClazz) {
-        return interfaceCompConstructors.get(interfaceClazz);
+    public Set<CompConstructor> getAllByInterface(Class<?> interfaceClazz) {
+        Set<CompConstructor> compConstructors = interfaceCompConstructors.get(interfaceClazz);
+        if (compConstructors != null) {
+            return compConstructors;
+        } else {
+            return Collections.emptySet();
+        }
+    }
+
+    public CompConstructor getByInterface(Class<?> interfaceClazz) {
+        Set<CompConstructor> compConstructors = interfaceCompConstructors.get(interfaceClazz);
+        if (compConstructors != null && compConstructors.size() > 0) {
+            CompConstructor firstCompConstructor = null;
+            for (CompConstructor compConstructor : compConstructors) {
+                if (firstCompConstructor == null) {
+                    firstCompConstructor = compConstructor;
+                }
+                if (compConstructor.isPrimary()) {
+                    return compConstructor;
+                }
+
+            }
+            return firstCompConstructor;
+
+        }
+        return null;
+
     }
 }

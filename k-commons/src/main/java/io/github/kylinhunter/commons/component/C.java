@@ -7,15 +7,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
-* @description  abbreviations  for component
-*
-* @author BiJi'an
-*
-* @date 2022/11/8
-*
-**/
+ * @author BiJi'an
+ * @description abbreviations  for component
+ * @date 2022/11/8
+ **/
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface C {
+
+    boolean primary() default false;
 }

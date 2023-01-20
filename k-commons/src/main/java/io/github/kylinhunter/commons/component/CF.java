@@ -36,7 +36,7 @@ public class CF {
     }
 
     /**
-     * @param clazz compClazz
+     * @param clazz clazz
      * @return T
      * @title get
      * @description
@@ -60,7 +60,7 @@ public class CF {
     }
 
     /**
-     * @param clazz    compClazz
+     * @param compClazz    clazz
      * @param required required
      * @return T
      * @title get
@@ -69,11 +69,11 @@ public class CF {
      * @date 2022-11-08 20:06
      */
     @SuppressWarnings("unchecked")
-    public static <T, S extends T> T get(Class<S> clazz, boolean required) {
-        Objects.requireNonNull(clazz, "compClazz can't be null");
-        Object manager = COMP_MANAGER.getComponent(clazz);
+    public static <T, S extends T> T get(Class<S> compClazz, boolean required) {
+        Objects.requireNonNull(compClazz, "clazz can't be null");
+        Object manager = COMP_MANAGER.getComponent(compClazz);
         if (manager == null && required) {
-            throw new InitException("no component for :" + clazz);
+            throw new InitException("no component for :" + compClazz);
         }
         return (T) manager;
     }

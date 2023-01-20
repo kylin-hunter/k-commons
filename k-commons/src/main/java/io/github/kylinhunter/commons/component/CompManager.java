@@ -6,13 +6,14 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.BeanCreator;
+import io.github.kylinhunter.commons.reflect.ReflectUtil;
 import io.github.kylinhunter.commons.sys.KConst;
 
 /**
@@ -24,8 +25,8 @@ import io.github.kylinhunter.commons.sys.KConst;
 class CompManager {
     private final Map<Class<?>, Object> allComponents = Maps.newHashMap();
     private final Map<Class<?>, Set<Object>> allInterfaceComponents = Maps.newHashMap();
-    private CompTools compTools = new CompTools(KConst.K_BASE_PACKAGE);
-    private CompConstructorManager compConstructorManager = new CompConstructorManager(compTools);
+    private final CompTools compTools = new CompTools(KConst.K_BASE_PACKAGE);
+    private final CompConstructorManager compConstructorManager = new CompConstructorManager(compTools);
 
     /**
      * @param pkgs pkgs
@@ -91,7 +92,7 @@ class CompManager {
      */
     public void calComponent(CompConstructor cconstructor) {
         Constructor<?> constructor = cconstructor.getConstructor();
-        Class<?> clazz = cconstructor.getCompClazz();
+        Class<?> clazz = cconstructor.getClazz();
         int parameterCount = constructor.getParameterCount();
         if (parameterCount <= 0) {
             allComponents.put(clazz, BeanCreator.createBean(constructor));
@@ -106,53 +107,34 @@ class CompManager {
                 if (obj != null) {
                     parameterObj[i] = obj;
                 } else {
-
-                    Type type = genericParameterTypes[i];
-                    if (type instanceof ParameterizedType) {
-
-                        ParameterizedType parameterizedType = (ParameterizedType) type;
-                        Type rawType = parameterizedType.getRawType();
-                        if (rawType instanceof Class<?>) {
-                            Class<?> rawTypeClazz = (Class<?>) rawType;
-                            if (compTools.isValidClazz(rawTypeClazz)) {
-                                Set<CompConstructor> cconstructors =
-                                        compConstructorManager.getCompConstructorByInterface(rawTypeClazz);
-                                if (cconstructors != null) {
-                                    parameterObj[i] = allComponents.get(cconstructors.iterator().next().getCompClazz());
+                    ParameterizedType parameterizedType = ReflectUtil.toParameterizedType(genericParameterTypes[i]);
+                    if (parameterizedType != null) {
+                        Class<?> rawTypeClazz = ReflectUtil.getRawTypeClass(parameterizedType);
+                        if (rawTypeClazz != null) {
+                            if (compTools.isValid(rawTypeClazz)) {
+                                CompConstructor compConstructor = compConstructorManager.getByInterface(rawTypeClazz);
+                                if (compConstructor != null) {
+                                    parameterObj[i] = allComponents.get(compConstructor.getClazz());
                                 }
                             } else if (List.class.isAssignableFrom(rawTypeClazz)) {
-                                Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-                                for (Type actualTypeArgument : actualTypeArguments) {
-                                    if (actualTypeArgument instanceof Class<?>) {
-                                        Class<?> actualTypeArgumentClazz = (Class<?>) actualTypeArgument;
+                                Class<?> argClass = ReflectUtil.getActualTypeArgumentClasses(parameterizedType, 0);
+                                Set<CompConstructor> constructors = compConstructorManager.getAllByInterface(argClass);
 
-                                        Set<CompConstructor> cconstructors =
-                                                compConstructorManager
-                                                        .getCompConstructorByInterface(actualTypeArgumentClazz);
-                                        List<Object> objs = Lists.newArrayList();
-                                        if (cconstructors != null) {
-                                            for (CompConstructor tmpCompConstructor : cconstructors) {
-                                                Object tmpObj = allComponents.get(tmpCompConstructor.getCompClazz());
-                                                if (tmpObj != null) {
-                                                    objs.add(tmpObj);
-                                                }
-                                            }
-                                        }
-                                        if (objs.size() > 0) {
-                                            parameterObj[i] = objs;
-                                        }
-                                    }
+                                List<Object> objs = constructors.stream()
+                                        .map(c -> allComponents.get(c.getClazz()))
+                                        .filter(comp -> comp != null)
+                                        .collect(Collectors.toList());
 
+                                if (objs.size() > 0) {
+                                    parameterObj[i] = objs;
                                 }
+
                             }
-
                         }
-
                     }
 
                     if (parameterObj[i] == null) {
-                        throw new InitException(
-                                "no component:" + clazz.getName() + "/" + parameterType.getName());
+                        throw new InitException("no component:" + clazz.getName() + "/" + parameterType.getName());
 
                     }
 
@@ -168,7 +150,7 @@ class CompManager {
     }
 
     /**
-     * @param clazz compClazz
+     * @param clazz clazz
      * @return java.lang.Object
      * @title getComponent
      * @description
