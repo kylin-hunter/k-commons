@@ -1,6 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.meta;
-
-import java.util.concurrent.TimeUnit;
+package io.github.kylinhunter.commons.jdbc.meta.cache;
 
 import io.github.kylinhunter.commons.cache.guava.AbstractCache;
 import io.github.kylinhunter.commons.cache.guava.CacheConfig;
@@ -8,6 +6,7 @@ import io.github.kylinhunter.commons.cache.guava.CacheKey;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
+import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
 import lombok.RequiredArgsConstructor;
 
@@ -18,8 +17,8 @@ import lombok.RequiredArgsConstructor;
  **/
 @C
 @RequiredArgsConstructor
-public class DatabaseCache extends AbstractCache<DatabaseMeta> {
-    private final DatabaseMetaReader databaseMetaReader ;
+public class DatabaseMetaCache extends AbstractCache<DatabaseMeta> {
+    private final DatabaseMetaReader databaseMetaReader;
 
     @Override
     public DatabaseMeta load(CacheKey cacheKey) {
@@ -30,7 +29,6 @@ public class DatabaseCache extends AbstractCache<DatabaseMeta> {
 
     @Override
     protected void custom(CacheConfig cacheConfig) {
-        cacheConfig.setRefreshAfterWrite(30); //
-        cacheConfig.setRefreshTimeUnit(TimeUnit.MINUTES);
+
     }
 }

@@ -22,7 +22,6 @@ dependencies {
 
 
 
-    implementation fileTree(dir: 'lib', includes: ['*.jar'])
 
 
     testImplementation files(Jvm.current().toolsJar)

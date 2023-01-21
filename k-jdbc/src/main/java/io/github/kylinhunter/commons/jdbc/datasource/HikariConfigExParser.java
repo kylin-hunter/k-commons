@@ -47,14 +47,11 @@ public class HikariConfigExParser {
             PoolInfo poolInfo = datasourceInfo.getPool();
             Map<String, String> dataSourceProperties = datasourceInfo.getDataSourceProperties();
 
-            HikariConfigEx hikariConfigEx = new HikariConfigEx();
-            hikariConfigEx.setNo(i);
-            hikariConfigEx.setName(datasourceInfo.getName());
+            HikariConfigEx hikariConfigEx = new HikariConfigEx(i, datasourceInfo.getName());
             hikariConfigEx.setDriverClassName(datasourceInfo.getDriverClassName());
             hikariConfigEx.setJdbcUrl(datasourceInfo.getJdbcUrl());
             hikariConfigEx.setUsername(datasourceInfo.getUsername());
             hikariConfigEx.setPassword(datasourceInfo.getPassword());
-
 
             int idleTimeout = poolInfo.getIdleTimeout();
             if (idleTimeout > 0) {
@@ -77,7 +74,7 @@ public class HikariConfigExParser {
             }
 
             if (!MapUtils.isEmpty(dataSourceProperties)) {
-                 dataSourceProperties.forEach(hikariConfigEx::addDataSourceProperty);
+                dataSourceProperties.forEach(hikariConfigEx::addDataSourceProperty);
             }
 
             if (datasourceInfo.isPrimary()) {

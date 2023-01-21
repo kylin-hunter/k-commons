@@ -1,9 +1,11 @@
 dependencies {
     api project(":k-commons")
+    api(rootProject.dependency_management['HikariCP'])
     implementation(rootProject.dependency_management['mysql-connector-java'])
     implementation(rootProject.dependency_management['ojdbc8'])
-    implementation(rootProject.dependency_management['HikariCP'])
     implementation(rootProject.dependency_management['commons-dbutils'])
+    implementation fileTree(dir: 'lib', includes: ['*.jar'])
+
 
 }
 

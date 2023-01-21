@@ -18,7 +18,8 @@ public class HikariConfigEx extends HikariConfig {
     private int no;
     private String name;
 
-    public void setName(String name) {
+    public HikariConfigEx(int no, String name) {
+        this.no = no;
         if (!StringUtils.isEmpty(name)) {
             this.name = name;
         } else {

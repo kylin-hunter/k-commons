@@ -27,7 +27,7 @@ public class DataSourceUtils {
     private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = Maps.newHashMap();
 
     static {
-        load(null);
+        init(null);
     }
 
     /**
@@ -38,7 +38,7 @@ public class DataSourceUtils {
      * @author BiJi'an
      * @date 2023-01-18 12:25
      */
-    public synchronized static void load(String path) {
+    public synchronized static void init(String path) {
         closeAll();
         List<HikariConfigEx> dataSources = hikariConfigExParser.load(path);
         if (CollectionUtils.isEmpty(dataSources)) {
