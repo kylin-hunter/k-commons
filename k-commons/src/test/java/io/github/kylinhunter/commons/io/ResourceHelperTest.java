@@ -7,8 +7,6 @@ import java.io.InputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.kylinhunter.commons.exception.embed.KIOException;
-
 class ResourceHelperTest {
 
     @Test
@@ -28,10 +26,11 @@ class ResourceHelperTest {
         path = "file://" + file.getAbsolutePath();
         file = ResourceHelper.getFile(path);
         Assertions.assertNotNull(file);
-        String pathErr = "file://" + file.getParent();
-        Assertions.assertThrows(KIOException.class, () -> ResourceHelper.getFile(pathErr));
-
         //==
+        String pathErr = "file://" + file.getParent();
+        Assertions.assertNull(ResourceHelper.getFile(pathErr));
+
+
         path = "org/apache/commons/lang3/StringUtils.class";
         file = ResourceHelper.getFile(path);
         Assertions.assertNull(file);
@@ -75,7 +74,7 @@ class ResourceHelperTest {
         Assertions.assertNotNull(dir);
 
         String pathErr = "file://" + file.getAbsolutePath();
-        Assertions.assertThrows(KIOException.class, () -> ResourceHelper.getDir(pathErr));
+        Assertions.assertNull(ResourceHelper.getDir(pathErr));
 
         //==
         path = "org/apache/commons/lang3/StringUtils.class";
@@ -85,6 +84,8 @@ class ResourceHelperTest {
         dir = ResourceHelper.getDir(path + "1");
         Assertions.assertNull(dir);
 
+        dir = ResourceHelper.getDir("file://" + file.getAbsolutePath()+"1");
+        Assertions.assertNull(dir);
     }
 
     @Test

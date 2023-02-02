@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 
 import io.github.kylinhunter.commons.exception.embed.KIOException;
+import io.github.kylinhunter.commons.io.file.FileUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,9 +37,10 @@ public class ResourceHelper {
         if (path.startsWith(CLASSPATH_TAG)) {
             return PathInfo.of(PathType.CLASSPATH, path.substring(CLASSPATH_TAG.length()));
         } else if (path.startsWith(PROTOCOL_FILE)) {
-            return PathInfo.of(PathType.FILESYSTEM, path.replaceAll("file:[/]+", "/"));
+            return PathInfo.of(PathType.FILESYSTEM, IOHelper.toURI(path));
         } else if (path.startsWith(USER_DIR_TAG)) {
-            return PathInfo.of(PathType.FILESYSTEM, path.replace(USER_DIR_TAG, UserDirUtils.get().getAbsolutePath()));
+            String filePath = path.replace(USER_DIR_TAG, UserDirUtils.get().getAbsolutePath());
+            return PathInfo.of(PathType.FILESYSTEM, new File(filePath));
         } else {
             return PathInfo.of(PathType.CLASSPATH, path);
         }
@@ -58,7 +61,7 @@ public class ResourceHelper {
         if (pathType == PathType.CLASSPATH) {
             return ResourceHelper.getInputStreamInClassPath(pathInfo.getPath());
         } else {
-            File file = new File(pathInfo.getPath());
+            File file = pathInfo.file;
             try {
                 if (file.exists() && file.isFile()) {
                     return new FileInputStream(file);
@@ -123,27 +126,13 @@ public class ResourceHelper {
     private static File _getFile(String path, boolean isFile) {
         PathInfo pathInfo = toPathInfo(path);
         PathType pathType = pathInfo.getPathType();
-        File file;
         if (pathType == PathType.CLASSPATH) {
             return _getFileInClassPath(pathInfo.getPath(), isFile);
         } else {
-            file = new File(pathInfo.getPath());
-            if (file.exists()) {
-                if (isFile) {
-                    if (!file.isFile()) {
-                        throw new KIOException("not a file ");
-                    }
+            File file = pathInfo.file;
+            return FileUtils.check(file, isFile);
 
-                } else {
-                    if (!file.isDirectory()) {
-                        throw new KIOException("not a dir ");
-                    }
-
-                }
-                return file;
-            }
         }
-        return null;
 
     }
 
@@ -161,7 +150,9 @@ public class ResourceHelper {
         if (url == null) {
             url = ResourceHelper.class.getResource(classPath);
         }
-        return getFile(url, isFile);
+        File file = getFile(url);
+        return FileUtils.check(file, isFile);
+
     }
 
     /**
@@ -197,33 +188,22 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2022-01-01 02:11
      */
-    private static File getFile(URL url, boolean isFile) {
+    private static File getFile(URL url) {
         File file = null;
         try {
             if (url != null) {
                 file = new File(url.getPath());
                 if (!file.exists()) {
-                    file = new File(url.toURI().getPath());
+                    String path = url.toURI().getPath();
+                    if (path != null) {
+                        file = new File(path);
+                    }
                 }
             }
         } catch (Exception e) {
             log.warn("get File error " + url, e);
         }
-
-        if (file != null && file.exists()) {
-            if (isFile) {
-                if (!file.isFile()) {
-                    throw new KIOException("not a file ");
-                }
-
-            } else {
-                if (!file.isDirectory()) {
-                    throw new KIOException("not a dir ");
-                }
-            }
-            return file;
-        }
-        return null;
+        return file;
 
     }
 
@@ -236,10 +216,19 @@ public class ResourceHelper {
     @AllArgsConstructor
     private static class PathInfo {
         private PathType pathType;
+        private File file;
         private String path;
 
         public static PathInfo of(PathType pathType, String path) {
-            return new PathInfo(pathType, path);
+            return new PathInfo(pathType, null, path);
+        }
+
+        public static PathInfo of(PathType pathType, File file) {
+            return new PathInfo(pathType, file, null);
+        }
+
+        public static PathInfo of(PathType pathType, URI uri) {
+            return new PathInfo(pathType, new File(uri), uri.getPath());
         }
 
     }
