@@ -43,6 +43,18 @@ public interface TemplateExecutor {
     void output();
 
     /**
+     * @param name      name
+     * @param encoding  encoding
+     * @param extension extension
+     * @return io.github.kylinhunter.commons.template.bean.OutputBuilder
+     * @title tmplate
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-03 02:01
+     */
+    OutputBuilder tmplate(String name, String encoding, String extension);
+
+    /**
      * @param name     name
      * @param encoding encoding
      * @return void

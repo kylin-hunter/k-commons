@@ -19,6 +19,16 @@ public abstract class AbstractTemplateEngine implements TemplateEngine {
     @Override
     public void customize(ConfigCustomize<TemplateConfig> configCustomize) {
         configCustomize.customize(this.templateConfig);
+        this.reInit();
     }
+
+    /**
+     * @return void
+     * @title initVelocityEngine
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-03 01:25
+     */
+    protected abstract void reInit();
 
 }

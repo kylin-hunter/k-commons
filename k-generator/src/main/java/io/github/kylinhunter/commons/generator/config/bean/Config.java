@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.generator.config.bean;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -9,6 +11,8 @@ import lombok.Data;
  **/
 @Data
 public class Config {
-    private GlobalConfig global;
-    private TemplateConfigs templates;
+    private Global global;
+    private List<Module> modules;
+    private CommonStrategy strategy;
+    private List<TemplateConfig> templates;
 }

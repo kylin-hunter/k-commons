@@ -1,22 +1,31 @@
 global: # global config
-  templatePath: '$user.dir$/template'   # same with:  new File(System.getProperty("user.dir")/tempalte)
+  templatePath: '$user.dir$/templates'   # same with:  new File(System.getProperty("user.dir")/tempalte)
   #  templatePath: 'file://User/bijian/template' # same with: new File('/User/bijian/template');
   #  templatePath: 'classpath:/template'  # find tempalte/* in classpath
   outputPath: '$user.dir$/output'   # same with:  new File(System.getProperty("user.dir")/output)
   #  outputPath: 'file://User/bijian/output' # same with: new File('/User/bijian/output');
   variables:
     'author': 'bijian'  # a global variable
-moudles:
-  - name: 'User' # the module name ,can be used by ${module.name}
-    strategy: # the common strategy for generate the dist file
-      packagePattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
-    templates:
-      - name: entity.java.vm
-        enabled: true
-        strategy:
-          serializable: true
-          lombok: true
-          lombokChainModel: true
-          superClass: java.lang.Object
-          className: ${module}VO
+
+modules:
+  - name: 'User'
+    table: 'k_user'
+    skipColumns:
+      - 'sex'
+      - 'delete_flag'
+  - name: 'Role'
+    table: 'k_user_role'
+strategy: # the common strategy for generate the dist file
+  packagePattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
+  encoding: UTF-8
+  extension: vm
+templates:
+    - name: entity.java.vm
+      enabled: true
+      strategy:
+        serializable: true
+        classNamePattern: ${module.name}VO
+        lombok: true
+        lombokChainModel: true
+        superClass: 'java.lang.Object'
 

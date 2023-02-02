@@ -49,7 +49,7 @@ public class OutputBuilder {
      * @date 2023-01-08 22:56
      */
     public OutputBuilder outputRelativePath(String relativePath) {
-        Path defaultOutputDir = templateConfig.getDefaultOutputDir();
+        Path defaultOutputDir = templateConfig.getOutputDir();
         Path path = defaultOutputDir.resolve(relativePath);
         this.output.setOutputPath(path);
         return this;

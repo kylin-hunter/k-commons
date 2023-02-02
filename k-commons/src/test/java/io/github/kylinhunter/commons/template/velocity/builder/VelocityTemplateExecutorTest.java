@@ -22,7 +22,7 @@ class VelocityTemplateExecutorTest {
         TemplateExecutor templateExecutor = templateEngine.createTemplateExecutor();
         templateExecutor.putContext("now", LocalDateTime.now());
 
-        File outpuFile1 = UserDirUtils.getTmpFile("template_output/output1_result1.html");
+        File outpuFile1 = UserDirUtils.getFile("output/output1_result1.html");
         if (outpuFile1.exists()) {
             outpuFile1.delete();
         }
@@ -49,11 +49,12 @@ class VelocityTemplateExecutorTest {
         TemplateExecutor templateExecutor = templateEngine.createTemplateExecutor();
         templateExecutor.putContext("now", LocalDateTime.now());
 
-        //  template_in_file  and setDefaultOutputDir
+        //  template_in_file  and setOutputDir
         templateEngine.customize(config -> {
             File defaultDir = UserDirUtils.getTmpDir("template_output3");
-            config.setDefaultOutputDir(defaultDir.toPath());
+            config.setOutputDir(defaultDir.toPath());
             config.setDefaultOutputDirClean(true);
+            config.setTemplateDir(UserDirUtils.getDir("templates").toPath());
 
         });
         templateExecutor.tmplate(templateInFile).outputRelativePath("output3_result1.html").encoding("UTF-8").build();

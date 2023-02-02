@@ -7,7 +7,6 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolManager;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.template.AbstractTemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 import io.github.kylinhunter.commons.template.constant.VelocityConst;
@@ -29,7 +28,17 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
     private ToolManager toolManager;
 
     public VelocityTemplateEngine() {
+        reInit();
+    }
 
+    /**
+     * @return void
+     * @title reInit
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-03 01:27
+     */
+    protected void reInit() {
         Properties properties = new Properties();
         properties.setProperty(Velocity.RESOURCE_LOADERS, "class,file");
         properties.setProperty(Velocity.INPUT_ENCODING, Velocity.ENCODING_DEFAULT);
@@ -42,7 +51,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
                 VelocityConst.VALUE_RESOURCE_LOADER_FILE_CLASS);
 
         // resource.loader.file
-        String templatePath = UserDirUtils.getDir("template", true).getAbsolutePath();
+        String templatePath = templateConfig.getTemplateDir().toFile().getAbsolutePath();
         log.info("resource.loader.file.path=>" + templatePath);
         properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, templatePath);
 
@@ -53,7 +62,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         this.velocityEngine.init(properties);
 
         this.toolManager = new ToolManager();
-        toolManager.configure("/io/github/kylinhunter/commons/template/velocity-tools.xml");
+        this.toolManager.configure("/io/github/kylinhunter/commons/template/velocity-tools.xml");
 
     }
 

@@ -6,5 +6,5 @@ import lombok.Data;
 public class TemplateConfig {
     private boolean enabled = true;
     private String name;
-    private Strategy strategy;
+    private TemplateStrategy strategy;
 }

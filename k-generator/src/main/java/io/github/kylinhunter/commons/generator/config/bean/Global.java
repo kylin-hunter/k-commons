@@ -12,9 +12,9 @@ import lombok.Data;
  * @date 2023-01-23 00:01
  **/
 @Data
-public class GlobalConfig {
+public class Global {
     private String templatePath;
-    private String outputPathPath;
+    private String outputPath;
     private Map<String, String> variables = Maps.newHashMap();
 
 }

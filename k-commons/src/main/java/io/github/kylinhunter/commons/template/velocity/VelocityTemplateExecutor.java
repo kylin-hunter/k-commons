@@ -35,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class VelocityTemplateExecutor implements TemplateExecutor {
 
-    private VelocityEngine velocityEngine;
     private ToolContext toolContext;
     private VelocityTemplateEngine velocityTemplateEngine;
     private TemplateConfig templateConfig;
@@ -43,7 +42,6 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
 
     public VelocityTemplateExecutor(VelocityTemplateEngine velocityTemplateEngine) {
         this.velocityTemplateEngine = velocityTemplateEngine;
-        this.velocityEngine = this.velocityTemplateEngine.getVelocityEngine();
         this.toolContext = this.velocityTemplateEngine.getToolManager().createContext();
         this.templateConfig = velocityTemplateEngine.getTemplateConfig();
 
@@ -60,6 +58,21 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
     @Override
     public void putContext(String key, Object value) {
         this.toolContext.put(key, value);
+    }
+
+    /**
+     * @param name             name
+     * @param encoding         encoding
+     * @param defaultExtension defaultExtension
+     * @return io.github.kylinhunter.commons.template.bean.OutputBuilder
+     * @title tmplate
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-03 01:56
+     */
+    public OutputBuilder tmplate(String name, String encoding, String defaultExtension) {
+        TemplateInfo templateInfo = new TemplateInfo(name, encoding, defaultExtension);
+        return tmplate(templateInfo);
     }
 
     /**
@@ -85,7 +98,7 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
      * @date 2023-01-08 23:00
      */
     public OutputBuilder tmplate(String name) {
-        TemplateInfo templateInfo = new TemplateInfo(name, null, FileExtensions.DOT_VM);
+        TemplateInfo templateInfo = new TemplateInfo(name, null, FileExtensions.VM);
         return tmplate(templateInfo);
     }
 
@@ -118,18 +131,19 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
         try {
             if (templateConfig.isDefaultOutputDirClean()) {
                 for (File file : Objects
-                        .requireNonNull(this.templateConfig.getDefaultOutputDir().toFile().listFiles())) {
+                        .requireNonNull(this.templateConfig.getOutputDir().toFile().listFiles())) {
                     log.info("delete file=>" + file.getAbsolutePath());
                     FileUtils.deleteQuietly(file);
                 }
             }
+            VelocityEngine velocityEngine = this.velocityTemplateEngine.getVelocityEngine();
 
             for (Output output : outputs) {
                 final TemplateInfo templateInfo = output.getTemplateInfo();
                 String templateName = templateInfo.getName();
                 final String templateEncoding = templateInfo.getEncoding();
 
-                Template template = this.velocityEngine.getTemplate(templateName, templateEncoding);
+                Template template = velocityEngine.getTemplate(templateName, templateEncoding);
 
                 StringWriter stringWriter = new StringWriter();
                 template.merge(toolContext, stringWriter);

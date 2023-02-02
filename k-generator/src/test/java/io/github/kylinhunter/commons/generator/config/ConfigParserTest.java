@@ -9,7 +9,7 @@ class ConfigParserTest {
     @Test
     void load() {
         ConfigParser configParser = new ConfigParser();
-        Config config = configParser.load(null);
+        Config config = configParser.load();
         System.out.println(config);
     }
 }

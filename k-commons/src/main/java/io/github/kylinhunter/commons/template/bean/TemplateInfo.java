@@ -3,6 +3,7 @@ package io.github.kylinhunter.commons.template.bean;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.strings.StringConst;
 import io.github.kylinhunter.commons.util.FilenameUtils;
 import lombok.Data;
 
@@ -19,8 +20,8 @@ public class TemplateInfo {
     public TemplateInfo(String name, String encoding, String defaultExtension) {
         ExceptionChecker.checkNotEmpty(name, "name not empty");
         String extension = FilenameUtils.getExtension(name);
-        if (StringUtils.isEmpty(extension)&&!StringUtils.isEmpty(defaultExtension)) {
-            name = name + defaultExtension;
+        if (!StringUtils.isEmpty(defaultExtension) && !defaultExtension.equalsIgnoreCase(extension)) {
+            name = name + StringConst.DOT + defaultExtension;
         }
         this.name = name;
         this.encoding = encoding;
