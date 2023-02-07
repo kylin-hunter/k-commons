@@ -6,21 +6,22 @@ global: # global config
   #  outputPath: 'file://User/bijian/output' # same with: new File('/User/bijian/output');
   variables:
     'author': 'bijian'  # a global variable
-
+  strategy: # the common strategy for generate the dist file
+    packagePattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
+    encoding: UTF-8
+    extension: vm
 modules:
   - name: 'User'
-    table: 'k_user'
-    skipColumns:
-      - 'sex'
+    db_table: 'k_user'
+    db_table_skipColumns:
       - 'delete_flag'
+      - 'extend_1'
+      - 'extend_2'
+      - 'extend_3'
   - name: 'Role'
     table: 'k_user_role'
-strategy: # the common strategy for generate the dist file
-  packagePattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
-  encoding: UTF-8
-  extension: vm
 templates:
-    - name: entity.java.vm
+    - name: entity.java
       enabled: true
       strategy:
         serializable: true

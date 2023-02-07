@@ -13,6 +13,5 @@ import lombok.Data;
 public class Config {
     private Global global;
     private List<Module> modules;
-    private CommonStrategy strategy;
     private List<TemplateConfig> templates;
 }

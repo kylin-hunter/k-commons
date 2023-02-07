@@ -14,7 +14,6 @@ public class CommonStrategy {
     private boolean serializable = false;
     private boolean lombok = false;
     private boolean lombokChainModel = false;
-    private String superClass;
     private String encoding = "UTF-8";
     private String extension = FileExtensions.VM;
 }

@@ -7,9 +7,13 @@ CREATE TABLE IF NOT EXISTS `k_user`
     `height`      float(9, 2)    NOT NULL DEFAULT 0 COMMENT '身高',
     `weight`      double(19, 2)  NOT NULL DEFAULT 0 COMMENT '体重',
     `money`       decimal(20, 2) NOT NULL DEFAULT 0 COMMENT '存款',
+    `address`     varchar(512)   NOT NULL DEFAULT 0 COMMENT '家庭地址',
     `delete_flag` int            NOT NULL DEFAULT 0 COMMENT '是否删除',
     `sex`         tinyint(2)     NOT NULL DEFAULT 0 COMMENT '0未知 1 男 2女',
-    `role_id`     bigint(20)     NOT NULL DEFAULT 0 COMMENT 'role id',
+    `role_id`     bigint(20)     NOT NULL DEFAULT 0 COMMENT '角色ID',
+    `extend_1`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段1',
+    `extend_2`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段2',
+    `extend_3`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4

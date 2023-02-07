@@ -37,4 +37,50 @@ class NamePairUtilsTest {
         Assertions.assertEquals("HelloWord", namePair.getCamel());
 
     }
+
+    @Test
+    public void test2() {
+        NamePair namePair = NamePairUtils.toNamePair("hello_word", CamelFormat.LOWER);
+        System.out.println(namePair);
+        Assertions.assertEquals("hello_word", namePair.getSnake());
+        Assertions.assertEquals("helloWord", namePair.getCamel());
+
+        namePair = NamePairUtils.toNamePair("HELLO_WORD", CamelFormat.LOWER);
+        System.out.println(namePair);
+        Assertions.assertEquals("HELLO_WORD", namePair.getSnake());
+        Assertions.assertEquals("helloWord", namePair.getCamel());
+
+
+        namePair = NamePairUtils.toNamePair("hello_word", CamelFormat.UPPER);
+        System.out.println(namePair);
+        Assertions.assertEquals("hello_word", namePair.getSnake());
+        Assertions.assertEquals("HelloWord", namePair.getCamel());
+
+        namePair = NamePairUtils.toNamePair("HELLO_WORD", CamelFormat.UPPER);
+        System.out.println(namePair);
+        Assertions.assertEquals("HELLO_WORD", namePair.getSnake());
+        Assertions.assertEquals("HelloWord", namePair.getCamel());
+
+
+        namePair = NamePairUtils.toNamePair("helloWord", SnakeFormat.LOWWER_UNDERSCORE);
+        System.out.println(namePair);
+        Assertions.assertEquals("helloWord", namePair.getCamel());
+        Assertions.assertEquals("hello_word", namePair.getSnake());
+
+        namePair = NamePairUtils.toNamePair("helloWord", SnakeFormat.LOWWER_HYPHEN);
+        System.out.println(namePair);
+        Assertions.assertEquals("helloWord", namePair.getCamel());
+        Assertions.assertEquals("hello-word", namePair.getSnake());
+
+        namePair = NamePairUtils.toNamePair("helloWord", SnakeFormat.UPPER_UNDERSCORE);
+        System.out.println(namePair);
+        Assertions.assertEquals("helloWord", namePair.getCamel());
+        Assertions.assertEquals("HELLO_WORD", namePair.getSnake());
+
+        namePair = NamePairUtils.toNamePair("helloWord", SnakeFormat.UPPER_HYPHEN);
+        System.out.println(namePair);
+        Assertions.assertEquals("helloWord", namePair.getCamel());
+        Assertions.assertEquals("HELLO-WORD", namePair.getSnake());
+
+    }
 }

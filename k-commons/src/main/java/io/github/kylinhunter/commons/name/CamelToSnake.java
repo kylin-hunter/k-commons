@@ -3,7 +3,6 @@ package io.github.kylinhunter.commons.name;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.strings.StringConst;
 import lombok.Data;
 
 /**
@@ -14,8 +13,7 @@ import lombok.Data;
 
 @C
 @Data
-public class NCCamelToSnake implements NameConvertor {
-    private NCStrategy ncStrategy = NCStrategy.CAMEL_TO_SNAKE;
+public class CamelToSnake {
 
     /**
      * @param name name
@@ -25,22 +23,35 @@ public class NCCamelToSnake implements NameConvertor {
      * @author BiJi'an
      * @date 2022-11-22 01:25
      */
-    @Override
-    public String convert(String name) {
 
+    public String convert(String name) {
+        return this.convert(name, SnakeFormat.LOWWER_UNDERSCORE);
+    }
+
+    public String convert(String name, SnakeFormat snakeFormat) {
         if (StringUtils.isBlank(name)) {
             return StringUtils.EMPTY;
+        }
+        if (SnakeToCamel.isSnake(name)) {
+            return name;
+        }
+
+        if (snakeFormat == null) {
+            snakeFormat = SnakeFormat.LOWWER_UNDERSCORE;
         }
         int len = name.length();
         StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
             char c = name.charAt(i);
             if (Character.isUpperCase(c) && i > 0) {
-                sb.append(StringConst.UNDERSCORE);
+                sb.append(snakeFormat.seperator);
             }
-            sb.append(Character.toLowerCase(c));
+            if (snakeFormat.lower) {
+                sb.append(Character.toLowerCase(c));
+            } else {
+                sb.append(Character.toUpperCase(c));
+            }
         }
         return sb.toString();
     }
-
 }
