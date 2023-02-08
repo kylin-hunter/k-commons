@@ -10,6 +10,6 @@ import lombok.Data;
 public class Module {
     private String name;
     private String table;
-    private List<String> skipColumns = Lists.newArrayList();
+    private List<String> tableSkipColumns = Lists.newArrayList();
 
 }

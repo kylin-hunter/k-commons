@@ -1,11 +1,9 @@
 package io.github.kylinhunter.commons.yaml;
 
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
-import org.reflections.ReflectionUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
@@ -19,6 +17,9 @@ import io.github.kylinhunter.commons.io.ResourceHelper;
  **/
 public class YamlHelper {
 
+    private static final LoadCorrector DEFAULT_LOAD_CORRECTOR = new DefaultLoadCorrector();
+    private static final DumpCorrector DEFAULT_DUMP_CORRECTOR = new DefaultDumpCorrector();
+
     /**
      * @param clazz clazz
      * @param path  path
@@ -29,7 +30,7 @@ public class YamlHelper {
      * @date 2022-11-01 22:01
      */
     public static <T> T loadFromClassPath(Class<T> clazz, String path) {
-        return loadFromClassPath(clazz, path, null);
+        return loadFromClassPath(clazz, path, DEFAULT_LOAD_CORRECTOR);
     }
 
     /**
@@ -68,7 +69,7 @@ public class YamlHelper {
      * @date 2022-11-01 22:01
      */
     public static <T> T loadFromText(Class<T> clazz, String text) {
-        return loadFromText(clazz, text, null);
+        return loadFromText(clazz, text, DEFAULT_LOAD_CORRECTOR);
 
     }
 
@@ -84,10 +85,14 @@ public class YamlHelper {
     public static <T> T loadFromText(Class<T> clazz, String text, LoadCorrector loadCorrector) {
 
         try {
+
             if (loadCorrector != null) {
-                text = loadCorrector.apply(text);
+                return new Yaml().loadAs(loadCorrector.correct(text, YamlType.CAMLE), clazz);
+            } else {
+                return new Yaml().loadAs(text, clazz);
+
             }
-            return new Yaml().loadAs(text, clazz);
+
         } catch (Exception e) {
             throw new ParamException("loadFromText error ,invalid text: " + text, e);
         }
@@ -100,29 +105,44 @@ public class YamlHelper {
      * @title dumpAsMap
      * @description
      * @author BiJi'an
-     * @date 2023-01-04 10:44
+     * @date 2023-02-09 00:09
      */
     public static String dumpAsMap(Object obj) {
-        return dumpAsMap(obj, null);
+        return dumpAsMap(obj, YamlType.CAMLE);
+
     }
 
     /**
-     * @param obj obj
+     * @param obj      obj
+     * @param yamlType yamlType
      * @return java.lang.String
      * @title dumpAsMap
      * @description
      * @author BiJi'an
-     * @date 2022-11-01 22:01
+     * @date 2023-02-09 00:20
      */
-    @SuppressWarnings("unchecked")
-    public static <T> String dumpAsMap(T obj, DumpCorrector<T> dumpCorrector) {
+    public static String dumpAsMap(Object obj, YamlType yamlType) {
+        return dumpAsMap(obj, yamlType, DEFAULT_DUMP_CORRECTOR);
+
+    }
+
+    /**
+     * @param obj           obj
+     * @param dumpCorrector dumpCorrector
+     * @return java.lang.String
+     * @title dumpAsMap
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-09 00:09
+     */
+    public static String dumpAsMap(Object obj, YamlType yamlType, DumpCorrector dumpCorrector) {
         try {
-            if (obj instanceof Cloneable) {
-                final Method clone = obj.getClass().getDeclaredMethod("clone");
-                obj = (T) ReflectionUtils.invoke(clone, obj);
+            if (dumpCorrector != null) {
+                return dumpCorrector.correct(new Yaml().dumpAsMap(obj), yamlType);
+            } else {
+                return new Yaml().dumpAsMap(obj);
+
             }
-            obj = dumpCorrector != null ? dumpCorrector.apply(obj) : obj;
-            return new Yaml().dumpAsMap(obj);
         } catch (Exception e) {
             throw new ParamException("dumpAsMap error ", e);
         }

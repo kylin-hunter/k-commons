@@ -12,8 +12,8 @@ global: # global config
     extension: vm
 modules:
   - name: 'User'
-    db_table: 'k_user'
-    db_table_skipColumns:
+    table: 'k_user'
+    table_skip_columns:
       - 'delete_flag'
       - 'extend_1'
       - 'extend_2'

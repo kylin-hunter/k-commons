@@ -10,11 +10,14 @@ import lombok.Data;
  * @date 2022-12-02 20:28
  **/
 @Data
-public class YamlBean {
+public class YamlBeanChild implements Cloneable {
     private int id;
     private String name;
     private String myMoney;
     List<String> values;
-    private YamlBeanChild child;
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

@@ -1,5 +1,17 @@
-id: 1s
-name: name
+id: 1
+name: name1
+my_money: 1
+
+
+
+
 values:
-  - hello1
-  - hello2
+  - hello11
+  - hello12
+child:
+  id: 2
+  name: name2
+  my_money: 2
+  values:
+    - hello21
+    - hello22
