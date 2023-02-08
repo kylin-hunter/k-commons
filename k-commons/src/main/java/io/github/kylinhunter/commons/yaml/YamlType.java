@@ -9,6 +9,5 @@ import lombok.AllArgsConstructor;
  **/
 @AllArgsConstructor
 public enum YamlType {
-    SNAKE, CAMLE
-
+    SNAKE_HYPHEN, SNAKE_UNDERSCORE, CAMLE
 }

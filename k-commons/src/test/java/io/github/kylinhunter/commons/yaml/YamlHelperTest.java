@@ -36,13 +36,19 @@ class YamlHelperTest {
             System.out.println("yamlBeanFromDumpText1:" + yamlBeanFromDumpText1);
             assertEquals(yamlBeanFromPath, yamlBeanFromDumpText1);
 
-            String dumpText2 = YamlHelper.dumpAsMap(yamlBeanFromPath, YamlType.SNAKE);
+            String dumpText2 = YamlHelper.dumpAsMap(yamlBeanFromPath, YamlType.SNAKE_UNDERSCORE);
             System.out.println("dumpText2 =>\n" + dumpText2);
             assertTrue(dumpText2.contains("my_money"));
             YamlBean yamlBeanFromDumpText2 = YamlHelper.loadFromText(YamlBean.class, dumpText2);
             System.out.println("yamlBeanFromDumpText2:" + yamlBeanFromDumpText2);
             assertEquals(yamlBeanFromPath, yamlBeanFromDumpText2);
 
+            String dumpText3 = YamlHelper.dumpAsMap(yamlBeanFromPath, YamlType.SNAKE_HYPHEN);
+            System.out.println("dumpText3 =>\n" + dumpText3);
+            assertTrue(dumpText3.contains("my-money"));
+            YamlBean yamlBeanFromDumpText3 = YamlHelper.loadFromText(YamlBean.class, dumpText3);
+            System.out.println("yamlBeanFromDumpText3:" + yamlBeanFromDumpText3);
+            assertEquals(yamlBeanFromPath, yamlBeanFromDumpText3);
         }
 
     }

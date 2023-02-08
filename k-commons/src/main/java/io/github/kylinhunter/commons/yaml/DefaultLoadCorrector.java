@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.name.CamelToSnake;
+import io.github.kylinhunter.commons.name.SnakeFormat;
 import io.github.kylinhunter.commons.name.SnakeToCamel;
 
 /**
@@ -13,7 +14,7 @@ import io.github.kylinhunter.commons.name.SnakeToCamel;
  * @date 2023-02-08 15:20
  **/
 public class DefaultLoadCorrector implements LoadCorrector {
-    private static final Pattern PATTERN_PROP_NAME = Pattern.compile("\\s*\\w+:");
+    private static final Pattern PATTERN_PROP_NAME = Pattern.compile("[\\s*\\-\\w]+:");
     private static final SnakeToCamel SNAKE_TO_CAMEL = CF.get(SnakeToCamel.class);
     private static final CamelToSnake CAMEL_TO_SNAKE = CF.get(CamelToSnake.class);
 
@@ -35,8 +36,10 @@ public class DefaultLoadCorrector implements LoadCorrector {
             String group = matcher.group();
             if (yamlType == YamlType.CAMLE) {
                 return matcher.replaceAll(SNAKE_TO_CAMEL.convert(group));
+            } else if (yamlType == YamlType.SNAKE_UNDERSCORE) {
+                return matcher.replaceAll(CAMEL_TO_SNAKE.convert(group, SnakeFormat.LOWWER_UNDERSCORE));
             } else {
-                return matcher.replaceAll(CAMEL_TO_SNAKE.convert(group));
+                return matcher.replaceAll(CAMEL_TO_SNAKE.convert(group, SnakeFormat.LOWWER_HYPHEN));
             }
         }
         return line;
