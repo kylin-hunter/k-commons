@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.component;
 
+import java.lang.annotation.Annotation;
 import java.util.Set;
 
 import org.reflections.ReflectionUtils;
@@ -62,10 +63,33 @@ public class CompTools {
      * @date 2023-01-19 02:59
      */
     public Set<Class<?>> calAllCompClazzes() {
+        return getTypesAnnotatedWith(C.class);
+    }
+
+    /**
+     * @return java.util.Set<java.lang.Class < ?>>
+     * @title calAllCompMethodClazzes
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-10 00:49
+     */
+    public Set<Class<?>> calAllCompMethodClazzes() {
+        return getTypesAnnotatedWith(CC.class);
+    }
+
+    /**
+     * @param annotation annotation
+     * @return java.util.Set<java.lang.Class < ?>>
+     * @title getTypesAnnotatedWith
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-09 23:26
+     */
+    public Set<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation> annotation) {
         Set<Class<?>> allCompClazzes = Sets.newHashSet();
         for (String pkg : pkgs) {
             Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
-            allCompClazzes = reflections.getTypesAnnotatedWith(C.class);
+            allCompClazzes = reflections.getTypesAnnotatedWith(annotation);
         }
         return allCompClazzes;
     }

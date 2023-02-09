@@ -13,7 +13,7 @@ public interface LoadCorrector {
      * @author BiJi'an
      * @param text
      * @param yamlType
-     * @date 2023-02-09 00:36
+     * @date 2023-02-04 00:36
      * @return java.lang.String
      */
     String correct(String text, YamlType yamlType);

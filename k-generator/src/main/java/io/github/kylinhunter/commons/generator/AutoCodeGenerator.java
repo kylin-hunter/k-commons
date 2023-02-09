@@ -64,7 +64,7 @@ public class AutoCodeGenerator {
     }
 
     public void output() {
-        CommonStrategy strategy = config.getStrategy();
+        CommonStrategy strategy = config.getGlobal().getStrategy();
         List<TemplateConfig> templates = config.getTemplates();
         for (TemplateConfig template : templates) {
             templateExecutor.tmplate(template.getName(), strategy.getEncoding(), strategy.getExtension())

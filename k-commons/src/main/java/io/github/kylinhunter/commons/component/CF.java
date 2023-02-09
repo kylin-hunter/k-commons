@@ -1,6 +1,9 @@
 package io.github.kylinhunter.commons.component;
 
 import java.util.Objects;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 
@@ -60,8 +63,8 @@ public class CF {
     }
 
     /**
-     * @param compClazz    clazz
-     * @param required required
+     * @param compClazz clazz
+     * @param required  required
      * @return T
      * @title get
      * @description
@@ -76,6 +79,37 @@ public class CF {
             throw new InitException("no component for :" + compClazz);
         }
         return (T) manager;
+    }
+
+    /**
+     * @param clazz clazz
+     * @return T
+     * @title get
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-08 20:06
+     */
+    public static <T> Set<T> getComponents(Class<T> clazz) {
+        return getComponents(clazz, true);
+    }
+
+    /**
+     * @param compClazz clazz
+     * @param required  required
+     * @return T
+     * @title get
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-08 20:06
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Set<T> getComponents(Class<T> compClazz, boolean required) {
+        Objects.requireNonNull(compClazz, "clazz can't be null");
+        Set<Object> comps = COMP_MANAGER.getComponents(compClazz);
+        if (CollectionUtils.isEmpty(comps) && required) {
+            throw new InitException("no component for :" + compClazz);
+        }
+        return (Set<T>) comps;
     }
 
 }

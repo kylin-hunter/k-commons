@@ -16,5 +16,6 @@ public class YamlBean {
     private String myMoney;
     List<String> values;
     private YamlBeanChild child;
+    private List<YamlBeanChild> children;
 
 }

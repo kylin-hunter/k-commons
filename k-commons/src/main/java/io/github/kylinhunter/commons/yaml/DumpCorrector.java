@@ -14,7 +14,7 @@ public interface DumpCorrector {
      * @title correct
      * @description
      * @author BiJi'an
-     * @date 2023-02-09 00:36
+     * @date 2023-02-04 00:36
      */
     String correct(String text, YamlType yamlType);
 }

@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.BeanCreator;
 import io.github.kylinhunter.commons.reflect.ReflectUtil;
 import io.github.kylinhunter.commons.sys.KConst;
+import lombok.Getter;
 
 /**
  * @author BiJi'an
@@ -23,10 +25,12 @@ import io.github.kylinhunter.commons.sys.KConst;
  **/
 
 class CompManager {
-    private final Map<Class<?>, Object> allComponents = Maps.newHashMap();
-    private final Map<Class<?>, Set<Object>> allInterfaceComponents = Maps.newHashMap();
-    private final CompTools compTools = new CompTools(KConst.K_BASE_PACKAGE);
-    private final CompConstructorManager compConstructorManager = new CompConstructorManager(compTools);
+    protected final Map<Class<?>, Object> allComponents = Maps.newHashMap();
+    protected final Map<Class<?>, Set<Object>> allInterfaceComponents = Maps.newHashMap();
+    @Getter
+    protected final CompTools compTools = new CompTools(KConst.K_BASE_PACKAGE);
+    protected final CompConstructorManager compConstructorManager = new CompConstructorManager(compTools);
+    protected MethodCompManager methodCompManager;
 
     /**
      * @param pkgs pkgs
@@ -43,6 +47,7 @@ class CompManager {
         if (pkgs != null && pkgs.length > 0) {
             compTools.setPkgs(pkgs);
         }
+        methodCompManager = new MethodCompManager(this);
     }
 
     /**
@@ -80,6 +85,7 @@ class CompManager {
             throw new InitException("no all  component be initialized ");
 
         }
+        methodCompManager.calComponent();
     }
 
     /**
@@ -122,7 +128,7 @@ class CompManager {
 
                                 List<Object> objs = constructors.stream()
                                         .map(c -> allComponents.get(c.getClazz()))
-                                        .filter(comp -> comp != null)
+                                        .filter(Objects::nonNull)
                                         .collect(Collectors.toList());
 
                                 if (objs.size() > 0) {
@@ -142,7 +148,7 @@ class CompManager {
             }
 
             try {
-                allComponents.put(clazz, constructor.newInstance(parameterObj));
+                this.allComponents.put(clazz, constructor.newInstance(parameterObj));
             } catch (Exception e) {
                 throw new InitException("init constructor error:" + clazz.getName(), e);
             }
@@ -159,5 +165,57 @@ class CompManager {
      */
     public Object getComponent(Class<?> clazz) {
         return this.allComponents.get(clazz);
+    }
+
+    /**
+     * @param clazz clazz
+     * @return java.lang.Object
+     * @title getComponent
+     * @description
+     * @author BiJi'an
+     * @date 2023-01-20 00:22
+     */
+    public Set<Object> getComponents(Class<?> clazz) {
+        Object comp = this.allComponents.get(clazz);
+        if (comp == null) {
+            return this.allInterfaceComponents.get(clazz);
+        } else {
+            Set<Object> comps = this.allInterfaceComponents.get(clazz);
+            if (comps != null) {
+                Set<Object> sets = Sets.newHashSet();
+                sets.addAll(comps);
+                sets.add(comp);
+                return sets;
+
+            } else {
+                return Sets.newHashSet(comp);
+            }
+        }
+    }
+
+    /**
+     * @param clazz clazz
+     * @return void void
+     * @title register
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-04 20:29
+     */
+    public void registerComponent(Class<?> clazz, Object obj) {
+        try {
+            if (clazz.isInterface()) {
+                allInterfaceComponents.compute(clazz, (k, v) -> {
+                    if (v == null) {
+                        v = Sets.newHashSet();
+                    }
+                    v.add(obj);
+                    return v;
+                });
+            } else {
+                allComponents.put(clazz, obj);
+            }
+        } catch (Exception e) {
+            throw new InitException("init constructor error:" + clazz.getName(), e);
+        }
     }
 }

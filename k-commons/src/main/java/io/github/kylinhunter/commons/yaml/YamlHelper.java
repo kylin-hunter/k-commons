@@ -30,7 +30,25 @@ public class YamlHelper {
      * @date 2022-11-01 22:01
      */
     public static <T> T loadFromClassPath(Class<T> clazz, String path) {
-        return loadFromClassPath(clazz, path, DEFAULT_LOAD_CORRECTOR);
+        return loadFromClassPath(clazz, path, true);
+    }
+
+    /**
+     * @param clazz     clazz
+     * @param path      path
+     * @param autoCamel autoCamel
+     * @return T
+     * @title loadFromClassPath
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-04 16:52
+     */
+    public static <T> T loadFromClassPath(Class<T> clazz, String path, boolean autoCamel) {
+        if (autoCamel) {
+            return loadFromClassPath(clazz, path, DEFAULT_LOAD_CORRECTOR);
+        } else {
+            return loadFromClassPath(clazz, path, null);
+        }
     }
 
     /**
@@ -47,11 +65,11 @@ public class YamlHelper {
             if (inputStream == null) {
                 throw new ParamException(" inputStream is null ,invalid path: " + path);
             }
-            if (loadCorrector != null) {
-                String text = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-                return loadFromText(clazz, text, loadCorrector);
-            }
-            return new Yaml().loadAs(inputStream, clazz);
+
+            String text = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+
+            return loadFromText(clazz, text, loadCorrector);
+
         } catch (KRuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -69,8 +87,26 @@ public class YamlHelper {
      * @date 2022-11-01 22:01
      */
     public static <T> T loadFromText(Class<T> clazz, String text) {
-        return loadFromText(clazz, text, DEFAULT_LOAD_CORRECTOR);
+        return loadFromText(clazz, text, true);
 
+    }
+
+    /**
+     * @param clazz     clazz
+     * @param text      text
+     * @param autoCamel autoCamel
+     * @return T
+     * @title loadFromText
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-04 16:50
+     */
+    public static <T> T loadFromText(Class<T> clazz, String text, boolean autoCamel) {
+        if (autoCamel) {
+            return loadFromText(clazz, text, DEFAULT_LOAD_CORRECTOR);
+        } else {
+            return loadFromText(clazz, text, null);
+        }
     }
 
     /**
@@ -87,11 +123,9 @@ public class YamlHelper {
         try {
 
             if (loadCorrector != null) {
-                return new Yaml().loadAs(loadCorrector.correct(text, YamlType.CAMLE), clazz);
-            } else {
-                return new Yaml().loadAs(text, clazz);
-
+                text = loadCorrector.correct(text, YamlType.CAMLE);
             }
+            return new Yaml().loadAs(text, clazz);
 
         } catch (Exception e) {
             throw new ParamException("loadFromText error ,invalid text: " + text, e);
@@ -105,10 +139,10 @@ public class YamlHelper {
      * @title dumpAsMap
      * @description
      * @author BiJi'an
-     * @date 2023-02-09 00:09
+     * @date 2023-02-04 00:09
      */
     public static String dumpAsMap(Object obj) {
-        return dumpAsMap(obj, YamlType.CAMLE);
+        return dumpAsMap(obj, null);
 
     }
 
@@ -119,10 +153,16 @@ public class YamlHelper {
      * @title dumpAsMap
      * @description
      * @author BiJi'an
-     * @date 2023-02-09 00:20
+     * @date 2023-02-04 00:20
      */
+
     public static String dumpAsMap(Object obj, YamlType yamlType) {
-        return dumpAsMap(obj, yamlType, DEFAULT_DUMP_CORRECTOR);
+        if (yamlType != null) {
+            return dumpAsMap(obj, yamlType, DEFAULT_DUMP_CORRECTOR);
+        } else {
+            return dumpAsMap(obj, null, null);
+
+        }
 
     }
 
@@ -133,15 +173,15 @@ public class YamlHelper {
      * @title dumpAsMap
      * @description
      * @author BiJi'an
-     * @date 2023-02-09 00:09
+     * @date 2023-02-04 00:09
      */
     public static String dumpAsMap(Object obj, YamlType yamlType, DumpCorrector dumpCorrector) {
         try {
+            String text = new Yaml().dumpAsMap(obj);
             if (dumpCorrector != null) {
-                return dumpCorrector.correct(new Yaml().dumpAsMap(obj), yamlType);
+                return dumpCorrector.correct(text, yamlType);
             } else {
-                return new Yaml().dumpAsMap(obj);
-
+                return text;
             }
         } catch (Exception e) {
             throw new ParamException("dumpAsMap error ", e);

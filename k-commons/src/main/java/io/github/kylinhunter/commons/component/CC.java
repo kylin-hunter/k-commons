@@ -11,10 +11,8 @@ import java.lang.annotation.Target;
  * @description abbreviations  for component
  * @date 2022/11/8
  **/
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface C {
-
-    boolean primary() default false;
+public @interface CC {
 }

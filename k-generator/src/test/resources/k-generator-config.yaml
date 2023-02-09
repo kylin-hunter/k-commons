@@ -1,18 +1,18 @@
 global: # global config
-  templatePath: '$user.dir$/templates'   # same with:  new File(System.getProperty("user.dir")/tempalte)
-  #  templatePath: 'file://User/bijian/template' # same with: new File('/User/bijian/template');
-  #  templatePath: 'classpath:/template'  # find tempalte/* in classpath
-  outputPath: '$user.dir$/output'   # same with:  new File(System.getProperty("user.dir")/output)
-  #  outputPath: 'file://User/bijian/output' # same with: new File('/User/bijian/output');
+  template_path: '$user.dir$/templates'   # same with:  new File(System.getProperty("user.dir")/tempalte)
+  #  template_path: 'file://User/bijian/template' # same with: new File('/User/bijian/template');
+  #  template_path: 'classpath:/template'  # find tempalte/* in classpath
+  output_path: '$user.dir$/output'   # same with:  new File(System.getProperty("user.dir")/output)
+  #  output_path: 'file://User/bijian/output' # same with: new File('/User/bijian/output');
   variables:
     'author': 'bijian'  # a global variable
   strategy: # the common strategy for generate the dist file
-    packagePattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
+    package_pattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
     encoding: UTF-8
     extension: vm
 modules:
   - name: 'User'
-    table: 'k_user'
+    table: "k_user"
     table_skip_columns:
       - 'delete_flag'
       - 'extend_1'
@@ -25,8 +25,8 @@ templates:
       enabled: true
       strategy:
         serializable: true
-        classNamePattern: ${module.name}VO
+        class_name_pattern: ${module.name}VO
         lombok: true
-        lombokChainModel: true
+        lombok_chain_model: true
         superClass: 'java.lang.Object'
 
