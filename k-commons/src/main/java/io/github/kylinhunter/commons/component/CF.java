@@ -1,11 +1,6 @@
 package io.github.kylinhunter.commons.component;
 
-import java.util.Objects;
-import java.util.Set;
-
-import org.apache.commons.collections.CollectionUtils;
-
-import io.github.kylinhunter.commons.exception.embed.InitException;
+import java.util.List;
 
 /**
  * @author BiJi'an
@@ -27,27 +22,7 @@ public class CF {
      * @date 2022-11-08 21:38
      */
     public static void init(String... pkgs) {
-
-        try {
-            COMP_MANAGER.init(pkgs);
-            COMP_MANAGER.calComponent();
-
-        } catch (Throwable e) {
-            throw new InitException("init component factory error", e);
-        }
-
-    }
-
-    /**
-     * @param clazz clazz
-     * @return T
-     * @title get
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-08 20:06
-     */
-    public static <T, S extends T> T get(Class<S> clazz) {
-        return get(clazz, true);
+        COMP_MANAGER.init(pkgs);
     }
 
     /**
@@ -63,6 +38,18 @@ public class CF {
     }
 
     /**
+     * @param clazz clazz
+     * @return T
+     * @title get
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-08 20:06
+     */
+    public static <T, S extends T> T get(Class<S> clazz) {
+        return get(clazz, true);
+    }
+
+    /**
      * @param compClazz clazz
      * @param required  required
      * @return T
@@ -71,14 +58,8 @@ public class CF {
      * @author BiJi'an
      * @date 2022-11-08 20:06
      */
-    @SuppressWarnings("unchecked")
     public static <T, S extends T> T get(Class<S> compClazz, boolean required) {
-        Objects.requireNonNull(compClazz, "clazz can't be null");
-        Object manager = COMP_MANAGER.getComponent(compClazz);
-        if (manager == null && required) {
-            throw new InitException("no component for :" + compClazz);
-        }
-        return (T) manager;
+        return COMP_MANAGER.get(compClazz, required);
     }
 
     /**
@@ -89,8 +70,8 @@ public class CF {
      * @author BiJi'an
      * @date 2022-11-08 20:06
      */
-    public static <T> Set<T> getComponents(Class<T> clazz) {
-        return getComponents(clazz, true);
+    public static <T> List<T> getAll(Class<T> clazz) {
+        return COMP_MANAGER.getAll(clazz, true);
     }
 
     /**
@@ -102,14 +83,8 @@ public class CF {
      * @author BiJi'an
      * @date 2022-11-08 20:06
      */
-    @SuppressWarnings("unchecked")
-    public static <T> Set<T> getComponents(Class<T> compClazz, boolean required) {
-        Objects.requireNonNull(compClazz, "clazz can't be null");
-        Set<Object> comps = COMP_MANAGER.getComponents(compClazz);
-        if (CollectionUtils.isEmpty(comps) && required) {
-            throw new InitException("no component for :" + compClazz);
-        }
-        return (Set<T>) comps;
+    public static <T> List<T> getAll(Class<T> compClazz, boolean required) {
+        return COMP_MANAGER.getAll(compClazz, required);
     }
 
 }

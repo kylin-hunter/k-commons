@@ -3,6 +3,7 @@ package io.github.kylinhunter.commons.component;
 import java.lang.reflect.Constructor;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BiJi'an
@@ -10,17 +11,18 @@ import lombok.Data;
  * @date 2022-10-25 23:17
  **/
 @Data
-class CompConstructor {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+class CConstructor {
+    @EqualsAndHashCode.Include
     private Class<?> clazz;
-    private boolean primary;
     private Constructor<?> constructor;
+    private boolean primary;
     private int depLevel;
 
-    public CompConstructor(Class<?> clazz, boolean primary, Constructor<?> constructor) {
-
+    public CConstructor(Class<?> clazz, boolean primary) {
         this.clazz = clazz;
+        this.constructor = clazz.getConstructors()[0];
         this.primary = primary;
-        this.constructor = constructor;
     }
 
 }

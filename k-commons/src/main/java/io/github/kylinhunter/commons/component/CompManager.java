@@ -1,36 +1,36 @@
 package io.github.kylinhunter.commons.component;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.compress.utils.Lists;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.reflect.BeanCreator;
-import io.github.kylinhunter.commons.reflect.ReflectUtil;
 import io.github.kylinhunter.commons.sys.KConst;
 import lombok.Getter;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2022-10-25 23:17
+ * @date 2023-02-13 10:52
  **/
-
-class CompManager {
-    protected final Map<Class<?>, Object> allComponents = Maps.newHashMap();
-    protected final Map<Class<?>, Set<Object>> allInterfaceComponents = Maps.newHashMap();
+public class CompManager {
+    protected final Map<Class<?>, List<Object>> allComponents = Maps.newHashMap();
     @Getter
-    protected final CompTools compTools = new CompTools(KConst.K_BASE_PACKAGE);
-    protected final CompConstructorManager compConstructorManager = new CompConstructorManager(compTools);
-    protected MethodCompManager methodCompManager;
+    protected CompTools compTools;
+    private final ConstructorCompManager constructorCompManager;
+    private final MethodCompManager methodCompManager;
+
+    public CompManager() {
+        compTools = new CompTools(KConst.K_BASE_PACKAGE);
+        constructorCompManager = new ConstructorCompManager(this);
+        methodCompManager = new MethodCompManager(this);
+    }
 
     /**
      * @param pkgs pkgs
@@ -38,159 +38,72 @@ class CompManager {
      * @title init
      * @description
      * @author BiJi'an
-     * @date 2023-01-21 00:06
+     * @date 2023-02-12 22:47
      */
     public void init(String... pkgs) {
-        compConstructorManager.clear();
-        allComponents.clear();
-        allInterfaceComponents.clear();
-        if (pkgs != null && pkgs.length > 0) {
-            compTools.setPkgs(pkgs);
-        }
-        methodCompManager = new MethodCompManager(this);
-    }
 
-    /**
-     * @return void
-     * @title calComponents
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-20 00:27
-     */
-    public void calComponent() {
-        List<CompConstructor> compConstructors = compConstructorManager.calCompConstructor();
-        for (CompConstructor compConstructor : compConstructors) {
-            calComponent(compConstructor);
-        }
-
-        Set<Class<?>> compClazzes = compConstructorManager.getCompClazzes();
-        for (Class<?> compClazz : compClazzes) {
-            Object component = allComponents.get(compClazz);
-            if (component != null) {
-                Set<Class<?>> interfaces = compTools.getAllInterface(compClazz);
-                for (Class<?> i : interfaces) {
-                    allInterfaceComponents.compute(i, (k, v) -> {
-                        if (v == null) {
-                            v = Sets.newHashSet();
-                        }
-                        v.add(component);
-                        return v;
-                    });
-
-                }
+        try {
+            this.allComponents.clear();
+            if (pkgs != null && pkgs.length > 0) {
+                compTools.setPkgs(pkgs);
             }
-
+            this.calComponent();
+        } catch (Throwable e) {
+            throw new InitException("init CompManager error", e);
         }
-        if (allComponents.size() != compClazzes.size()) {
-            throw new InitException("no all  component be initialized ");
-
-        }
-        methodCompManager.calComponent();
     }
 
     /**
-     * @param cconstructor cconstructor
      * @return void
      * @title calComponent
      * @description
      * @author BiJi'an
-     * @date 2023-01-21 00:37
+     * @date 2023-02-13 14:56
      */
-    public void calComponent(CompConstructor cconstructor) {
-        Constructor<?> constructor = cconstructor.getConstructor();
-        Class<?> clazz = cconstructor.getClazz();
-        int parameterCount = constructor.getParameterCount();
-        if (parameterCount <= 0) {
-            allComponents.put(clazz, BeanCreator.createBean(constructor));
-        } else {
-
-            Class<?>[] parameterTypes = constructor.getParameterTypes();
-            Type[] genericParameterTypes = constructor.getGenericParameterTypes();
-            Object[] parameterObj = new Object[parameterCount];
-            for (int i = 0; i < parameterCount; i++) {
-                Class<?> parameterType = parameterTypes[i];
-                Object obj = allComponents.get(parameterType);
-                if (obj != null) {
-                    parameterObj[i] = obj;
-                } else {
-                    ParameterizedType parameterizedType = ReflectUtil.toParameterizedType(genericParameterTypes[i]);
-                    if (parameterizedType != null) {
-                        Class<?> rawTypeClazz = ReflectUtil.getRawTypeClass(parameterizedType);
-                        if (rawTypeClazz != null) {
-                            if (compTools.isValid(rawTypeClazz)) {
-                                CompConstructor compConstructor = compConstructorManager.getByInterface(rawTypeClazz);
-                                if (compConstructor != null) {
-                                    parameterObj[i] = allComponents.get(compConstructor.getClazz());
-                                }
-                            } else if (List.class.isAssignableFrom(rawTypeClazz)) {
-                                Class<?> argClass = ReflectUtil.getActualTypeArgumentClasses(parameterizedType, 0);
-                                Set<CompConstructor> constructors = compConstructorManager.getAllByInterface(argClass);
-
-                                List<Object> objs = constructors.stream()
-                                        .map(c -> allComponents.get(c.getClazz()))
-                                        .filter(Objects::nonNull)
-                                        .collect(Collectors.toList());
-
-                                if (objs.size() > 0) {
-                                    parameterObj[i] = objs;
-                                }
-
-                            }
-                        }
-                    }
-
-                    if (parameterObj[i] == null) {
-                        throw new InitException("no component:" + clazz.getName() + "/" + parameterType.getName());
-
-                    }
-
-                }
-            }
-
-            try {
-                this.allComponents.put(clazz, constructor.newInstance(parameterObj));
-            } catch (Exception e) {
-                throw new InitException("init constructor error:" + clazz.getName(), e);
-            }
-        }
+    public void calComponent() {
+        constructorCompManager.calculate();
+        methodCompManager.calculate();
     }
 
     /**
-     * @param clazz clazz
-     * @return java.lang.Object
-     * @title getComponent
+     * @param compClazz compClazz
+     * @param required  required
+     * @return java.util.List<T>
+     * @title getComps
      * @description
      * @author BiJi'an
-     * @date 2023-01-20 00:22
+     * @date 2023-02-12 22:22
      */
-    public Object getComponent(Class<?> clazz) {
-        return this.allComponents.get(clazz);
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getAll(Class<T> compClazz, boolean required) {
+        Objects.requireNonNull(compClazz, "clazz can't be null");
+        List<Object> comps = allComponents.get(compClazz);
+        if (CollectionUtils.isEmpty(comps) && required) {
+            throw new InitException("no component for :" + compClazz);
+        }
+        return (List<T>) comps;
     }
 
     /**
-     * @param clazz clazz
-     * @return java.lang.Object
-     * @title getComponent
+     * @param compClazz compClazz
+     * @param required  required
+     * @return java.util.List<T>
+     * @title getComp
      * @description
      * @author BiJi'an
-     * @date 2023-01-20 00:22
+     * @date 2023-02-12 22:22
      */
-    public Set<Object> getComponents(Class<?> clazz) {
-        Object comp = this.allComponents.get(clazz);
-        if (comp == null) {
-            return this.allInterfaceComponents.get(clazz);
-        } else {
-            Set<Object> comps = this.allInterfaceComponents.get(clazz);
-            if (comps != null) {
-                Set<Object> sets = Sets.newHashSet();
-                sets.addAll(comps);
-                sets.add(comp);
-                return sets;
-
-            } else {
-                return Sets.newHashSet(comp);
-            }
+    @SuppressWarnings("unchecked")
+    public <T, S extends T> T get(Class<S> compClazz, boolean required) {
+        Objects.requireNonNull(compClazz, "clazz can't be null");
+        List<Object> comps = allComponents.get(compClazz);
+        if (CollectionUtils.isEmpty(comps) && required) {
+            throw new InitException("no component for :" + compClazz);
         }
+        if (comps != null && comps.size() > 0) {
+            return (T) comps.get(0);
+        }
+        return null;
     }
 
     /**
@@ -201,21 +114,63 @@ class CompManager {
      * @author BiJi'an
      * @date 2023-02-04 20:29
      */
-    public void registerComponent(Class<?> clazz, Object obj) {
+    public void register(Class<?> clazz, boolean primary, Object obj) {
         try {
-            if (clazz.isInterface()) {
-                allInterfaceComponents.compute(clazz, (k, v) -> {
-                    if (v == null) {
-                        v = Sets.newHashSet();
+            allComponents.compute(clazz, (k, v) -> {
+                if (v == null) {
+                    v = Lists.newArrayList();
+                }
+                if (!v.contains(obj)) {
+                    if (primary) {
+                        v.add(0, obj);
+                    } else {
+                        v.add(obj);
+
                     }
-                    v.add(obj);
-                    return v;
-                });
-            } else {
-                allComponents.put(clazz, obj);
+                }
+                return v;
+            });
+            Set<Class<?>> allInterfaces = compTools.getAllInterface(clazz);
+            if (allInterfaces != null && allInterfaces.size() > 0) {
+                for (Class<?> iterfaceClass : allInterfaces) {
+                    allComponents.compute(iterfaceClass, (k, v) -> {
+                        if (v == null) {
+                            v = Lists.newArrayList();
+                        }
+                        if (!v.contains(obj)) {
+                            if (primary) {
+                                v.add(0, obj);
+                            } else {
+                                v.add(obj);
+
+                            }
+                        }
+                        return v;
+                    });
+                }
+
             }
+
         } catch (Exception e) {
-            throw new InitException("init constructor error:" + clazz.getName(), e);
+            throw new InitException("init components error:" + clazz.getName(), e);
         }
+    }
+
+    /**
+     * @param compClazzes compClazzes
+     * @return void
+     * @title check
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-12 22:57
+     */
+    public void check(Set<Class<?>> compClazzes) {
+
+        for (Class<?> compClazz : compClazzes) {
+            if (this.get(compClazz, false) == null) {
+                throw new InitException("no    component be initialized " + compClazz.getName());
+            }
+        }
+
     }
 }

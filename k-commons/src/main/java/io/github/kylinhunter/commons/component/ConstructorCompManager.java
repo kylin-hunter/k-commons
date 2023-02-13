@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.component;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -16,13 +16,14 @@ import lombok.RequiredArgsConstructor;
  **/
 
 @RequiredArgsConstructor
-class MethodCompManager {
-    private CompManager compManager;
-    private CMethodManager methodManager;
+class ConstructorCompManager {
 
-    public MethodCompManager(CompManager compManager) {
+    private final CompManager compManager;
+    protected final CConstructorManager constructorManager;
+
+    public ConstructorCompManager(CompManager compManager) {
         this.compManager = compManager;
-        this.methodManager = new CMethodManager(compManager);
+        this.constructorManager = new CConstructorManager(compManager);
     }
 
     /**
@@ -33,34 +34,31 @@ class MethodCompManager {
      * @date 2023-01-20 00:27
      */
     public void calculate() {
-        methodManager.calculate();
-        List<CMethod> methods = methodManager.getCmethods();
-        for (CMethod method : methods) {
-            calculate(method);
+        constructorManager.calculate();
+        List<CConstructor> cconstructors = constructorManager.getConstructors();
+        for (CConstructor cconstructor : cconstructors) {
+            calculate(cconstructor);
         }
-        compManager.check(methodManager.getCompClasses());
+        compManager.check(constructorManager.getCompClasses());
     }
 
     /**
-     * @param cmethod cmethod
+     * @param cconstructor cconstructor
      * @return void
      * @title calComponent
      * @description
      * @author BiJi'an
      * @date 2023-01-21 00:37
      */
-    public void calculate(CMethod cmethod) {
-        Method method = cmethod.getMethod();
-        Object ccObject = cmethod.getCcObject();
-
-        int parameterCount = method.getParameterCount();
-        Class<?> compClazz = method.getReturnType();
+    public void calculate(CConstructor cconstructor) {
+        Constructor<?> constructor = cconstructor.getConstructor();
+        Class<?> clazz = cconstructor.getClazz();
+        int parameterCount = constructor.getParameterCount();
         if (parameterCount <= 0) {
-            compManager.register(compClazz, cmethod.isPrimary(), BeanCreator.createBean(ccObject, method));
+            compManager.register(clazz, cconstructor.isPrimary(), BeanCreator.createBean(constructor));
         } else {
-            Class<?>[] parameterTypes = method.getParameterTypes();
-            Type[] genericParameterTypes = method.getGenericParameterTypes();
-
+            Class<?>[] parameterTypes = constructor.getParameterTypes();
+            Type[] genericParameterTypes = constructor.getGenericParameterTypes();
             Object[] parameterObj = new Object[parameterCount];
             for (int i = 0; i < parameterCount; i++) {
                 Class<?> curParametorClass = parameterTypes[i];
@@ -78,12 +76,11 @@ class MethodCompManager {
                     }
                 }
                 if (parameterObj[i] == null) {
-                    throw new InitException("no component:" + compClazz.getName());
+                    throw new InitException("no component:" + clazz.getName());
                 }
-
             }
-            this.compManager.register(compClazz, cmethod.isPrimary(), BeanCreator.createBean(ccObject, method,
-                    parameterObj));
+            this.compManager
+                    .register(clazz, cconstructor.isPrimary(), BeanCreator.createBean(constructor, parameterObj));
 
         }
     }

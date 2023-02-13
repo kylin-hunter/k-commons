@@ -12,5 +12,5 @@ public interface TemplateEngine {
 
     TemplateExecutor createTemplateExecutor();
 
-    void customize(ConfigCustomize<TemplateConfig> globalConfig);
+    void customize(ConfigCustomize<TemplateConfig> configCustomize);
 }

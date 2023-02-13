@@ -1,7 +1,10 @@
 package io.github.kylinhunter.commons.reflect;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import io.github.kylinhunter.commons.exception.embed.InitException;
 
 /**
  * @author BiJi'an
@@ -62,21 +65,7 @@ public class ReflectUtil {
         return null;
     }
 
-    /**
-     * @param type type
-     * @return java.lang.reflect.ParameterizedType
-     * @title toParameterizedType
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-21 01:01
-     */
-    public static ParameterizedType toParameterizedType(Type type) {
-        if (type instanceof ParameterizedType) {
-            return (ParameterizedType) type;
-        }
-        return null;
 
-    }
 
     /**
      * @param parameterizedType parameterizedType
@@ -123,6 +112,31 @@ public class ReflectUtil {
     }
 
     /**
+     * @param type type
+     * @return java.lang.Class<?>[]
+     * @title getActualTypeArgumentClasses
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-13 22:23
+     */
+
+    public static Class<?>[] getActualTypeArgumentClasses(Type type) {
+        if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            return getActualTypeArgumentClasses(parameterizedType);
+        }
+        return null;
+    }
+
+    public static Class<?> getActualTypeArgumentClasses(Type type, int index) {
+        if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            return getActualTypeArgumentClasses(parameterizedType, index);
+        }
+        return null;
+    }
+
+    /**
      * @param parameterizedType parameterizedType
      * @param index             index
      * @return java.lang.Class<?>
@@ -137,5 +151,24 @@ public class ReflectUtil {
             return actualTypeArgumentClasses[index];
         }
         return null;
+    }
+
+    /**
+     * @param method method
+     * @param obj    obj
+     * @param args   args
+     * @return java.lang.Object
+     * @title invoke
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-10 10:38
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T invoke(Object obj, Method method, Object... args) {
+        try {
+            return (T) method.invoke(obj, args);
+        } catch (Exception e) {
+            throw new InitException("invoke error", e);
+        }
     }
 }

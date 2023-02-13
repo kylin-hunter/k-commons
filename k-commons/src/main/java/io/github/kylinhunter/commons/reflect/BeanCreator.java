@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.reflect;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 
@@ -49,9 +50,37 @@ public class BeanCreator {
 
     }
 
-    public static <T> T createBean(Constructor<T> constructor) {
+    /**
+     * @param constructor constructor
+     * @param initargs    initargs
+     * @return T
+     * @title createBean
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-13 23:59
+     */
+    public static <T> T createBean(Constructor<T> constructor, Object... initargs) {
         try {
-            return constructor.newInstance();
+            return constructor.newInstance(initargs);
+        } catch (Exception e) {
+            throw new InitException("init createBean error", e);
+        }
+
+    }
+
+    /**
+     * @param method method
+     * @param obj    obj
+     * @param args   args
+     * @return T
+     * @title createBean1
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-14 00:06
+     */
+    public static <T> T createBean(Object obj, Method method, Object... args) {
+        try {
+            return ReflectUtil.invoke(obj, method, args);
         } catch (Exception e) {
             throw new InitException("init createBean error", e);
         }

@@ -55,6 +55,14 @@ public class OutputBuilder {
         return this;
     }
 
+    /**
+     * @param charset charset
+     * @return io.github.kylinhunter.commons.template.bean.OutputBuilder
+     * @title encoding
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-10 01:32
+     */
     public OutputBuilder encoding(String charset) {
         this.output.setEncoding(Charset.forName(charset));
         return this;

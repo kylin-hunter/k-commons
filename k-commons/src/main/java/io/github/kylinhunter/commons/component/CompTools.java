@@ -56,28 +56,6 @@ public class CompTools {
     }
 
     /**
-     * @return java.util.Set<java.lang.Class < ?>>
-     * @title getCompClazzes
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-19 02:59
-     */
-    public Set<Class<?>> calAllCompClazzes() {
-        return getTypesAnnotatedWith(C.class);
-    }
-
-    /**
-     * @return java.util.Set<java.lang.Class < ?>>
-     * @title calAllCompMethodClazzes
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-10 00:49
-     */
-    public Set<Class<?>> calAllCompMethodClazzes() {
-        return getTypesAnnotatedWith(CC.class);
-    }
-
-    /**
      * @param annotation annotation
      * @return java.util.Set<java.lang.Class < ?>>
      * @title getTypesAnnotatedWith
@@ -85,7 +63,7 @@ public class CompTools {
      * @author BiJi'an
      * @date 2023-02-09 23:26
      */
-    public Set<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation> annotation) {
+    public Set<Class<?>> getClassesByAnnotatedWith(Class<? extends Annotation> annotation) {
         Set<Class<?>> allCompClazzes = Sets.newHashSet();
         for (String pkg : pkgs) {
             Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
