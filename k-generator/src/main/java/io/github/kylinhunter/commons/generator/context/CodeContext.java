@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.generator.context;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,18 @@ import lombok.Data;
 @Data
 public class CodeContext {
     private Config config;
-    private List<File> templateFiles = Lists.newArrayList();
+    private List<TemplateContext> templateContexts = Lists.newArrayList();
+
+    private List<ModuleContext> moduleContexts = Lists.newArrayList();
+
     private Map<String, Object> contexts = Maps.newHashMap();
+
+    public void addTemplateContext(TemplateContext templateContext) {
+        this.templateContexts.add(templateContext);
+    }
+
+    public void addModuleContext(ModuleContext moduleContext) {
+        this.moduleContexts.add(moduleContext);
+    }
 
 }

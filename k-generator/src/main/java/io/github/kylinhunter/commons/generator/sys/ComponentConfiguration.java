@@ -23,8 +23,8 @@ public class ComponentConfiguration {
     }
 
     @C
-    public TemplateExecutor templateExecutor() {
-        CodeTemplateEngine codeTemplateEngine = new CodeTemplateEngine();
+    public TemplateExecutor templateExecutor(Config config) {
+        CodeTemplateEngine codeTemplateEngine = new CodeTemplateEngine( config);
         return codeTemplateEngine.createTemplateExecutor();
 
     }

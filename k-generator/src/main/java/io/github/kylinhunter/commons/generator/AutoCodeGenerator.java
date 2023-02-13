@@ -1,16 +1,15 @@
 package io.github.kylinhunter.commons.generator;
 
-import java.io.File;
 import java.util.List;
 
 import io.github.kylinhunter.commons.component.CF;
-import io.github.kylinhunter.commons.generator.config.bean.CommonStrategy;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
 import io.github.kylinhunter.commons.generator.context.CodeContext;
-import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.generator.context.ModuleContext;
+import io.github.kylinhunter.commons.generator.context.TemplateContext;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 
 /**
@@ -19,45 +18,68 @@ import io.github.kylinhunter.commons.template.TemplateExecutor;
  * @date 2023-01-08 22:10
  **/
 public class AutoCodeGenerator {
-    CodeContext codeContext = new CodeContext();
-    TemplateExecutor templateExecutor;
+    private CodeContext codeContext = new CodeContext();
+    private TemplateExecutor templateExecutor = CF.get(TemplateExecutor.class);
     private Config config = CF.get(Config.class);
 
     public AutoCodeGenerator() {
-
-        CodeTemplateEngine codeTemplateEngine = new CodeTemplateEngine();
-        this.templateExecutor = codeTemplateEngine.createTemplateExecutor();
         init();
     }
 
+    /**
+     * @return void
+     * @title init
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-14 01:16
+     */
     public void init() {
-        String templatePath = config.getGlobal().getTemplatePath();
-        File dir = ResourceHelper.getDir(templatePath);
-        File[] files = dir.listFiles();
-        for (File file : files) {
-            codeContext.getTemplateFiles().add(file);
-        }
+        initTemplateContexts();
+        initModuleContexts();
 
+    }
+
+    /**
+     * @return void
+     * @title initTemplateContexts
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-14 01:16
+     */
+    private void initTemplateContexts() {
+        List<TemplateConfig> templateConfigs = config.getTemplates();
+        for (TemplateConfig templateConfig : templateConfigs) {
+            TemplateContext templateContext = new TemplateContext(config.getGlobal(), templateConfig);
+            codeContext.addTemplateContext(templateContext);
+        }
+    }
+
+    private void initModuleContexts() {
+        List<Module> modules = config.getModules();
+        for (Module module : modules) {
+            ModuleContext moduleContext = new ModuleContext(config.getGlobal(), module);
+            codeContext.addModuleContext(moduleContext);
+
+        }
     }
 
     public void output() {
-        List<Module> modules = config.getModules();
-        for (Module module : modules) {
-            output(module);
+        for (ModuleContext moduleContext : codeContext.getModuleContexts()) {
+            output(moduleContext);
         }
 
     }
 
-    public void output(Module module) {
-        CommonStrategy commonStrategy = config.getGlobal().getStrategy();
+    public void output(ModuleContext moduleContext) {
+        System.out.println(moduleContext.getModule());
+        List<TemplateContext> templateContexts = codeContext.getTemplateContexts();
+        for (TemplateContext template : templateContexts) {
 
-        List<TemplateConfig> templates = config.getTemplates();
-        for (TemplateConfig template : templates) {
-            TemplateStrategy strategy = template.getStrategy();
-            templateExecutor.tmplate(template.getName(), commonStrategy.getEncoding(), commonStrategy.getExtension())
+            TemplateStrategy strategy = template.getTemplateConfig().getStrategy();
+            templateExecutor.tmplate(template.getName(), strategy.getEncoding(), strategy.getExtension())
                     .outputRelativePath(
                             "output3_result1"
-                                    + ".html").encoding(commonStrategy.getEncoding()).build();
+                                    + ".html").encoding(strategy.getEncoding()).build();
             templateExecutor.output(System.out::println);
         }
     }
