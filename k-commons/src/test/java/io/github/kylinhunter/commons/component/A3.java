@@ -12,18 +12,18 @@ import lombok.RequiredArgsConstructor;
  **/
 
 @RequiredArgsConstructor
+@C
 @Getter
-public class F {
+public class A3 {
     private final List<I> is;
     private final I primary;
 
     public void println() {
-        System.out.println("f");
+        System.out.print("all Interface=>");
         for (I i : is) {
-            System.out.println("f=>" + i.getClass().getName());
-            i.println();
+            System.out.print(i.getClass().getSimpleName() + "/");
         }
-        System.out.println("f primary i");
-        primary.println();
+        System.out.println();
+        System.out.println("primary ==>" + primary.getClass().getSimpleName());
     }
 }

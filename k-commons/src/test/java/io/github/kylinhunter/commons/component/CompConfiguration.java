@@ -10,18 +10,18 @@ import java.util.List;
 @CC
 public class CompConfiguration {
 
-    @C
-    public D d() {
-        return new D();
+    @C(order = 2)
+    public B1 d() {
+        return new B1();
     }
 
-    @C(primary = true)
-    public E e(D d) {
-        return new E(d);
+    @C(primary = true, order = 1)
+    public B2 e(B1 b1) {
+        return new B2(b1);
     }
 
     @C
-    public F f(List<I> is, I i) {
-        return new F(is, i);
+    public B3 f(List<I> is, I i) {
+        return new B3(is, i);
     }
 }

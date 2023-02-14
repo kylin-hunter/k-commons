@@ -7,9 +7,9 @@ import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
-import io.github.kylinhunter.commons.generator.context.CodeContext;
-import io.github.kylinhunter.commons.generator.context.ModuleContext;
-import io.github.kylinhunter.commons.generator.context.TemplateContext;
+import io.github.kylinhunter.commons.generator.context.bean.CodeContext;
+import io.github.kylinhunter.commons.generator.context.bean.ModuleContext;
+import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 
 /**
@@ -31,7 +31,7 @@ public class AutoCodeGenerator {
      * @title init
      * @description
      * @author BiJi'an
-     * @date 2023-02-14 01:16
+     * @date 2023-02-12 01:16
      */
     public void init() {
         initTemplateContexts();
@@ -44,23 +44,14 @@ public class AutoCodeGenerator {
      * @title initTemplateContexts
      * @description
      * @author BiJi'an
-     * @date 2023-02-14 01:16
+     * @date 2023-02-12 01:16
      */
     private void initTemplateContexts() {
-        List<TemplateConfig> templateConfigs = config.getTemplates();
-        for (TemplateConfig templateConfig : templateConfigs) {
-            TemplateContext templateContext = new TemplateContext(config.getGlobal(), templateConfig);
-            codeContext.addTemplateContext(templateContext);
-        }
+
     }
 
     private void initModuleContexts() {
-        List<Module> modules = config.getModules();
-        for (Module module : modules) {
-            ModuleContext moduleContext = new ModuleContext(config.getGlobal(), module);
-            codeContext.addModuleContext(moduleContext);
 
-        }
     }
 
     public void output() {

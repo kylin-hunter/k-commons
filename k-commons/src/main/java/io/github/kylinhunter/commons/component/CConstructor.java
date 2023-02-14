@@ -17,12 +17,14 @@ class CConstructor {
     private Class<?> clazz;
     private Constructor<?> constructor;
     private boolean primary;
+    private int order;
     private int depLevel;
 
-    public CConstructor(Class<?> clazz, boolean primary) {
+    public CConstructor(Class<?> clazz, C c) {
         this.clazz = clazz;
         this.constructor = clazz.getConstructors()[0];
-        this.primary = primary;
+        this.primary = c.primary();
+        this.order = c.order();
     }
 
 }

@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.compress.utils.Lists;
 
 import com.google.common.collect.Maps;
@@ -20,7 +19,7 @@ import lombok.Getter;
  * @date 2023-02-13 10:52
  **/
 public class CompManager {
-    protected final Map<Class<?>, List<Object>> allComponents = Maps.newHashMap();
+    protected final Map<Class<?>, CObjects> allComponents = Maps.newHashMap();
     @Getter
     protected CompTools compTools;
     private final ConstructorCompManager constructorCompManager;
@@ -77,11 +76,14 @@ public class CompManager {
     @SuppressWarnings("unchecked")
     public <T> List<T> getAll(Class<T> compClazz, boolean required) {
         Objects.requireNonNull(compClazz, "clazz can't be null");
-        List<Object> comps = allComponents.get(compClazz);
-        if (CollectionUtils.isEmpty(comps) && required) {
+        CObjects cobjects = allComponents.get(compClazz);
+        if (cobjects != null && !cobjects.isEmpty()) {
+            return (List<T>) cobjects.getObjects();
+        }
+        if (required) {
             throw new InitException("no component for :" + compClazz);
         }
-        return (List<T>) comps;
+        return null;
     }
 
     /**
@@ -96,14 +98,58 @@ public class CompManager {
     @SuppressWarnings("unchecked")
     public <T, S extends T> T get(Class<S> compClazz, boolean required) {
         Objects.requireNonNull(compClazz, "clazz can't be null");
-        List<Object> comps = allComponents.get(compClazz);
-        if (CollectionUtils.isEmpty(comps) && required) {
+        CObjects cobjects = allComponents.get(compClazz);
+        if (cobjects != null && !cobjects.isEmpty()) {
+            return (T) cobjects.getObject();
+        }
+        if (required) {
             throw new InitException("no component for :" + compClazz);
         }
-        if (comps != null && comps.size() > 0) {
-            return (T) comps.get(0);
-        }
         return null;
+    }
+
+    /**
+     * @param clazz        clazz
+     * @param cconstructor cconstructor
+     * @param obj          obj
+     * @return void
+     * @title register
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-12 11:25
+     */
+    public List<CObjects> register(Class<?> clazz, CConstructor cconstructor, Object obj) {
+        CObject cobject = new CObject(cconstructor, obj);
+        return register(clazz, cobject);
+    }
+
+    /**
+     * @param clazz   clazz
+     * @param cmethod cmethod
+     * @param obj     obj
+     * @return void
+     * @title register
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-12 11:25
+     */
+    public List<CObjects> register(Class<?> clazz, CMethod cmethod, Object obj) {
+        CObject cobject = new CObject(cmethod, obj);
+        return register(clazz, cobject);
+    }
+
+    /**
+     * @param clazz clazz
+     * @param obj   obj
+     * @return void
+     * @title register
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-12 14:03
+     */
+    public List<CObjects> register(Class<?> clazz, Object obj) {
+        CObject cobject = new CObject(true, 0, obj);
+        return register(clazz, cobject);
     }
 
     /**
@@ -114,42 +160,34 @@ public class CompManager {
      * @author BiJi'an
      * @date 2023-02-04 20:29
      */
-    public void register(Class<?> clazz, boolean primary, Object obj) {
+    private List<CObjects> register(Class<?> clazz, CObject ccbject) {
         try {
-            allComponents.compute(clazz, (k, v) -> {
-                if (v == null) {
-                    v = Lists.newArrayList();
-                }
-                if (!v.contains(obj)) {
-                    if (primary) {
-                        v.add(0, obj);
-                    } else {
-                        v.add(obj);
 
-                    }
+            List<CObjects> allAffectedCObjects = Lists.newArrayList();
+            CObjects affectedCObject = allComponents.compute(clazz, (k, cobjects) -> {
+                if (cobjects == null) {
+                    cobjects = new CObjects();
                 }
-                return v;
+                cobjects.add(ccbject);
+                return cobjects;
             });
+            allAffectedCObjects.add(affectedCObject);
             Set<Class<?>> allInterfaces = compTools.getAllInterface(clazz);
             if (allInterfaces != null && allInterfaces.size() > 0) {
                 for (Class<?> iterfaceClass : allInterfaces) {
-                    allComponents.compute(iterfaceClass, (k, v) -> {
-                        if (v == null) {
-                            v = Lists.newArrayList();
+                    CObjects affectedCObjects = allComponents.compute(iterfaceClass, (k, cobjects) -> {
+                        if (cobjects == null) {
+                            cobjects = new CObjects();
                         }
-                        if (!v.contains(obj)) {
-                            if (primary) {
-                                v.add(0, obj);
-                            } else {
-                                v.add(obj);
-
-                            }
-                        }
-                        return v;
+                        cobjects.add(ccbject);
+                        return cobjects;
                     });
+                    allAffectedCObjects.add(affectedCObjects);
+
                 }
 
             }
+            return allAffectedCObjects;
 
         } catch (Exception e) {
             throw new InitException("init components error:" + clazz.getName(), e);

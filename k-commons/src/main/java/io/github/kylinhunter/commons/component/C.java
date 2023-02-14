@@ -17,4 +17,6 @@ import java.lang.annotation.Target;
 public @interface C {
 
     boolean primary() default false;
+
+    int order() default 0;
 }

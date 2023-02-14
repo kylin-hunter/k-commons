@@ -19,11 +19,13 @@ class CMethod {
     private final Object ccObject;
     private boolean primary;
     private int depLevel;
+    private int order;
 
-    public CMethod(Method method, Object ccObject, boolean primary) {
+    public CMethod(Method method, Object ccObject, C c) {
         this.method = method;
         this.ccObject = ccObject;
-        this.primary = primary;
+        this.primary = c.primary();
+        this.order = c.order();
 
     }
 }

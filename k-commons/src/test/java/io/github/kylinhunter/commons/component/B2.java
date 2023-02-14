@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
  **/
 
 @RequiredArgsConstructor
-public class E implements I {
-    private final D d;
+public class B2 implements I {
+    private final B1 b1;
 
     public void println() {
-        System.out.println("e and d.println");
-        d.println();
+        System.out.println(this.getClass().getSimpleName() + "/" + b1.getClass().getSimpleName());
+
     }
 }

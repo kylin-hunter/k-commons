@@ -76,7 +76,7 @@ public class BeanCreator {
      * @title createBean1
      * @description
      * @author BiJi'an
-     * @date 2023-02-14 00:06
+     * @date 2023-02-12 00:06
      */
     public static <T> T createBean(Object obj, Method method, Object... args) {
         try {

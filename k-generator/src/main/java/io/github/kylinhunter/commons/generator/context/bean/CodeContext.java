@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.generator.context;
+package io.github.kylinhunter.commons.generator.context.bean;
 
 import java.util.List;
 import java.util.Map;

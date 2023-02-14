@@ -5,9 +5,9 @@ package io.github.kylinhunter.commons.component;
  * @description
  * @date 2022-11-21 02:14
  **/
-@C(primary = true)
-public class A  implements I{
+
+public class B1 implements I {
     public void println() {
-        System.out.println("a");
+        System.out.println(this.getClass().getSimpleName());
     }
 }

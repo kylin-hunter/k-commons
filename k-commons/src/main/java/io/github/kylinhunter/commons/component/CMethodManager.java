@@ -73,12 +73,12 @@ class CMethodManager {
     @SuppressWarnings("unchecked")
     private void calculate(Class<?> compClazz) {
         Object ccObject = BeanCreator.createBean(compClazz);
-        compManager.register(compClazz, false, ccObject);
+        compManager.register(compClazz, ccObject);
         Set<Method> methods = ReflectionUtils.getAllMethods(compClazz);
         for (Method method : methods) {
             C c = method.getAnnotation(C.class);
             if (c != null) {
-                CMethod cmethod = new CMethod(method, ccObject, c.primary());
+                CMethod cmethod = new CMethod(method, ccObject, c);
                 this.compClasses.add(method.getReturnType());
                 this.cmethods.add(cmethod);
                 registerAll(method.getReturnType(), cmethod);

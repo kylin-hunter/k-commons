@@ -55,7 +55,7 @@ class ConstructorCompManager {
         Class<?> clazz = cconstructor.getClazz();
         int parameterCount = constructor.getParameterCount();
         if (parameterCount <= 0) {
-            compManager.register(clazz, cconstructor.isPrimary(), BeanCreator.createBean(constructor));
+            compManager.register(clazz, cconstructor, BeanCreator.createBean(constructor));
         } else {
             Class<?>[] parameterTypes = constructor.getParameterTypes();
             Type[] genericParameterTypes = constructor.getGenericParameterTypes();
@@ -79,8 +79,7 @@ class ConstructorCompManager {
                     throw new InitException("no component:" + clazz.getName());
                 }
             }
-            this.compManager
-                    .register(clazz, cconstructor.isPrimary(), BeanCreator.createBean(constructor, parameterObj));
+            this.compManager.register(clazz, cconstructor, BeanCreator.createBean(constructor, parameterObj));
 
         }
     }

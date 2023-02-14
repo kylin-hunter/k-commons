@@ -74,7 +74,7 @@ class CConstructorManager {
      */
     private void calculate(Class<?> compClazz) {
         C c = compClazz.getAnnotation(C.class);
-        CConstructor cconstructor = new CConstructor(compClazz, c.primary());
+        CConstructor cconstructor = new CConstructor(compClazz, c);
         this.compClasses.add(compClazz);
         this.constructors.add(cconstructor);
         this.registerAll(compClazz, cconstructor);
