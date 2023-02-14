@@ -24,11 +24,14 @@ public class CompManager {
     protected CompTools compTools;
     private final ConstructorCompManager constructorCompManager;
     private final MethodCompManager methodCompManager;
+    private CFieldManager cfieldManager;
 
     public CompManager() {
         compTools = new CompTools(KConst.K_BASE_PACKAGE);
         constructorCompManager = new ConstructorCompManager(this);
         methodCompManager = new MethodCompManager(this);
+        cfieldManager =
+                new CFieldManager(constructorCompManager.constructorManager, methodCompManager.methodManager, this);
     }
 
     /**
@@ -62,6 +65,7 @@ public class CompManager {
     public void calComponent() {
         constructorCompManager.calculate();
         methodCompManager.calculate();
+        cfieldManager.calculate();
     }
 
     /**

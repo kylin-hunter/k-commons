@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.component;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,20 +12,18 @@ import lombok.EqualsAndHashCode;
  **/
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-class CMethod {
+class CField {
 
     @EqualsAndHashCode.Include
-    private final Method method;
-    private final Object object;
+    private final Field field;
+    private final Object ccObject;
     private boolean primary;
     private int depLevel;
     private int order;
 
-    public CMethod(Method method, Object object, C c) {
-        this.method = method;
-        this.object = object;
-        this.primary = c.primary();
-        this.order = c.order();
+    public CField(Field field, Object ccObject) {
+        this.field = field;
+        this.ccObject = ccObject;
 
     }
 }

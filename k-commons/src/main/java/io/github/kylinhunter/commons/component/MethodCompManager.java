@@ -4,8 +4,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import org.apache.commons.compress.utils.Lists;
-
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.BeanCreator;
 import io.github.kylinhunter.commons.reflect.ReflectUtil;
@@ -20,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class MethodCompManager {
     private CompManager compManager;
-    private CMethodManager methodManager;
+    protected CMethodManager methodManager;
 
     public MethodCompManager(CompManager compManager) {
         this.compManager = compManager;
@@ -36,18 +34,13 @@ class MethodCompManager {
      */
     public void calculate() {
         methodManager.calculate();
-        List<CObjects> allAffetCObjects = Lists.newArrayList();
 
         List<CMethod> methods = methodManager.getCmethods();
         for (CMethod method : methods) {
-            calculate(method, allAffetCObjects);
+            calculate(method);
         }
         compManager.check(methodManager.getCompClasses());
 
-        for (CObjects allAffetCObject : allAffetCObjects) {
-            System.out.println("==>" + allAffetCObject);
-
-        }
     }
 
     /**
@@ -58,15 +51,15 @@ class MethodCompManager {
      * @author BiJi'an
      * @date 2023-01-21 00:37
      */
-    public void calculate(CMethod cmethod, List<CObjects> allAffetCObjects) {
+    public void calculate(CMethod cmethod) {
         Method method = cmethod.getMethod();
-        Object ccObject = cmethod.getCcObject();
+        Object object = cmethod.getObject();
 
         int parameterCount = method.getParameterCount();
         Class<?> compClazz = method.getReturnType();
         if (parameterCount <= 0) {
-            allAffetCObjects.addAll(this.compManager.
-                    register(compClazz, cmethod, BeanCreator.createBean(ccObject, method)));
+            this.compManager.
+                    register(compClazz, cmethod, BeanCreator.createBean(object, method));
         } else {
             Class<?>[] parameterTypes = method.getParameterTypes();
             Type[] genericParameterTypes = method.getGenericParameterTypes();
@@ -92,8 +85,8 @@ class MethodCompManager {
                 }
 
             }
-            allAffetCObjects.addAll(this.compManager
-                    .register(compClazz, cmethod, BeanCreator.createBean(ccObject, method, parameterObj)));
+            this.compManager
+                    .register(compClazz, cmethod, BeanCreator.createBean(object, method, parameterObj));
 
         }
     }

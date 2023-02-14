@@ -22,6 +22,6 @@ public class CompConfiguration {
 
     @C
     public B3 f(List<I> is, I i) {
-        return new B3(is, i);
+        return new B3(i, is);
     }
 }

@@ -24,7 +24,10 @@ class CFTest {
 
         System.out.println("=a3===");
         A3 a3 = CF.get(A3.class);
-        Assertions.assertEquals(2, a3.getIs().size());
+        Assertions.assertEquals(2, a3.getIs1().size()); // 特殊 因为 cconstructor 导致is1 就不改了
+        Assertions.assertEquals(4, a3.getIs2().size());
+        Assertions.assertEquals(A2.class, a3.getPrimary1().getClass()); // 特殊 因为 cconstructor 导致primary1 就不改了
+        Assertions.assertEquals(B2.class, a3.getPrimary2().getClass());
         a3.println();
 
         System.out.println("=b1===");
@@ -41,7 +44,10 @@ class CFTest {
 
         System.out.println("=b3===");
         B3 b3 = CF.get(B3.class);
-        Assertions.assertEquals(B2.class, b3.getPrimary().getClass());
+        Assertions.assertEquals(4, b3.getIs1().size());
+        Assertions.assertEquals(4, b3.getIs2().size());
+        Assertions.assertEquals(B2.class, b3.getPrimary1().getClass());
+        Assertions.assertEquals(B2.class, b3.getPrimary2().getClass());
         b3.println();
 
         System.out.println("=all i===");
