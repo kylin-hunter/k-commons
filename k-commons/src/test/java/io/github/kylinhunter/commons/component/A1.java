@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.component;
 
+import lombok.Getter;
+
 /**
  * @author BiJi'an
  * @description

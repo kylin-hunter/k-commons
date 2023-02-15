@@ -1,6 +1,14 @@
-CREATE TABLE IF NOT EXISTS `k_user`
+
+CREATE TABLE IF NOT EXISTS `test_role`
 (
-    `id`          bigint(20)     NOT NULL COMMENT '主键id' AUTO_INCREMENT,
+    `id`   bigint(20)  NOT NULL  COMMENT '主键id' AUTO_INCREMENT,
+    `name` varchar(64) NOT NULL DEFAULT '' COMMENT '姓名',
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `test_user`
+(
+    `id`          bigint(20)     NOT NULL  COMMENT '主键id' AUTO_INCREMENT,
     `name`        varchar(64)    NOT NULL DEFAULT '' COMMENT '姓名',
     `birth`       datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '生日',
     `age`         int            NOT NULL DEFAULT 0 COMMENT '年龄',
@@ -14,16 +22,7 @@ CREATE TABLE IF NOT EXISTS `k_user`
     `extend_1`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段1',
     `extend_2`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段2',
     `extend_3`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin;
-
-CREATE TABLE IF NOT EXISTS `k_user_role`
-(
-    `id`   bigint(20)  NOT NULL COMMENT '主键id' AUTO_INCREMENT,
-    `name` varchar(64) NOT NULL DEFAULT '' COMMENT '姓名',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin;
+    PRIMARY KEY (`id`),
+    constraint test_user_role_fk
+        foreign key (role_id) references test_role (id)
+) ;

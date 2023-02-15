@@ -14,7 +14,7 @@ class ColumnMetaReaderTest {
     void test() {
         ColumnMetaReader columnMetaReader = CF.get(ColumnMetaReader.class);
 
-        List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData("kp", "test_kylin_user");
+        List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData("kp", "test_user");
         for (ColumnMeta columnMeta : columnMetas) {
             System.out.println(columnMeta);
             Assertions.assertNotNull(columnMeta.getJavaClass());

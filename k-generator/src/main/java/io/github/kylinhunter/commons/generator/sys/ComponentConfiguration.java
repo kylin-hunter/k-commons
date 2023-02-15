@@ -19,7 +19,6 @@ public class ComponentConfiguration {
     public Config config() {
         ConfigReader configReader = new ConfigReader();
         return configReader.load();
-
     }
 
     @C

@@ -11,9 +11,9 @@ import java.lang.annotation.Target;
  * @description abbreviations  for component
  * @date 2022/11/8
  **/
-@Target({ElementType.FIELD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface A {
+public @interface CAfter {
 
 }

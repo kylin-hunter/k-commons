@@ -149,7 +149,7 @@ class CConstructorManager {
             return constructors.get(0);
         }
         if (required) {
-            throw new InitException(" no cconstructor ");
+            throw new InitException(" no cconstructor " + compClazz.getName());
         }
         return null;
     }

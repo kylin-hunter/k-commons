@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.reflect;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
@@ -29,4 +30,24 @@ public class ReflectUtils {
             throw new InitException("invoke error", e);
         }
     }
+
+    /**
+     * @param obj   obj
+     * @param field field
+     * @param value value
+     * @return T
+     * @title set
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-16 01:07
+     */
+    public static void set(Object obj, Field field, Object value) {
+        try {
+            field.setAccessible(true);
+            field.set(obj, value);
+        } catch (Exception e) {
+            throw new InitException("invoke error", e);
+        }
+    }
+
 }

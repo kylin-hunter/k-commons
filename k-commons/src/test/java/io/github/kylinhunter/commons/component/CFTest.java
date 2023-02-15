@@ -30,6 +30,8 @@ class CFTest {
         Assertions.assertEquals(B2.class, a3.getPrimary2().getClass());
         a3.println();
 
+        Assertions.assertTrue(a3.isInit());
+
         System.out.println("=b1===");
         B1 b1 = CF.get(B1.class);
         b1.println();
@@ -49,6 +51,7 @@ class CFTest {
         Assertions.assertEquals(B2.class, b3.getPrimary1().getClass());
         Assertions.assertEquals(B2.class, b3.getPrimary2().getClass());
         b3.println();
+        Assertions.assertTrue(b3.isInit());
 
         System.out.println("=all i===");
         List<I> components = CF.getAll(I.class);

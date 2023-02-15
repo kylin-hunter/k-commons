@@ -7,6 +7,7 @@ import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
+import io.github.kylinhunter.commons.generator.context.Handler;
 import io.github.kylinhunter.commons.generator.context.bean.CodeContext;
 import io.github.kylinhunter.commons.generator.context.bean.ModuleContext;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
@@ -20,7 +21,7 @@ import io.github.kylinhunter.commons.template.TemplateExecutor;
 public class AutoCodeGenerator {
     private CodeContext codeContext = new CodeContext();
     private TemplateExecutor templateExecutor = CF.get(TemplateExecutor.class);
-    private Config config = CF.get(Config.class);
+
 
     public AutoCodeGenerator() {
         init();
@@ -34,6 +35,11 @@ public class AutoCodeGenerator {
      * @date 2023-02-12 01:16
      */
     public void init() {
+        List<Handler> handlers = CF.getAll(Handler.class);
+
+        for (Handler handler : handlers) {
+            handler.handle(codeContext);
+        }
         initTemplateContexts();
         initModuleContexts();
 

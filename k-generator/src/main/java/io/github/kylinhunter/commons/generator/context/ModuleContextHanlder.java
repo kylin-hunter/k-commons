@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.generator.context;
 
 import java.util.List;
 
+import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
@@ -16,10 +17,11 @@ import lombok.RequiredArgsConstructor;
  * @description
  * @date 2023-02-12 10:24
  **/
-@C
+@C(order = 2)
 @RequiredArgsConstructor
 public class ModuleContextHanlder implements Handler {
-    private final Config config;
+    @CSet
+    private Config config;
     @Override
     public void handle(CodeContext codeContext) {
         List<Module> modules = config.getModules();

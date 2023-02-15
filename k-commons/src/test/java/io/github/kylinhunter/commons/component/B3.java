@@ -17,10 +17,13 @@ public class B3 {
     private final I primary1;
     private final List<I> is1;
 
-    @A
+    @CSet
     private I primary2;
-    @A
+    @CSet
     private List<I> is2;
+
+    @Getter
+    private boolean init;
 
     public void println() {
         System.out.print("all Interface is1=>");
@@ -39,4 +42,11 @@ public class B3 {
         System.out.println("primary2 ==>" + primary2.getClass().getSimpleName());
     }
 
+
+
+    @CAfter
+    public void init() {
+        System.out.println("after=>" + this.getClass().getSimpleName());
+        init = true;
+    }
 }

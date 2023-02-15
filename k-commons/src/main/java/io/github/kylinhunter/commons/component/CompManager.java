@@ -25,12 +25,14 @@ public class CompManager {
     protected final ConstructorCompManager constructorCompManager;
     protected final MethodCompManager methodCompManager;
     private final CFieldCompSetter cfieldCompSetter;
+    private final CAfterMethodCalculator cafterMethodCalculator;
 
     public CompManager() {
         compTools = new CompTools(KConst.K_BASE_PACKAGE);
         constructorCompManager = new ConstructorCompManager(this);
         methodCompManager = new MethodCompManager(this);
         cfieldCompSetter = new CFieldCompSetter(this);
+        cafterMethodCalculator = new CAfterMethodCalculator(this);
     }
 
     /**
@@ -65,6 +67,7 @@ public class CompManager {
         constructorCompManager.calculate();
         methodCompManager.calculate();
         cfieldCompSetter.calculate();
+        cafterMethodCalculator.calculate();
     }
 
     /**

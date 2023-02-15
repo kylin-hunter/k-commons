@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.component;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,7 +11,6 @@ import org.reflections.ReflectionUtils;
 
 import com.google.common.collect.Sets;
 
-import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +23,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-class CFieldCompSetter {
+class CAfterMethodCalculator {
 
     private CConstructorManager constructorManager;
     private CMethodManager methodManager;
     private CompManager compManager;
 
-    public CFieldCompSetter(CompManager compManager) {
+    public CAfterMethodCalculator(CompManager compManager) {
         this.compManager = compManager;
         this.constructorManager = compManager.constructorCompManager.constructorManager;
         this.methodManager = compManager.methodCompManager.methodManager;
@@ -45,23 +44,10 @@ class CFieldCompSetter {
      */
     public void calculate() {
 
-        List<CField> allCFields = this.getAllCFields();
+        List<CAfterMethod> allCAfterMethods = this.getAllCAfterMethods();
 
-        for (CField cfield : allCFields) {
-            Class<?> compClazz = cfield.getType();
-
-            Field field = cfield.getField();
-            Object compObject = cfield.getCompObject();
-            Object value;
-            if (List.class.isAssignableFrom(compClazz)) {
-                Class<?> actualTypeArgumentClasses = GenericTypeUtils.getActualTypeArgument(cfield.getGenericType(), 0);
-                value = compManager.getAll(actualTypeArgumentClasses, true);
-                ReflectUtils.set(compObject, field, value);
-            } else {
-                value = compManager.get(compClazz, true);
-            }
-            ReflectUtils.set(compObject, field, value);
-
+        for (CAfterMethod afterMethod : allCAfterMethods) {
+            ReflectUtils.invoke(afterMethod.getCompObject(), afterMethod.getMethod());
         }
     }
 
@@ -73,19 +59,21 @@ class CFieldCompSetter {
      * @date 2023-02-12 22:42
      */
     @SuppressWarnings("unchecked")
-    private List<CField> getAllCFields() {
-        List<CField> allCFields = Lists.newArrayList();
+    private List<CAfterMethod> getAllCAfterMethods() {
+        List<CAfterMethod> allCAfterMethods = Lists.newArrayList();
         Set<Class<?>> allCompClasses = Sets.newHashSet(constructorManager.getCompClasses());
         allCompClasses.addAll(methodManager.getCompClasses());
         for (Class<?> compClass : allCompClasses) {
             Object o = compManager.get(compClass, true);
-            Set<Field> fields = ReflectionUtils.getAllFields(compClass, (f) -> f.getAnnotation(CSet.class) != null);
-            if (!CollectionUtils.isEmpty(fields)) {
-                Set<CField> cFields = fields.stream().map(e -> new CField(e, o)).collect(Collectors.toSet());
-                allCFields.addAll(cFields);
+            Set<Method> methods =
+                    ReflectionUtils.getAllMethods(compClass, (m) -> m.getAnnotation(CAfter.class) != null);
+            if (!CollectionUtils.isEmpty(methods)) {
+                Set<CAfterMethod> cafterMethods = methods.stream().
+                        map(m -> new CAfterMethod(m, o, m.getAnnotation(CAfter.class))).collect(Collectors.toSet());
+                allCAfterMethods.addAll(cafterMethods);
             }
         }
-        return allCFields;
+        return allCAfterMethods;
     }
 
 }
