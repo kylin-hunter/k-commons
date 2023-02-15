@@ -1,12 +1,11 @@
 package io.github.kylinhunter.commons.generator;
 
-import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Global;
 import io.github.kylinhunter.commons.io.ResourceHelper;
-import io.github.kylinhunter.commons.template.Engines;
 import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
+import io.github.kylinhunter.commons.template.velocity.VelocityTemplateEngine;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -19,7 +18,7 @@ public class CodeTemplateEngine {
     private final Config config;
 
     public TemplateExecutor createTemplateExecutor() {
-        TemplateEngine templateEngine = CF.get(Engines.VELOCITY);
+        TemplateEngine templateEngine = new VelocityTemplateEngine();
         templateEngine.customize(templateConfig -> {
             Global global = config.getGlobal();
             String outputPathPath = global.getOutputPath();
