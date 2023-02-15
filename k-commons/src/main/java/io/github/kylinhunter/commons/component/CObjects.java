@@ -54,7 +54,7 @@ public class CObjects {
 
     /**
      * @return java.lang.Object
-     * @title getObject
+     * @title getCompObject
      * @description
      * @author BiJi'an
      * @date 2023-02-12 15:19

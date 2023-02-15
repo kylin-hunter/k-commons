@@ -22,16 +22,15 @@ public class CompManager {
     protected final Map<Class<?>, CObjects> allComponents = Maps.newHashMap();
     @Getter
     protected CompTools compTools;
-    private final ConstructorCompManager constructorCompManager;
-    private final MethodCompManager methodCompManager;
-    private CFieldManager cfieldManager;
+    protected final ConstructorCompManager constructorCompManager;
+    protected final MethodCompManager methodCompManager;
+    private final CFieldCompSetter cfieldCompSetter;
 
     public CompManager() {
         compTools = new CompTools(KConst.K_BASE_PACKAGE);
         constructorCompManager = new ConstructorCompManager(this);
         methodCompManager = new MethodCompManager(this);
-        cfieldManager =
-                new CFieldManager(constructorCompManager.constructorManager, methodCompManager.methodManager, this);
+        cfieldCompSetter = new CFieldCompSetter(this);
     }
 
     /**
@@ -65,7 +64,7 @@ public class CompManager {
     public void calComponent() {
         constructorCompManager.calculate();
         methodCompManager.calculate();
-        cfieldManager.calculate();
+        cfieldCompSetter.calculate();
     }
 
     /**
@@ -122,6 +121,7 @@ public class CompManager {
      * @author BiJi'an
      * @date 2023-02-12 11:25
      */
+    @SuppressWarnings("UnusedReturnValue")
     public List<CObjects> register(Class<?> clazz, CConstructor cconstructor, Object obj) {
         CObject cobject = new CObject(cconstructor, obj);
         return register(clazz, cobject);
@@ -137,6 +137,7 @@ public class CompManager {
      * @author BiJi'an
      * @date 2023-02-12 11:25
      */
+    @SuppressWarnings("UnusedReturnValue")
     public List<CObjects> register(Class<?> clazz, CMethod cmethod, Object obj) {
         CObject cobject = new CObject(cmethod, obj);
         return register(clazz, cobject);
@@ -151,6 +152,7 @@ public class CompManager {
      * @author BiJi'an
      * @date 2023-02-12 14:03
      */
+    @SuppressWarnings("UnusedReturnValue")
     public List<CObjects> register(Class<?> clazz, Object obj) {
         CObject cobject = new CObject(true, 0, obj);
         return register(clazz, cobject);

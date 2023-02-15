@@ -16,14 +16,14 @@ class CMethod {
 
     @EqualsAndHashCode.Include
     private final Method method;
-    private final Object object;
+    private final Object compObject;
     private boolean primary;
     private int depLevel;
     private int order;
 
-    public CMethod(Method method, Object object, C c) {
+    public CMethod(Method method, Object compObject, C c) {
         this.method = method;
-        this.object = object;
+        this.compObject = compObject;
         this.primary = c.primary();
         this.order = c.order();
 

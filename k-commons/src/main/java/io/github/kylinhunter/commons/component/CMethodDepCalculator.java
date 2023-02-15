@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import io.github.kylinhunter.commons.reflect.ReflectUtil;
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 
 /**
  * @author BiJi'an
@@ -99,7 +99,7 @@ public class CMethodDepCalculator {
                     Class<?> curParametorClass = parameterTypes[i];
                     if (Collection.class.isAssignableFrom(curParametorClass)) {
                         Type type = genericParameterTypes[i];
-                        Class<?>[] actualTypeArgumentClasses = ReflectUtil.getActualTypeArgumentClasses(type);
+                        Class<?>[] actualTypeArgumentClasses = GenericTypeUtils.getActualTypeArguments(type);
                         for (Class<?> actualTypeArgumentClass : actualTypeArgumentClasses) {
                             Collection<CMethod> all = methodManager.getAll(actualTypeArgumentClass);
                             tmpCMethods.addAll(all);

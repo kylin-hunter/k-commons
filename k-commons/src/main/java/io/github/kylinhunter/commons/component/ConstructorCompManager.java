@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.BeanCreator;
-import io.github.kylinhunter.commons.reflect.ReflectUtil;
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -68,7 +68,7 @@ class ConstructorCompManager {
                 } else {
                     if (List.class.isAssignableFrom(curParametorClass)) {
                         Type type = genericParameterTypes[i];
-                        Class<?> argClass = ReflectUtil.getActualTypeArgumentClasses(type, 0);
+                        Class<?> argClass = GenericTypeUtils.getActualTypeArgument(type, 0);
                         List<?> comps = compManager.getAll(argClass, false);
                         if (comps.size() > 0) {
                             parameterObj[i] = comps;

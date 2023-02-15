@@ -57,7 +57,7 @@ public class BeanCreator {
      * @title createBean
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 23:59
+     * @date 2023-02-12 23:59
      */
     public static <T> T createBean(Constructor<T> constructor, Object... initargs) {
         try {
@@ -79,11 +79,6 @@ public class BeanCreator {
      * @date 2023-02-12 00:06
      */
     public static <T> T createBean(Object obj, Method method, Object... args) {
-        try {
-            return ReflectUtil.invoke(obj, method, args);
-        } catch (Exception e) {
-            throw new InitException("init createBean error", e);
-        }
-
+        return ReflectUtils.invoke(obj, method, args);
     }
 }

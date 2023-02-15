@@ -2,10 +2,8 @@ package io.github.kylinhunter.commons.state;
 
 import java.util.StringJoiner;
 
-import org.springframework.stereotype.Component;
-
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.reflect.ReflectUtil;
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import lombok.Data;
 
 /**
@@ -20,7 +18,7 @@ public abstract class AbstractBitState<E extends Enum<E>> {
 
     public AbstractBitState() {
 
-        Class<? extends Enum<?>> genericType = ReflectUtil.getGenericType(this.getClass(), 0);
+        Class<? extends Enum<?>> genericType = GenericTypeUtils.getActualTypeArgument(this.getClass().getGenericSuperclass(), 0);
         if (genericType == null) {
             throw new InitException("genericType can't be null");
         }
