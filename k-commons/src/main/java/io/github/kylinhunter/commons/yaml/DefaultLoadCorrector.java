@@ -3,20 +3,29 @@ package io.github.kylinhunter.commons.yaml;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.github.kylinhunter.commons.component.CF;
+import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.name.CamelToSnake;
 import io.github.kylinhunter.commons.name.SnakeFormat;
 import io.github.kylinhunter.commons.name.SnakeToCamel;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-02-08 15:20
  **/
+@C
+@Setter
+@RequiredArgsConstructor
 public class DefaultLoadCorrector implements LoadCorrector {
     private static final Pattern PATTERN_PROP_NAME = Pattern.compile("^(\\s*-*\\s*)(\\w+-*\\w+)\\s*:");
-    private static final SnakeToCamel SNAKE_TO_CAMEL = CF.get(SnakeToCamel.class);
-    private static final CamelToSnake CAMEL_TO_SNAKE = CF.get(CamelToSnake.class);
+
+    private final SnakeToCamel snakeToCamel;
+
+    private final CamelToSnake camelToSnake;
+
+    public static DefaultLoadCorrector singletion;
 
     @Override
     public String correct(String text, YamlType yamlType) {
@@ -32,17 +41,20 @@ public class DefaultLoadCorrector implements LoadCorrector {
     private String correntLine(String line, YamlType yamlType) {
         Matcher matcher = PATTERN_PROP_NAME.matcher(line);
         if (matcher.find()) {
-            String group = matcher.group();
             if (matcher.groupCount() > 1) {
                 String group1 = matcher.group(1);
                 String group2 = matcher.group(2);
                 if (yamlType == YamlType.CAMLE) {
-                    return matcher.replaceAll(group1 + SNAKE_TO_CAMEL.convert(group2) + ":");
+                    try {
+                        return matcher.replaceAll(group1 + snakeToCamel.convert(group2) + ":");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (yamlType == YamlType.SNAKE_UNDERSCORE) {
                     return matcher
-                            .replaceAll(group1 + CAMEL_TO_SNAKE.convert(group2, SnakeFormat.LOWWER_UNDERSCORE) + ":");
+                            .replaceAll(group1 + camelToSnake.convert(group2, SnakeFormat.LOWWER_UNDERSCORE) + ":");
                 } else {
-                    return matcher.replaceAll(group1 + CAMEL_TO_SNAKE.convert(group2, SnakeFormat.LOWWER_HYPHEN) + ":");
+                    return matcher.replaceAll(group1 + camelToSnake.convert(group2, SnakeFormat.LOWWER_HYPHEN) + ":");
                 }
             }
 

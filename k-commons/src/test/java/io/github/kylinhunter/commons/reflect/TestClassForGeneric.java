@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-02-15 19:02
+ * @date 2023-02-11 19:02
  **/
 public class TestClassForGeneric extends S<Integer, String> implements I1<String, Integer>, I2<Integer, String> {
 

@@ -8,7 +8,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-02-15 16:37
+ * @date 2023-02-11 16:37
  **/
 public class ReflectUtils {
 
@@ -39,7 +39,7 @@ public class ReflectUtils {
      * @title set
      * @description
      * @author BiJi'an
-     * @date 2023-02-16 01:07
+     * @date 2023-02-11 01:07
      */
     public static void set(Object obj, Field field, Object value) {
         try {

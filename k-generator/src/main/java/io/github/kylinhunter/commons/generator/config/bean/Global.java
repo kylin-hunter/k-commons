@@ -17,6 +17,8 @@ public class Global {
     private String outputPath;
     private Map<String, String> variables = Maps.newHashMap();
     private CommonStrategy strategy;
+    private String databaseName;
+
 
 
 }

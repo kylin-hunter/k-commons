@@ -23,7 +23,7 @@ class YamlHelperTest {
             String yamlText = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             System.out.println("file string=> \n" + yamlText);
 
-            YamlBean yamlBeanFromPath = YamlHelper.loadFromClassPath(YamlBean.class, path, true);
+            YamlBean yamlBeanFromPath = YamlHelper.loadFromPath(YamlBean.class, path, true);
             System.out.println("yamlBeanFromPath:" + yamlBeanFromPath);
             YamlBean yamlBeanFromText = YamlHelper.loadFromText(YamlBean.class, yamlText, true);
             System.out.println("yamlBeanFromText:" + yamlBeanFromText);

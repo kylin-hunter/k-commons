@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.generator.context;
+package io.github.kylinhunter.commons.generator.context.handler;
 
 import io.github.kylinhunter.commons.generator.context.bean.CodeContext;
 
@@ -7,7 +7,7 @@ import io.github.kylinhunter.commons.generator.context.bean.CodeContext;
  * @description
  * @date 2023-02-12 10:22
  **/
-public interface Handler {
+public interface ContextHandler {
 
     void handle(CodeContext codeContext);
 }

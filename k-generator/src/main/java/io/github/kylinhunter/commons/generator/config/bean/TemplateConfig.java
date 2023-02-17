@@ -1,7 +1,5 @@
 package io.github.kylinhunter.commons.generator.config.bean;
 
-import org.springframework.beans.BeanUtils;
-
 import lombok.Data;
 
 @Data

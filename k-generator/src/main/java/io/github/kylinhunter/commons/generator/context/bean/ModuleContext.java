@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.generator.context.bean;
 
-import io.github.kylinhunter.commons.generator.config.bean.Global;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import lombok.Data;
 
@@ -11,11 +10,11 @@ import lombok.Data;
  **/
 @Data
 public class ModuleContext {
-    private Module module;
     private String name;
+    private String database;
+    private Table table;
 
-    public ModuleContext(Global global, Module module) {
-        this.module = module;
+    public ModuleContext(Module module) {
         this.name = module.getName();
 
     }

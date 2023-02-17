@@ -22,7 +22,7 @@ public class GenericTypeUtils {
      * @title getSuperClassActualTypes
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 20:52
+     * @date 2023-02-11 20:52
      */
     public static ActualType getSuperClassActualType(Class<?> clazz) {
         return getActualType(clazz.getGenericSuperclass());
@@ -35,7 +35,7 @@ public class GenericTypeUtils {
      * @title getSuperClassActualType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 23:18
+     * @date 2023-02-11 23:18
      */
     public static <T> Class<T> getSuperClassActualType(Class<?> clazz, int index) {
         ActualType actualType = getActualType(clazz.getGenericSuperclass());
@@ -51,7 +51,7 @@ public class GenericTypeUtils {
      * @title getInterfacesActualTypes
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 20:52
+     * @date 2023-02-11 20:52
      */
     public static ActualType[] getInterfaceActualTypes(Class<?> clazz) {
         return getActualTypes(clazz.getGenericInterfaces());
@@ -64,7 +64,7 @@ public class GenericTypeUtils {
      * @title getInterfacesActualType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 23:25
+     * @date 2023-02-11 23:25
      */
     public static ActualType getInterfaceActualType(Class<?> clazz, int interfaceIndex) {
         ActualType[] actualTypes = getInterfaceActualTypes(clazz);
@@ -82,7 +82,7 @@ public class GenericTypeUtils {
      * @title getInterfacesActualType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 23:33
+     * @date 2023-02-11 23:33
      */
     public static <T> Class<T> getInterfaceActualType(Class<?> clazz, int interfaceIndex, int typeIndex) {
         ActualType[] actualTypes = getInterfaceActualTypes(clazz);
@@ -99,7 +99,7 @@ public class GenericTypeUtils {
      * @title getMethodReturnActualTypes
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 20:52
+     * @date 2023-02-11 20:52
      */
     public static ActualType getMethodReturnActualType(Method method) {
         return getActualType(method.getGenericReturnType());
@@ -112,7 +112,7 @@ public class GenericTypeUtils {
      * @title getMethodReturnActualType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 23:37
+     * @date 2023-02-11 23:37
      */
     public static <T> Class<T> getMethodReturnActualType(Method method, int index) {
         ActualType actualType = getActualType(method.getGenericReturnType());
@@ -128,7 +128,7 @@ public class GenericTypeUtils {
      * @title getMethodParamterActualType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 23:45
+     * @date 2023-02-11 23:45
      */
     public static ActualType[] getMethodParamterActualType(Method method) {
         return getActualTypes(method.getGenericParameterTypes());
@@ -141,7 +141,7 @@ public class GenericTypeUtils {
      * @title getMethodParamterActualType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 23:48
+     * @date 2023-02-11 23:48
      */
     public static ActualType getMethodParamterActualType(Method method, int paramterIndex) {
         ActualType[] interfacesActualTypes = getMethodParamterActualType(method);
@@ -159,7 +159,7 @@ public class GenericTypeUtils {
      * @title getMethodParamterActualType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 23:49
+     * @date 2023-02-11 23:49
      */
     public static <T> Class<T> getMethodParamterActualType(Method method, int paramterIndex, int typeIndex) {
         ActualType[] actualTypes = getMethodParamterActualType(method);
@@ -212,7 +212,7 @@ public class GenericTypeUtils {
      * @title getActualTypes
      * @description
      * @author BiJi'an
-     * @date 2023-02-16 00:16
+     * @date 2023-02-11 00:16
      */
     private static ActualType[] getActualTypes(Type[] types) {
         if (types.length > 0) {
@@ -231,7 +231,7 @@ public class GenericTypeUtils {
      * @title getActualType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 20:46
+     * @date 2023-02-11 20:46
      */
     private static ActualType getActualType(Type type) {
         if (type instanceof ParameterizedType) {

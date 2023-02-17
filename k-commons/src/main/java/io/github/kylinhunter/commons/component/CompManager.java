@@ -16,7 +16,7 @@ import lombok.Getter;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-02-13 10:52
+ * @date 2023-02-11 10:52
  **/
 public class CompManager {
     protected final Map<Class<?>, CObjects> allComponents = Maps.newHashMap();
@@ -61,7 +61,7 @@ public class CompManager {
      * @title calComponent
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 14:56
+     * @date 2023-02-11 14:56
      */
     public void calComponent() {
         constructorCompManager.calculate();

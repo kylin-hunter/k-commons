@@ -3,8 +3,10 @@ package io.github.kylinhunter.commons.generator.config.bean;
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class TemplateStrategy extends CommonStrategy {
     private String superClass;
     private String classNamePattern;

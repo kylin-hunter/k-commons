@@ -8,6 +8,7 @@ dependencies {
     implementation(rootProject.dependency_management['mysql-connector-java'])
     implementation(rootProject.dependency_management['ojdbc8'])
     implementation(rootProject.dependency_management['commons-dbutils'])
+    implementation(rootProject.dependency_management['aviator'])
 
 
 }

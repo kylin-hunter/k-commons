@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.yaml.snakeyaml.Yaml;
 
+import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
@@ -17,9 +18,6 @@ import io.github.kylinhunter.commons.io.ResourceHelper;
  **/
 public class YamlHelper {
 
-    private static final LoadCorrector DEFAULT_LOAD_CORRECTOR = new DefaultLoadCorrector();
-    private static final DumpCorrector DEFAULT_DUMP_CORRECTOR = new DefaultDumpCorrector();
-
     /**
      * @param clazz clazz
      * @param path  path
@@ -29,8 +27,8 @@ public class YamlHelper {
      * @author BiJi'an
      * @date 2022-11-01 22:01
      */
-    public static <T> T loadFromClassPath(Class<T> clazz, String path) {
-        return loadFromClassPath(clazz, path, true);
+    public static <T> T loadFromPath(Class<T> clazz, String path) {
+        return loadFromPath(clazz, path, true);
     }
 
     /**
@@ -43,11 +41,11 @@ public class YamlHelper {
      * @author BiJi'an
      * @date 2023-02-04 16:52
      */
-    public static <T> T loadFromClassPath(Class<T> clazz, String path, boolean autoCamel) {
+    public static <T> T loadFromPath(Class<T> clazz, String path, boolean autoCamel) {
         if (autoCamel) {
-            return loadFromClassPath(clazz, path, DEFAULT_LOAD_CORRECTOR);
+            return loadFromPath(clazz, path, CF.get(DefaultLoadCorrector.class));
         } else {
-            return loadFromClassPath(clazz, path, null);
+            return loadFromPath(clazz, path, null);
         }
     }
 
@@ -60,8 +58,8 @@ public class YamlHelper {
      * @author BiJi'an
      * @date 2022-11-01 22:01
      */
-    public static <T> T loadFromClassPath(Class<T> clazz, String path, LoadCorrector loadCorrector) {
-        try (InputStream inputStream = ResourceHelper.getInputStreamInClassPath(path)) {
+    public static <T> T loadFromPath(Class<T> clazz, String path, LoadCorrector loadCorrector) {
+        try (InputStream inputStream = ResourceHelper.getInputStream(path)) {
             if (inputStream == null) {
                 throw new ParamException(" inputStream is null ,invalid path: " + path);
             }
@@ -103,7 +101,7 @@ public class YamlHelper {
      */
     public static <T> T loadFromText(Class<T> clazz, String text, boolean autoCamel) {
         if (autoCamel) {
-            return loadFromText(clazz, text, DEFAULT_LOAD_CORRECTOR);
+            return loadFromText(clazz, text, CF.get(DefaultLoadCorrector.class));
         } else {
             return loadFromText(clazz, text, null);
         }
@@ -158,7 +156,7 @@ public class YamlHelper {
 
     public static String dumpAsMap(Object obj, YamlType yamlType) {
         if (yamlType != null) {
-            return dumpAsMap(obj, yamlType, DEFAULT_DUMP_CORRECTOR);
+            return dumpAsMap(obj, yamlType, CF.get(DefaultDumpCorrector.class));
         } else {
             return dumpAsMap(obj, null, null);
 
@@ -188,6 +186,7 @@ public class YamlHelper {
         }
 
     }
+
 }
 
 

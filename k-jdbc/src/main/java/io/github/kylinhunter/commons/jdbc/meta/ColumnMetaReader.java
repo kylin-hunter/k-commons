@@ -11,7 +11,6 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import io.github.kylinhunter.commons.cache.guava.Cache;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.jdbc.constant.ColumnParserType;
@@ -20,6 +19,7 @@ import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
+import io.github.kylinhunter.commons.jdbc.meta.cache.DatabaseMetaCache;
 import io.github.kylinhunter.commons.jdbc.meta.parser.ColumnParser;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 @C
 @RequiredArgsConstructor
 public class ColumnMetaReader {
-    private final Cache <DatabaseMeta>databaseCache;
+    private final DatabaseMetaCache databaseMetaCache;
     private final DatabaseMetaReader databaseMetaReader;
 
     /**
-     * @param schema    schema
+     * @param catalog   catalog
      * @param tableName tableName
      * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
      * @title getColumnMetaData
@@ -46,13 +46,13 @@ public class ColumnMetaReader {
      * @author BiJi'an
      * @date 2023-01-18 12:42
      */
-    public List<ColumnMeta> getColumnMetaData(String schema, String tableName) {
-        return getColumnMetaData(DataSourceUtils.getDefaultDataSource(), schema, tableName);
+    public List<ColumnMeta> getColumnMetaData(String catalog, String tableName) {
+        return getColumnMetaData(DataSourceUtils.getDefaultDataSource(), catalog, tableName);
     }
 
     /**
      * @param dataSource dataSource
-     * @param schema     schema
+     * @param catalog    catalog
      * @param tableName  tableName
      * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
      * @title getColumnMetaData
@@ -60,22 +60,17 @@ public class ColumnMetaReader {
      * @author BiJi'an
      * @date 2023-01-18 12:42
      */
-    public List<ColumnMeta> getColumnMetaData(DataSourceEx dataSource, String schema, String tableName) {
-        DatabaseMeta databaseMeta = databaseCache.get(dataSource.getNo());
+    public List<ColumnMeta> getColumnMetaData(DataSourceEx dataSource, String catalog, String tableName) {
+        DatabaseMeta databaseMeta = databaseMetaCache.get(dataSource.getNo());
         try (Connection connection = dataSource.getConnection()) {
-            return getColumnMetaData(databaseMeta, connection, null, schema, tableName);
+            catalog = catalog != null && catalog.length() > 0 ? catalog : null;
+            return getColumnMetaData(databaseMeta, connection, catalog, null, tableName);
 
         } catch (JdbcException e) {
             throw e;
         } catch (Exception e) {
             throw new JdbcException("getColumnMetaData error", e);
         }
-
-    }
-
-    private List<ColumnMeta> getColumnMetaData(Connection connection, String catalog, String schema,
-                                               String tableName) {
-        return getColumnMetaData(null, connection, catalog, schema, tableName);
 
     }
 
@@ -90,7 +85,7 @@ public class ColumnMetaReader {
      * @author BiJi'an
      * @date 2023-01-18 12:42
      */
-    private List<ColumnMeta> getColumnMetaData(DatabaseMeta databaseMeta, Connection connection, String catalog,
+    public List<ColumnMeta> getColumnMetaData(DatabaseMeta databaseMeta, Connection connection, String catalog,
                                                String schema,
                                                String tableName) {
         List<ColumnMeta> columnMetaDatas;

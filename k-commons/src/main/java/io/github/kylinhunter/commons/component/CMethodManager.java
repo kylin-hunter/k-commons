@@ -68,7 +68,7 @@ class CMethodManager {
      * @title calculate
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 23:18
+     * @date 2023-02-11 23:18
      */
     @SuppressWarnings("unchecked")
     private void calculate(Class<?> compClazz) {
@@ -93,7 +93,7 @@ class CMethodManager {
      * @title registerAll
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 23:08
+     * @date 2023-02-11 23:08
      */
     private void registerAll(Class<?> compClazz, CMethod cmethod) {
         this.register(compClazz, cmethod);
@@ -110,7 +110,7 @@ class CMethodManager {
      * @title register
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 22:45
+     * @date 2023-02-11 22:45
      */
     private void register(Class<?> clazz, CMethod cmethod) {
         cmethodsMap.compute(clazz, (k, v) -> {
@@ -134,7 +134,7 @@ class CMethodManager {
      * @title getFirst
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 22:43
+     * @date 2023-02-11 22:43
      */
     public CMethod get(Class<?> compClazz) {
         return get(compClazz, false);
@@ -147,7 +147,7 @@ class CMethodManager {
      * @title getFirst
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 22:10
+     * @date 2023-02-11 22:10
      */
     public CMethod get(Class<?> compClazz, boolean required) {
         List<CMethod> methods = cmethodsMap.get(compClazz);
@@ -166,7 +166,7 @@ class CMethodManager {
      * @title getAll
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 23:21
+     * @date 2023-02-11 23:21
      */
     public List<CMethod> getAll(Class<?> compClazz) {
         List<CMethod> cConstructors = cmethodsMap.get(compClazz);

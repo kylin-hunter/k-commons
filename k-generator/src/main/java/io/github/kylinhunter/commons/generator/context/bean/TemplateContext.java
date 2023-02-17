@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.generator.context.bean;
 
-import io.github.kylinhunter.commons.generator.config.bean.Global;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
 import lombok.Data;
 
@@ -11,12 +10,9 @@ import lombok.Data;
  **/
 @Data
 public class TemplateContext {
-    private TemplateConfig templateConfig;
     private String name;
 
-    public TemplateContext(Global global, TemplateConfig templateConfig) {
-        this.templateConfig = templateConfig;
+    public TemplateContext(TemplateConfig templateConfig) {
         this.name = templateConfig.getName();
-
     }
 }

@@ -1,23 +1,45 @@
-package io.github.kylinhunter.commons.generator;
+package io.github.kylinhunter.commons.generator.configuration;
 
+import io.github.kylinhunter.commons.component.C;
+import io.github.kylinhunter.commons.component.CC;
+import io.github.kylinhunter.commons.generator.config.ConfigReader;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Global;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 import io.github.kylinhunter.commons.template.velocity.VelocityTemplateEngine;
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-02-04 20:25
+ * @date 2023-02-04 20:27
  **/
-@RequiredArgsConstructor
-public class CodeTemplateEngine {
-    private final Config config;
+@CC
+public class CompConfiguration {
 
-    public TemplateExecutor createTemplateExecutor() {
+    /**
+     * @return io.github.kylinhunter.commons.generator.config.bean.Config
+     * @title config
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-16 23:51
+     */
+    @C
+    public Config config() {
+        return new ConfigReader().load();
+    }
+
+    /**
+     * @param config
+     * @return io.github.kylinhunter.commons.template.TemplateExecutor
+     * @title templateExecutor
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-16 23:51
+     */
+    @C
+    public TemplateExecutor templateExecutor(Config config) {
         TemplateEngine templateEngine = new VelocityTemplateEngine();
         templateEngine.customize(templateConfig -> {
             Global global = config.getGlobal();
@@ -29,6 +51,7 @@ public class CodeTemplateEngine {
 
         });
         return templateEngine.createTemplateExecutor();
+
     }
 
 }

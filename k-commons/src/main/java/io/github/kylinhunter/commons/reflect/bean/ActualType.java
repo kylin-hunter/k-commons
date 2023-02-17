@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-02-15 20:32
+ * @date 2023-02-11 20:32
  **/
 @Data
 public class ActualType {
@@ -18,7 +18,7 @@ public class ActualType {
      * @title getType
      * @description
      * @author BiJi'an
-     * @date 2023-02-15 20:50
+     * @date 2023-02-11 20:50
      */
     public <T> Class<T> getType(int index) {
         if (types != null && index >= 0 && index < types.length) {

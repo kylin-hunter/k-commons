@@ -34,9 +34,8 @@ public class ConfigReader {
      */
     public Config load(String path) {
         path = StringUtils.defaultString(path, DEFAULT_PATH);
-        Config config = YamlHelper.loadFromClassPath(Config.class, path);
-        afterLoad(config);
-        return config;
+        Config config = YamlHelper.loadFromPath(Config.class, path);
+        return afterLoad(config);
     }
 
     /**
@@ -47,7 +46,7 @@ public class ConfigReader {
      * @author BiJi'an
      * @date 2023-02-12 22:23
      */
-    private void afterLoad(Config config) {
+    private Config afterLoad(Config config) {
         CommonStrategy commonStrategy = config.getGlobal().getStrategy();
         for (TemplateConfig template : config.getTemplates()) {
             TemplateStrategy templateStrategy = template.getStrategy();
@@ -58,6 +57,7 @@ public class ConfigReader {
             templateStrategy.merge(commonStrategy);
         }
 
+        return config;
     }
 
 }

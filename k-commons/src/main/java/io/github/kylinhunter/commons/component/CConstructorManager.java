@@ -87,7 +87,7 @@ class CConstructorManager {
      * @title registerAll
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 23:08
+     * @date 2023-02-11 23:08
      */
     private void registerAll(Class<?> compClazz, CConstructor cconstructor) {
         this.register(compClazz, cconstructor);
@@ -141,7 +141,7 @@ class CConstructorManager {
      * @title getFirst
      * @description
      * @author BiJi'an
-     * @date 2023-02-13 22:10
+     * @date 2023-02-11 22:10
      */
     public CConstructor get(Class<?> compClazz, boolean required) {
         List<CConstructor> constructors = constructorsMap.get(compClazz);

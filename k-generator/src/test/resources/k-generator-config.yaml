@@ -10,23 +10,27 @@ global: # global config
     package_pattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
     encoding: UTF-8
     extension: vm
+  database_name: "kp"
 modules:
   - name: 'User'
-    table: "k_user"
-    table_skip_columns:
-      - 'delete_flag'
-      - 'extend_1'
-      - 'extend_2'
-      - 'extend_3'
+    table:
+      name: "test_user"
+      skip_columns:
+        - 'delete_flag'
+        - 'extend_1'
+        - 'extend_2'
+        - 'extend_3'
+
   - name: 'Role'
-    table: 'k_user_role'
+    table:
+      name: 'test_role'
 templates:
-    - name: entity.java
-      enabled: true
-      strategy:
-        serializable: true
-        class_name_pattern: ${module.name}VO
-        lombok: true
-        lombok_chain_model: true
-        superClass: 'java.lang.Object'
+  - name: entity.java
+    enabled: true
+    strategy:
+      serializable: true
+      class_name_pattern: ${module.name}VO
+      lombok: true
+      lombok_chain_model: true
+      superClass: 'java.lang.Object'
 

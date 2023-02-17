@@ -36,7 +36,7 @@ public class HikariConfigExParser {
      */
     public List<HikariConfigEx> load(String path) {
         path = StringUtils.defaultString(path, DEFAULT_PATH);
-        DataSourceConfig DataSourceConfig = YamlHelper.loadFromClassPath(DataSourceConfig.class, path);
+        DataSourceConfig DataSourceConfig = YamlHelper.loadFromPath(DataSourceConfig.class, path);
         List<DataSourceInfo> dataSourceInfos = DataSourceConfig.getDatasources();
 
         List<HikariConfigEx> hikariConfigExs = Lists.newArrayList();
