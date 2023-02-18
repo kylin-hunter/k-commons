@@ -69,7 +69,6 @@ public class ModuleInfoReader {
 
         List<String> skipColumns = tableInfo.getSkipColumns();
         ColumnMetaReader columnMetaReader = CF.get(ColumnMetaReader.class);
-
         List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData(databaseName, tableInfo.getName());
         if (CollectionUtils.isEmpty(columnMetas)) {
             throw new CodeException("no column from table=>" + tableInfo);
