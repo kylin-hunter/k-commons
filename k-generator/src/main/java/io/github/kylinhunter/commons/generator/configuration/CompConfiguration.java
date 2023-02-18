@@ -31,7 +31,7 @@ public class CompConfiguration {
     }
 
     /**
-     * @param config
+     * @param config config
      * @return io.github.kylinhunter.commons.template.TemplateExecutor
      * @title templateExecutor
      * @description

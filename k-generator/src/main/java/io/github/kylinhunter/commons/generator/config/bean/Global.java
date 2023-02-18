@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.generator.config.bean;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -15,8 +16,8 @@ import lombok.Data;
 public class Global {
     private String templatePath;
     private String outputPath;
+    protected String databaseName;
     private GlobalStrategy strategy;
-    private String databaseName;
     private Map<String, Object> context = Maps.newHashMap();
 
 

@@ -8,9 +8,9 @@ global: # global config
     package_name: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
     template_encoding: UTF-8
     output_encoding: UTF-8
-  database_name: "kp"
   context:
     'author': 'bijian'  # a global variable
+  database_name: "kp"
 modules:
   - name: 'User'
     table:
