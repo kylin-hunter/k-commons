@@ -14,12 +14,12 @@ import lombok.Data;
  **/
 @Data
 public class TemplateContext {
-    private ModuleInfo moduleInfo;
+    private Module module;
     private TemplateConfig templateConfig;
     private Map<String, Object> context = Maps.newHashMap();
 
-    public TemplateContext(ModuleInfo moduleInfo, TemplateConfig templateConfig) {
-        this.moduleInfo = moduleInfo;
+    public TemplateContext(Module module, TemplateConfig templateConfig) {
+        this.module = module;
         this.templateConfig = templateConfig;
         this.context.putAll(templateConfig.getContext());
     }

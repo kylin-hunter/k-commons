@@ -10,11 +10,11 @@ import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Global;
-import io.github.kylinhunter.commons.generator.config.bean.Module;
-import io.github.kylinhunter.commons.generator.config.bean.ModuleTable;
+import io.github.kylinhunter.commons.generator.config.bean.ModuleInfo;
+import io.github.kylinhunter.commons.generator.config.bean.TableInfo;
 import io.github.kylinhunter.commons.generator.context.bean.Column;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleInfos;
+import io.github.kylinhunter.commons.generator.context.bean.Module;
+import io.github.kylinhunter.commons.generator.context.bean.Modules;
 import io.github.kylinhunter.commons.generator.context.bean.Table;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
 import io.github.kylinhunter.commons.jdbc.meta.ColumnMetaReader;
@@ -40,38 +40,39 @@ public class ModuleInfoReader {
      * @author BiJi'an
      * @date 2023-02-18 23:26
      */
-    public ModuleInfos read() {
-        ModuleInfos moduleInfos = new ModuleInfos();
-        for (Module module : config.getModules()) {
-            ModuleInfo moduleInfo = new ModuleInfo(module);
+    public Modules read() {
+        Modules modules = new Modules();
+        for (ModuleInfo module : config.getModules()) {
+            Module
+                    moduleInfo = new Module(module);
             moduleInfo.setDatabase(config.getGlobal().getDatabaseName());
             moduleInfo.setTable(toTable(module.getTable()));
-            moduleInfos.add(moduleInfo);
+            modules.add(moduleInfo);
         }
-        return moduleInfos;
+        return modules;
 
     }
 
     /**
-     * @param moduleTable moduleTable
+     * @param tableInfo moduleTable
      * @return io.github.kylinhunter.commons.generator.context.bean.Table
      * @title toTable
      * @description
      * @author BiJi'an
      * @date 2023-02-17 22:36
      */
-    private Table toTable(ModuleTable moduleTable) {
+    private Table toTable(TableInfo tableInfo) {
         Table table = new Table();
-        table.setName(moduleTable.getName());
+        table.setName(tableInfo.getName());
         Global global = config.getGlobal();
         String databaseName = global.getDatabaseName();
 
-        List<String> skipColumns = moduleTable.getSkipColumns();
+        List<String> skipColumns = tableInfo.getSkipColumns();
         ColumnMetaReader columnMetaReader = CF.get(ColumnMetaReader.class);
 
-        List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData(databaseName, moduleTable.getName());
+        List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData(databaseName, tableInfo.getName());
         if (CollectionUtils.isEmpty(columnMetas)) {
-            throw new CodeException("no column from table=>" + moduleTable);
+            throw new CodeException("no column from table=>" + tableInfo);
         } else {
             List<Column> columns = columnMetas.stream().filter(c -> {
                 if (skipColumns != null) {

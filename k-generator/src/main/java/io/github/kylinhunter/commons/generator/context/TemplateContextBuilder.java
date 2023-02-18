@@ -6,8 +6,10 @@ import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleInfos;
+import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
+import io.github.kylinhunter.commons.generator.constant.Env;
+import io.github.kylinhunter.commons.generator.context.bean.Module;
+import io.github.kylinhunter.commons.generator.context.bean.Modules;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContexts;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +29,19 @@ public class TemplateContextBuilder {
     private ModuleInfoReader moduleInfoReader;
 
     public TemplateContexts build() {
-        ModuleInfos moduleInfos = moduleInfoReader.read();
+        Modules modules = moduleInfoReader.read();
         TemplateContexts templateContexts = new TemplateContexts();
         List<TemplateConfig> templates = config.getTemplates();
         for (TemplateConfig templateConfig : templates) {
-            for (ModuleInfo moduleInfo : moduleInfos.getAll()) {
-                templateContexts.add(toTemplateContext(moduleInfo, templateConfig));
+            for (Module module : modules.getAll()) {
+                templateContexts.add(toTemplateContext(module, templateConfig));
             }
         }
         return templateContexts;
     }
 
     /**
-     * @param moduleInfo     moduleContext
+     * @param module         moduleContext
      * @param templateConfig templateConfig
      * @return io.github.kylinhunter.commons.generator.context.bean.TemplateContext
      * @title toTemplateContext
@@ -47,10 +49,14 @@ public class TemplateContextBuilder {
      * @author BiJi'an
      * @date 2023-02-18 00:23
      */
-    public TemplateContext toTemplateContext(ModuleInfo moduleInfo, TemplateConfig templateConfig) {
-        TemplateContext templateContext = new TemplateContext(moduleInfo, templateConfig);
-        ;
+    public TemplateContext toTemplateContext(Module module, TemplateConfig templateConfig) {
+        TemplateContext templateContext = new TemplateContext(module, templateConfig);
 
+        TemplateStrategy strategy = templateContext.getTemplateConfig().getStrategy();
+        String packageName = strategy.getPackageName();
+        String className = strategy.getClassName();
+        templateContext.putContext(Env.PACKAGE_NAME, packageName);
+        templateContext.putContext(Env.CLASS_NAME, className);
         return templateContext;
 
     }

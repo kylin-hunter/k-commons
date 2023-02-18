@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.generator.context.bean;
 
-import io.github.kylinhunter.commons.generator.config.bean.Module;
 import lombok.Data;
 
 /**
@@ -9,13 +8,13 @@ import lombok.Data;
  * @date 2023-02-12 00:57
  **/
 @Data
-public class ModuleInfo {
+public class Module {
     private String name;
     private String database;
     private Table table;
 
-    public ModuleInfo(Module module) {
-        this.name = module.getName();
+    public Module(io.github.kylinhunter.commons.generator.config.bean.ModuleInfo moduleInfo) {
+        this.name = moduleInfo.getName();
 
     }
 }

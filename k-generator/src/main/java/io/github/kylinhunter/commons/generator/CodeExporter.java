@@ -4,7 +4,7 @@ import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
+import io.github.kylinhunter.commons.generator.context.bean.Module;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContexts;
 import io.github.kylinhunter.commons.template.TemplateEngine;
@@ -48,16 +48,16 @@ public class CodeExporter {
      */
     private void export(TemplateContext templateContext) {
         TemplateExecutor templateExecutor = templateEngine.createTemplateExecutor();
-        ModuleInfo moduleInfo = templateContext.getModuleInfo();
+        Module module = templateContext.getModule();
         TemplateConfig templateConfig = templateContext.getTemplateConfig();
         String templateName = templateConfig.getName();
         TemplateStrategy strategy = templateConfig.getStrategy();
-        String encoding = strategy.getEncoding();
-        String extension = strategy.getExtension();
-        log.info("output module=>{}/template={}", moduleInfo.getName(), templateName);
+        String templateEncoding = strategy.getTemplateEncoding();
+        String outputEncoding = strategy.getOutputEncoding();
+        log.info("output module=>{}/template={}", module.getName(), templateName);
         templateExecutor.putContext(templateContext.getContext());
-        templateExecutor.tmplate(templateName, encoding, extension)
-                .outputRelativePath(templateName + ".html").encoding(encoding).build();
+        templateExecutor.tmplate(templateName, templateEncoding, null)
+                .outputRelativePath(templateName + ".html").encoding(templateEncoding).build();
         templateExecutor.output(System.out::println);
 
     }

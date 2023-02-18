@@ -13,8 +13,8 @@ import lombok.Data;
  * @date 2023-02-12 00:57
  **/
 @Data
-public class ModuleInfos {
-    private Map<String, ModuleInfo> modules = Maps.newHashMap();
+public class Modules {
+    private Map<String, Module> modules = Maps.newHashMap();
 
     /**
      * @param module module
@@ -24,7 +24,7 @@ public class ModuleInfos {
      * @author BiJi'an
      * @date 2023-02-18 21:34
      */
-    public void add(ModuleInfo module) {
+    public void add(Module module) {
         modules.put(module.getName(), module);
     }
 
@@ -36,7 +36,7 @@ public class ModuleInfos {
      * @author BiJi'an
      * @date 2023-02-18 21:35
      */
-    public ModuleInfo get(String name) {
+    public Module get(String name) {
         return modules.get(name);
     }
 
@@ -47,7 +47,7 @@ public class ModuleInfos {
      * @author BiJi'an
      * @date 2023-02-18 22:11
      */
-    public Collection<ModuleInfo> getAll() {
+    public Collection<Module> getAll() {
         return modules.values();
     }
 }

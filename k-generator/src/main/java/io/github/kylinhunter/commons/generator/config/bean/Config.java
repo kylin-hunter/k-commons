@@ -12,6 +12,6 @@ import lombok.Data;
 @Data
 public class Config {
     private Global global;
-    private List<Module> modules;
+    private List<ModuleInfo> modules;
     private List<TemplateConfig> templates;
 }

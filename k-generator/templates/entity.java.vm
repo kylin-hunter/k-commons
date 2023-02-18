@@ -1,4 +1,4 @@
-package ${package.Entity};
+package ${package_name};
 
 #foreach($pkg in ${table.importPackages})
 import ${pkg};
@@ -41,9 +41,9 @@ import lombok.experimental.Accessors;
 @ApiModel(value="${entity}对象", description="$!{table.comment}")
 #end
 #if(${superEntityClass})
-public class ${entity} extends ${superEntityClass}{
+public class ${class_name} extends ${superEntityClass}{
 #else
-public class ${entity} implements Serializable {
+public class ${class_name} implements Serializable {
 #end
 
 #if(${entitySerialVersionUID})

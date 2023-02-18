@@ -4,13 +4,13 @@ global: # global config
   #  template_path: 'classpath:/template'  # find tempalte/* in classpath
   output_path: '$user.dir$/src_generator'   # same with:  new File(System.getProperty("user.dir")/output)
   #  output_path: '/Users/bijian/workspace_gitee/k-commons/k-generator/output'
+  strategy: # the common strategy for generate the dist file
+    package_name: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
+    template_encoding: UTF-8
+    output_encoding: UTF-8
+  database_name: "kp"
   context:
     'author': 'bijian'  # a global variable
-  strategy: # the common strategy for generate the dist file
-    package_pattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
-    encoding: UTF-8
-    extension: vm
-  database_name: "kp"
 modules:
   - name: 'User'
     table:
@@ -20,17 +20,16 @@ modules:
         - 'extend_1'
         - 'extend_2'
         - 'extend_3'
-
   - name: 'Role'
     table:
       name: 'test_role'
 templates:
-  - name: entity.java
+  - name: entity.java.vm
     enabled: true
     context:
       'serializable': 'true'  #
       'lombok': 'true'  #
       'swagger': 'true'  #
     strategy:
-      class_name_pattern: ${module.name}VO
+      class_name: ${module.name}VO
       superClass: 'java.lang.Object'
