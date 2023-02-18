@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.template;
 
+import java.util.Map;
+
 import io.github.kylinhunter.commons.template.bean.Output;
 import io.github.kylinhunter.commons.template.bean.OutputBuilder;
 import io.github.kylinhunter.commons.template.config.TemplateConfig;
@@ -22,6 +24,15 @@ public interface TemplateExecutor {
      * @date 2023-01-05 22:02
      */
     void putContext(String key, Object value);
+
+    /**
+     * @param values values
+     * @return void* @title putContext
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-18 23:51
+     */
+    void putContext(Map<String, Object> values);
 
     /**
      * @param outputProcessor outputProcessor

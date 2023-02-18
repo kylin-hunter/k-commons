@@ -9,12 +9,12 @@ import lombok.Data;
  * @date 2023-02-12 00:57
  **/
 @Data
-public class ModuleContext {
+public class ModuleInfo {
     private String name;
     private String database;
     private Table table;
 
-    public ModuleContext(Module module) {
+    public ModuleInfo(Module module) {
         this.name = module.getName();
 
     }

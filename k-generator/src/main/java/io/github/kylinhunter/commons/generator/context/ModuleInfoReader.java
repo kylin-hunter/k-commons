@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.generator.context.handler;
+package io.github.kylinhunter.commons.generator.context;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,9 +12,9 @@ import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Global;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.ModuleTable;
-import io.github.kylinhunter.commons.generator.context.bean.CodeContext;
 import io.github.kylinhunter.commons.generator.context.bean.Column;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleContext;
+import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
+import io.github.kylinhunter.commons.generator.context.bean.ModuleInfos;
 import io.github.kylinhunter.commons.generator.context.bean.Table;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
 import io.github.kylinhunter.commons.jdbc.meta.ColumnMetaReader;
@@ -26,22 +26,29 @@ import lombok.RequiredArgsConstructor;
  * @description
  * @date 2023-02-12 10:24
  **/
-@C(order = 1)
+@C
 @RequiredArgsConstructor
-public class ModuleContextHanlder implements ContextHandler {
+public class ModuleInfoReader {
 
     @CSet
     private Config config;
 
-    @Override
-    public void handle(CodeContext codeContext) {
+    /**
+     * @return io.github.kylinhunter.commons.generator.context.bean.ModuleInfos
+     * @title read
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-18 23:26
+     */
+    public ModuleInfos read() {
+        ModuleInfos moduleInfos = new ModuleInfos();
         for (Module module : config.getModules()) {
-            ModuleContext moduleContext = new ModuleContext(module);
-            moduleContext.setDatabase(config.getGlobal().getDatabaseName());
-            moduleContext.setTable( toTable(module.getTable()));
-
-            codeContext.addModuleContext(moduleContext);
+            ModuleInfo moduleInfo = new ModuleInfo(module);
+            moduleInfo.setDatabase(config.getGlobal().getDatabaseName());
+            moduleInfo.setTable(toTable(module.getTable()));
+            moduleInfos.add(moduleInfo);
         }
+        return moduleInfos;
 
     }
 

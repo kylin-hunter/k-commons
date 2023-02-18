@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
@@ -58,6 +59,11 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
     @Override
     public void putContext(String key, Object value) {
         this.toolContext.put(key, value);
+    }
+
+    @Override
+    public void putContext(Map<String, Object> values) {
+        this.toolContext.putAll(values);
     }
 
     /**

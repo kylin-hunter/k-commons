@@ -18,7 +18,7 @@ class DataSourceUtilsTest {
         QueryRunner qr = new QueryRunner(defaultDataSource);
 
         // 2.执行查询
-        List<Object[]> objs = qr.query(" desc test_kylin_user", new ArrayListHandler());
+        List<Object[]> objs = qr.query(" desc test_user", new ArrayListHandler());
         for (Object[] os : objs) {        // object[]中保存了object对象
             for (Object o : os) {
                 System.out.print(o + "\t");

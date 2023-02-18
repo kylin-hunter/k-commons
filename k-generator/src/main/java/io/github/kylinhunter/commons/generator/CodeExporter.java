@@ -1,16 +1,16 @@
 package io.github.kylinhunter.commons.generator;
 
-import java.util.List;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
-import io.github.kylinhunter.commons.generator.context.bean.CodeContext;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleContext;
+import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
+import io.github.kylinhunter.commons.generator.context.bean.TemplateContexts;
+import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
@@ -19,44 +19,46 @@ import lombok.RequiredArgsConstructor;
  **/
 @C
 @RequiredArgsConstructor
+@Slf4j
 public class CodeExporter {
     @CSet
-    private TemplateExecutor templateExecutor;
+    private TemplateEngine templateEngine;
 
     /**
-     * @param codeContext codeContext
+     * @param templateContexts templateInfos
      * @return void
      * @title output
      * @description
      * @author BiJi'an
      * @date 2023-02-11 23:36
      */
-    public void export(CodeContext codeContext) {
-        for (ModuleContext moduleContext : codeContext.getModuleContexts()) {
-            export(codeContext, moduleContext);
+    public void export(TemplateContexts templateContexts) {
+        for (TemplateContext templateContext : templateContexts.getAll()) {
+            export(templateContext);
         }
     }
 
     /**
-     * @param codeContext   codeContext
-     * @param moduleContext moduleContext
+     * @param templateContext templateInfo
      * @return void
      * @title output
      * @description
      * @author BiJi'an
      * @date 2023-02-11 23:36
      */
-    private void export(CodeContext codeContext, ModuleContext moduleContext) {
-        System.out.println(moduleContext.getModule());
-        List<TemplateContext> templateContexts = codeContext.getTemplateContexts();
-        for (TemplateContext template : templateContexts) {
-            TemplateConfig templateConfig = template.getTemplateConfig();
-            TemplateStrategy strategy = templateConfig.getStrategy();
-            templateExecutor.tmplate(template.getName(), strategy.getEncoding(), strategy.getExtension())
-                    .outputRelativePath(
-                            "output3_result1"
-                                    + ".html").encoding(strategy.getEncoding()).build();
-            templateExecutor.output(System.out::println);
-        }
+    private void export(TemplateContext templateContext) {
+        TemplateExecutor templateExecutor = templateEngine.createTemplateExecutor();
+        ModuleInfo moduleInfo = templateContext.getModuleInfo();
+        TemplateConfig templateConfig = templateContext.getTemplateConfig();
+        String templateName = templateConfig.getName();
+        TemplateStrategy strategy = templateConfig.getStrategy();
+        String encoding = strategy.getEncoding();
+        String extension = strategy.getExtension();
+        log.info("output module=>{}/template={}", moduleInfo.getName(), templateName);
+        templateExecutor.putContext(templateContext.getContext());
+        templateExecutor.tmplate(templateName, encoding, extension)
+                .outputRelativePath(templateName + ".html").encoding(encoding).build();
+        templateExecutor.output(System.out::println);
+
     }
 }

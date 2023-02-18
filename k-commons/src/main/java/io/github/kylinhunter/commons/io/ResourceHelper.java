@@ -270,7 +270,7 @@ public class ResourceHelper {
      * @description
      * @date 2022-01-01 02:14
      **/
-    private enum PathType {
+    public enum PathType {
         CLASSPATH, FILESYSTEM
     }
 }

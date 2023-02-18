@@ -7,38 +7,33 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class TemplateStrategy extends CommonStrategy {
+public class TemplateStrategy extends GlobalStrategy {
     private String superClass;
     private String classNamePattern;
 
-    public void merge(CommonStrategy commonStrategy) {
-        if (commonStrategy == null) {
+    /**
+     * @param globalStrategy globalStrategy
+     * @return void
+     * @title merge
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-18 21:02
+     */
+    public void merge(GlobalStrategy globalStrategy) {
+        if (globalStrategy == null) {
             return;
         }
 
         if (StringUtils.isEmpty(this.packagePattern)) {
-            this.packagePattern = commonStrategy.packagePattern;
-        }
-        this.variables.putAll(commonStrategy.variables);
-
-        if (!serializable) {
-            this.serializable = commonStrategy.serializable;
-        }
-
-        if (!lombok) {
-            this.lombok = commonStrategy.lombok;
-        }
-
-        if (!lombokChainModel) {
-            this.lombokChainModel = commonStrategy.lombokChainModel;
+            this.packagePattern = globalStrategy.packagePattern;
         }
 
         if (StringUtils.isEmpty(this.encoding)) {
-            this.encoding = commonStrategy.encoding;
+            this.encoding = globalStrategy.encoding;
         }
 
         if (StringUtils.isEmpty(this.extension)) {
-            this.extension = commonStrategy.extension;
+            this.extension = globalStrategy.extension;
         }
 
     }

@@ -6,8 +6,8 @@ import io.github.kylinhunter.commons.generator.config.ConfigReader;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Global;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.io.ResourceHelper.PathType;
 import io.github.kylinhunter.commons.template.TemplateEngine;
-import io.github.kylinhunter.commons.template.TemplateExecutor;
 import io.github.kylinhunter.commons.template.velocity.VelocityTemplateEngine;
 
 /**
@@ -39,18 +39,19 @@ public class CompConfiguration {
      * @date 2023-02-16 23:51
      */
     @C
-    public TemplateExecutor templateExecutor(Config config) {
+    public TemplateEngine templateEngine(Config config) {
         TemplateEngine templateEngine = new VelocityTemplateEngine();
         templateEngine.customize(templateConfig -> {
             Global global = config.getGlobal();
-            String outputPathPath = global.getOutputPath();
-            templateConfig.setOutputDir(ResourceHelper.getDir(outputPathPath).toPath());
 
             String templatePath = global.getTemplatePath();
-            templateConfig.setTemplateDir(ResourceHelper.getDir(templatePath).toPath());
+            templateConfig.setTemplateDir(ResourceHelper.getDir(templatePath, PathType.FILESYSTEM).toPath());
+
+            String outputPathPath = global.getOutputPath();
+            templateConfig.setOutputDir(ResourceHelper.getDir(outputPathPath, PathType.FILESYSTEM).toPath());
 
         });
-        return templateEngine.createTemplateExecutor();
+        return templateEngine;
 
     }
 

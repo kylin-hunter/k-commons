@@ -7,12 +7,8 @@ import com.google.common.collect.Maps;
 import lombok.Data;
 
 @Data
-public class CommonStrategy {
+public class GlobalStrategy {
     protected String packagePattern;
-    protected Map<String, String> variables = Maps.newHashMap();
-    protected boolean serializable = false;
-    protected boolean lombok = false;
-    protected boolean lombokChainModel = false;
     protected String encoding;
     protected String extension;
 }

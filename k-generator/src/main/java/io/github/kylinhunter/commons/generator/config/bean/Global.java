@@ -15,10 +15,8 @@ import lombok.Data;
 public class Global {
     private String templatePath;
     private String outputPath;
-    private Map<String, String> variables = Maps.newHashMap();
-    private CommonStrategy strategy;
+    private Map<String, Object> context = Maps.newHashMap();
+    private GlobalStrategy strategy;
     private String databaseName;
-
-
 
 }

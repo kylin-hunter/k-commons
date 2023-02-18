@@ -1,7 +1,8 @@
 package io.github.kylinhunter.commons.generator;
 
 import io.github.kylinhunter.commons.component.CF;
-import io.github.kylinhunter.commons.generator.context.bean.CodeContext;
+import io.github.kylinhunter.commons.generator.context.TemplateContextBuilder;
+import io.github.kylinhunter.commons.generator.context.bean.TemplateContexts;
 
 /**
  * @author BiJi'an
@@ -9,7 +10,7 @@ import io.github.kylinhunter.commons.generator.context.bean.CodeContext;
  * @date 2023-01-08 22:10
  **/
 public class CodeGenerator {
-    private CodeContextBuilder codeContextBuilder = CF.get(CodeContextBuilder.class);
+    private TemplateContextBuilder templateContextBuilder = CF.get(TemplateContextBuilder.class);
     private CodeExporter codeExporter = CF.get(CodeExporter.class);
 
     /**
@@ -20,8 +21,8 @@ public class CodeGenerator {
      * @date 2023-02-11 23:38
      */
     public void execute() {
-        CodeContext codeContext = codeContextBuilder.build();
-        codeExporter.export(codeContext);
+        TemplateContexts templateContexts = templateContextBuilder.build();
+        codeExporter.export(templateContexts);
     }
 }
 

@@ -2,9 +2,9 @@ global: # global config
   template_path: '$user.dir$/templates'   # same with:  new File(System.getProperty("user.dir")/tempalte)
   #  template_path: 'file://User/bijian/template' # same with: new File('/User/bijian/template');
   #  template_path: 'classpath:/template'  # find tempalte/* in classpath
-  output_path: '$user.dir$/output'   # same with:  new File(System.getProperty("user.dir")/output)
-  #  output_path: 'file://User/bijian/output' # same with: new File('/User/bijian/output');
-  variables:
+  output_path: '$user.dir$/src_generator'   # same with:  new File(System.getProperty("user.dir")/output)
+  #  output_path: '/Users/bijian/workspace_gitee/k-commons/k-generator/output'
+  context:
     'author': 'bijian'  # a global variable
   strategy: # the common strategy for generate the dist file
     package_pattern: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
@@ -27,10 +27,10 @@ modules:
 templates:
   - name: entity.java
     enabled: true
+    context:
+      'serializable': 'true'  #
+      'lombok': 'true'  #
+      'swagger': 'true'  #
     strategy:
-      serializable: true
       class_name_pattern: ${module.name}VO
-      lombok: true
-      lombok_chain_model: true
       superClass: 'java.lang.Object'
-

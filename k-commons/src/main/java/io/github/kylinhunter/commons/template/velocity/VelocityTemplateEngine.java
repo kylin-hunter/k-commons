@@ -6,7 +6,6 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolManager;
 
-import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.template.AbstractTemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 import io.github.kylinhunter.commons.template.constant.VelocityConst;
@@ -19,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description
  * @date 2023-01-05 16:15
  **/
-@C
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Slf4j
@@ -60,6 +59,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
 
         this.velocityEngine = new VelocityEngine();
         this.velocityEngine.init(properties);
+
 
         this.toolManager = new ToolManager();
         this.toolManager.configure("/io/github/kylinhunter/commons/template/velocity-tools.xml");

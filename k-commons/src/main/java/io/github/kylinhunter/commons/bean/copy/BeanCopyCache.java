@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.reflections.ReflectionUtils;
-import org.springframework.beans.BeanUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -21,6 +20,8 @@ import io.github.kylinhunter.commons.bean.copy.convertor.ConvertType;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldCopy;
+import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
+import io.github.kylinhunter.commons.bean.info.BeanIntrospectorCache;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import lombok.Data;
 
@@ -148,9 +149,10 @@ public class BeanCopyCache {
     private static FieldConvertor initFieldConvertor(Direction direction, Class<?> sourceClass, Class<?> targetClass,
                                                      String fieldName, ConvertType convertType)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-
-        PropertyDescriptor sourcePD = BeanUtils.getPropertyDescriptor(sourceClass, fieldName);
-        PropertyDescriptor targetPD = BeanUtils.getPropertyDescriptor(targetClass, fieldName);
+        BeanIntrospector sourceBeanIntrospector = BeanIntrospectorCache.get(sourceClass);
+        PropertyDescriptor sourcePD = sourceBeanIntrospector.getPropertyDescriptor(fieldName);
+        BeanIntrospector targetBeanIntrospector = BeanIntrospectorCache.get(targetClass);
+        PropertyDescriptor targetPD = targetBeanIntrospector.getPropertyDescriptor(fieldName);
         if (sourcePD != null && targetPD != null) {
             Method read = sourcePD.getReadMethod();
             Method write = targetPD.getWriteMethod();

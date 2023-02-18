@@ -2,10 +2,10 @@ package io.github.kylinhunter.commons.generator.config;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.kylinhunter.commons.generator.config.bean.CommonStrategy;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
+import io.github.kylinhunter.commons.generator.config.bean.Global;
+import io.github.kylinhunter.commons.generator.config.bean.GlobalStrategy;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
-import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
 import io.github.kylinhunter.commons.yaml.YamlHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -47,16 +47,10 @@ public class ConfigReader {
      * @date 2023-02-12 22:23
      */
     private Config afterLoad(Config config) {
-        CommonStrategy commonStrategy = config.getGlobal().getStrategy();
+        Global global = config.getGlobal();
         for (TemplateConfig template : config.getTemplates()) {
-            TemplateStrategy templateStrategy = template.getStrategy();
-            if (templateStrategy == null) {
-                templateStrategy = new TemplateStrategy();
-                template.setStrategy(templateStrategy);
-            }
-            templateStrategy.merge(commonStrategy);
+            template.merge(global);
         }
-
         return config;
     }
 
