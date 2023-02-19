@@ -33,10 +33,10 @@ class SnakeToCamelTest {
 
         result = snakeToCamel.convert("helloWord", CamelFormat.UPPER);
         System.out.println(result);
-        Assertions.assertEquals("helloWord", result);
+        Assertions.assertEquals("HelloWord", result);
 
         result = snakeToCamel.convert("HelloWord", CamelFormat.LOWER);
         System.out.println(result);
-        Assertions.assertEquals("HelloWord", result);
+        Assertions.assertEquals("helloWord", result);
     }
 }

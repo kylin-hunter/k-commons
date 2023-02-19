@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import io.github.kylinhunter.commons.io.file.FileExtensions;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
@@ -55,7 +56,8 @@ class VelocityTemplateExecutorTest {
             config.setTemplateDir(UserDirUtils.getDir("templates").toPath());
 
         });
-        templateExecutor.tmplate(templateInFile).outputRelativePath("output3_result1.html").encoding("UTF-8").build();
+        templateExecutor.tmplate(templateInFile, null, FileExtensions.VM).outputRelativePath("output3_result1.html")
+                .encoding("UTF-8").build();
         templateExecutor.output(System.out::println);
 
         File outpuFile3 = UserDirUtils.getTmpFile("template_output3/output3_result1.html");

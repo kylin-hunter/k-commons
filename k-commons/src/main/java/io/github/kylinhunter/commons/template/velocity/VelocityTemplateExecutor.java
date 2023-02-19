@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolContext;
 
 import com.google.common.collect.Lists;
 
-import io.github.kylinhunter.commons.io.file.FileExtensions;
 import io.github.kylinhunter.commons.template.OutputProcessor;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 import io.github.kylinhunter.commons.template.bean.Output;
@@ -91,7 +91,7 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
      * @date 2023-01-08 22:56
      */
     public OutputBuilder tmplate(String name, String encoding) {
-        TemplateInfo templateInfo = new TemplateInfo(name, encoding, FileExtensions.DOT_VM);
+        TemplateInfo templateInfo = new TemplateInfo(name, encoding, null);
         return tmplate(templateInfo);
     }
 
@@ -104,7 +104,7 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
      * @date 2023-01-08 23:00
      */
     public OutputBuilder tmplate(String name) {
-        TemplateInfo templateInfo = new TemplateInfo(name, null, FileExtensions.VM);
+        TemplateInfo templateInfo = new TemplateInfo(name, null, null);
         return tmplate(templateInfo);
     }
 
@@ -148,9 +148,12 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
                 final TemplateInfo templateInfo = output.getTemplateInfo();
                 String templateName = templateInfo.getName();
                 final String templateEncoding = templateInfo.getEncoding();
-
-                Template template = velocityEngine.getTemplate(templateName, templateEncoding);
-
+                Template template;
+                if (!StringUtils.isEmpty(templateEncoding)) {
+                    template = velocityEngine.getTemplate(templateName, templateEncoding);
+                } else {
+                    template = velocityEngine.getTemplate(templateName);
+                }
                 StringWriter stringWriter = new StringWriter();
                 template.merge(toolContext, stringWriter);
                 String resultText = stringWriter.toString();

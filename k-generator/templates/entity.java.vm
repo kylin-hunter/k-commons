@@ -38,7 +38,7 @@ import lombok.experimental.Accessors;
 @TableName("${table.className}")
 #end
 #if(${swagger})
-@ApiModel(value="${entity}对象", description="$!{table.comment}")
+@ApiModel(value="${module.name}对象", description="$!{table.comment}")
 #end
 #if(${superEntityClass})
 public class ${class_name} extends ${superEntityClass}{

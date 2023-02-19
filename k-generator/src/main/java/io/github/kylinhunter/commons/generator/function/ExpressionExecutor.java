@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.generator.function;
 
+import java.util.Map;
+
 import com.googlecode.aviator.AviatorEvaluator;
 
 import io.github.kylinhunter.commons.component.C;
@@ -12,7 +14,8 @@ import io.github.kylinhunter.commons.component.C;
 @C
 public class ExpressionExecutor {
     static {
-        AviatorEvaluator.addFunction(new UpperCase());
+        AviatorEvaluator.addFunction(new StringToCamel());
+        AviatorEvaluator.addFunction(new StringToLower());
     }
 
     /**
@@ -24,7 +27,21 @@ public class ExpressionExecutor {
      * @date 2023-02-17 01:07
      */
     @SuppressWarnings("unchecked")
-    public <T> T execute(final String expression) {
+    public static <T> T execute(final String expression) {
         return (T) AviatorEvaluator.execute(expression);
+    }
+
+    /**
+     * @param expression expression
+     * @param env        env
+     * @return T
+     * @title execute
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 18:50
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T execute(final String expression, final Map<String, Object> env) {
+        return (T) AviatorEvaluator.execute(expression, env);
     }
 }

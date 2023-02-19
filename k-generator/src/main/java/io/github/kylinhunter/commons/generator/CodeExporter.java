@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.generator;
 
+import java.util.Map;
+
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
@@ -55,9 +57,14 @@ public class CodeExporter {
         String templateEncoding = strategy.getTemplateEncoding();
         String outputEncoding = strategy.getOutputEncoding();
         log.info("output module=>{}/template={}", module.getName(), templateName);
-        templateExecutor.putContext(templateContext.getContext());
-        templateExecutor.tmplate(templateName, templateEncoding, null)
-                .outputRelativePath(templateName + ".html").encoding(templateEncoding).build();
+        Map<String, Object> context = templateContext.getContext();
+
+        context.forEach((k, v) -> {
+            log.info(k + ":" + v);
+        });
+        templateExecutor.putContext(context);
+        templateExecutor.tmplate(templateName, templateEncoding)
+                .outputRelativePath(module.getName() + ".html").encoding(outputEncoding).build();
         templateExecutor.output(System.out::println);
 
     }

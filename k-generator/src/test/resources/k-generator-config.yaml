@@ -24,7 +24,8 @@ templates:
   context:
     'author': 'bijian'  # a global variable
   strategy: # the common strategy for generate the dist file
-    package_name: com.kylinhunter.${module.name} # ${module.name} will be replaced by the String 'User' above
+    package_name: '"com.kylinhunter."+k.string_to_lower(module.name)'
+      # ${module.name} will be replaced by the String'User'above
     template_encoding: UTF-8
     output_encoding: UTF-8
   list:
@@ -35,7 +36,7 @@ templates:
         'lombok': 'true'  #
         'swagger': 'true'  #
       strategy:
-        class_name: ${module.name}VO
+        class_name: k.string_to_camel(module.name,'upper')+'Entity'
         superClass: 'java.lang.Object'
 
 

@@ -1,6 +1,9 @@
 package io.github.kylinhunter.commons.generator.context;
 
 import java.util.List;
+import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
@@ -12,6 +15,7 @@ import io.github.kylinhunter.commons.generator.context.bean.Module;
 import io.github.kylinhunter.commons.generator.context.bean.Modules;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContexts;
+import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -49,16 +53,63 @@ public class TemplateContextBuilder {
      * @author BiJi'an
      * @date 2023-02-18 00:23
      */
-    public TemplateContext toTemplateContext(Module module, TemplateConfig templateConfig) {
+    private TemplateContext toTemplateContext(Module module, TemplateConfig templateConfig) {
         TemplateContext templateContext = new TemplateContext(module, templateConfig);
 
         TemplateStrategy strategy = templateContext.getTemplateConfig().getStrategy();
         String packageName = strategy.getPackageName();
         String className = strategy.getClassName();
-        templateContext.putContext(ContextConsts.PACKAGE_NAME, packageName);
-        templateContext.putContext(ContextConsts.CLASS_NAME, className);
+        String moduleName = module.getName();
+
+        processContext(templateContext, module);
         templateContext.putContext(templateConfig.getContext());
+
+        templateContext.putContext(ContextConsts.PACKAGE_NAME, ExpressionExecutor.execute(packageName,
+                templateContext.getContext()));
+        templateContext
+                .putContext(ContextConsts.CLASS_NAME, ExpressionExecutor.execute(className,
+                        templateContext.getContext()));
+
         return templateContext;
 
     }
+
+    private void processContext(TemplateContext templateContext, Module module) {
+        //        templateContext.putContext(ContextConsts.MODULE_NAME, module.getName());
+        //        Table table = module.getTable();
+        //        templateContext.putContext(ContextConsts.MODULE_TABLE_NAME, table.getName());
+        //        List<Column> columns = table.getColumns();
+        //        templateContext.putContext(ContextConsts.MODULE_TABLE_COLUMNS, columns);
+        //        for (Column column : columns) {
+        //            String key1 = ContextConsts.MODULE_TABLE_COLUMN_PREFIX + column.getName();
+        //            templateContext.putContext(key1, column);
+        //
+        //            String key2 = ContextConsts.MODULE_TABLE_COLUMN_PREFIX + column.getName() + ".javaClass";
+        //            templateContext.putContext(key2, column.getClazz().getName());
+        //
+        //        }
+
+        templateContext.putContext("module", module);
+
+        templateContext.putContext(module.getContext());
+
+    }
+
+    /**
+     * @param module           module
+     * @param classNamePattern classNamePattern
+     * @return java.lang.String
+     * @title getClassName
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 19:16
+     */
+    private String getClassName(Module module, String classNamePattern) {
+        Map<String, Object> env = Maps.newHashMap();
+        env.put("module.name", "hello_the_word");
+
+        return ExpressionExecutor.execute(classNamePattern, env);
+
+    }
+
 }

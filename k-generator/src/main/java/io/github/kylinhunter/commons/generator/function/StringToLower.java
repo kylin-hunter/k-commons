@@ -12,15 +12,15 @@ import com.googlecode.aviator.runtime.type.AviatorString;
  * @description
  * @date 2023-02-17 01:00
  **/
-public class UpperCase extends AbstractFunction {
+public class StringToLower extends AbstractFunction {
 
     @Override
-    public AviatorObject call(Map<String, Object> env, AviatorObject str) {
-        String string = FunctionUtils.getStringValue(str, env);
-        return new AviatorString(string.toUpperCase());
+    public AviatorObject call(Map<String, Object> env, AviatorObject param1) {
+        String name = FunctionUtils.getStringValue(param1, env);
+        return new AviatorString(name.toLowerCase());
     }
 
     public String getName() {
-        return "k_string.to_uppercase";
+        return "k.string_to_lower";
     }
 }

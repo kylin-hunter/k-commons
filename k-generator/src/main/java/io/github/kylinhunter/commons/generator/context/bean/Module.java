@@ -1,11 +1,11 @@
 package io.github.kylinhunter.commons.generator.context.bean;
 
+import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.generator.config.bean.ModuleInfo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
@@ -13,10 +13,11 @@ import lombok.Data;
  * @date 2023-02-12 00:57
  **/
 @Data
+@NoArgsConstructor
 public class Module {
     private String name;
     private String databaseName;
-    private Map<String, Object> context = Maps.newHashMap();
+    private Map<String, Object> context;
     private Table table;
 
     public Module(ModuleInfo moduleInfo) {

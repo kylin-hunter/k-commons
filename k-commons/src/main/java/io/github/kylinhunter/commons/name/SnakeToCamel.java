@@ -44,6 +44,11 @@ public class SnakeToCamel {
             return StringConst.EMPTY;
         }
         if (!SnakeToCamel.isSnake(name)) {
+            if (camelFormat == CamelFormat.LOWER) {
+                name = Character.toLowerCase(name.charAt(0)) + name.substring(1);
+            } else {
+                name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+            }
             return name;
         }
 
