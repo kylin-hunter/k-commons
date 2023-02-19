@@ -3,9 +3,10 @@ package io.github.kylinhunter.commons.generator.config;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.generator.config.bean.Config;
-import io.github.kylinhunter.commons.generator.config.bean.Global;
-import io.github.kylinhunter.commons.generator.config.bean.GlobalStrategy;
+import io.github.kylinhunter.commons.generator.config.bean.ModuleInfo;
+import io.github.kylinhunter.commons.generator.config.bean.ModuleInfos;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
+import io.github.kylinhunter.commons.generator.config.bean.TemplateConfigs;
 import io.github.kylinhunter.commons.yaml.YamlHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +48,15 @@ public class ConfigReader {
      * @date 2023-02-12 22:23
      */
     private Config afterLoad(Config config) {
-        Global global = config.getGlobal();
-        for (TemplateConfig template : config.getTemplates()) {
-            template.merge(global);
+
+        ModuleInfos modules = config.getModules();
+        for (ModuleInfo moduleInfo : modules.getList()) {
+            moduleInfo.merge(modules);
+        }
+
+        TemplateConfigs templates = config.getTemplates();
+        for (TemplateConfig template : templates.getList()) {
+            template.merge(templates);
         }
         return config;
     }

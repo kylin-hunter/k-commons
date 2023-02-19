@@ -1,5 +1,10 @@
 package io.github.kylinhunter.commons.generator.context.bean;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+
+import io.github.kylinhunter.commons.generator.config.bean.ModuleInfo;
 import lombok.Data;
 
 /**
@@ -10,11 +15,13 @@ import lombok.Data;
 @Data
 public class Module {
     private String name;
-    private String database;
+    private String databaseName;
+    private Map<String, Object> context = Maps.newHashMap();
     private Table table;
 
-    public Module(io.github.kylinhunter.commons.generator.config.bean.ModuleInfo moduleInfo) {
+    public Module(ModuleInfo moduleInfo) {
         this.name = moduleInfo.getName();
-
+        this.databaseName = moduleInfo.getDatabaseName();
+        this.context = moduleInfo.getContext();
     }
 }

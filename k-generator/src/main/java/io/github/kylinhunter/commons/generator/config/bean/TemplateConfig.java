@@ -28,19 +28,19 @@ public class TemplateConfig {
     }
 
     /**
-     * @param global global
+     * @param templateConfigs templateConfigs
      * @return void
      * @title merge
      * @description
      * @author BiJi'an
-     * @date 2023-02-18 23:19
+     * @date 2023-02-19 17:12
      */
-    public void merge(Global global) {
-
+    public void merge(TemplateConfigs templateConfigs) {
         if (strategy == null) {
             this.strategy = new TemplateStrategy();
         }
-        this.strategy.merge(global.getStrategy());
-        this.putContext(global.getContext());
+        this.strategy.merge(templateConfigs.getStrategy());
+        this.putContext(templateConfigs.getContext());
+
     }
 }

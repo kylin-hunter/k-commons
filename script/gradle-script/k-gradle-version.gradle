@@ -12,7 +12,7 @@ ext {
     ]
     dependency_management = [
 
-            'aviator'                          : 'com.googlecode.aviator:aviator:5.3.3',
+            'aviator'                         : 'com.googlecode.aviator:aviator:5.3.3',
             'ojdbc8'                          : 'com.oracle.database.jdbc:ojdbc8:21.8.0.0',
             'commons-dbutils'                 : 'commons-dbutils:commons-dbutils:1.7',
             'HikariCP'                        : 'com.zaxxer:HikariCP:3.4.5',

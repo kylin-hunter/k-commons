@@ -7,7 +7,7 @@ import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
-import io.github.kylinhunter.commons.generator.constant.Contexts;
+import io.github.kylinhunter.commons.generator.constant.ContextConsts;
 import io.github.kylinhunter.commons.generator.context.bean.Module;
 import io.github.kylinhunter.commons.generator.context.bean.Modules;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
@@ -31,7 +31,7 @@ public class TemplateContextBuilder {
     public TemplateContexts build() {
         Modules modules = moduleInfoReader.read();
         TemplateContexts templateContexts = new TemplateContexts();
-        List<TemplateConfig> templates = config.getTemplates();
+        List<TemplateConfig> templates = config.getTemplates().getList();
         for (TemplateConfig templateConfig : templates) {
             for (Module module : modules.getAll()) {
                 templateContexts.add(toTemplateContext(module, templateConfig));
@@ -55,8 +55,9 @@ public class TemplateContextBuilder {
         TemplateStrategy strategy = templateContext.getTemplateConfig().getStrategy();
         String packageName = strategy.getPackageName();
         String className = strategy.getClassName();
-        templateContext.putContext(Contexts.PACKAGE_NAME, packageName);
-        templateContext.putContext(Contexts.CLASS_NAME, className);
+        templateContext.putContext(ContextConsts.PACKAGE_NAME, packageName);
+        templateContext.putContext(ContextConsts.CLASS_NAME, className);
+        templateContext.putContext(templateConfig.getContext());
         return templateContext;
 
     }
