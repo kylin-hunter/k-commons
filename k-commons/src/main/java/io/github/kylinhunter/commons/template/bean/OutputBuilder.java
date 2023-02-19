@@ -69,6 +69,19 @@ public class OutputBuilder {
     }
 
     /**
+     * @param extension extension
+     * @return io.github.kylinhunter.commons.template.bean.OutputBuilder
+     * @title setExtension
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 20:03
+     */
+    public OutputBuilder extension(String extension) {
+        this.output.setExtension(extension);
+        return this;
+    }
+
+    /**
      * @param charset charset
      * @return io.github.kylinhunter.commons.clazz.template.bean.OutputBuilder
      * @title encoding

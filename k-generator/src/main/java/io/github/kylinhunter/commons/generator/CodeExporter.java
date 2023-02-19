@@ -58,14 +58,20 @@ public class CodeExporter {
         String outputEncoding = strategy.getOutputEncoding();
         log.info("output module=>{}/template={}", module.getName(), templateName);
         Map<String, Object> context = templateContext.getContext();
-
         context.forEach((k, v) -> {
             log.info(k + ":" + v);
         });
         templateExecutor.putContext(context);
+        String outputRelativePath = getOutputRelativePath(templateContext);
         templateExecutor.tmplate(templateName, templateEncoding)
-                .outputRelativePath(module.getName() + ".html").encoding(outputEncoding).build();
+                .outputRelativePath(outputRelativePath).extension("java").encoding(outputEncoding).build();
         templateExecutor.output(System.out::println);
+
+    }
+
+    public String getOutputRelativePath(TemplateContext templateContext) {
+
+        return templateContext.getPackageName().replaceAll("\\.", "/") + "/" + templateContext.getClassName();
 
     }
 }

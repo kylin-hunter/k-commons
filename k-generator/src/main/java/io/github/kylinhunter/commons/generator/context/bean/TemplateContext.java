@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
+import io.github.kylinhunter.commons.generator.constant.ContextConsts;
 import lombok.Data;
 
 /**
@@ -47,5 +48,28 @@ public class TemplateContext {
      */
     public void putContext(String key, Object object) {
         this.context.put(key, object);
+    }
+
+    /**
+     * @return java.lang.String
+     * @title getClassName
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 20:22
+     */
+
+    public String getClassName() {
+        return (String) context.get(ContextConsts.CLASS_NAME);
+    }
+
+    /**
+     * @return java.lang.String
+     * @title getPackageName
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 20:23
+     */
+    public String getPackageName() {
+        return (String) context.get(ContextConsts.PACKAGE_NAME);
     }
 }

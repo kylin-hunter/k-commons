@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -159,9 +160,13 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
                 String resultText = stringWriter.toString();
                 Path outputPath = output.getOutputPath();
                 if (outputPath != null) {
+                    String extension = output.getExtension();
+                    if (!StringUtils.isEmpty(extension)) {
+                        outputPath = Paths.get(outputPath.toFile().getAbsolutePath() + "." + extension);
+                    }
                     File toFile = outputPath.toFile();
                     if (!toFile.getParentFile().exists()) {
-                        throw new TemplateException("dir not exist:" + toFile.getParent());
+                        FileUtils.forceMkdir(toFile.getParentFile());
                     }
                     if (toFile.exists()) {
                         if (!toFile.isFile()) {
