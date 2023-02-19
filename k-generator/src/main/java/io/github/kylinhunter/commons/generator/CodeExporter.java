@@ -1,14 +1,14 @@
 package io.github.kylinhunter.commons.generator;
 
+import java.util.List;
 import java.util.Map;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
-import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
+import io.github.kylinhunter.commons.generator.config.bean.Module;
+import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
-import io.github.kylinhunter.commons.generator.context.bean.Module;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
-import io.github.kylinhunter.commons.generator.context.bean.TemplateContexts;
 import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +34,8 @@ public class CodeExporter {
      * @author BiJi'an
      * @date 2023-02-11 23:36
      */
-    public void export(TemplateContexts templateContexts) {
-        for (TemplateContext templateContext : templateContexts.getAll()) {
+    public void export(List<TemplateContext> templateContexts) {
+        for (TemplateContext templateContext : templateContexts) {
             export(templateContext);
         }
     }
@@ -50,13 +50,14 @@ public class CodeExporter {
      */
     private void export(TemplateContext templateContext) {
         TemplateExecutor templateExecutor = templateEngine.createTemplateExecutor();
+        Template template = templateContext.getTemplate();
+        String templateName = template.getName();
         Module module = templateContext.getModule();
-        TemplateConfig templateConfig = templateContext.getTemplateConfig();
-        String templateName = templateConfig.getName();
-        TemplateStrategy strategy = templateConfig.getStrategy();
+        String moduleName = module.getName();
+        TemplateStrategy strategy = template.getStrategy();
         String templateEncoding = strategy.getTemplateEncoding();
         String outputEncoding = strategy.getOutputEncoding();
-        log.info("output module=>{}/template={}", module.getName(), templateName);
+        log.info("output module=>{}/template={}", moduleName, templateName);
         Map<String, Object> context = templateContext.getContext();
         context.forEach((k, v) -> {
             log.info(k + ":" + v);

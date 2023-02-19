@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  **/
 @Data
 @NoArgsConstructor
-public class Table {
+public class TableInfo {
     private String name;
     private List<Column> columns;
 }

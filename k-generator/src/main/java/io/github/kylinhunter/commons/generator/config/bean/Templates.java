@@ -8,8 +8,8 @@ import com.google.common.collect.Maps;
 import lombok.Data;
 
 @Data
-public class TemplateConfigs {
-    private CommonStrategy strategy;
+public class Templates {
+    private Strategy strategy;
     private Map<String, Object> context = Maps.newHashMap();
-    private List<TemplateConfig> list;
+    private List<Template> list;
 }

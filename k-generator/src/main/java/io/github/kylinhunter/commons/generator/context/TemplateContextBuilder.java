@@ -3,18 +3,19 @@ package io.github.kylinhunter.commons.generator.context;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
-import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
+import io.github.kylinhunter.commons.generator.config.bean.Module;
+import io.github.kylinhunter.commons.generator.config.bean.Modules;
+import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
 import io.github.kylinhunter.commons.generator.constant.ContextConsts;
-import io.github.kylinhunter.commons.generator.context.bean.Module;
-import io.github.kylinhunter.commons.generator.context.bean.Modules;
+import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
-import io.github.kylinhunter.commons.generator.context.bean.TemplateContexts;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import lombok.RequiredArgsConstructor;
 
@@ -32,71 +33,48 @@ public class TemplateContextBuilder {
     @CSet
     private ModuleInfoReader moduleInfoReader;
 
-    public TemplateContexts build() {
-        Modules modules = moduleInfoReader.read();
-        TemplateContexts templateContexts = new TemplateContexts();
-        List<TemplateConfig> templates = config.getTemplates().getList();
-        for (TemplateConfig templateConfig : templates) {
-            for (Module module : modules.getAll()) {
-                templateContexts.add(toTemplateContext(module, templateConfig));
+    public List<TemplateContext> build() {
+        List<TemplateContext>  templateContexts = Lists.newArrayList();
+
+        Modules modules = config.getModules();
+        for (Module module : modules.getList()) {
+            ModuleInfo moduleInfo = moduleInfoReader.read(module);
+
+            List<Template> templates = config.getTemplates().getList();
+            for (Template template : templates) {
+                TemplateContext templateContext = new TemplateContext(module, template);
+                templateContext.putContext(build(moduleInfo, module, template));
+                templateContexts.add(templateContext);
             }
+
         }
+
         return templateContexts;
     }
 
     /**
-     * @param module         moduleContext
-     * @param templateConfig templateConfig
+     * @param module     moduleInfo
+     * @param template templateConfig
      * @return io.github.kylinhunter.commons.generator.context.bean.TemplateContext
      * @title toTemplateContext
      * @description
      * @author BiJi'an
      * @date 2023-02-18 00:23
      */
-    private TemplateContext toTemplateContext(Module module, TemplateConfig templateConfig) {
-        TemplateContext templateContext = new TemplateContext(module, templateConfig);
-
-        TemplateStrategy strategy = templateContext.getTemplateConfig().getStrategy();
+    private Map<String, Object> build(ModuleInfo moduleInfo, Module module, Template template) {
+        Map<String, Object> context = Maps.newHashMap();
+        context.put(ContextConsts.MODULE, moduleInfo);
+        TemplateStrategy strategy = template.getStrategy();
         String packageName = strategy.getPackageName();
         String className = strategy.getClassName();
-        String moduleName = module.getName();
-
-        processContext(templateContext, module);
-        templateContext.putContext(templateConfig.getContext());
-
-        templateContext.putContext(ContextConsts.PACKAGE_NAME, ExpressionExecutor.execute(packageName,
-                templateContext.getContext()));
-        templateContext
-                .putContext(ContextConsts.CLASS_NAME, ExpressionExecutor.execute(className,
-                        templateContext.getContext()));
-
-        return templateContext;
-
-    }
-
-    private void processContext(TemplateContext templateContext, Module module) {
-        //        templateContext.putContext(ContextConsts.MODULE_NAME, module.getName());
-        //        Table table = module.getTable();
-        //        templateContext.putContext(ContextConsts.MODULE_TABLE_NAME, table.getName());
-        //        List<Column> columns = table.getColumns();
-        //        templateContext.putContext(ContextConsts.MODULE_TABLE_COLUMNS, columns);
-        //        for (Column column : columns) {
-        //            String key1 = ContextConsts.MODULE_TABLE_COLUMN_PREFIX + column.getName();
-        //            templateContext.putContext(key1, column);
-        //
-        //            String key2 = ContextConsts.MODULE_TABLE_COLUMN_PREFIX + column.getName() + ".javaClass";
-        //            templateContext.putContext(key2, column.getClazz().getName());
-        //
-        //        }
-
-        templateContext.putContext("module", module);
-
-        templateContext.putContext(module.getContext());
+        context.put(ContextConsts.PACKAGE_NAME, ExpressionExecutor.execute(packageName, context));
+        context.put(ContextConsts.CLASS_NAME, ExpressionExecutor.execute(className, context));
+        return context;
 
     }
 
     /**
-     * @param module           module
+     * @param moduleInfo           module
      * @param classNamePattern classNamePattern
      * @return java.lang.String
      * @title getClassName
@@ -104,7 +82,7 @@ public class TemplateContextBuilder {
      * @author BiJi'an
      * @date 2023-02-19 19:16
      */
-    private String getClassName(Module module, String classNamePattern) {
+    private String getClassName(ModuleInfo moduleInfo, String classNamePattern) {
         Map<String, Object> env = Maps.newHashMap();
         env.put("module.name", "hello_the_word");
 

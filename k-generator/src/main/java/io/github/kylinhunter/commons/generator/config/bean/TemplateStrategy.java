@@ -8,33 +8,33 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class TemplateStrategy extends CommonStrategy {
+public class TemplateStrategy extends Strategy {
     private String superClass;
     private String className;
 
     /**
-     * @param commonStrategy globalStrategy
+     * @param strategy globalStrategy
      * @return void
      * @title merge
      * @description
      * @author BiJi'an
      * @date 2023-02-18 21:02
      */
-    public void merge(CommonStrategy commonStrategy) {
-        if (commonStrategy == null) {
+    public void merge(Strategy strategy) {
+        if (strategy == null) {
             return;
         }
 
         if (StringUtils.isEmpty(this.packageName)) {
-            this.packageName = commonStrategy.packageName;
+            this.packageName = strategy.packageName;
         }
 
         if (StringUtils.isEmpty(this.templateEncoding)) {
-            this.templateEncoding = StringUtils.defaultIfBlank(commonStrategy.templateEncoding, CharsetConst.UTF_8);
+            this.templateEncoding = StringUtils.defaultIfBlank(strategy.templateEncoding, CharsetConst.UTF_8);
         }
 
         if (StringUtils.isEmpty(this.outputEncoding)) {
-            this.outputEncoding = StringUtils.defaultIfBlank(commonStrategy.outputEncoding, CharsetConst.UTF_8);
+            this.outputEncoding = StringUtils.defaultIfBlank(strategy.outputEncoding, CharsetConst.UTF_8);
         }
 
     }

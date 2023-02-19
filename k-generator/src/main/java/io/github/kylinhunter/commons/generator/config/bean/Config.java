@@ -10,6 +10,6 @@ import lombok.Data;
 @Data
 public class Config {
     private Global global;
-    private ModuleInfos modules;
-    private TemplateConfigs templates;
+    private Modules modules;
+    private Templates templates;
 }

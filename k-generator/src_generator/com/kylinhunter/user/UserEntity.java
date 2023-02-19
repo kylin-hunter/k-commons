@@ -1,8 +1,5 @@
 package com.kylinhunter.user;
 
-import java.io.Serializable;
-
-import io.swagger.annotations.ApiModel;
 
 /**
  * <p>

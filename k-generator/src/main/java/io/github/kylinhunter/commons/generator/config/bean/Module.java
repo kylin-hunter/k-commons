@@ -7,17 +7,20 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.Maps;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class ModuleInfo {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Module {
+    @EqualsAndHashCode.Include
     private String name;
     protected String databaseName;
     private Map<String, Object> context = Maps.newHashMap();
-    private TableInfo table;
+    private Table table;
 
-    public void merge(ModuleInfos moduleInfos) {
+    public void merge(Modules modules) {
         if (!StringUtils.isEmpty(databaseName)) {
-            this.databaseName = moduleInfos.getDatabaseName();
+            this.databaseName = modules.getDatabaseName();
         }
     }
 }

@@ -4,7 +4,8 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
+import io.github.kylinhunter.commons.generator.config.bean.Module;
+import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.constant.ContextConsts;
 import lombok.Data;
 
@@ -16,13 +17,14 @@ import lombok.Data;
 @Data
 public class TemplateContext {
     private Module module;
-    private TemplateConfig templateConfig;
+    private Template template;
     private Map<String, Object> context = Maps.newHashMap();
 
-    public TemplateContext(Module module, TemplateConfig templateConfig) {
+    public TemplateContext(Module module, Template template) {
         this.module = module;
-        this.templateConfig = templateConfig;
-        this.context.putAll(templateConfig.getContext());
+        this.template = template;
+        this.context.putAll(template.getContext());
+        this.context.putAll(module.getContext());
     }
 
     /**
@@ -72,4 +74,6 @@ public class TemplateContext {
     public String getPackageName() {
         return (String) context.get(ContextConsts.PACKAGE_NAME);
     }
+
+
 }

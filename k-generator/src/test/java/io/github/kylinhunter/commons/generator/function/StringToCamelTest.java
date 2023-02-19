@@ -10,8 +10,8 @@ import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.generator.context.bean.Column;
-import io.github.kylinhunter.commons.generator.context.bean.Module;
-import io.github.kylinhunter.commons.generator.context.bean.Table;
+import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
+import io.github.kylinhunter.commons.generator.context.bean.TableInfo;
 
 class StringToCamelTest {
 
@@ -19,20 +19,20 @@ class StringToCamelTest {
     void execute() {
         ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
 
-        Module module = new Module();
-        module.setName("hello_the_word");
-        Table table = new Table();
-        table.setName("tableName");
+        ModuleInfo moduleInfo = new ModuleInfo();
+        moduleInfo.setName("hello_the_word");
+        TableInfo tableInfo = new TableInfo();
+        tableInfo.setName("tableName");
         List<Column> columns = Lists.newArrayList();
         Column column = new Column();
         column.setName("columnName");
         column.setClazz(List.class);
         columns.add(column);
-        table.setColumns(columns);
+        tableInfo.setColumns(columns);
 
-        module.setTable(table);
+        moduleInfo.setTableInfo(tableInfo);
         Map<String, Object> env = Maps.newHashMap();
-        env.put("module", module);
+        env.put("module", moduleInfo);
 
         Object execute = expressionExecutor.execute("k.string_to_camel(module.name,'lower')", env);
         System.out.println(execute);

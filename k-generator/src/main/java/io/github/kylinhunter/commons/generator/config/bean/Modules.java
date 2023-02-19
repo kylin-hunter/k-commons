@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class ModuleInfos {
+public class Modules {
     protected String databaseName;
-    protected List<ModuleInfo> list;
+    protected List<Module> list;
 
 }

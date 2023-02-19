@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import lombok.Data;
 
 @Data
-public class TableInfo {
+public class Table {
     private String name;
     private List<String> skipColumns = Lists.newArrayList();
 

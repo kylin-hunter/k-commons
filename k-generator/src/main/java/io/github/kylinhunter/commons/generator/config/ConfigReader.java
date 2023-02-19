@@ -3,10 +3,10 @@ package io.github.kylinhunter.commons.generator.config;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.generator.config.bean.Config;
-import io.github.kylinhunter.commons.generator.config.bean.ModuleInfo;
-import io.github.kylinhunter.commons.generator.config.bean.ModuleInfos;
-import io.github.kylinhunter.commons.generator.config.bean.TemplateConfig;
-import io.github.kylinhunter.commons.generator.config.bean.TemplateConfigs;
+import io.github.kylinhunter.commons.generator.config.bean.Module;
+import io.github.kylinhunter.commons.generator.config.bean.Modules;
+import io.github.kylinhunter.commons.generator.config.bean.Template;
+import io.github.kylinhunter.commons.generator.config.bean.Templates;
 import io.github.kylinhunter.commons.yaml.YamlHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -49,13 +49,13 @@ public class ConfigReader {
      */
     private Config afterLoad(Config config) {
 
-        ModuleInfos modules = config.getModules();
-        for (ModuleInfo moduleInfo : modules.getList()) {
-            moduleInfo.merge(modules);
+        Modules modules = config.getModules();
+        for (Module module : modules.getList()) {
+            module.merge(modules);
         }
 
-        TemplateConfigs templates = config.getTemplates();
-        for (TemplateConfig template : templates.getList()) {
+        Templates templates = config.getTemplates();
+        for (Template template : templates.getList()) {
             template.merge(templates);
         }
         return config;
