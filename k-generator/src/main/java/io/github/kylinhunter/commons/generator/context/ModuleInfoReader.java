@@ -6,9 +6,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.component.CSet;
-import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.generator.context.bean.Column;
@@ -29,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class ModuleInfoReader {
 
     @CSet
-    private Config config;
+    private ColumnMetaReader columnMetaReader;
 
     /**
      * @return io.github.kylinhunter.commons.generator.context.bean.ModuleInfos
@@ -38,29 +36,25 @@ public class ModuleInfoReader {
      * @author BiJi'an
      * @date 2023-02-18 23:26
      */
-
     public ModuleInfo read(Module module) {
-        ModuleInfo moduleInfo = new ModuleInfo(module);
-        moduleInfo.setTableInfo(toTable(moduleInfo, module.getTable()));
-        return moduleInfo;
+        return new ModuleInfo(module, toTable(module));
     }
 
     /**
-     * @param table moduleTable
+     * @param module module
      * @return io.github.kylinhunter.commons.generator.context.bean.Table
      * @title toTable
      * @description
      * @author BiJi'an
      * @date 2023-02-17 22:36
      */
-    private TableInfo toTable(ModuleInfo moduleInfo, Table table) {
+    private TableInfo toTable(Module module) {
         TableInfo tableInfo = new TableInfo();
+        Table table = module.getTable();
         tableInfo.setName(table.getName());
 
         List<String> skipColumns = table.getSkipColumns();
-        ColumnMetaReader columnMetaReader = CF.get(ColumnMetaReader.class);
-        List<ColumnMeta> columnMetas =
-                columnMetaReader.getColumnMetaData(moduleInfo.getDatabaseName(), table.getName());
+        List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData(module.getDatabaseName(), table.getName());
         if (CollectionUtils.isEmpty(columnMetas)) {
             throw new CodeException("no column from table=>" + table);
         } else {

@@ -70,9 +70,15 @@ public class CodeExporter {
 
     }
 
+    /**
+     * @param templateContext templateContext
+     * @return java.lang.String
+     * @title getOutputRelativePath
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-20 00:14
+     */
     public String getOutputRelativePath(TemplateContext templateContext) {
-
         return templateContext.getPackageName().replaceAll("\\.", "/") + "/" + templateContext.getClassName();
-
     }
 }

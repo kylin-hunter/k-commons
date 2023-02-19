@@ -36,7 +36,9 @@ public class TemplateContext {
      * @date 2023-02-18 02:43
      */
     public void putContext(Map<String, ?> contextData) {
-        this.context.putAll(contextData);
+        if (contextData != null) {
+            this.context.putAll(contextData);
+        }
     }
 
     /**
@@ -74,6 +76,5 @@ public class TemplateContext {
     public String getPackageName() {
         return (String) context.get(ContextConsts.PACKAGE_NAME);
     }
-
 
 }

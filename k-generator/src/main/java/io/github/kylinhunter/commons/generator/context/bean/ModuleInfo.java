@@ -19,8 +19,9 @@ public class ModuleInfo {
     private String databaseName;
     private TableInfo tableInfo;
 
-    public ModuleInfo(Module module) {
+    public ModuleInfo(Module module, TableInfo tableInfo) {
         this.name = module.getName();
         this.databaseName = module.getDatabaseName();
+        this.tableInfo = tableInfo;
     }
 }

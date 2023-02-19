@@ -25,6 +25,7 @@ public class ReflectUtils {
     @SuppressWarnings("unchecked")
     public static <T> T invoke(Object obj, Method method, Object... args) {
         try {
+            method.setAccessible(true);
             return (T) method.invoke(obj, args);
         } catch (Exception e) {
             throw new InitException("invoke error", e);

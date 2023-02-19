@@ -5,6 +5,7 @@ import java.util.Map;
 import com.googlecode.aviator.AviatorEvaluator;
 
 import io.github.kylinhunter.commons.component.C;
+import io.github.kylinhunter.commons.component.CAfter;
 
 /**
  * @author BiJi'an
@@ -13,10 +14,6 @@ import io.github.kylinhunter.commons.component.C;
  **/
 @C
 public class ExpressionExecutor {
-    static {
-        AviatorEvaluator.addFunction(new StringToCamel());
-        AviatorEvaluator.addFunction(new StringToLower());
-    }
 
     /**
      * @param expression expression
@@ -27,7 +24,7 @@ public class ExpressionExecutor {
      * @date 2023-02-17 01:07
      */
     @SuppressWarnings("unchecked")
-    public static <T> T execute(final String expression) {
+    public <T> T execute(final String expression) {
         return (T) AviatorEvaluator.execute(expression);
     }
 
@@ -41,7 +38,13 @@ public class ExpressionExecutor {
      * @date 2023-02-19 18:50
      */
     @SuppressWarnings("unchecked")
-    public static <T> T execute(final String expression, final Map<String, Object> env) {
+    public <T> T execute(final String expression, final Map<String, Object> env) {
         return (T) AviatorEvaluator.execute(expression, env);
+    }
+
+    @CAfter
+    private void init() {
+        AviatorEvaluator.addFunction(new StringToCamel());
+        AviatorEvaluator.addFunction(new StringToLower());
     }
 }
