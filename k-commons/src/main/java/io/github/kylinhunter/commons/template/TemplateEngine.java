@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.template;
 
+import java.util.Map;
+
 import io.github.kylinhunter.commons.template.config.ConfigCustomize;
 import io.github.kylinhunter.commons.template.config.TemplateConfig;
 
@@ -11,6 +13,8 @@ import io.github.kylinhunter.commons.template.config.TemplateConfig;
 public interface TemplateEngine {
 
     TemplateExecutor createTemplateExecutor();
+
+    TemplateExecutor createTemplateExecutor(Map<String, Object> context);
 
     void customize(ConfigCustomize<TemplateConfig> configCustomize);
 }

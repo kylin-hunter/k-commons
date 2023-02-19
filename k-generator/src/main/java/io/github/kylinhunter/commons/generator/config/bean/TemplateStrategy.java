@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 public class TemplateStrategy extends Strategy {
     private String superClass;
     private String className;
+    private String extension;
 
     /**
      * @param strategy globalStrategy

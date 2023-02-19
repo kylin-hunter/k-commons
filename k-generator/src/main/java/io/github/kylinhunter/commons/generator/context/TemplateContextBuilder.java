@@ -18,6 +18,7 @@ import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
  **/
 @C
 @RequiredArgsConstructor
+@Slf4j
 public class TemplateContextBuilder {
 
     @CSet
@@ -42,8 +44,9 @@ public class TemplateContextBuilder {
             ModuleInfo moduleInfo = moduleInfoReader.read(module);
             for (Template template : config.getTemplates().getList()) {
                 TemplateContext templateContext = new TemplateContext(module, template);
-                templateContext.putContext(build(moduleInfo, template));
+                templateContext.putContext(build(moduleInfo, module, template));
                 templateContexts.add(templateContext);
+
             }
 
         }
@@ -60,14 +63,19 @@ public class TemplateContextBuilder {
      * @author BiJi'an
      * @date 2023-02-18 00:23
      */
-    private Map<String, Object> build(ModuleInfo moduleInfo, Template template) {
+    private Map<String, Object> build(ModuleInfo moduleInfo, Module module, Template template) {
         Map<String, Object> context = Maps.newHashMap();
         context.put(ContextConsts.MODULE, moduleInfo);
+
+        context.putAll(template.getContext());
+        context.putAll(module.getContext());
+
         TemplateStrategy strategy = template.getStrategy();
         String packageName = strategy.getPackageName();
         String className = strategy.getClassName();
         context.put(ContextConsts.PACKAGE_NAME, expressionExecutor.execute(packageName, context));
         context.put(ContextConsts.CLASS_NAME, expressionExecutor.execute(className, context));
+        context.forEach((k, v) -> log.info(k + ":" + v));
         return context;
 
     }

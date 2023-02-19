@@ -15,4 +15,5 @@ import lombok.NoArgsConstructor;
 public class Column {
     private String name;
     private Class<?> clazz;
+    private String remarks;
 }

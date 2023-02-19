@@ -38,5 +38,6 @@ templates:
       strategy:
         class_name: k.string_to_camel(module.name,'upper')+'Entity'
         superClass: 'java.lang.Object'
+        extension: 'java'
 
 

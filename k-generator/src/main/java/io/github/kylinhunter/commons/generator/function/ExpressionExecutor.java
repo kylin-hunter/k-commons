@@ -6,6 +6,7 @@ import com.googlecode.aviator.AviatorEvaluator;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CAfter;
+import io.github.kylinhunter.commons.generator.exception.CodeException;
 
 /**
  * @author BiJi'an
@@ -25,7 +26,11 @@ public class ExpressionExecutor {
      */
     @SuppressWarnings("unchecked")
     public <T> T execute(final String expression) {
-        return (T) AviatorEvaluator.execute(expression);
+        try {
+            return (T) AviatorEvaluator.execute(expression);
+        } catch (Exception e) {
+            throw new CodeException("execute error:" + expression, e);
+        }
     }
 
     /**
@@ -39,7 +44,11 @@ public class ExpressionExecutor {
      */
     @SuppressWarnings("unchecked")
     public <T> T execute(final String expression, final Map<String, Object> env) {
-        return (T) AviatorEvaluator.execute(expression, env);
+        try {
+            return (T) AviatorEvaluator.execute(expression, env);
+        } catch (Exception e) {
+            throw new CodeException("execute error:" + expression, e);
+        }
     }
 
     @CAfter

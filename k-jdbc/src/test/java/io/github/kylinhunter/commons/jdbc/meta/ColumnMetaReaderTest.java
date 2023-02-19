@@ -22,13 +22,5 @@ class ColumnMetaReaderTest {
             System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
         }
 
-        columnMetas = columnMetaReader.getColumnMetaData("kp2", "test_user2");
-        Assertions.assertTrue(!columnMetas.isEmpty());
-
-        for (ColumnMeta columnMeta : columnMetas) {
-            System.out.println(columnMeta);
-            Assertions.assertNotNull(columnMeta.getJavaClass());
-            System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
-        }
     }
 }

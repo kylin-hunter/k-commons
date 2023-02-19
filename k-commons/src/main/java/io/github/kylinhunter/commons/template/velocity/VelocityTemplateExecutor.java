@@ -43,9 +43,16 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
     private List<Output> outputs = Lists.newArrayList();
 
     public VelocityTemplateExecutor(VelocityTemplateEngine velocityTemplateEngine) {
+        this(velocityTemplateEngine, null);
+    }
+
+    public VelocityTemplateExecutor(VelocityTemplateEngine velocityTemplateEngine, Map<String, Object> context) {
         this.velocityTemplateEngine = velocityTemplateEngine;
         this.toolContext = this.velocityTemplateEngine.getToolManager().createContext();
         this.templateConfig = velocityTemplateEngine.getTemplateConfig();
+        if (context != null) {
+            this.toolContext.putAll(context);
+        }
 
     }
 

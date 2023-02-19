@@ -23,8 +23,6 @@ public class TemplateContext {
     public TemplateContext(Module module, Template template) {
         this.module = module;
         this.template = template;
-        this.context.putAll(template.getContext());
-        this.context.putAll(module.getContext());
     }
 
     /**

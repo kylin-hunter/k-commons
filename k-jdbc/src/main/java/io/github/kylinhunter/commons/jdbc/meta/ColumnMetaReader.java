@@ -19,7 +19,6 @@ import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
-import io.github.kylinhunter.commons.jdbc.meta.cache.DatabaseMetaCache;
 import io.github.kylinhunter.commons.jdbc.meta.parser.ColumnParser;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 @C
 @RequiredArgsConstructor
 public class ColumnMetaReader {
-    private final DatabaseMetaCache databaseMetaCache;
     private final DatabaseMetaReader databaseMetaReader;
 
     /**
@@ -61,10 +59,9 @@ public class ColumnMetaReader {
      * @date 2023-01-18 12:42
      */
     public List<ColumnMeta> getColumnMetaData(DataSourceEx dataSource, String catalog, String tableName) {
-        DatabaseMeta databaseMeta = databaseMetaCache.get(dataSource.getNo());
         try (Connection connection = dataSource.getConnection()) {
             catalog = catalog != null && catalog.length() > 0 ? catalog : null;
-            return getColumnMetaData(databaseMeta, connection, catalog, null, tableName);
+            return getColumnMetaData(connection, catalog, null, tableName);
 
         } catch (JdbcException e) {
             throw e;
@@ -85,15 +82,13 @@ public class ColumnMetaReader {
      * @author BiJi'an
      * @date 2023-01-18 12:42
      */
-    public List<ColumnMeta> getColumnMetaData(DatabaseMeta databaseMeta, Connection connection, String catalog,
-                                               String schema,
-                                               String tableName) {
+    public List<ColumnMeta> getColumnMetaData(Connection connection, String catalog,
+                                              String schema,
+                                              String tableName) {
         List<ColumnMeta> columnMetaDatas;
         try {
             columnMetaDatas = Lists.newArrayList();
-            if (databaseMeta == null) {
-                databaseMeta = databaseMetaReader.getDatabaseMetaData(connection);
-            }
+            DatabaseMeta databaseMeta = databaseMetaReader.getDatabaseMetaData(connection);
             ColumnParserType columnParserType = databaseMeta.getDbType().getColumnParserType();
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet columns = metaData.getColumns(catalog, schema, tableName, null);
@@ -132,6 +127,7 @@ public class ColumnMetaReader {
      * @date 2023-01-18 12:43
      */
     private void processMetadata(ColumnMeta columnMeta, String columName, Object value) {
+        //        log.info(columName + ":" + value);
         switch (columName) {
             case "TABLE_NAME":
                 columnMeta.setTableName(ObjectValues.getString(value));

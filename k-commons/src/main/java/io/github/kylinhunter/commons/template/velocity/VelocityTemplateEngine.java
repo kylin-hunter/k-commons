@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.template.velocity;
 
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.velocity.app.Velocity;
@@ -60,7 +61,6 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         this.velocityEngine = new VelocityEngine();
         this.velocityEngine.init(properties);
 
-
         this.toolManager = new ToolManager();
         this.toolManager.configure("/io/github/kylinhunter/commons/template/velocity-tools.xml");
 
@@ -76,6 +76,12 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
     @Override
     public TemplateExecutor createTemplateExecutor() {
         return new VelocityTemplateExecutor(this);
+    }
+
+    @Override
+    public TemplateExecutor createTemplateExecutor(Map<String, Object> context) {
+        return new VelocityTemplateExecutor(this, context);
+
     }
 
 }

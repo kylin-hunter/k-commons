@@ -64,7 +64,9 @@ public class OutputBuilder {
      * @date 2023-02-10 01:32
      */
     public OutputBuilder encoding(String charset) {
-        this.output.setEncoding(Charset.forName(charset));
+        if (charset != null) {
+            this.output.setEncoding(Charset.forName(charset));
+        }
         return this;
     }
 

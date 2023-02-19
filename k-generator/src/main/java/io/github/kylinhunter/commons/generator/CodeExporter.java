@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.generator;
 
 import java.util.List;
-import java.util.Map;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
@@ -49,24 +48,18 @@ public class CodeExporter {
      * @date 2023-02-11 23:36
      */
     private void export(TemplateContext templateContext) {
-        TemplateExecutor templateExecutor = templateEngine.createTemplateExecutor();
+        TemplateExecutor templateExecutor = templateEngine.createTemplateExecutor(templateContext.getContext());
         Template template = templateContext.getTemplate();
-        String templateName = template.getName();
         Module module = templateContext.getModule();
-        String moduleName = module.getName();
         TemplateStrategy strategy = template.getStrategy();
-        String templateEncoding = strategy.getTemplateEncoding();
-        String outputEncoding = strategy.getOutputEncoding();
-        log.info("output module=>{}/template={}", moduleName, templateName);
-        Map<String, Object> context = templateContext.getContext();
-        context.forEach((k, v) -> {
-            log.info(k + ":" + v);
-        });
-        templateExecutor.putContext(context);
-        String outputRelativePath = getOutputRelativePath(templateContext);
-        templateExecutor.tmplate(templateName, templateEncoding)
-                .outputRelativePath(outputRelativePath).extension("java").encoding(outputEncoding).build();
-        templateExecutor.output(System.out::println);
+        log.info("export module=>{}/template={}", module.getName(), template.getName());
+        templateExecutor
+                .tmplate(template.getName(), strategy.getTemplateEncoding())
+                .outputRelativePath(getOutputRelativePath(templateContext))
+                .extension(strategy.getExtension())
+                .encoding(strategy.getOutputEncoding())
+                .build();
+        templateExecutor.output();
 
     }
 

@@ -14,5 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TableInfo {
     private String name;
+    private String remarks;
     private List<Column> columns;
 }
