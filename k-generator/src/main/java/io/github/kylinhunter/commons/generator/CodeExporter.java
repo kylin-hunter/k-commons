@@ -7,6 +7,7 @@ import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
+import io.github.kylinhunter.commons.generator.context.bean.ClassInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
@@ -73,6 +74,7 @@ public class CodeExporter {
      * @date 2023-02-19 00:14
      */
     public String getOutputRelativePath(TemplateContext templateContext) {
-        return templateContext.getPackageName().replaceAll("\\.", "/") + "/" + templateContext.getClassName();
+        ClassInfo classInfo = templateContext.getClassInfo();
+        return classInfo.getPackageName().replaceAll("\\.", "/") + "/" + classInfo.getName();
     }
 }

@@ -17,6 +17,7 @@ import io.github.kylinhunter.commons.generator.context.bean.ClassInfo;
 import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -70,11 +71,12 @@ public class TemplateContextBuilder {
         templateContext.putContext(templateContext.getModule().getContext());
         processPackageName(templateContext);
         processClassName(templateContext);
+        processRemarks(templateContext);
+        processSuperClass(templateContext);
         processSerilizeable(templateContext);
         processLombok(templateContext);
         processSwagger(templateContext);
-        templateContext.resetClassInfo();
-        templateContext.putContext("classinfo", templateContext.getClassInfo());
+        templateContext.putContext("class", templateContext.getClassInfo());
     }
 
     /**
@@ -86,10 +88,11 @@ public class TemplateContextBuilder {
      * @date 2023-02-19 10:44
      */
     private void processPackageName(TemplateContext templateContext) {
+        ClassInfo classInfo = templateContext.getClassInfo();
         TemplateStrategy strategy = templateContext.getTemplate().getStrategy();
         String packageName = strategy.getPackageName();
         String result = expressionExecutor.execute(packageName, templateContext.getContext());
-        templateContext.setPackageName(result);
+        classInfo.setPackageName(result);
 
     }
 
@@ -102,10 +105,31 @@ public class TemplateContextBuilder {
      * @date 2023-02-19 10:44
      */
     private void processClassName(TemplateContext templateContext) {
+        ClassInfo classInfo = templateContext.getClassInfo();
+
         TemplateStrategy strategy = templateContext.getTemplate().getStrategy();
         String className = strategy.getClassName();
         String result = expressionExecutor.execute(className, templateContext.getContext());
-        templateContext.setClassName(result);
+        classInfo.setName(result);
+    }
+
+    private void processRemarks(TemplateContext templateContext) {
+        ModuleInfo moduleInfo = templateContext.getModuleInfo();
+        ClassInfo classInfo = templateContext.getClassInfo();
+
+        classInfo.setRemarks(moduleInfo.getTable().getRemarks());
+    }
+
+    private void processSuperClass(TemplateContext templateContext) {
+        ClassInfo classInfo = templateContext.getClassInfo();
+
+        TemplateStrategy strategy = templateContext.getTemplate().getStrategy();
+        String superClass = strategy.getSuperClass();
+
+        String superClassName = ClassUtil.getSimpleName(superClass);
+        classInfo.setSuperClassName(superClassName);
+        classInfo.addImportPackage(superClass);
+
     }
 
     /**
@@ -135,17 +159,16 @@ public class TemplateContextBuilder {
     private void processSwagger(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
         if (templateContext.isWaggerEnabled()) {
-            classInfo.addImportPackage(ApiModel.class.getName());
-            classInfo.addImportPackage(ApiModelProperty.class.getName());
-            classInfo.addImportPackage(Api.class.getName());
-            classInfo.addImportPackage(ApiOperation.class.getName());
+            classInfo.addImportPackage(ApiModel.class);
+            classInfo.addImportPackage(ApiModelProperty.class);
+            classInfo.addImportPackage(Api.class);
+            classInfo.addImportPackage(ApiOperation.class);
 
         }
     }
 
     private void processSerilizeable(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
-
-        classInfo.addImportPackage(Serializable.class);
+        classInfo.addInterface(Serializable.class);
     }
 }

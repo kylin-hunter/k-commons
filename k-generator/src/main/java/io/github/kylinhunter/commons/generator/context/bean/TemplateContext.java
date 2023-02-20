@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.generator.context.bean;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Maps;
 
@@ -52,53 +51,6 @@ public class TemplateContext {
     }
 
     /**
-     * @return java.lang.String
-     * @title getClassName
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 20:22
-     */
-
-    public String getClassName() {
-        return ObjectValues.getString(context.get(ContextConsts.CLASS_NAME));
-    }
-
-    /**
-     * @param className className
-     * @return void
-     * @title setClassName
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 14:13
-     */
-    public void setClassName(String className) {
-        context.put(ContextConsts.CLASS_NAME, className);
-    }
-
-    /**
-     * @return java.lang.String
-     * @title getPackageName
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 20:23
-     */
-    public String getPackageName() {
-        return ObjectValues.getString(context.get(ContextConsts.PACKAGE_NAME));
-    }
-
-    /**
-     * @param packageName packageName
-     * @return void
-     * @title setPackageName
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 14:13
-     */
-    public void setPackageName(String packageName) {
-        context.put(ContextConsts.PACKAGE_NAME, packageName);
-    }
-
-    /**
      * @return boolean
      * @title isLombokEnabled
      * @description
@@ -119,20 +71,5 @@ public class TemplateContext {
     public boolean isWaggerEnabled() {
         return ObjectValues.getBoolean(context.get(ContextConsts.SWAGGER_ENABLED));
     }
-
-    /**
-     * @return void
-     * @title resetClassInfo
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 20:53
-     */
-    public void resetClassInfo() {
-        String annotations = classInfo.getAllAnnotations().stream().collect(Collectors.joining(System.lineSeparator()));
-
-        context.put(ContextConsts.CLASS_ANNOTATIONS, annotations);
-
-
-
-    }
+    
 }

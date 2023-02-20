@@ -1,25 +1,16 @@
-package ${package_name};
-${import_packages};
-${classinfo.user}
+package ${class.packageName};
+${class.importPackages}
 /**
- * @description  $!{module.table.remarks}
- *
+ * @description  $!{class.remarks}
  * @author ${author}
- *
  * @since ${date}
- *
  **/
-
-${class_annotations}
-
+${class.annotations}
 #if(${swagger})
 @ApiModel(value = "${module.name}对象", description = "$!{table.comment}")
 #end
-#if(${superEntityClass})
-public class ${class_name} extends ${superEntityClass}{
-#else
-public class ${class_name} implements Serializable{
-#end
+public class ${class.name} ${class.superClassName} ${class.interfaces}{
+
 
 #if(${entitySerialVersionUID})
 private static final long serialVersionUID=1L;
