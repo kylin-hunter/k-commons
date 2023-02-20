@@ -23,7 +23,7 @@ public class CodeGenerator {
      * @date 2023-02-11 23:38
      */
     public void execute() {
-        List<TemplateContext> templateContexts = templateContextBuilder.build();
+        List<TemplateContext> templateContexts = templateContextBuilder.calculateContext();
         codeExporter.export(templateContexts);
     }
 }

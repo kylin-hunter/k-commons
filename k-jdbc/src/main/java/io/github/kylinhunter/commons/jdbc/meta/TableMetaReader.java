@@ -36,7 +36,7 @@ public class TableMetaReader {
      * @title getTableMetaData
      * @description
      * @author BiJi'an
-     * @date 2023-02-20 01:18
+     * @date 2023-02-19 01:18
      */
     public TableMeta getTableMetaData(String catalog, String tableName) {
         List<TableMeta> tableMetaDatas = getTableMetaDatas(DataSourceUtils.getDefaultDataSource(), catalog, tableName);

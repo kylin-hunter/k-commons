@@ -1,7 +1,11 @@
 package io.github.kylinhunter.commons.util;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -117,4 +121,21 @@ public class ObjectValues {
         }
         return null;
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> getList(Object obj) {
+        if (obj == null) {
+            return Collections.emptyList();
+        } else if (obj instanceof List) {
+            return (List<T>) obj;
+        } else if (obj instanceof Collection) {
+            Collection<? extends T> c = (Collection<? extends T>) obj;
+            List<T> list = Lists.newArrayList();
+            list.addAll(c);
+            return list;
+        }
+        return Collections.emptyList();
+    }
 }
+
+

@@ -33,8 +33,8 @@ templates:
       enabled: true
       context:
         'serializable': 'true'  #
-        'lombok': 'true'  #
-        'swagger': 'true'  #
+        'lombok_enabled': 'true'  #
+        'swagger_enabled': 'true'  #
       strategy:
         class_name: k.string_to_camel(module.name,'upper')+'Entity'
         superClass: 'java.lang.Object'

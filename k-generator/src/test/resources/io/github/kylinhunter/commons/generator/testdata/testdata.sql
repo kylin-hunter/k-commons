@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `test_role`
     `id`   bigint(20)  NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
     `name` varchar(64) NOT NULL DEFAULT '' COMMENT 'role name',
     PRIMARY KEY (`id`)
-)comment=' ther roles';
+)comment=' the roles';
 
 CREATE TABLE IF NOT EXISTS `test_user`
 (

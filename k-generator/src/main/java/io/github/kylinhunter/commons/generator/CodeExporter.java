@@ -35,6 +35,7 @@ public class CodeExporter {
      */
     public void export(List<TemplateContext> templateContexts) {
         for (TemplateContext templateContext : templateContexts) {
+            templateContext.getContext().forEach((k, v) -> log.info("{}:{}", k, v));
             export(templateContext);
         }
     }
@@ -69,7 +70,7 @@ public class CodeExporter {
      * @title getOutputRelativePath
      * @description
      * @author BiJi'an
-     * @date 2023-02-20 00:14
+     * @date 2023-02-19 00:14
      */
     public String getOutputRelativePath(TemplateContext templateContext) {
         return templateContext.getPackageName().replaceAll("\\.", "/") + "/" + templateContext.getClassName();

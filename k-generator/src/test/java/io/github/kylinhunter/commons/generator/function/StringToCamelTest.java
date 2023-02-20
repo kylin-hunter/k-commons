@@ -30,7 +30,7 @@ class StringToCamelTest {
         columns.add(column);
         tableInfo.setColumns(columns);
 
-        moduleInfo.setTableInfo(tableInfo);
+        moduleInfo.setTable(tableInfo);
         Map<String, Object> env = Maps.newHashMap();
         env.put("module", moduleInfo);
 

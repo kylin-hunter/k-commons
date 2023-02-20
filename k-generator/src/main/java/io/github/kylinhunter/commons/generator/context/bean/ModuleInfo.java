@@ -17,11 +17,11 @@ public class ModuleInfo {
     @EqualsAndHashCode.Include
     private String name;
     private String databaseName;
-    private TableInfo tableInfo;
+    private TableInfo table;
 
     public ModuleInfo(Module module, TableInfo tableInfo) {
         this.name = module.getName();
         this.databaseName = module.getDatabaseName();
-        this.tableInfo = tableInfo;
+        this.table = tableInfo;
     }
 }

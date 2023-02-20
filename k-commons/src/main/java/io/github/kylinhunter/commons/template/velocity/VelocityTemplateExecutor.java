@@ -180,11 +180,11 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
                             throw new TemplateException("not a file" + toFile.getAbsolutePath());
                         } else {
                             if (templateConfig.isOutputOverride()) {
-                                log.warn(" override file=>" + toFile.getAbsolutePath());
+                                log.warn("override file=>" + toFile.getAbsolutePath());
                                 writeToFile(toFile, resultText, output.getEncoding());
 
                             } else {
-                                log.warn(" skip outputOverride file=>" + toFile.getAbsolutePath());
+                                log.warn("skip outputOverride file=>" + toFile.getAbsolutePath());
                             }
                         }
                     } else {

@@ -1,12 +1,17 @@
 package io.github.kylinhunter.commons.generator.function;
 
+import java.io.InputStream;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
+
 import com.googlecode.aviator.AviatorEvaluator;
+import com.googlecode.aviator.Expression;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CAfter;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
+import io.github.kylinhunter.commons.io.ResourceHelper;
 
 /**
  * @author BiJi'an
@@ -45,9 +50,20 @@ public class ExpressionExecutor {
     @SuppressWarnings("unchecked")
     public <T> T execute(final String expression, final Map<String, Object> env) {
         try {
-            return (T) AviatorEvaluator.execute(expression, env);
+            return (T) AviatorEvaluator.execute(expression, env, true);
         } catch (Exception e) {
             throw new CodeException("execute error:" + expression, e);
+        }
+    }
+
+    public <T> T executeFile(final String path, final Map<String, Object> env) {
+        try {
+            InputStream inputStream = ResourceHelper.getInputStream(path);
+            String text = IOUtils.toString(inputStream, "UTF-8");
+            Expression expression = AviatorEvaluator.getInstance().compile(path, text, true);
+            return (T) expression.execute(env);
+        } catch (Exception e) {
+            throw new CodeException("execute error:" + path, e);
         }
     }
 

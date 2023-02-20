@@ -3,9 +3,13 @@ package io.github.kylinhunter.commons.io;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.Charset;
+
+import org.apache.commons.io.IOUtils;
 
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.file.FileUtils;
@@ -108,10 +112,9 @@ public class ResourceHelper {
     }
 
     /**
-     * @param path
-     * @param defaultPathType
+     * @param path path
+     * @param defaultPathType defaultPathType
      * @return java.io.File
-     * @throws
      * @title getFile
      * @description
      * @author BiJi'an
@@ -237,6 +240,67 @@ public class ResourceHelper {
         }
         return file;
 
+    }
+
+    /**
+     * @param path path
+     * @param defaultType defaultType
+     * @return java.lang.String
+     * @title getText
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 19:08
+     */
+    public static String getText(String path, PathType defaultType) {
+        return getText(path, defaultType, Charset.defaultCharset());
+    }
+
+    /**
+     * @param path path
+     * @return java.lang.String
+     * @title getText
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 19:09
+     */
+    public static String getText(String path) {
+        return getText(path, PathType.CLASSPATH, Charset.defaultCharset());
+    }
+
+    /**
+     * @param path    path
+     * @param charset charset
+     * @return java.lang.String
+     * @title getText
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 19:10
+     */
+    public static String getText(String path, Charset charset) {
+        return getText(path, PathType.CLASSPATH, charset);
+    }
+
+    /**
+     * @param path        path
+     * @param defaultType defaultType
+     * @param charset     charset
+     * @return java.lang.String
+     * @title getText
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 19:08
+     */
+    public static String getText(String path, PathType defaultType, Charset charset) {
+        InputStream inputStream = getInputStream(path, defaultType);
+        if (inputStream == null) {
+            throw new KIOException("invalide path" + path);
+        }
+        try {
+            return IOUtils.toString(inputStream, charset);
+        } catch (IOException e) {
+            throw new KIOException("read path error" + path, e);
+
+        }
     }
 
     /**

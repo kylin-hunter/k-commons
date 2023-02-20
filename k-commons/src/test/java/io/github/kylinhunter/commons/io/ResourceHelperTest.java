@@ -3,6 +3,7 @@ package io.github.kylinhunter.commons.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,6 @@ class ResourceHelperTest {
         //==
         String pathErr = "file://" + file.getParent();
         Assertions.assertNull(ResourceHelper.getFile(pathErr));
-
 
         path = "org/apache/commons/lang3/StringUtils.class";
         file = ResourceHelper.getFile(path);
@@ -84,7 +84,7 @@ class ResourceHelperTest {
         dir = ResourceHelper.getDir(path + "1");
         Assertions.assertNull(dir);
 
-        dir = ResourceHelper.getDir("file://" + file.getAbsolutePath()+"1");
+        dir = ResourceHelper.getDir("file://" + file.getAbsolutePath() + "1");
         Assertions.assertNull(dir);
     }
 
@@ -124,6 +124,28 @@ class ResourceHelperTest {
         try (InputStream input = ResourceHelper.getInputStreamInClassPath(path + "1")) {
             Assertions.assertNull(input);
         }
+    }
+
+    @Test
+    void getText() throws IOException {
+
+        String path = "/test/file/test1.txt";
+        String text1 = ResourceHelper.getText(path);
+
+        System.out.println(text1);
+        String text2 = ResourceHelper.getText(path, ResourceHelper.PathType.CLASSPATH);
+        System.out.println(text2);
+        Assertions.assertEquals(text1, text2);
+
+        String text3 = ResourceHelper.getText(path, ResourceHelper.PathType.CLASSPATH, StandardCharsets.UTF_8);
+        System.out.println(text3);
+
+        Assertions.assertEquals(text1, text3);
+
+        String text4 = ResourceHelper.getText(path, ResourceHelper.PathType.CLASSPATH, StandardCharsets.ISO_8859_1);
+        System.out.println(text4);
+        Assertions.assertNotEquals(text1, text4);
+
     }
 
 }
