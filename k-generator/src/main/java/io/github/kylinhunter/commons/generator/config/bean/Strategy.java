@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class Strategy {
-    protected String packageName;
     protected String templateEncoding;
     protected String outputEncoding;
 }

@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.generator.config.bean;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.strings.CharsetConst;
@@ -9,9 +11,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class TemplateStrategy extends Strategy {
+    protected String packageName;
     private String superClass;
     private String className;
     private String extension;
+    private List<String> interfaces;
 
     /**
      * @param strategy globalStrategy
@@ -25,11 +29,6 @@ public class TemplateStrategy extends Strategy {
         if (strategy == null) {
             return;
         }
-
-        if (StringUtils.isEmpty(this.packageName)) {
-            this.packageName = strategy.packageName;
-        }
-
         if (StringUtils.isEmpty(this.templateEncoding)) {
             this.templateEncoding = StringUtils.defaultIfBlank(strategy.templateEncoding, CharsetConst.UTF_8);
         }

@@ -1,7 +1,9 @@
 package io.github.kylinhunter.commons.generator.context;
 
-import java.io.Serializable;
 import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ClassUtils;
 
 import com.google.common.collect.Lists;
 
@@ -17,7 +19,6 @@ import io.github.kylinhunter.commons.generator.context.bean.ClassInfo;
 import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
-import io.github.kylinhunter.commons.reflect.ClassUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -66,7 +67,7 @@ public class TemplateContextBuilder {
      * @date 2023-02-18 00:23
      */
     private void calculateContext(TemplateContext templateContext) {
-        templateContext.putContext(ContextConsts.MODULE, templateContext.getModuleInfo());
+        processModule(templateContext);
         templateContext.putContext(templateContext.getTemplate().getContext());
         templateContext.putContext(templateContext.getModule().getContext());
         processPackageName(templateContext);
@@ -74,9 +75,19 @@ public class TemplateContextBuilder {
         processRemarks(templateContext);
         processSuperClass(templateContext);
         processSerilizeable(templateContext);
-        processLombok(templateContext);
         processSwagger(templateContext);
         templateContext.putContext("class", templateContext.getClassInfo());
+    }
+
+    private void processModule(TemplateContext templateContext) {
+        ClassInfo classInfo = templateContext.getClassInfo();
+        templateContext.putContext(ContextConsts.MODULE, templateContext.getModuleInfo());
+
+        templateContext.getModuleInfo().getTable().getColumns().forEach(c -> {
+                    classInfo.addImportPackage(c.getClazz());
+
+                }
+        );
     }
 
     /**
@@ -126,27 +137,12 @@ public class TemplateContextBuilder {
         TemplateStrategy strategy = templateContext.getTemplate().getStrategy();
         String superClass = strategy.getSuperClass();
 
-        String superClassName = ClassUtil.getSimpleName(superClass);
+        String superClassName = ClassUtils.getShortClassName(superClass);
         classInfo.setSuperClassName(superClassName);
         classInfo.addImportPackage(superClass);
 
     }
 
-    /**
-     * @param templateContext templateContext
-     * @return void
-     * @title processLombok
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 14:29
-     */
-    private void processLombok(TemplateContext templateContext) {
-        ClassInfo classInfo = templateContext.getClassInfo();
-        if (templateContext.isLombokEnabled()) {
-            classInfo.addAnnotation(lombok.Data.class);
-            classInfo.addAnnotation(lombok.EqualsAndHashCode.class);
-        }
-    }
 
     /**
      * @param templateContext templateContext
@@ -169,6 +165,11 @@ public class TemplateContextBuilder {
 
     private void processSerilizeable(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
-        classInfo.addInterface(Serializable.class);
+        TemplateStrategy strategy = templateContext.getTemplate().getStrategy();
+        List<String> interfaces = strategy.getInterfaces();
+        if (!CollectionUtils.isEmpty(interfaces)) {
+            classInfo.addInterfaces(strategy.getInterfaces());
+
+        }
     }
 }

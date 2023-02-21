@@ -1,0 +1,3 @@
+#parse("commons/common.vm")
+#call($class.importPackages.add("io.swagger.annotations.ApiModel"))
+#call($class.importPackages.add("io.swagger.annotations.ApiModelProperty"))

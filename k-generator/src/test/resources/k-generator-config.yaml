@@ -12,7 +12,7 @@ modules:
         'author': 'bijian'  # a global variable
       table:
         name: "test_user"
-        skip_columns:
+        skip_columns: # optional ,
           - 'delete_flag'
           - 'extend_1'
           - 'extend_2'
@@ -24,20 +24,45 @@ templates:
   context:
     'author': 'bijian'  # a global variable
   strategy: # the common strategy for generate the dist file
-    package_name: '"com.kylinhunter."+k.string_to_lower(module.name)'
-      # ${module.name} will be replaced by the String'User'above
-    template_encoding: UTF-8
-    output_encoding: UTF-8
+    template_encoding: UTF-8 # optional
+    output_encoding: UTF-8 # optional
   list:
-    - name: entity.java.vm
+    - name: basic.vm
       enabled: true
       context:
-        'serializable': 'true'  #
-        'lombok_enabled': 'true'  #
-        'swagger_enabled': 'true'  #
+        'author': 'bijian'  # a global variable
       strategy:
-        class_name: k.string_to_camel(module.name,'upper')+'Entity'
-        super_class: 'java.lang.Object'
-        extension: 'java'
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
+        class_name: k.string_to_camel(module.name,'upper')+'Basic' #required ${module.name} will be replaced by the module's camel name
+        super_class: 'java.util.ArrayList' # optional
+        interfaces:  # optional
+          - java.io.Serializable
+          - java.lang.Cloneable
+        extension: 'java' # optional
+    - name: basic_swagger.vm
+      enabled: true
+      context:
+        'author': 'bijian'  # a global variable
+      strategy:
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
+        class_name: k.string_to_camel(module.name,'upper')+'BasicLombok' #required ${module.name} will be replaced by the module's camel name
+        super_class: 'java.util.ArrayList' # optional
+        interfaces: # optional
+          - java.io.Serializable
+          - java.lang.Cloneable
+        extension: 'java' # optional
+    - name: basic_swagger_widget.vm
+      enabled: true
+      context:
+        'author': 'bijian'  # a global variable
+      strategy:
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
+        class_name: k.string_to_camel(module.name,'upper')+'BasicLombokWidget' #required ${module.name} will be replaced by the module's camel name
+        super_class: 'java.util.ArrayList' # optional
+        interfaces: # optional
+          - java.io.Serializable
+          - java.lang.Cloneable
+        extension: 'java' # optional
+
 
 

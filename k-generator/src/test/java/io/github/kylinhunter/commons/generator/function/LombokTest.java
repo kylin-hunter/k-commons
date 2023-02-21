@@ -14,15 +14,16 @@ class LombokTest {
     void execute() {
         ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
         Map<String, Object> env = Maps.newHashMap();
-        env.put("lombok_enabled", true);
+        env.put("class.hasSuperClass", true);
         System.out.println("lombok_enabled=true");
-        Object execute = expressionExecutor.executeFile("io/github/kylinhunter/commons/generator/lombok.av", env);
+        Object execute = expressionExecutor.executeFile("$user.dir$/templates/lombok_annotations.av", env);
         System.out.println(execute);
 
-        env.put("lombok_enabled", false);
+        env.put("class.hasSuperClass", false);
         System.out.println("lombok_enabled=false");
-        execute = expressionExecutor.execute("io/github/kylinhunter/commons/generator/lombok.av", env);
+        execute = expressionExecutor.execute("$user.dir$/templates/lombok_annotations.av", env);
         System.out.println(execute);
+
 
     }
 }

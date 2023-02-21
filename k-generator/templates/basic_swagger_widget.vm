@@ -1,0 +1,17 @@
+#parse("commons/swagger_widget.vm")
+package ${class.packageName};
+#foreach($pkg in ${class.importPackages})
+import ${pkg};
+#end
+/**
+ * @description  $!{class.remarks}
+ * @author ${author}
+ * @since ${date}
+ **/
+public class ${class.name} ${class.superClassName} ${class.interfaces}{
+
+#foreach($field in ${module.table.columns})
+    private ${field.clazz.getSimpleName()} ${field.name};
+#end
+
+}

@@ -1,9 +1,9 @@
 package io.github.kylinhunter.commons.generator.context.bean;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -21,51 +21,36 @@ import lombok.EqualsAndHashCode;
 public class ClassInfo {
     @EqualsAndHashCode.Include
     private String name;
+
     private String packageName;
     private String superClassName;
     private String remarks;
 
-    private List<String> allImportPackages = Lists.newArrayList();
-    private List<String> allInterfaces = Lists.newArrayList();
-    private List<String> allAnnotations = Lists.newArrayList();
+    private List<String> importPackages = Lists.newArrayList();
+    private List<String> interfaces = Lists.newArrayList();
 
     public void addImportPackage(Class<?> clazz) {
         this.addImportPackage(clazz.getName());
     }
 
     public void addImportPackage(String importPackage) {
-        this.allImportPackages.add(importPackage);
+        this.importPackages.add(importPackage);
     }
 
-    public void addInterface(Class<?> clazz) {
-        this.addInterface(clazz.getSimpleName());
-        this.addImportPackage(clazz);
+    public void addInterfaces(List<String> fullClassNames) {
+        fullClassNames.forEach(fullClassName -> {
+            this.addInterface(fullClassName);
+        });
     }
 
-    public void addInterface(String i) {
-        this.allInterfaces.add(i);
-    }
+    public void addInterface(String fullClassName) {
+        this.importPackages.add(fullClassName);
+        this.interfaces.add(ClassUtils.getShortClassName(fullClassName));
 
-    public void addAnnotation(Class<? extends Annotation> annotation) {
-        this.addAnnotation(annotation.getSimpleName());
-        this.addImportPackage(annotation);
-    }
-
-    public void addAnnotation(String annotation) {
-        this.allAnnotations.add(annotation);
-    }
-
-    public String getImportPackages() {
-        return allImportPackages.stream().map(e -> "import " + e + ";")
-                .collect(Collectors.joining(System.lineSeparator()));
     }
 
     public String getInterfaces() {
-        return "implements " + allInterfaces.stream().collect(Collectors.joining(","));
-    }
-
-    public String getAnnotations() {
-        return allAnnotations.stream().map(e -> "@" + e).collect(Collectors.joining(System.lineSeparator()));
+        return "implements " + interfaces.stream().collect(Collectors.joining(","));
     }
 
     public String getSuperClassName() {
