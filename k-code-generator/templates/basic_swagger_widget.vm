@@ -6,6 +6,8 @@ ${class.imports("import ",";")}
  * @description  $!{class.comment}
  * @author ${author}
  * @since ${date}
+ * ${basic_swagger_widget_vm_custom_property}
+ * ${module_custom_propery}
  **/
 ${class.snippets('class_before')}
 public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("implements ")}{

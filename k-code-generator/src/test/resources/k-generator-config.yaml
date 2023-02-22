@@ -5,11 +5,12 @@ global: # global config
   output_path: '$user.dir$/src_generator'   # same with:  new File(System.getProperty("user.dir")/output)
   #  output_path: '/Users/bijian/workspace_gitee/k-commons/k-generator/output'
 modules:
+
   database_name: "kp"
   list:
     - name: 'User'
       context:
-        'author': 'bijian'  # a global variable
+        'module_custom_propery': 'module_custom_propery_value'  # a global variable
       table:
         name: "test_user"
         skip_columns: # optional ,
@@ -30,7 +31,7 @@ templates:
     - name: basic.vm
       enabled: true
       context:
-        'author': 'bijian'  # a global variable
+        'basic_vm_custom_property': 'basic_vm_custom_property_value'  # a global variable
       strategy:
         package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
         class_name: k.string_to_camel(module.name,'upper')+'Basic' #required ${module.name} will be replaced by the module's camel name
@@ -42,7 +43,7 @@ templates:
     - name: basic_swagger.vm
       enabled: true
       context:
-        'author': 'bijian'  # a global variable
+        'basic_swagger_vm_custom_property': 'basic_swagger_vm_custom_property_value'  # a global variable
       strategy:
         package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
         class_name: k.string_to_camel(module.name,'upper')+'BasicSwagger' #required ${module.name} will be replaced by the module's camel name
@@ -54,7 +55,7 @@ templates:
     - name: basic_swagger_widget.vm
       enabled: true
       context:
-        'author': 'bijian'  # a global variable
+        'basic_swagger_widget_vm_custom_property': 'basic_swagger_widget_vm_custom_property_value'  # a global variable
       strategy:
         package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
         class_name: k.string_to_camel(module.name,'upper')+'BasicSwaggerWidget' #required ${module.name} will be replaced by the module's camel name

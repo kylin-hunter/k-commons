@@ -4,6 +4,8 @@ ${class.imports("import ",";")}
  * @description  $!{class.comment}
  * @author ${author}
  * @since ${date}
+ * ${basic_vm_custom_property}
+ * ${module_custom_propery}
  **/
 public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("implements ")}{
 #foreach($field in ${class.fields})

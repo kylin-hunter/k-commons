@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @description  $!{class.comment}
  * @author ${author}
  * @since ${date}
+ * ${basic_swagger_vm_custom_property}
+ * ${module_custom_propery}
  **/
 @ApiModel(value="${class.name}", description="$!{class.comment}")
 public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("implements ")}{

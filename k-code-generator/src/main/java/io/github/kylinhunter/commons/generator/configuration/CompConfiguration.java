@@ -1,10 +1,13 @@
 package io.github.kylinhunter.commons.generator.configuration;
 
+import java.io.File;
+
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CC;
 import io.github.kylinhunter.commons.generator.config.ConfigReader;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Global;
+import io.github.kylinhunter.commons.generator.exception.CodeException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper.PathType;
 import io.github.kylinhunter.commons.template.TemplateEngine;
@@ -45,10 +48,18 @@ public class CompConfiguration {
             Global global = config.getGlobal();
 
             String templatePath = global.getTemplatePath();
-            templateConfig.setTemplateDir(ResourceHelper.getDir(templatePath, PathType.FILESYSTEM).toPath());
+            File dirTemplate = ResourceHelper.getDir(templatePath, PathType.FILESYSTEM);
+            templateConfig.setTemplateDir(dirTemplate.toPath());
+            if (dirTemplate == null || !dirTemplate.exists()) {
+                throw new CodeException("invalid templatePath" + templatePath);
+            }
 
-            String outputPathPath = global.getOutputPath();
-            templateConfig.setOutputDir(ResourceHelper.getDir(outputPathPath, PathType.FILESYSTEM).toPath());
+            String outputPath = global.getOutputPath();
+            File dirOutput = ResourceHelper.getDir(outputPath, PathType.FILESYSTEM);
+            if (dirOutput == null || !dirOutput.exists()) {
+                throw new CodeException("invalid outputPath" + outputPath);
+            }
+            templateConfig.setOutputDir(dirOutput.toPath());
 
         });
         return templateEngine;
