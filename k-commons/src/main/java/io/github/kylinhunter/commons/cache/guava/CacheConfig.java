@@ -3,7 +3,6 @@ package io.github.kylinhunter.commons.cache.guava;
 import java.util.concurrent.TimeUnit;
 
 import lombok.Data;
-import lombok.Getter;
 
 /**
  * @author BiJi'an
@@ -12,10 +11,6 @@ import lombok.Getter;
  **/
 @Data
 public class CacheConfig {
-
-    @Getter
-    private static CacheConfig defaultConfig = new CacheConfig();
-
 
     /**
      * maxSize

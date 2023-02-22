@@ -35,15 +35,13 @@ class TestCache2Imp extends AbstractCache<Long> implements TestCache2 {
 
     @Override
     public void put(TestParam1 param1, TestParam2 param2, Long value) {
-        super.put(value, param1, param2);
+        super.put(new Object[] {param1, param2}, value);
 
     }
 
     @Override
-    public CacheConfig loadConfig() {
-        CacheConfig cacheConfig = new CacheConfig();
+    protected void custom(CacheConfig cacheConfig) {
         cacheConfig.setRefreshAfterWrite(2); //
         cacheConfig.setRefreshTimeUnit(TimeUnit.MILLISECONDS);
-        return cacheConfig;
     }
 }

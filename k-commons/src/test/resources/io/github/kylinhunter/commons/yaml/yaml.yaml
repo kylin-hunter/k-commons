@@ -1,5 +1,26 @@
 id: 1
-name: name
+name: name1
+my_money: 1
 values:
-  - hello1
-  - hello2
+  - hello11
+  - hello12
+child:
+  id: 2
+  name: name2
+  my_money: 2
+  values:
+    - hello21
+    - hello22
+children:
+  - id: 3
+    name: name3
+    my_money: 3
+    values:
+      - hello31
+      - hello32
+  - id: 4
+    name: name4
+    my-money: 4
+    values:
+      - hello41
+      - hello42

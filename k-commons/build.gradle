@@ -6,19 +6,25 @@ dependencies {
     api(rootProject.dependency_management['commons-io'])
     api(rootProject.dependency_management['commons-lang3'])
     api(rootProject.dependency_management['guava'])
+    api(rootProject.dependency_management['commons-collections4'])
 
-    api("com.fasterxml.jackson.core:jackson-databind")
-    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation(rootProject.dependency_management['velocity-engine-core'])
+    implementation(rootProject.dependency_management['velocity-tools-generic'])
 
-    implementation 'org.springframework:spring-beans'
-    implementation 'org.springframework:spring-context'
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+
     implementation(rootProject.dependency_management['commons-codec'])
     implementation(rootProject.dependency_management['commons-compress'])
     implementation(rootProject.dependency_management['dom4j'])
     implementation('org.yaml:snakeyaml')
 
-    testImplementation files(Jvm.current().toolsJar)
 
+
+
+
+    testImplementation files(Jvm.current().toolsJar)
 
 
 }
@@ -26,7 +32,7 @@ dependencies {
 jar.enabled = true
 bootJar.enabled(false)
 
-jar{
+jar {
     exclude("logback.xml")
 }
 test {

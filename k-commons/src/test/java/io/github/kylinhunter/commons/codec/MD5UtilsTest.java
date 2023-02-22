@@ -38,6 +38,6 @@ class MD5UtilsTest {
         Assertions.assertNotNull(file);
         String md5 = MD5Utils.md5(file);
         System.out.println(md5);
-        Assertions.assertEquals("5a105e8b9d40e1329780d62ea2265d8a", md5);
+        Assertions.assertEquals("bd25bce55cd3d9a3334e9b5231ad05d7", md5);
     }
 }

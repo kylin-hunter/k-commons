@@ -2,9 +2,10 @@ package io.github.kylinhunter.commons.xml;
 
 import java.util.List;
 
-import org.apache.commons.compress.utils.Lists;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Lists;
 
 class JAXBHelperTest {
 

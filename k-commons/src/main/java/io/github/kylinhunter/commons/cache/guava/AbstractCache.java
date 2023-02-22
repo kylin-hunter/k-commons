@@ -75,31 +75,46 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
         this.cache.put(k, v);
     }
 
+    /***
+     * @title put
+     * @description
+     * @author BiJi'an
+     * @param key key
+     * @param v v
+     * @date 2023-01-19 01:22
+     * @return void
+     */
+    @Override
+    public void put(String key, V v) {
+        put(CacheKeyGenerator.toKey(key), v);
+    }
+
     /**
-     * @param v    v
      * @param keys keys
+     * @param v    v
      * @return void
      * @title put
      * @description
      * @author BiJi'an
-     * @date 2022-11-27 14:39
+     * @date 2023-01-19 01:22
      */
-    public void put(V v, Object... keys) {
+    @Override
+    public void put(Object[] keys, V v) {
         put(CacheKeyGenerator.toKey(keys), v);
     }
 
     /**
-     * @param v   v
      * @param key key
+     * @param v   v
      * @return void
      * @title put
      * @description
      * @author BiJi'an
-     * @date 2022-11-27 14:39
+     * @date 2023-01-19 01:30
      */
-    public void put(V v, String key) {
+    @Override
+    public void put(Object key, V v) {
         put(CacheKeyGenerator.toKey(key), v);
-
     }
 
     /**
@@ -149,9 +164,13 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
      * @author BiJi'an
      * @date 2022-11-27 02:34
      */
-    public CacheConfig loadConfig() {
-        return CacheConfig.getDefaultConfig();
+    private CacheConfig loadConfig() {
+        CacheConfig cacheConfig = new CacheConfig();
+        custom(cacheConfig);
+        return cacheConfig;
     }
+
+    protected abstract void custom(CacheConfig cacheConfig);
 
     /**
      * @return com.google.common.cache.LoadingCache<io.github.kylinhunter.commons.cache.guava.CacheKey, V>
@@ -161,7 +180,7 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
      * @date 2022-11-27 14:40
      */
     @SuppressWarnings({"rawtypes", "unchecked", "ResultOfMethodCallIgnored"})
-    public LoadingCache<CacheKey, V> buildCache() {
+    private LoadingCache<CacheKey, V> buildCache() {
         CacheConfig cacheConfig = loadConfig();
 
         CacheBuilder cacheBuilder = CacheBuilder.newBuilder()

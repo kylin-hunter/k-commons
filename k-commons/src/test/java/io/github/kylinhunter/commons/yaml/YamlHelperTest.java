@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.yaml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,19 +21,34 @@ class YamlHelperTest {
         try (InputStream inputStream = ResourceHelper.getInputStreamInClassPath(path)) {
 
             String yamlText = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-            System.out.println("string From file=>\n" + yamlText);
+            System.out.println("file string=> \n" + yamlText);
 
-            YamlBean yamlBean1 = YamlHelper.loadFromClassPath(YamlBean.class, path);
-            System.out.println("yamlBean1:\n" + yamlBean1);
-            YamlBean yamlBean2 = YamlHelper.loadFromText(YamlBean.class, yamlText);
-            System.out.println("yamlBean2:\n" + yamlBean2);
-            assertEquals(yamlBean1, yamlBean2);
+            YamlBean yamlBeanFromPath = YamlHelper.loadFromPath(YamlBean.class, path, true);
+            System.out.println("yamlBeanFromPath:" + yamlBeanFromPath);
+            YamlBean yamlBeanFromText = YamlHelper.loadFromText(YamlBean.class, yamlText, true);
+            System.out.println("yamlBeanFromText:" + yamlBeanFromText);
+            assertEquals(yamlBeanFromPath, yamlBeanFromText);
 
-            String dumpText = YamlHelper.dumpAsMap(yamlBean1);
-            System.out.println("string from yamlBean1 =>\n" + dumpText);
-            YamlBean yamlBean3 = YamlHelper.loadFromText(YamlBean.class, dumpText);
-            System.out.println("yamlBean3:\n" + yamlBean3);
-            assertEquals(yamlBean1, yamlBean3);
+            String dumpText1 = YamlHelper.dumpAsMap(yamlBeanFromPath);
+            System.out.println("dumpText1 =>\n" + dumpText1);
+            assertTrue(dumpText1.contains("myMoney"));
+            YamlBean yamlBeanFromDumpText1 = YamlHelper.loadFromText(YamlBean.class, dumpText1);
+            System.out.println("yamlBeanFromDumpText1:" + yamlBeanFromDumpText1);
+            assertEquals(yamlBeanFromPath, yamlBeanFromDumpText1);
+
+            String dumpText2 = YamlHelper.dumpAsMap(yamlBeanFromPath, YamlType.SNAKE_UNDERSCORE);
+            System.out.println("dumpText2 =>\n" + dumpText2);
+            assertTrue(dumpText2.contains("my_money"));
+            YamlBean yamlBeanFromDumpText2 = YamlHelper.loadFromText(YamlBean.class, dumpText2, true);
+            System.out.println("yamlBeanFromDumpText2:" + yamlBeanFromDumpText2);
+            assertEquals(yamlBeanFromPath, yamlBeanFromDumpText2);
+
+            String dumpText3 = YamlHelper.dumpAsMap(yamlBeanFromPath, YamlType.SNAKE_HYPHEN);
+            System.out.println("dumpText3 =>\n" + dumpText3);
+            assertTrue(dumpText3.contains("my-money"));
+            YamlBean yamlBeanFromDumpText3 = YamlHelper.loadFromText(YamlBean.class, dumpText3, true);
+            System.out.println("yamlBeanFromDumpText3:" + yamlBeanFromDumpText3);
+            assertEquals(yamlBeanFromPath, yamlBeanFromDumpText3);
         }
 
     }

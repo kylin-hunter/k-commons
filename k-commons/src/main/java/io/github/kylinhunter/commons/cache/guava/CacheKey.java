@@ -33,4 +33,13 @@ public class CacheKey {
 
     }
 
+    public int getInt(int index) {
+        if (index < params.length) {
+            return ObjectValues.getInt(params[index]);
+        } else {
+            throw new ParamException("invalid index" + index);
+        }
+
+    }
+
 }

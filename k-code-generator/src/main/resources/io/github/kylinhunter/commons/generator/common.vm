@@ -1,0 +1,1 @@
+#macro( call $this )#set( $stfu = $this )#end

@@ -1,23 +1,18 @@
 package io.github.kylinhunter.commons.component;
 
-import java.lang.reflect.Constructor;
-
-import lombok.Data;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author BiJi'an
- * @description
- * @date 2022-10-25 23:17
+ * @description abbreviations  for component
+ * @date 2022/11/8
  **/
-@Data
-class CC {
-    private Class<?> clazz;
-    private Constructor<?> constructor;
-    private int depLevel;
-
-    public CC(Class<?> clazz, Constructor<?> constructor) {
-        this.clazz = clazz;
-        this.constructor = constructor;
-    }
-
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface CC {
 }

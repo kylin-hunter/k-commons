@@ -1,0 +1,69 @@
+global: # global config
+  template_path: '$user.dir$/templates'   # same with:  new File(System.getProperty("user.dir")/tempalte)
+  #  template_path: 'file://User/bijian/template' # same with: new File('/User/bijian/template');
+  #  template_path: 'classpath:/template'  # find tempalte/* in classpath
+  output_path: '$user.dir$/src_generator'   # same with:  new File(System.getProperty("user.dir")/output)
+  #  output_path: '/Users/bijian/workspace_gitee/k-commons/k-generator/output'
+modules:
+
+  database_name: "kp"
+  list:
+    - name: 'User'
+      context:
+        'module_custom_propery': 'module_custom_propery_value'  # a global variable
+      table:
+        name: "test_user"
+        skip_columns: # optional ,
+          - 'delete_flag'
+          - 'extend_1'
+          - 'extend_2'
+          - 'extend_3'
+    - name: 'Role'
+      table:
+        name: 'test_role'
+templates:
+  context:
+    'author': 'bijian'  # a global variable
+  strategy: # the common strategy for generate the dist file
+    template_encoding: UTF-8 # optional
+    output_encoding: UTF-8 # optional
+  list:
+    - name: basic.vm
+      enabled: true
+      context:
+        'basic_vm_custom_property': 'basic_vm_custom_property_value'  # a global variable
+      strategy:
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
+        class_name: k.string_to_camel(module.name,'upper')+'Basic' #required ${module.name} will be replaced by the module's camel name
+        super_class: 'java.util.ArrayList' # optional
+        interfaces:  # optional
+          - java.io.Serializable
+          - java.lang.Cloneable
+        extension: 'java' # optional
+    - name: basic_swagger.vm
+      enabled: true
+      context:
+        'basic_swagger_vm_custom_property': 'basic_swagger_vm_custom_property_value'  # a global variable
+      strategy:
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
+        class_name: k.string_to_camel(module.name,'upper')+'BasicSwagger' #required ${module.name} will be replaced by the module's camel name
+        super_class: 'java.util.ArrayList' # optional
+        interfaces: # optional
+          - java.io.Serializable
+          - java.lang.Cloneable
+        extension: 'java' # optional
+    - name: basic_swagger_widget.vm
+      enabled: true
+      context:
+        'basic_swagger_widget_vm_custom_property': 'basic_swagger_widget_vm_custom_property_value'  # a global variable
+      strategy:
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
+        class_name: k.string_to_camel(module.name,'upper')+'BasicSwaggerWidget' #required ${module.name} will be replaced by the module's camel name
+        super_class: 'java.util.ArrayList' # optional
+        interfaces: # optional
+          - java.io.Serializable
+          - java.lang.Cloneable
+        extension: 'java' # optional
+
+
+

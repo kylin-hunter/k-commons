@@ -5,6 +5,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
 import io.github.kylinhunter.commons.cache.guava.AbstractCache;
+import io.github.kylinhunter.commons.cache.guava.CacheConfig;
 import io.github.kylinhunter.commons.cache.guava.CacheKey;
 import io.github.kylinhunter.commons.exception.embed.CryptException;
 
@@ -27,4 +28,8 @@ public class RSAPublicKeyCache extends AbstractCache<RSAPublicKey> {
         }
     }
 
+    @Override
+    protected void custom(CacheConfig cacheConfig) {
+
+    }
 }

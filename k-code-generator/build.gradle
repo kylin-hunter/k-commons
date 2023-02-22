@@ -1,0 +1,37 @@
+dependencies {
+    api project(":k-commons")
+    api project(":k-jdbc")
+    api(rootProject.dependency_management['velocity-engine-core'])
+    api(rootProject.dependency_management['velocity-tools-generic'])
+    api(rootProject.dependency_management['springfox-swagger2'])
+
+    implementation(rootProject.dependency_management['mysql-connector-java'])
+    implementation(rootProject.dependency_management['ojdbc8'])
+    implementation(rootProject.dependency_management['commons-dbutils'])
+    implementation(rootProject.dependency_management['aviator'])
+
+
+}
+
+
+jar.enabled = true
+bootJar.enabled(false)
+
+
+jar {
+    exclude("logback.xml")
+
+}
+sourceSets {
+    main {
+        java.srcDirs += ['src_generator']
+    }
+}
+test {
+    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    println jvmArgs
+}
+
+
+
+
