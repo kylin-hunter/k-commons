@@ -3,6 +3,8 @@ package io.github.kylinhunter.commons.generator.context.bean.clazz;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.collect.Lists;
 
 import lombok.Data;
@@ -49,7 +51,7 @@ public class Imports {
     }
 
     /**
-     * @param fullClassName fullClassName
+     * @param fullClassName className
      * @return void
      * @title add
      * @description
@@ -57,11 +59,18 @@ public class Imports {
      * @date 2023-02-19 17:24
      */
     public void add(String fullClassName) {
-        this.imports.add(fullClassName);
+        if (!StringUtils.isEmpty(fullClassName)) {
+            if (!imports.contains(fullClassName)) {
+                this.imports.add(fullClassName);
+            }
+
+        }
 
     }
 
     public void add(Class<?> clazz) {
-        this.imports.add(clazz.getName());
+        if (clazz != null) {
+            this.add(clazz.getName());
+        }
     }
 }

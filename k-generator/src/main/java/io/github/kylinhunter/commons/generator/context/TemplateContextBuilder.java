@@ -2,8 +2,7 @@ package io.github.kylinhunter.commons.generator.context;
 
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Lists;
 
@@ -17,9 +16,10 @@ import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
 import io.github.kylinhunter.commons.generator.constant.ContextConsts;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
-import io.github.kylinhunter.commons.generator.context.bean.clazz.FieldMeta;
+import io.github.kylinhunter.commons.generator.context.bean.clazz.FieldInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
+import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -69,27 +69,34 @@ public class TemplateContextBuilder {
     private void calculateContext(TemplateContext templateContext) {
         templateContext.putContext(ContextConsts.CLASS, templateContext.getClassInfo());
         templateContext.putContext(ContextConsts.MODULE, templateContext.getModuleInfo());
-        processModule(templateContext);
         templateContext.putContext(templateContext.getTemplate().getContext());
         templateContext.putContext(templateContext.getModule().getContext());
         processPackageName(templateContext);
         processClassName(templateContext);
-        processRemarks(templateContext);
         processSuperClass(templateContext);
-        processSerilizeable(templateContext);
+        processInterfaces(templateContext);
+        processFields(templateContext);
+        processComment(templateContext);
 
     }
 
-    private void processModule(TemplateContext templateContext) {
+    /**
+     * @param templateContext templateContext
+     * @return void
+     * @title processFields
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 00:20
+     */
+    private void processFields(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
-        templateContext.getModuleInfo().getTable().getColumns().forEach(c -> {
-                    classInfo.addImport(c.getClazz());
-                    FieldMeta fieldMeta = new FieldMeta();
-                    fieldMeta.setName(c.getName());
-                    fieldMeta.setComment(c.getRemarks());
-                    fieldMeta.setType(c.getClazz().getSimpleName());
-                    classInfo.getFields().add(fieldMeta);
-
+        templateContext.getModuleInfo().getTable().getColumnMetas().forEach(c -> {
+                    classInfo.addImport(c.getJavaClass());
+                    FieldInfo fieldInfo = new FieldInfo();
+                    fieldInfo.setName(c.getColumnName());
+                    fieldInfo.setComment(c.getRemarks());
+                    fieldInfo.setType(c.getJavaClass().getSimpleName());
+                    classInfo.getFields().add(fieldInfo);
                 }
         );
     }
@@ -108,7 +115,6 @@ public class TemplateContextBuilder {
         String packageName = strategy.getPackageName();
         String result = expressionExecutor.execute(packageName, templateContext.getContext());
         classInfo.setPackageName(result);
-
     }
 
     /**
@@ -121,39 +127,53 @@ public class TemplateContextBuilder {
      */
     private void processClassName(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
-
         TemplateStrategy strategy = templateContext.getTemplate().getStrategy();
         String className = strategy.getClassName();
         String result = expressionExecutor.execute(className, templateContext.getContext());
         classInfo.setName(result);
     }
 
-    private void processRemarks(TemplateContext templateContext) {
-        ModuleInfo moduleInfo = templateContext.getModuleInfo();
-        ClassInfo classInfo = templateContext.getClassInfo();
-
-        classInfo.setComment(moduleInfo.getTable().getRemarks());
-    }
-
+    /**
+     * @param templateContext templateContext
+     * @return void
+     * @title processSuperClass
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 00:21
+     */
     private void processSuperClass(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
-
         TemplateStrategy strategy = templateContext.getTemplate().getStrategy();
-        String superClass = strategy.getSuperClass();
-
-        String superClassName = ClassUtils.getShortClassName(superClass);
-        classInfo.setSuperClassName(superClassName);
-        classInfo.addImport(superClass);
-
+        classInfo.setSuperClass(strategy.getSuperClass());
     }
 
-    private void processSerilizeable(TemplateContext templateContext) {
+    /**
+     * @param templateContext templateContext
+     * @return void
+     * @title processSerilizeable
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 00:23
+     */
+    private void processInterfaces(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
         TemplateStrategy strategy = templateContext.getTemplate().getStrategy();
-        List<String> interfaces = strategy.getInterfaces();
-        if (!CollectionUtils.isEmpty(interfaces)) {
-            classInfo.addInterfaces(strategy.getInterfaces());
-
-        }
+        classInfo.addInterfaces(strategy.getInterfaces());
     }
+
+    /**
+     * @param templateContext templateContext
+     * @return void
+     * @title processComment
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 00:28
+     */
+    private void processComment(TemplateContext templateContext) {
+        ModuleInfo moduleInfo = templateContext.getModuleInfo();
+        ClassInfo classInfo = templateContext.getClassInfo();
+        TableMeta tableMeta = moduleInfo.getTable().getTableMeta();
+        classInfo.setComment(StringUtils.defaultString(tableMeta.getRemarks(), tableMeta.getName()));
+    }
+
 }

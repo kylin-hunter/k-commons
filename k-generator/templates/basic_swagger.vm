@@ -1,5 +1,5 @@
 package ${class.packageName};
-${class.imports.toString("import ",";")}
+${class.imports("import ",";")}
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -8,8 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @author ${author}
  * @since ${date}
  **/
-@ApiModel(value="${class.name}对象", description="$!{class.comment}")
-public class ${class.name} ${class.getSuperClassName("extends ")} ${class.interfaces.toString("implements ")}{
+@ApiModel(value="${class.name}", description="$!{class.comment}")
+public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("implements ")}{
 #foreach($field in ${class.fields})
     @ApiModelProperty(value = "${field.comment}")
     private ${field.type} ${field.name};

@@ -10,7 +10,6 @@ import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Table;
-import io.github.kylinhunter.commons.generator.context.bean.module.Column;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
@@ -57,24 +56,24 @@ public class ModuleInfoReader {
     private TableInfo toTable(Module module) {
         TableInfo tableInfo = new TableInfo();
         Table table = module.getTable();
-        tableInfo.setName(table.getName());
 
         TableMeta tableMetaData = tableMetaReader.getTableMetaData(module.getDatabaseName(), table.getName());
         ExceptionChecker.checkNotNull(tableMetaData, "tableMetaData can't be null");
-        tableInfo.setRemarks(tableMetaData.getRemarks());
+        tableInfo.setTableMeta(tableMetaData);
+
         List<String> skipColumns = table.getSkipColumns();
         List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData(module.getDatabaseName(), table.getName());
         if (CollectionUtils.isEmpty(columnMetas)) {
             throw new CodeException("no column from table=>" + table);
         } else {
-            List<Column> columns = columnMetas.stream().filter(c -> {
+            columnMetas = columnMetas.stream().filter(c -> {
                 if (skipColumns != null) {
                     return !skipColumns.contains(c.getColumnName());
                 } else {
                     return true;
                 }
-            }).map(c -> new Column(c.getColumnName(), c.getJavaClass(), c.getRemarks())).collect(Collectors.toList());
-            tableInfo.setColumns(columns);
+            }).collect(Collectors.toList());
+            tableInfo.setColumnMetas(columnMetas);
         }
         return tableInfo;
     }

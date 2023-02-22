@@ -24,7 +24,7 @@ jar {
 }
 sourceSets {
     main {
-//        java.srcDirs += ['src_generator']
+        java.srcDirs += ['src_generator']
     }
 }
 test {

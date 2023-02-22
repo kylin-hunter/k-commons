@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 
 import com.google.common.collect.Lists;
 
@@ -22,12 +22,12 @@ public class ClassInfo {
     private String packageName;
     @EqualsAndHashCode.Include
     private String name;
-    private String superClassName;
+    private SuperClass superClass = new SuperClass();
     private String comment;
     private Interfaces interfaces = new Interfaces();
-    private Snippets customSnippets = new Snippets();
+    private Snippets snippets = new Snippets();
     private Imports imports = new Imports();
-    private List<FieldMeta> fields = Lists.newArrayList();
+    private List<FieldInfo> fields = Lists.newArrayList();
 
     /**
      * @param clazz clazz
@@ -42,19 +42,19 @@ public class ClassInfo {
     }
 
     /**
-     * @param packageName packageName
+     * @param fullClassName fullClassName
      * @return void
      * @title addImport
      * @description
      * @author BiJi'an
      * @date 2023-02-19 19:30
      */
-    public void addImport(String packageName) {
-        this.imports.add(packageName);
+    public void addImport(String fullClassName) {
+        this.imports.add(fullClassName);
     }
 
     /**
-     * @param fullClassName fullClassName
+     * @param fullClassName className
      * @return void
      * @title addInterface
      * @description
@@ -76,45 +76,84 @@ public class ClassInfo {
      */
 
     public void addInterfaces(List<String> fullClassNames) {
-        fullClassNames.forEach(this::addInterface);
+        if (!CollectionUtils.isEmpty(fullClassNames)) {
+            fullClassNames.forEach(this::addInterface);
+        }
     }
 
     /**
-     * @param annotation annotation
+     * @param location location
+     * @param snippets snippets
      * @return void
-     * @title addAnnotation
+     * @title add
      * @description
      * @author BiJi'an
-     * @date 2023-02-19 19:31
+     * @date 2023-02-19 00:39
      */
-    public void addClassSnippet(String annotation) {
-        this.customSnippets.add(annotation);
+    public void addSnippet(String location, String snippets) {
+        this.snippets.add(location, snippets);
     }
 
     /**
-     * @return java.lang.String
-     * @title getSuperClassName
+     * @param fullClassNames fullClassNames
+     * @return void
+     * @title setSuperClass
      * @description
      * @author BiJi'an
-     * @date 2023-02-19 19:31
+     * @date 2023-02-19 23:56
      */
-    public String getSuperClassName() {
-        return getSuperClassName("extends");
+    public void setSuperClass(String fullClassNames) {
+        this.superClass.setClassName(fullClassNames);
+        this.imports.add(fullClassNames);
     }
 
     /**
      * @param prefix prefix
      * @return java.lang.String
-     * @title getSuperClassName
+     * @title superClass
      * @description
      * @author BiJi'an
-     * @date 2023-02-19 19:31
+     * @date 2023-02-19 23:56
      */
-    public String getSuperClassName(String prefix) {
-        if (!StringUtils.isEmpty(this.superClassName)) {
-            return prefix + " " + this.superClassName;
-        }
-        return StringUtils.EMPTY;
+    public String superClass(String prefix) {
+        return this.superClass.toString(prefix);
     }
 
+    /**
+     * @param prefix prefix
+     * @return java.lang.String
+     * @title interfaces
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 23:57
+     */
+    public String interfaces(String prefix) {
+        return this.interfaces.toString(prefix);
+    }
+
+    /**
+     * @param prefix  prefix
+     * @param postfix postfix
+     * @return java.lang.String
+     * @title imports
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-19 00:03
+     */
+    public String imports(String prefix, String postfix) {
+        return this.imports.toString(prefix, postfix);
+    }
+
+
+    /**
+     * @title snippets
+     * @description
+     * @author BiJi'an
+     * @param location location
+     * @date 2023-02-19 00:48
+     * @return java.lang.String
+     */
+    public String snippets(String location){
+        return this.snippets.toString(location);
+    }
 }

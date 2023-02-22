@@ -3,7 +3,9 @@ package io.github.kylinhunter.commons.generator.context.bean.clazz;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Lists;
 
@@ -30,11 +32,16 @@ public class Interfaces {
      * @date 2023-02-19 17:20
      */
     public String toString(String prefix) {
-        return prefix + String.join(",", shortClassNames);
+        if (!CollectionUtils.isEmpty(shortClassNames)) {
+            return prefix + String.join(",", shortClassNames);
+
+        }
+        return StringUtils.EMPTY;
+
     }
 
     /**
-     * @param fullClassName fullClassName
+     * @param fullClassName className
      * @return void
      * @title add
      * @description
@@ -42,8 +49,10 @@ public class Interfaces {
      * @date 2023-02-19 17:24
      */
     public void add(String fullClassName) {
-        this.fullClassNames.add(fullClassName);
-        this.shortClassNames.add(ClassUtils.getShortClassName(fullClassName));
+        if (!StringUtils.isEmpty(fullClassName)) {
+            this.fullClassNames.add(fullClassName);
+            this.shortClassNames.add(ClassUtils.getShortClassName(fullClassName));
+        }
 
     }
 }

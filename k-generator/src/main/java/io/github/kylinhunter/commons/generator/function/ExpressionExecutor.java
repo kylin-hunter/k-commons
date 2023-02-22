@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.generator.function;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -56,10 +57,11 @@ public class ExpressionExecutor {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T executeFile(final String path, final Map<String, Object> env) {
         try {
             InputStream inputStream = ResourceHelper.getInputStream(path);
-            String text = IOUtils.toString(inputStream, "UTF-8");
+            String text = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             Expression expression = AviatorEvaluator.getInstance().compile(path, text, true);
             return (T) expression.execute(env);
         } catch (Exception e) {

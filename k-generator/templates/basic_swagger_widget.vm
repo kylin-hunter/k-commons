@@ -1,19 +1,16 @@
-#parse("commons/swagger_widget.vm")
+#parse("commons/swagger.vm")
 package ${class.packageName};
-${class.imports.toString("import ",";")}
+${class.imports("import ",";")}
 
 /**
  * @description  $!{class.comment}
  * @author ${author}
  * @since ${date}
  **/
-#foreach($pkg1 in ${class.customSnippets.snippets})
-${pkg1};
-#end
-public class ${class.name} ${class.superClassName} ${class.interfaces}{
-
+${class.snippets('class_before')}
+public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("implements ")}{
 #foreach($field in ${class.fields})
-    @ApiModelProperty(value = "${field.comment}")
+    ${field.snippets('field_before')}
     private ${field.type} ${field.name};
 #end
 
