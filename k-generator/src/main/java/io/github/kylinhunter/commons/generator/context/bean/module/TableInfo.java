@@ -1,7 +1,8 @@
-package io.github.kylinhunter.commons.generator.context.bean;
+package io.github.kylinhunter.commons.generator.context.bean.module;
 
 import java.util.List;
 
+import io.github.kylinhunter.commons.generator.context.bean.module.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -7,7 +7,7 @@ import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
-import io.github.kylinhunter.commons.generator.context.bean.ClassInfo;
+import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;

@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.component.CF;
-import io.github.kylinhunter.commons.generator.context.bean.Column;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
-import io.github.kylinhunter.commons.generator.context.bean.TableInfo;
+import io.github.kylinhunter.commons.generator.context.bean.module.Column;
+import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
+import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 
 class StringToCamelTest {
 

@@ -1,16 +1,12 @@
 package ${class.packageName};
-#foreach($pkg in ${class.importPackages})
-import ${pkg};
-#end
+${class.imports.toString("import ",";")}
 /**
- * @description  $!{class.remarks}
+ * @description  $!{class.comment}
  * @author ${author}
  * @since ${date}
  **/
 public class ${class.name} ${class.superClassName} ${class.interfaces}{
-
-#foreach($field in ${module.table.columns})
-    private ${field.clazz.getSimpleName()} ${field.name}; // ${field.remarks}
+#foreach($field in ${class.fields})
+    private ${field.type} ${field.name}; // ${field.comment}
 #end
-
 }

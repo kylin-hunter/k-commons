@@ -45,7 +45,7 @@ templates:
         'author': 'bijian'  # a global variable
       strategy:
         package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
-        class_name: k.string_to_camel(module.name,'upper')+'BasicLombok' #required ${module.name} will be replaced by the module's camel name
+        class_name: k.string_to_camel(module.name,'upper')+'BasicSwagger' #required ${module.name} will be replaced by the module's camel name
         super_class: 'java.util.ArrayList' # optional
         interfaces: # optional
           - java.io.Serializable
@@ -57,7 +57,7 @@ templates:
         'author': 'bijian'  # a global variable
       strategy:
         package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #required ${module.name} will be replaced by the module's name
-        class_name: k.string_to_camel(module.name,'upper')+'BasicLombokWidget' #required ${module.name} will be replaced by the module's camel name
+        class_name: k.string_to_camel(module.name,'upper')+'BasicSwaggerWidget' #required ${module.name} will be replaced by the module's camel name
         super_class: 'java.util.ArrayList' # optional
         interfaces: # optional
           - java.io.Serializable

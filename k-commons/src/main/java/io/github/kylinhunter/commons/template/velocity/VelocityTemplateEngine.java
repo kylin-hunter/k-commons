@@ -55,8 +55,8 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         log.info("resource.loader.file.path=>" + templatePath);
         properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, templatePath);
 
-        properties.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, "false");
-        properties.setProperty("resource.loader.file.modification_check_interval", "0");
+        properties.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, "true");
+        properties.setProperty("resource.loader.file.modification_check_interval", "60");
 
         this.velocityEngine = new VelocityEngine();
         this.velocityEngine.init(properties);

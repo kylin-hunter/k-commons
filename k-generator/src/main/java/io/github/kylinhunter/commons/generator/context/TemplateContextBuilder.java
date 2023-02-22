@@ -15,14 +15,11 @@ import io.github.kylinhunter.commons.generator.config.bean.Modules;
 import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
 import io.github.kylinhunter.commons.generator.constant.ContextConsts;
-import io.github.kylinhunter.commons.generator.context.bean.ClassInfo;
-import io.github.kylinhunter.commons.generator.context.bean.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
+import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
+import io.github.kylinhunter.commons.generator.context.bean.clazz.FieldMeta;
+import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,9 +46,12 @@ public class TemplateContextBuilder {
         for (Module module : modules.getList()) {
             ModuleInfo moduleInfo = moduleInfoReader.read(module);
             for (Template template : config.getTemplates().getList()) {
-                TemplateContext templateContext = new TemplateContext(moduleInfo, module, template);
-                calculateContext(templateContext);
-                templateContexts.add(templateContext);
+                if (template.isEnabled()) {
+                    TemplateContext templateContext = new TemplateContext(moduleInfo, module, template);
+                    calculateContext(templateContext);
+                    templateContexts.add(templateContext);
+                }
+
             }
         }
 
@@ -67,6 +67,8 @@ public class TemplateContextBuilder {
      * @date 2023-02-18 00:23
      */
     private void calculateContext(TemplateContext templateContext) {
+        templateContext.putContext(ContextConsts.CLASS, templateContext.getClassInfo());
+        templateContext.putContext(ContextConsts.MODULE, templateContext.getModuleInfo());
         processModule(templateContext);
         templateContext.putContext(templateContext.getTemplate().getContext());
         templateContext.putContext(templateContext.getModule().getContext());
@@ -75,16 +77,18 @@ public class TemplateContextBuilder {
         processRemarks(templateContext);
         processSuperClass(templateContext);
         processSerilizeable(templateContext);
-        processSwagger(templateContext);
-        templateContext.putContext("class", templateContext.getClassInfo());
+
     }
 
     private void processModule(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
-        templateContext.putContext(ContextConsts.MODULE, templateContext.getModuleInfo());
-
         templateContext.getModuleInfo().getTable().getColumns().forEach(c -> {
-                    classInfo.addImportPackage(c.getClazz());
+                    classInfo.addImport(c.getClazz());
+                    FieldMeta fieldMeta = new FieldMeta();
+                    fieldMeta.setName(c.getName());
+                    fieldMeta.setComment(c.getRemarks());
+                    fieldMeta.setType(c.getClazz().getSimpleName());
+                    classInfo.getFields().add(fieldMeta);
 
                 }
         );
@@ -128,7 +132,7 @@ public class TemplateContextBuilder {
         ModuleInfo moduleInfo = templateContext.getModuleInfo();
         ClassInfo classInfo = templateContext.getClassInfo();
 
-        classInfo.setRemarks(moduleInfo.getTable().getRemarks());
+        classInfo.setComment(moduleInfo.getTable().getRemarks());
     }
 
     private void processSuperClass(TemplateContext templateContext) {
@@ -139,28 +143,8 @@ public class TemplateContextBuilder {
 
         String superClassName = ClassUtils.getShortClassName(superClass);
         classInfo.setSuperClassName(superClassName);
-        classInfo.addImportPackage(superClass);
+        classInfo.addImport(superClass);
 
-    }
-
-
-    /**
-     * @param templateContext templateContext
-     * @return void
-     * @title processSwagger
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 14:51
-     */
-    private void processSwagger(TemplateContext templateContext) {
-        ClassInfo classInfo = templateContext.getClassInfo();
-        if (templateContext.isWaggerEnabled()) {
-            classInfo.addImportPackage(ApiModel.class);
-            classInfo.addImportPackage(ApiModelProperty.class);
-            classInfo.addImportPackage(Api.class);
-            classInfo.addImportPackage(ApiOperation.class);
-
-        }
     }
 
     private void processSerilizeable(TemplateContext templateContext) {

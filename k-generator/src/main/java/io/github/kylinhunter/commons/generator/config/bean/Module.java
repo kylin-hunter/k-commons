@@ -19,7 +19,7 @@ public class Module {
     private Table table;
 
     public void merge(Modules modules) {
-        if (!StringUtils.isEmpty(databaseName)) {
+        if (StringUtils.isEmpty(this.databaseName)) {
             this.databaseName = modules.getDatabaseName();
         }
     }

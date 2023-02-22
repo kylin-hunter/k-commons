@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.generator.context.bean;
+package io.github.kylinhunter.commons.generator.context.bean.module;
 
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import lombok.Data;

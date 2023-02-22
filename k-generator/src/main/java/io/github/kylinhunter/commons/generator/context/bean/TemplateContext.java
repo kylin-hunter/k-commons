@@ -6,8 +6,8 @@ import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Template;
-import io.github.kylinhunter.commons.generator.constant.ContextConsts;
-import io.github.kylinhunter.commons.util.ObjectValues;
+import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
+import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import lombok.Data;
 
 /**
@@ -50,26 +50,4 @@ public class TemplateContext {
         this.context.put(key, object);
     }
 
-    /**
-     * @return boolean
-     * @title isLombokEnabled
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 10:48
-     */
-    public boolean isLombokEnabled() {
-        return ObjectValues.getBoolean(context.get(ContextConsts.LOMBOK_ENABLED));
-    }
-
-    /**
-     * @return boolean
-     * @title isWaggerEnabled
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 14:51
-     */
-    public boolean isWaggerEnabled() {
-        return ObjectValues.getBoolean(context.get(ContextConsts.SWAGGER_ENABLED));
-    }
-    
 }

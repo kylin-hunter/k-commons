@@ -1,17 +1,20 @@
 #parse("commons/swagger_widget.vm")
 package ${class.packageName};
-#foreach($pkg in ${class.importPackages})
-import ${pkg};
-#end
+${class.imports.toString("import ",";")}
+
 /**
- * @description  $!{class.remarks}
+ * @description  $!{class.comment}
  * @author ${author}
  * @since ${date}
  **/
+#foreach($pkg1 in ${class.customSnippets.snippets})
+${pkg1};
+#end
 public class ${class.name} ${class.superClassName} ${class.interfaces}{
 
-#foreach($field in ${module.table.columns})
-    private ${field.clazz.getSimpleName()} ${field.name};
+#foreach($field in ${class.fields})
+    @ApiModelProperty(value = "${field.comment}")
+    private ${field.type} ${field.name};
 #end
 
 }
