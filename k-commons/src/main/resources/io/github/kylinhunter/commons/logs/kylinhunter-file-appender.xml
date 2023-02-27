@@ -24,6 +24,7 @@ initialization performed by Boot
 				${app.logging.log_file_path_prefix}-${HOSTNAME}.log.%d{yyyy-MM-dd}.gz
 			</fileNamePattern>
 			<maxHistory>${app.logging.max_history}</maxHistory>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
 			<!-- <totalSizeCap>${logging.total_size_cap:-10GB}</totalSizeCap> -->
 			<!-- <maxFileSize>${app.logging.max_log_file_size:-1G}</maxFileSize> -->
 		</rollingPolicy>
@@ -44,6 +45,7 @@ initialization performed by Boot
 				${app.logging.log_file_path_prefix}-${HOSTNAME}.err.log.%d{yyyy-MM-dd}.gz
 			</fileNamePattern>
 			<maxHistory>${app.logging.max_history}</maxHistory>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
 		</rollingPolicy>
 
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
