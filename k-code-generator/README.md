@@ -1,16 +1,16 @@
 # bit state
 
-### 介绍
+### Description
 
-一个代码生成工具
+A code generator
 
-### 软件架构
+### Software Architecture
 
-利用jdbc读取表信息，生成源代码
+read table info using jdbc,to generate source code。
 
-### 安装教程
+### Installation
 
-#### 1、编译并发布到本地仓库
+####1、build and publish to local
 
 ```java
         gradle clean build publishToMavenLocal-x test
@@ -20,7 +20,7 @@
 
 ```java
 
-        implementation 'io.github.kylin-hunter:k-code-generator:1.0.1'
+        implementation 'io.github.kylin-hunter:k-code-generator:1.0.2'
 
 ```
 
@@ -31,14 +31,14 @@
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-code-generator</artifactId>
-          <version>1.0.1</version>
+          <version>1.0.2</version>
         </dependency>
 
 ```
 
-### 使用说明
+### Instructions
 
-#### 1.  创建一个表 test_user
+#### 1. create a table
 ```java
 
 CREATE TABLE IF NOT EXISTS `test_user`
@@ -65,9 +65,9 @@ CREATE TABLE IF NOT EXISTS `test_user`
 
 ```
 
-#### 2.  创建数据库配置文件
+#### 2. create database  config file for connection 
 
-##### 2.1 k-db-config.yaml (放到classpath下)
+##### 2.1  k-db-config.yaml (put it to classpath)
 
 ```java
 
@@ -89,99 +89,139 @@ datasources:
       prepStmtCacheSqlLimit: 2048
 ```
 
-#### 3.  模板配置文件
-##### 3.1 k-generator-config.yaml (放到classpath下)
+#### 3.  create a template config file 
+##### 3.1 k-generator-config.yaml (put it to classpath)
 
 ```java
-global: # 全局配置
-  template_path: '/User/bijian/template'   # 模板所在目录，可以使用当前目录， 例如 $user.dir$/templates
-  output_path: '/User/bijian/output'  # 生成的源码所在目录，可以使用当前目录， 例如 $user.dir$/output
+global: # global config
+  template_path: '/User/bijian/template'   # template dir,can use current dir: $user.dir$/templates
+  output_path: '/User/bijian/output'  # output dir,can use current dir: $user.dir$/output
 modules:
-  database_name: "kp" # 数据库的名字
+  database_name: "kp" # database name
   list:
-    - name: 'User' # 模块的名字
+    - name: 'User' # module name
       context:
-        'module_custom_propery': 'module_custom_propery_value'  # 自定义一个模板的变量
+        'module_custom_propery': 'module_custom_propery_value'  # a module vairable 
       table:
-        name: "test_user" #表名
-        skip_columns: #  屏蔽某些表的列
+        name: "test_user" #table name
+        skip_columns: #  skip some columns
           - 'delete_flag'
           - 'extend_1'
           - 'extend_2'
           - 'extend_3'
-    - name: 'Role' # 支持定义多个模块，这是第二个模块
+    - name: 'Role' # the second module
       table:
         name: 'test_role'
-templates: # 模板定义
+templates: # tempalte definition
   context:
-    'author': 'bijian'  # 模板的全局变量  定一个作者 
+    'author': 'bijian'  # tempalte variable 
   strategy: # 
-    template_encoding: UTF-8 # 模板编码
-    output_encoding: UTF-8 # 生成的源代码编码
+    template_encoding: UTF-8 # template encoding
+    output_encoding: UTF-8 # output file encoding
   list:
-    - name: basic.vm  #定义一个模板 basic.vm
+    - name: basic.vm  #template name
       enabled: true
       context:
-        'basic_vm_custom_property': 'basic_vm_custom_property_value'  #  模板的自定义变量
+        'basic_vm_custom_property': 'basic_vm_custom_property_value'  #  template vairable
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #根据模块名字定义包名
-        class_name: k.string_to_camel(module.name,'upper')+'Basic' #根据模块的名字定义类名
-        super_class: 'java.util.ArrayList' # 父类
-        interfaces:  # 接口
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #package name
+        class_name: k.string_to_camel(module.name,'upper')+'Basic' #class name
+        super_class: 'java.util.ArrayList' # super class
+        interfaces:  # the interfaces
           - java.io.Serializable
           - java.lang.Cloneable
-        extension: 'java' # 生成文件的扩展名
-    - name: basic_swagger.vm #定义第二个模板 basic_swagger.vm
+        extension: 'java' #  a  file  with extension *.java
+    - name: basic_swagger.vm # the sencond template  basic_swagger.vm
       enabled: true
       context:
-        'basic_swagger_vm_custom_property': 'basic_swagger_vm_custom_property_value'  # 模板的自定义变量
+        'basic_swagger_vm_custom_property': 'basic_swagger_vm_custom_property_value'  # template vairable
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #根据模块名字定义包名
-        class_name: k.string_to_camel(module.name,'upper')+'BasicSwagger' #根据模块的名字定义类名
-        super_class: 'java.util.ArrayList'  # 父类
-        interfaces: # 接口
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #package name
+        class_name: k.string_to_camel(module.name,'upper')+'BasicSwagger' #class name
+        super_class: 'java.util.ArrayList'  # super class
+        interfaces: # the interfaces
           - java.io.Serializable
           - java.lang.Cloneable
-        extension: 'java'  # 生成文件的扩展名
-    - name: basic_swagger_widget.vm
-      enabled: true
+        extension: 'java'  #  a  file  with extension *.java
+    - name: basic_swagger_snippet.vm # the third template  basic_swagger_snippet.vm
+      enabled: true 
       context:
-        'basic_swagger_widget_vm_custom_property': 'basic_swagger_widget_vm_custom_property_value'  # 模板的自定义变量
+        'basic_swagger_snippet_vm_custom_property': 'basic_swagger_snippet_vm_custom_property_value'  # template vairable
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #根据模块名字定义包名
-        class_name: k.string_to_camel(module.name,'upper')+'BasicSwaggerWidget' #根据模块的名字定义类名
-        super_class: 'java.util.ArrayList'  # 父类
-        interfaces:# 接口
+        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #package name
+        class_name: k.string_to_camel(module.name,'upper')+'BasicSwaggerSnippet' #class name
+        super_class: 'java.util.ArrayList'  # super class
+        interfaces:# the interfaces
           - java.io.Serializable
           - java.lang.Cloneable
-        extension: 'java'  # 生成文件的扩展名
+        extension: 'java'  # a  file  with extension *.java
 ```
 
 
-#### 4.  模板语法介绍
+#### 4.   the syntax of the template and  usage
+
+> tempalte syntax reference volecity
+
+##### 4.1 basic  usage
+
+
+example      | explain
+------------- | -------------
+${class.packageName} |output pakageName
+${class.name} | output class simple name
+${class.imports("import ",";")} | output imports  start with import,end with; <br>Abbreviated as ${class.imports}
+$!{class.comment}  | output comment of the class , the table's remarks
+${class.superClass("extends ")} | output superclass ,start with 'extends' ,<br>Abbreviated as ${class.superClass}
+${class.interfaces("implements ")}  | output all interfaces ,start with 'implements'，<br>Abbreviated as ${class.interfaces}
+#foreach($field in ${class.fields}) <br>&nbsp;&nbsp;${field.comment}<br>&nbsp;&nbsp;${field.type}<br>&nbsp;&nbsp;${field.name}<br>#end  |<li>${class.fields} => Traverse all fields<br><li>${field.comment}=>the comment of field from the table column's remarks <br><li>${field.type}==>the type of field ,for example String  Long<br><li>${field.name}==>the name of field from the table column with camel style
+#call($class.imports.add("io.swagger.annotations.ApiModel"))  | add a class to imports
+#call($class.snippets.add("class_before","xxx")) |add a  code Snippet with name 'class_before'
+${class.snippets('class_before')} |output the code Snippet with name 'class_before'
+
+
+##### 4.2 velocity GenericTools
+```java
+you can use velocity GenericTools in the template
+official website reference: https://velocity.apache.org/tools/devel/generic.html
+the default configuration location: io/github/kylinhunter/commons/template/velocity-tools.xml（k-commons.jar)
+
+<tools>
+  <toolbox scope="application">
+    <tool class="org.apache.velocity.tools.generic.DateTool" format="yyyy-MM-dd"></tool>
+    <tool class="org.apache.velocity.tools.generic.NumberTool"></tool>
+    <tool class="org.apache.velocity.tools.generic.MathTool"></tool>
+    <tool class="org.apache.velocity.tools.generic.DisplayTool"></tool>
+    <tool class="org.apache.velocity.tools.generic.EscapeTool"></tool>
+    <tool class="org.apache.velocity.tools.generic.FieldTool"></tool>
+  </toolbox>
+</tools>
+        
+// for examples:
+${date}=>output a date
+
+```
+
+##### 4.3 custom variable
+
+ you have three positions to define your custom variable in k-generator-config.yaml above
+ 1. modules.list[x].context
+ 2. templates.context
+ 3. templates.list[x].context
 
 ```java
-默认以volecity语法为准
-        
-${class.packageName};  =>包名
-${class.name} =>类名
-${class.imports("import ",";")} =>输出所有的引用包， import开头 ;结尾 
-$!{class.comment} =>类的注释，默认为数据库表的注释
-${class.superClass("extends ")}  =>输出父类， extends开头
-${class.interfaces("implements ")} =>输出所有接口， implements开头
-${date}=>日期
-${class.fields}=>输出所有的类属性
-#call($class.imports.add("io.swagger.annotations.ApiModel")) =>添加类引用
-#call($class.addSnippet("class_before","xxx")) =>添加一个代码片段，片段名字是 class_before
-${class.snippets('class_before')} =>输出名为 class_before 的 代码片段
-${xxx}=>输出引用自定义的变量xxx
 
+for examples:
+templates:
+  context:
+    'author': 'bijian'  #  define a variable autho
+${author}=>output the variable author
 
 ```
-#### 5 示例1
+
+#### 5 example1  basic tempalte
 
 
-##### 5.1 定义模板 basic.vm
+##### 5.1 difine template basic.vm
 
 ```java
 package ${class.packageName};
@@ -202,13 +242,13 @@ ${class.imports("import ",";")}
 
 ```
 
-##### 5.2 执行代码生成
+##### 5.2 exec
 
 ```java
 new CodeGenerator().execute();
 ```
 
-##### 5.3 最终生成的源代码
+##### 5.3 the file generated
 
 ```java
 package com.kylinhunter.user;
@@ -245,10 +285,10 @@ public class UserBasic extends ArrayList implements Serializable,Cloneable{
 
 ```
 
-#### 6 示例2 （增加swagger功能支持）
+#### 6 example2 （add swagger）
 
 
-##### 6.1 定义模板 basic_swagger.vm 
+##### 6.1 define basic_swagger.vm 
 
 ```java
 package ${class.packageName};
@@ -275,13 +315,13 @@ public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("i
 
 ```
 
-##### 6.2 执行代码生成
+##### 6.2 exec
 
 ```java
 new CodeGenerator().execute();
 ```
 
-##### 6.3 最终生成的源代码
+##### 6.3 the file generated
 
 ```java
 package com.kylinhunter.user;
@@ -334,11 +374,11 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
 ```
 
 
-#### 7 示例3 （增加swagger功能支持+利用 snippets 功能进行抽象）
+#### 7 example3 （add swagger ,using snippets）
 
 
 
-##### 7.1 利用 snippets 定义swagger代码抽象片段  swagger.vm
+##### 7.1 define a code snippet tempalte： swagger.vm
 
 ```java
 
@@ -346,17 +386,18 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
 ##add  package import
 #call($class.imports.add("io.swagger.annotations.ApiModel"))
 #call($class.imports.add("io.swagger.annotations.ApiModelProperty"))
-##  add  annotation before the class
+##  define a snippet named 'class_before'
 #set( $classAnnotation ='@ApiModel(value="'+${class.name}+'", description="'+$!{class.comment}+'")' )
-#call($class.addSnippet("class_before",$classAnnotation))
+#call($class.snippets.add("class_before",$classAnnotation))
 #foreach($field in ${class.fields})
 #set( $fieldAnnotation =  '@ApiModelProperty(value = "'+${field.comment}+'")')
-#call($field.addSnippet("field_before",$fieldAnnotation) )
+##define a snippet named 'field_before'
+#call($field.snippets.add("field_before",$fieldAnnotation) )
 #end
 
 
 ```
-##### 7.2 定义模板 basic_swagger_widget.vm ,引用 swagger.vm
+##### 7.2 define basic_swagger_snippet.vm , using swagger.vm
 
 ```java
 
@@ -368,7 +409,7 @@ ${class.imports("import ",";")}
 * @description  $!{class.comment}
 * @author ${author}
 * @since ${date}
-* ${basic_swagger_widget_vm_custom_property}
+* ${basic_swagger_snippet_vm_custom_property}
 * ${module_custom_propery}
 **/
 ${class.snippets('class_before')}
@@ -384,13 +425,13 @@ public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("i
 
 ```
 
-##### 7.3 执行代码生成
+##### 7.3 exec
 
 ```java
 new CodeGenerator().execute();
 ```
 
-##### 7.4 最终生成的源代码
+##### 7.4 the file generated
 
 ```java
 package com.kylinhunter.user;
@@ -411,11 +452,11 @@ import io.swagger.annotations.ApiModelProperty;
  * @description  the user
  * @author bijian
  * @since 2023-02-23
- * basic_swagger_widget_vm_custom_property_value
+ * basic_swagger_snippet_vm_custom_property_value
  * module_custom_propery_value
  **/
-@ApiModel(value="UserBasicSwaggerWidget", description="the user")
-public class UserBasicSwaggerWidget extends ArrayList implements Serializable,Cloneable{
+@ApiModel(value="UserBasicSwaggerSnippet", description="the user")
+public class UserBasicSwaggerSnippet extends ArrayList implements Serializable,Cloneable{
     @ApiModelProperty(value = "primary unique id")
     private Long id;
     @ApiModelProperty(value = "user name")
@@ -444,6 +485,6 @@ public class UserBasicSwaggerWidget extends ArrayList implements Serializable,Cl
 ```
 
 
-### 版权 | License
+#### License
 
 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)

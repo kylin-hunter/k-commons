@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
 
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,7 +25,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @author BiJi'an
      * @date 2023-01-08 01:02
      */
-    public static File check(File file, boolean isFile) {
+    public static File check(File file, boolean isFile, boolean required) {
         if (file != null && file.exists()) {
             if (isFile) {
                 if (file.isFile()) {
@@ -37,6 +38,9 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
                 }
             }
 
+        }
+        if (required) {
+            throw new KIOException("can't be null");
         }
         return null;
     }

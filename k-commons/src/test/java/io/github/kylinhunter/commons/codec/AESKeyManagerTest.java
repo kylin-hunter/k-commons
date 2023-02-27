@@ -5,7 +5,7 @@ import javax.crypto.SecretKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class AESIncludeManagerTest {
+class AESKeyManagerTest {
 
     @Test
     void test() {

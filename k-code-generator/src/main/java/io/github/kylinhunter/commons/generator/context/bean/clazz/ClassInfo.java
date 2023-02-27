@@ -81,18 +81,7 @@ public class ClassInfo {
         }
     }
 
-    /**
-     * @param location location
-     * @param snippets snippets
-     * @return void
-     * @title add
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 00:39
-     */
-    public void addSnippet(String location, String snippets) {
-        this.snippets.add(location, snippets);
-    }
+
 
     /**
      * @param fullClassNames fullClassNames

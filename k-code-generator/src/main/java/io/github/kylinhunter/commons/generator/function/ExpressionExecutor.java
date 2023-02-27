@@ -12,6 +12,7 @@ import com.googlecode.aviator.Expression;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CAfter;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
+import io.github.kylinhunter.commons.io.IOHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 
 /**
@@ -59,9 +60,8 @@ public class ExpressionExecutor {
 
     @SuppressWarnings("unchecked")
     public <T> T executeFile(final String path, final Map<String, Object> env) {
-        try {
-            InputStream inputStream = ResourceHelper.getInputStream(path);
-            String text = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        try (InputStream inputStream = ResourceHelper.getInputStream(path)){
+            String text = IOHelper.toString(inputStream, StandardCharsets.UTF_8);
             Expression expression = AviatorEvaluator.getInstance().compile(path, text, true);
             return (T) expression.execute(env);
         } catch (Exception e) {

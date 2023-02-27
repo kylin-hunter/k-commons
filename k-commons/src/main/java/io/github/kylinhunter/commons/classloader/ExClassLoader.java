@@ -15,12 +15,19 @@ class ExClassLoader extends URLClassLoader {
 
     private static final ExClassLoader singletion = new ExClassLoader();
 
-    private ExClassLoader() {
-        super(new URL[] {}, ExClassLoader.class.getClassLoader());
-    }
-
     public static ExClassLoader getInstance() {
         return singletion;
     }
 
+    private ExClassLoader() {
+        super(new URL[] {}, ExClassLoader.class.getClassLoader());
+    }
+
+    public ExClassLoader(URL[] urls, ClassLoader parent) {
+        super(urls, parent);
+    }
+
+    public ExClassLoader(URL[] urls) {
+        super(urls);
+    }
 }

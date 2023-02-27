@@ -9,8 +9,6 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-import org.apache.commons.io.IOUtils;
-
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.file.FileUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
@@ -107,21 +105,63 @@ public class ResourceHelper {
      * @date 2022-11-23 15:17
      */
     public static File getFile(String path) {
-        return _getFile(path, true, PathType.CLASSPATH);
+        return _getFile(path, true, PathType.CLASSPATH, false);
 
     }
 
     /**
-     * @param path path
+     * @param path     path
+     * @param required required
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-23 17:46
+     */
+    public static File getFile(String path, boolean required) {
+        return _getFile(path, true, PathType.CLASSPATH, required);
+
+    }
+
+    /**
+     * @param path            path
      * @param defaultPathType defaultPathType
      * @return java.io.File
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-02-11 23:08
+     * @date 2023-02-23 17:45
      */
     public static File getFile(String path, PathType defaultPathType) {
-        return _getFile(path, true, defaultPathType);
+        return _getFile(path, true, defaultPathType, false);
+
+    }
+
+    /**
+     * @param path            path
+     * @param defaultPathType defaultPathType
+     * @param required        required
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-23 17:46
+     */
+    public static File getFile(String path, PathType defaultPathType, boolean required) {
+        return _getFile(path, true, defaultPathType, required);
+
+    }
+
+    /**
+     * @param path path
+     * @return java.io.File
+     * @title getDir
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-23 17:39
+     */
+    public static File getDir(String path) {
+        return _getFile(path, false, PathType.CLASSPATH, false);
 
     }
 
@@ -133,8 +173,21 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2022-11-23 15:17
      */
-    public static File getDir(String path) {
-        return _getFile(path, false, PathType.CLASSPATH);
+    public static File getDir(String path, boolean required) {
+        return _getFile(path, false, PathType.CLASSPATH, required);
+    }
+
+    /**
+     * @param path            path
+     * @param defaultPathType defaultPathType
+     * @return java.io.File
+     * @title getDir
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-23 17:44
+     */
+    public static File getDir(String path, PathType defaultPathType) {
+        return _getFile(path, false, defaultPathType, false);
     }
 
     /**
@@ -146,8 +199,8 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2023-02-11 23:07
      */
-    public static File getDir(String path, PathType defaultPathType) {
-        return _getFile(path, false, defaultPathType);
+    public static File getDir(String path, PathType defaultPathType, boolean required) {
+        return _getFile(path, false, defaultPathType, required);
     }
 
     /**
@@ -158,14 +211,14 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2022-01-21 00:52
      */
-    private static File _getFile(String path, boolean isFile, PathType defaultPathType) {
+    private static File _getFile(String path, boolean isFile, PathType defaultPathType, boolean required) {
         PathInfo pathInfo = toPathInfo(path, defaultPathType);
         PathType pathType = pathInfo.getPathType();
         if (pathType == PathType.CLASSPATH) {
-            return _getFileInClassPath(pathInfo.getPath(), isFile);
+            return _getFileInClassPath(pathInfo.getPath(), isFile, required);
         } else {
             File file = pathInfo.file;
-            return FileUtils.check(file, isFile);
+            return FileUtils.check(file, isFile, required);
 
         }
 
@@ -180,14 +233,26 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2022-11-23 15:17
      */
-    private static File _getFileInClassPath(String classPath, boolean isFile) {
+    private static File _getFileInClassPath(String classPath, boolean isFile, boolean required) {
         URL url = ResourceHelper.class.getClassLoader().getResource(classPath);
         if (url == null) {
             url = ResourceHelper.class.getResource(classPath);
         }
         File file = getFile(url);
-        return FileUtils.check(file, isFile);
+        return FileUtils.check(file, isFile, required);
 
+    }
+
+    /**
+     * @param classPath classPath
+     * @return java.io.File
+     * @title getFileInClassPath
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-23 17:44
+     */
+    public static File getFileInClassPath(String classPath) {
+        return _getFileInClassPath(classPath, true, false);
     }
 
     /**
@@ -199,8 +264,8 @@ public class ResourceHelper {
      * @date 2022-01-01 02:12
      */
 
-    public static File getFileInClassPath(String classPath) {
-        return _getFileInClassPath(classPath, true);
+    public static File getFileInClassPath(String classPath, boolean required) {
+        return _getFileInClassPath(classPath, true, required);
     }
 
     /**
@@ -212,7 +277,20 @@ public class ResourceHelper {
      * @date 2022-11-23 14:33
      */
     public static File getDirInClassPath(String classPath) {
-        return _getFileInClassPath(classPath, false);
+        return _getFileInClassPath(classPath, false, false);
+    }
+
+    /**
+     * @param classPath classPath
+     * @param required  required
+     * @return java.io.File
+     * @title getDirInClassPath
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-23 17:47
+     */
+    public static File getDirInClassPath(String classPath, boolean required) {
+        return _getFileInClassPath(classPath, false, required);
     }
 
     /**
@@ -243,7 +321,7 @@ public class ResourceHelper {
     }
 
     /**
-     * @param path path
+     * @param path        path
      * @param defaultType defaultType
      * @return java.lang.String
      * @title getText
@@ -291,16 +369,15 @@ public class ResourceHelper {
      * @date 2023-02-19 19:08
      */
     public static String getText(String path, PathType defaultType, Charset charset) {
-        InputStream inputStream = getInputStream(path, defaultType);
-        if (inputStream == null) {
-            throw new KIOException("invalide path" + path);
-        }
-        try {
-            return IOUtils.toString(inputStream, charset);
+        try (InputStream inputStream = getInputStream(path, defaultType)) {
+            if (inputStream == null) {
+                throw new KIOException("invalide path" + path);
+            }
+            return IOHelper.toString(inputStream, charset);
         } catch (IOException e) {
-            throw new KIOException("read path error" + path, e);
-
+            throw new KIOException("get text error", e);
         }
+
     }
 
     /**

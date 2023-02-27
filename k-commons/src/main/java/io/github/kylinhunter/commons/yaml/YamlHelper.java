@@ -9,6 +9,7 @@ import org.yaml.snakeyaml.Yaml;
 import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
+import io.github.kylinhunter.commons.io.IOHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 
 /**
@@ -64,7 +65,7 @@ public class YamlHelper {
                 throw new ParamException(" inputStream is null ,invalid path: " + path);
             }
 
-            String text = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            String text = IOHelper.toString(inputStream, StandardCharsets.UTF_8);
 
             return loadFromText(clazz, text, loadCorrector);
 

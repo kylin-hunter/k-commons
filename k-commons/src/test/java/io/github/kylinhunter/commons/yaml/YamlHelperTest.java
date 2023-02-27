@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
+import io.github.kylinhunter.commons.io.IOHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 
 class YamlHelperTest {
@@ -20,7 +20,7 @@ class YamlHelperTest {
 
         try (InputStream inputStream = ResourceHelper.getInputStreamInClassPath(path)) {
 
-            String yamlText = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            String yamlText = IOHelper.toString(inputStream, StandardCharsets.UTF_8);
             System.out.println("file string=> \n" + yamlText);
 
             YamlBean yamlBeanFromPath = YamlHelper.loadFromPath(YamlBean.class, path, true);

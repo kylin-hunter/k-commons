@@ -1,11 +1,12 @@
 #parse("io/github/kylinhunter/commons/generator/common.vm")
-##add  package ' import
+##add  package import
 #call($class.imports.add("io.swagger.annotations.ApiModel"))
 #call($class.imports.add("io.swagger.annotations.ApiModelProperty"))
-##  add  annotation before the class
+##  define a snippet named 'class_before'
 #set( $classAnnotation ='@ApiModel(value="'+${class.name}+'", description="'+$!{class.comment}+'")' )
-#call($class.addSnippet("class_before",$classAnnotation))
+#call($class.snippets.add("class_before",$classAnnotation))
 #foreach($field in ${class.fields})
 #set( $fieldAnnotation =  '@ApiModelProperty(value = "'+${field.comment}+'")')
-#call($field.addSnippet("field_before",$fieldAnnotation) )
+##define a snippet named 'field_before'
+#call($field.snippets.add("field_before",$fieldAnnotation) )
 #end

@@ -57,7 +57,7 @@ public class CompConfiguration {
             String outputPath = global.getOutputPath();
             File dirOutput = ResourceHelper.getDir(outputPath, PathType.FILESYSTEM);
             if (dirOutput == null || !dirOutput.exists()) {
-                throw new CodeException("invalid outputPath" + outputPath);
+                throw new CodeException("invalid outputPath:" + outputPath);
             }
             templateConfig.setOutputDir(dirOutput.toPath());
 
