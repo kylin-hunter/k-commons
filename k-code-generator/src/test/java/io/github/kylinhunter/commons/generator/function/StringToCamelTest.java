@@ -34,7 +34,7 @@ class StringToCamelTest {
         columns.add(column);
         tableInfo.setColumnMetas(columns);
 
-        moduleInfo.setTable(tableInfo);
+        moduleInfo.setTableInfo(tableInfo);
         Map<String, Object> env = Maps.newHashMap();
         env.put("module", moduleInfo);
 

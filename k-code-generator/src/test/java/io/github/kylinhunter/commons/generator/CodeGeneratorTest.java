@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import io.github.kylinhunter.commons.classloader.ExClassLoaderUtil;
 import io.github.kylinhunter.commons.compiler.KplatCompiler;
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.swagger.annotations.ApiModel;
@@ -45,7 +46,7 @@ class CodeGeneratorTest {
 
     }
 
-    private void check(File file, String className) throws IOException, NoSuchFieldException {
+    private void check(File file, String className) throws NoSuchFieldException {
         Assertions.assertTrue(file.exists());
         compile(file);
         Class<?> clazz = ExClassLoaderUtil.loadClass(className);
@@ -70,12 +71,15 @@ class CodeGeneratorTest {
      * @title compile
      * @description
      * @author BiJi'an
-     * @date 2023-02-23 14:37
+     * @date 2023-02-26 14:37
      */
-    private void compile(File file) throws IOException {
+    private void compile(File file) {
         KplatCompiler kplatCompiler = new KplatCompiler();
         kplatCompiler.addSource(file);
         kplatCompiler.setOutput(compileOutputDir);
-        kplatCompiler.compile();
+        if (!kplatCompiler.compile()) {
+            throw new KIOException("comipile failed");
+        }
+
     }
 }

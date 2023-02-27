@@ -116,7 +116,7 @@ public class ResourceHelper {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-02-23 17:46
+     * @date 2023-02-26 17:46
      */
     public static File getFile(String path, boolean required) {
         return _getFile(path, true, PathType.CLASSPATH, required);
@@ -130,7 +130,7 @@ public class ResourceHelper {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-02-23 17:45
+     * @date 2023-02-26 17:45
      */
     public static File getFile(String path, PathType defaultPathType) {
         return _getFile(path, true, defaultPathType, false);
@@ -145,7 +145,7 @@ public class ResourceHelper {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-02-23 17:46
+     * @date 2023-02-26 17:46
      */
     public static File getFile(String path, PathType defaultPathType, boolean required) {
         return _getFile(path, true, defaultPathType, required);
@@ -158,7 +158,7 @@ public class ResourceHelper {
      * @title getDir
      * @description
      * @author BiJi'an
-     * @date 2023-02-23 17:39
+     * @date 2023-02-26 17:39
      */
     public static File getDir(String path) {
         return _getFile(path, false, PathType.CLASSPATH, false);
@@ -184,7 +184,7 @@ public class ResourceHelper {
      * @title getDir
      * @description
      * @author BiJi'an
-     * @date 2023-02-23 17:44
+     * @date 2023-02-26 17:44
      */
     public static File getDir(String path, PathType defaultPathType) {
         return _getFile(path, false, defaultPathType, false);
@@ -249,7 +249,7 @@ public class ResourceHelper {
      * @title getFileInClassPath
      * @description
      * @author BiJi'an
-     * @date 2023-02-23 17:44
+     * @date 2023-02-26 17:44
      */
     public static File getFileInClassPath(String classPath) {
         return _getFileInClassPath(classPath, true, false);
@@ -287,7 +287,7 @@ public class ResourceHelper {
      * @title getDirInClassPath
      * @description
      * @author BiJi'an
-     * @date 2023-02-23 17:47
+     * @date 2023-02-26 17:47
      */
     public static File getDirInClassPath(String classPath, boolean required) {
         return _getFileInClassPath(classPath, false, required);

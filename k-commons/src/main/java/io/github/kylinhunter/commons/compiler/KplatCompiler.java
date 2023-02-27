@@ -14,6 +14,8 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.apache.commons.io.IOUtils;
+
 import com.google.common.collect.Lists;
 
 import lombok.Getter;
@@ -57,15 +59,23 @@ public class KplatCompiler {
      * @author BiJi'an
      * @date 2022-11-21 00:48
      */
-    public void compile() throws IOException {
-        JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-        StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
-        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sources.toArray(new File[0]));
-        List<String> options = Arrays.asList("-d", output.getAbsolutePath());
-        JavaCompiler.CompilationTask cTask = javaCompiler.getTask(null, fileManager, null, options, null, fileObjects);
-        Boolean success = cTask.call();
-        log.info("output result={}", success);
-        fileManager.close();
+    public boolean compile() {
+        StandardJavaFileManager fileManager = null;
+        try {
+
+            JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+
+            fileManager = javaCompiler.getStandardFileManager(null, null, null);
+            Iterable<? extends JavaFileObject> fileObjects =
+                    fileManager.getJavaFileObjects(sources.toArray(new File[0]));
+            List<String> options = Arrays.asList("-d", output.getAbsolutePath());
+            JavaCompiler.CompilationTask cTask =
+                    javaCompiler.getTask(null, fileManager, null, options, null, fileObjects);
+            return cTask.call();
+
+        } finally {
+            IOUtils.closeQuietly(fileManager);
+        }
 
     }
 

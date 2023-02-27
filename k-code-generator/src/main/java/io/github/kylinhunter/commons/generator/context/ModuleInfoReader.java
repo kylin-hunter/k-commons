@@ -54,8 +54,9 @@ public class ModuleInfoReader {
      * @date 2023-02-17 22:36
      */
     private TableInfo toTable(Module module) {
-        TableInfo tableInfo = new TableInfo();
         Table table = module.getTable();
+
+        TableInfo tableInfo = new TableInfo(table);
 
         TableMeta tableMetaData = tableMetaReader.getTableMetaData(module.getDatabaseName(), table.getName());
         ExceptionChecker.checkNotNull(tableMetaData, "tableMetaData can't be null");

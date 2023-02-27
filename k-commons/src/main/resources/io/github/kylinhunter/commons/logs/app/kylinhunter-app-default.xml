@@ -14,7 +14,7 @@ initialization performed by Boot
     <property name="app.name" value="k-log"/>
     <property name="app.logging.log_level" value="ERROR"/>
     <property name="app.logging.max_log_file_size" value="50MB"/>
-    <property name="app.logging.max_history" value="10"/>
+    <property name="app.logging.max_history" value="3"/>
     <property name="app.logging.log_pattern"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %X{x-current-user} - %X{x-trace-id} %logger{12} [%line]: %msg%n"/>
     <property name="app.logging.console_pattern"

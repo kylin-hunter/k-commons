@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.generator.context.bean.module;
 
 import java.util.List;
 
+import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import lombok.Data;
@@ -15,6 +16,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TableInfo {
+    private Table table;
     private TableMeta tableMeta;
-    List<ColumnMeta> columnMetas;
+    private List<ColumnMeta> columnMetas;
+
+    public TableInfo(Table table) {
+        this.table = table;
+    }
 }

@@ -19,6 +19,7 @@ import lombok.Data;
 public class TemplateContext {
     private final ModuleInfo moduleInfo;
     private final Module module;
+    private final Map<String, String> sqlTypes;
     private final Template template;
     private ClassInfo classInfo = new ClassInfo();
     private Map<String, Object> context = Maps.newHashMap();
