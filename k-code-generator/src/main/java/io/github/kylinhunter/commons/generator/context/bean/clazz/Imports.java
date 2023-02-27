@@ -60,8 +60,10 @@ public class Imports {
      */
     public void add(String fullClassName) {
         if (!StringUtils.isEmpty(fullClassName)) {
-            if (!imports.contains(fullClassName)) {
-                this.imports.add(fullClassName);
+            if (!fullClassName.startsWith("java.lang")) {
+                if (!imports.contains(fullClassName)) {
+                    this.imports.add(fullClassName);
+                }
             }
 
         }

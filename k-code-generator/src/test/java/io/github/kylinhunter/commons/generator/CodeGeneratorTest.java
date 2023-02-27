@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.generator;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalTime;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -60,6 +61,12 @@ class CodeGeneratorTest {
         if (file.getName().toLowerCase().contains("swagger")) {
             Assertions.assertNotNull(clazz.getAnnotation(ApiModel.class));
             Assertions.assertNotNull(clazz.getDeclaredField("id").getAnnotation(ApiModelProperty.class));
+
+        }
+        if (file.getName().toLowerCase().contains("user")) {
+            Assertions.assertEquals(Integer.class, clazz.getDeclaredField("roleId").getType());
+            Assertions.assertEquals(LocalTime.class, clazz.getDeclaredField("birth").getType());
+            Assertions.assertEquals(Short.class, clazz.getDeclaredField("age").getType());
 
         }
 

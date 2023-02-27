@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class FieldInfo {
     private String name;
+    private String columnName;
     private String type;
     private String comment;
     private Snippets snippets = new Snippets();

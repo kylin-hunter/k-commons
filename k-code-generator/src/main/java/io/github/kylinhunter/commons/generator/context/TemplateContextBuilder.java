@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.generator.context;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +10,7 @@ import com.google.common.collect.Lists;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
+import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Modules;
 import io.github.kylinhunter.commons.generator.config.bean.Table;
@@ -24,6 +24,7 @@ import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
+import io.github.kylinhunter.commons.name.SnakeToCamel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,16 +44,18 @@ public class TemplateContextBuilder {
     private ModuleInfoReader moduleInfoReader;
     @CSet
     private ExpressionExecutor expressionExecutor;
+    @CSet
+    SnakeToCamel snakeToCamel;
 
     public List<TemplateContext> calculateContext() {
         List<TemplateContext> templateContexts = Lists.newArrayList();
         Modules modules = config.getModules();
-        Map<String, String> sqlTypes = modules.getSqlTypes();
+        Database database = modules.getDatabase();
         for (Module module : modules.getList()) {
-            ModuleInfo moduleInfo = moduleInfoReader.read(module);
+            ModuleInfo moduleInfo = moduleInfoReader.read(database, module);
             for (Template template : config.getTemplates().getList()) {
                 if (template.isEnabled()) {
-                    TemplateContext templateContext = new TemplateContext(moduleInfo, module, sqlTypes, template);
+                    TemplateContext templateContext = new TemplateContext(moduleInfo, template);
                     calculateContext(templateContext);
                     templateContexts.add(templateContext);
                 }
@@ -75,7 +78,7 @@ public class TemplateContextBuilder {
         templateContext.putContext(ContextConsts.CLASS, templateContext.getClassInfo());
         templateContext.putContext(ContextConsts.MODULE, templateContext.getModuleInfo());
         templateContext.putContext(templateContext.getTemplate().getContext());
-        templateContext.putContext(templateContext.getModule().getContext());
+        templateContext.putContext(templateContext.getModuleInfo().getModule().getContext());
         processPackageName(templateContext);
         processClassName(templateContext);
         processSuperClass(templateContext);
@@ -95,14 +98,17 @@ public class TemplateContextBuilder {
      */
     private void processFields(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
-        TableInfo tableInfo = templateContext.getModuleInfo().getTableInfo();
+        ModuleInfo moduleInfo = templateContext.getModuleInfo();
+        Database database = moduleInfo.getDatabase();
+        TableInfo tableInfo = moduleInfo.getTableInfo();
         Table table = tableInfo.getTable();
         tableInfo.getColumnMetas().forEach(columnMeta -> {
-                    String columnType = FieldConvertor.convert(columnMeta, table, templateContext.getSqlTypes());
+                    String columnType = FieldConvertor.convert(columnMeta, table, database);
 
                     classInfo.addImport(columnType);
                     FieldInfo fieldInfo = new FieldInfo();
-                    fieldInfo.setName(columnMeta.getColumnName());
+                    fieldInfo.setName(snakeToCamel.convert(columnMeta.getColumnName()));
+                    fieldInfo.setColumnName(columnMeta.getColumnName());
                     fieldInfo.setComment(columnMeta.getRemarks());
                     fieldInfo.setType(ClassUtils.getShortClassName(columnType));
                     classInfo.getFields().add(fieldInfo);

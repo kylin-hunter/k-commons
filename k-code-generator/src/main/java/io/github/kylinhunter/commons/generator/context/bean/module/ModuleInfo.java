@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.generator.context.bean.module;
 
+import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,12 +17,14 @@ import lombok.NoArgsConstructor;
 public class ModuleInfo {
     @EqualsAndHashCode.Include
     private String name;
-    private String databaseName;
+    private Database database;
     private TableInfo tableInfo;
+    private Module module;
 
-    public ModuleInfo(Module module, TableInfo tableInfo) {
+    public ModuleInfo(Database database, Module module, TableInfo tableInfo) {
+        this.database = database;
+        this.module = module;
         this.name = module.getName();
-        this.databaseName = module.getDatabaseName();
         this.tableInfo = tableInfo;
     }
 }

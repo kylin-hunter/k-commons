@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
@@ -18,8 +17,6 @@ import lombok.Data;
 @Data
 public class TemplateContext {
     private final ModuleInfo moduleInfo;
-    private final Module module;
-    private final Map<String, String> sqlTypes;
     private final Template template;
     private ClassInfo classInfo = new ClassInfo();
     private Map<String, Object> context = Maps.newHashMap();

@@ -9,8 +9,7 @@ import lombok.Data;
 
 @Data
 public class Modules {
-    protected String databaseName;
-    private Map<String, String> sqlTypes = Maps.newHashMap();
+    protected Database database;
     protected List<Module> list;
 
 }

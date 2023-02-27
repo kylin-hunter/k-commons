@@ -97,7 +97,11 @@ global: # global config
   template_path: '/User/bijian/template'   # template dir,can use current dir: $user.dir$/templates
   output_path: '/User/bijian/output'  # output dir,can use current dir: $user.dir$/output
 modules:
-  database_name: "kp" # database name
+  database:
+    name: "kp"
+    sql_types: #  custom sql  type
+      "datetime": "java.time.LocalTime"  # column declared datetime, is specially marked as java.time.LocalTime
+      "smallint": "java.lang.Short"  # column declared smallint, is specially marked as java.lang.Short        
   list:
     - name: 'User' # module name
       context:
@@ -109,6 +113,8 @@ modules:
           - 'extend_1'
           - 'extend_2'
           - 'extend_3'
+        column_types: # override the default sql type
+        "role_id": "java.lang.Integer"  # role_id  is specially marked as type java.lang.Integer
     - name: 'Role' # the second module
       table:
         name: 'test_role'
@@ -254,33 +260,36 @@ new CodeGenerator().execute();
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;
-import java.lang.Cloneable;
-import java.lang.Long;
-import java.lang.String;
+import java.time.LocalTime;
 import java.sql.Timestamp;
-import java.lang.Integer;
-import java.lang.Float;
-import java.lang.Double;
+import java.sql.Date;
+import java.sql.Time;
 import java.math.BigDecimal;
 /**
  * @description  the user
  * @author bijian
- * @since 2023-02-23
+ * @since 2023-02-28
  * basic_vm_custom_property_value
- * module_custom_propery_value
  **/
 public class UserBasic extends ArrayList implements Serializable,Cloneable{
     private Long id; // primary unique id
     private String name; // user name
-    private Timestamp birth; // birthday
-    private Integer age; // age
+    private LocalTime birth; // birthday
+    private Timestamp leaveCompanyTime; // the time leave company
+    private Date joinCompanyDate; // what time to join the company
+    private Time workTimeWorkTime; // what time to work ervery moring
+    private Integer workHours; // how many hours to work everyday
+    private Short age; // age
     private Float height; // height
     private Double weight; // weight
-    private BigDecimal money; // money
+    private BigDecimal moneyIncome; // all money income
+    private BigDecimal moneySpend; // the money
     private String address; // address
+    private Boolean deleteFlag; // is deleted
     private Integer sex; // 0 unkown 1 male 2 female
-    private Long role_id; // 角色 ID
+    private Integer roleId; // 角色 ID
 }
+
 
 
 ```
@@ -327,13 +336,10 @@ new CodeGenerator().execute();
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;
-import java.lang.Cloneable;
-import java.lang.Long;
-import java.lang.String;
+import java.time.LocalTime;
 import java.sql.Timestamp;
-import java.lang.Integer;
-import java.lang.Float;
-import java.lang.Double;
+import java.sql.Date;
+import java.sql.Time;
 import java.math.BigDecimal;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -341,9 +347,8 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * @description  the user
  * @author bijian
- * @since 2023-02-23
+ * @since 2023-02-28
  * basic_swagger_vm_custom_property_value
- * module_custom_propery_value
  **/
 @ApiModel(value="UserBasicSwagger", description="the user")
 public class UserBasicSwagger extends ArrayList implements Serializable,Cloneable{
@@ -352,22 +357,35 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
     @ApiModelProperty(value = "user name")
     private String name;
     @ApiModelProperty(value = "birthday")
-    private Timestamp birth;
+    private LocalTime birth;
+    @ApiModelProperty(value = "the time leave company")
+    private Timestamp leaveCompanyTime;
+    @ApiModelProperty(value = "what time to join the company")
+    private Date joinCompanyDate;
+    @ApiModelProperty(value = "what time to work ervery moring")
+    private Time workTimeWorkTime;
+    @ApiModelProperty(value = "how many hours to work everyday")
+    private Integer workHours;
     @ApiModelProperty(value = "age")
-    private Integer age;
+    private Short age;
     @ApiModelProperty(value = "height")
     private Float height;
     @ApiModelProperty(value = "weight")
     private Double weight;
-    @ApiModelProperty(value = "money")
-    private BigDecimal money;
+    @ApiModelProperty(value = "all money income")
+    private BigDecimal moneyIncome;
+    @ApiModelProperty(value = "the money")
+    private BigDecimal moneySpend;
     @ApiModelProperty(value = "address")
     private String address;
+    @ApiModelProperty(value = "is deleted")
+    private Boolean deleteFlag;
     @ApiModelProperty(value = "0 unkown 1 male 2 female")
     private Integer sex;
     @ApiModelProperty(value = "角色 ID")
-    private Long role_id;
+    private Integer roleId;
 }
+
 
 
 
@@ -437,13 +455,10 @@ new CodeGenerator().execute();
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;
-import java.lang.Cloneable;
-import java.lang.Long;
-import java.lang.String;
+import java.time.LocalTime;
 import java.sql.Timestamp;
-import java.lang.Integer;
-import java.lang.Float;
-import java.lang.Double;
+import java.sql.Date;
+import java.sql.Time;
 import java.math.BigDecimal;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -451,9 +466,8 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * @description  the user
  * @author bijian
- * @since 2023-02-23
+ * @since 2023-02-28
  * basic_swagger_snippet_vm_custom_property_value
- * module_custom_propery_value
  **/
 @ApiModel(value="UserBasicSwaggerSnippet", description="the user")
 public class UserBasicSwaggerSnippet extends ArrayList implements Serializable,Cloneable{
@@ -462,21 +476,33 @@ public class UserBasicSwaggerSnippet extends ArrayList implements Serializable,C
     @ApiModelProperty(value = "user name")
     private String name;
     @ApiModelProperty(value = "birthday")
-    private Timestamp birth;
+    private LocalTime birth;
+    @ApiModelProperty(value = "the time leave company")
+    private Timestamp leaveCompanyTime;
+    @ApiModelProperty(value = "what time to join the company")
+    private Date joinCompanyDate;
+    @ApiModelProperty(value = "what time to work ervery moring")
+    private Time workTimeWorkTime;
+    @ApiModelProperty(value = "how many hours to work everyday")
+    private Integer workHours;
     @ApiModelProperty(value = "age")
-    private Integer age;
+    private Short age;
     @ApiModelProperty(value = "height")
     private Float height;
     @ApiModelProperty(value = "weight")
     private Double weight;
-    @ApiModelProperty(value = "money")
-    private BigDecimal money;
+    @ApiModelProperty(value = "all money income")
+    private BigDecimal moneyIncome;
+    @ApiModelProperty(value = "the money")
+    private BigDecimal moneySpend;
     @ApiModelProperty(value = "address")
     private String address;
+    @ApiModelProperty(value = "is deleted")
+    private Boolean deleteFlag;
     @ApiModelProperty(value = "0 unkown 1 male 2 female")
     private Integer sex;
     @ApiModelProperty(value = "角色 ID")
-    private Long role_id;
+    private Integer roleId;
 
 }
 

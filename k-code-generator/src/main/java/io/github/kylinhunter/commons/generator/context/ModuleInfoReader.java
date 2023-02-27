@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
@@ -41,8 +42,8 @@ public class ModuleInfoReader {
      * @author BiJi'an
      * @date 2023-02-18 23:26
      */
-    public ModuleInfo read(Module module) {
-        return new ModuleInfo(module, toTable(module));
+    public ModuleInfo read(Database database, Module module) {
+        return new ModuleInfo(database, module, toTable(module));
     }
 
     /**
@@ -56,14 +57,15 @@ public class ModuleInfoReader {
     private TableInfo toTable(Module module) {
         Table table = module.getTable();
 
+        String databaseName = module.getDatabase().getName();
         TableInfo tableInfo = new TableInfo(table);
 
-        TableMeta tableMetaData = tableMetaReader.getTableMetaData(module.getDatabaseName(), table.getName());
+        TableMeta tableMetaData = tableMetaReader.getTableMetaData(databaseName, table.getName());
         ExceptionChecker.checkNotNull(tableMetaData, "tableMetaData can't be null");
         tableInfo.setTableMeta(tableMetaData);
 
         List<String> skipColumns = table.getSkipColumns();
-        List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData(module.getDatabaseName(), table.getName());
+        List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData(databaseName, table.getName());
         if (CollectionUtils.isEmpty(columnMetas)) {
             throw new CodeException("no column from table=>" + table);
         } else {

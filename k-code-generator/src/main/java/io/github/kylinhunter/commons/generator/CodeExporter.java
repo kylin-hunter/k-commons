@@ -7,8 +7,8 @@ import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
-import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
+import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
 import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class CodeExporter {
     private void export(TemplateContext templateContext) {
         TemplateExecutor templateExecutor = templateEngine.createTemplateExecutor(templateContext.getContext());
         Template template = templateContext.getTemplate();
-        Module module = templateContext.getModule();
+        Module module = templateContext.getModuleInfo().getModule();
         TemplateStrategy strategy = template.getStrategy();
         log.info("export module=>{}/template={}", module.getName(), template.getName());
         templateExecutor

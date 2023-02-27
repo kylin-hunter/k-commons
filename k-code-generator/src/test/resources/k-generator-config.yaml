@@ -5,10 +5,11 @@ global: # global config
   output_path: '$user.dir$/src_generator'   # same with:  new File(System.getProperty("user.dir")/output)
   #  output_path: '/Users/bijian/workspace_gitee/k-commons/k-generator/output'
 modules:
-  database_name: "kp"
-  sql_types: # override the default sql type
-    "datetime": "java.time.LocalTime"  # column declared datetime, is specially marked as java.time.LocalTime
-    "smallint": "java.lang.Short"  # column declared smallint, is specially marked as java.lang.Short
+  database:
+    name: "kp"
+    sql_types: # override the default sql type
+      "datetime": "java.time.LocalTime"  # column declared datetime, is specially marked as java.time.LocalTime
+      "smallint": "java.lang.Short"  # column declared smallint, is specially marked as java.lang.Short
   list:
     - name: 'User'
       context:

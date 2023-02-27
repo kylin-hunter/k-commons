@@ -81,8 +81,6 @@ public class ClassInfo {
         }
     }
 
-
-
     /**
      * @param fullClassNames fullClassNames
      * @return void
@@ -133,16 +131,15 @@ public class ClassInfo {
         return this.imports.toString(prefix, postfix);
     }
 
-
     /**
+     * @param location location
+     * @return java.lang.String
      * @title snippets
      * @description
      * @author BiJi'an
-     * @param location location
      * @date 2023-02-19 00:48
-     * @return java.lang.String
      */
-    public String snippets(String location){
+    public String snippets(String location) {
         return this.snippets.toString(location);
     }
 }
