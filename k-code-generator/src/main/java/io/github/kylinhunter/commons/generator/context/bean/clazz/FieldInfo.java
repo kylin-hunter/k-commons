@@ -12,6 +12,7 @@ public class FieldInfo {
     private String name;
     private String columnName;
     private String type;
+    private String fullType;
     private String comment;
     private Snippets snippets = new Snippets();
 

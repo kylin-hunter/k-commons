@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.name;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 
 /**
@@ -11,8 +10,6 @@ import io.github.kylinhunter.commons.exception.embed.ParamException;
  * @date 2022-01-21 19:55
  **/
 public class NamePairUtils {
-    private static final SnakeToCamel SNAKE_TO_CAMEL = CF.get(SnakeToCamel.class);
-    private static final CamelToSnake CAMEL_TO_SNAKE = CF.get(CamelToSnake.class);
 
     /**
      * @param str str
@@ -64,12 +61,12 @@ public class NamePairUtils {
 
         if (!StringUtils.isEmpty(str)) {
             NamePair namePair = new NamePair();
-            if (SNAKE_TO_CAMEL.isSnake(str)) {
+            if (SnakeToCamelUtils.isSnake(str)) {
                 namePair.setSnake(str);
-                namePair.setCamel(SNAKE_TO_CAMEL.convert(str, camelFormat));
+                namePair.setCamel(SnakeToCamelUtils.convert(str, camelFormat));
             } else {
                 namePair.setCamel(str);
-                namePair.setSnake(CAMEL_TO_SNAKE.convert(str, snakeFormat));
+                namePair.setSnake(CamelToSnakeUtils.convert(str, snakeFormat));
             }
 
             return namePair;

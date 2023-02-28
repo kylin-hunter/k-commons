@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.generator.context;
 
 import java.util.List;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -24,7 +23,6 @@ import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
-import io.github.kylinhunter.commons.name.SnakeToCamel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,7 +43,7 @@ public class TemplateContextBuilder {
     @CSet
     private ExpressionExecutor expressionExecutor;
     @CSet
-    SnakeToCamel snakeToCamel;
+    private FieldInfoConvertor fieldInfoConvertor;
 
     public List<TemplateContext> calculateContext() {
         List<TemplateContext> templateContexts = Lists.newArrayList();
@@ -103,14 +101,8 @@ public class TemplateContextBuilder {
         TableInfo tableInfo = moduleInfo.getTableInfo();
         Table table = tableInfo.getTable();
         tableInfo.getColumnMetas().forEach(columnMeta -> {
-                    String columnType = FieldConvertor.convert(columnMeta, table, database);
-
-                    classInfo.addImport(columnType);
-                    FieldInfo fieldInfo = new FieldInfo();
-                    fieldInfo.setName(snakeToCamel.convert(columnMeta.getColumnName()));
-                    fieldInfo.setColumnName(columnMeta.getColumnName());
-                    fieldInfo.setComment(columnMeta.getRemarks());
-                    fieldInfo.setType(ClassUtils.getShortClassName(columnType));
+                    FieldInfo fieldInfo = fieldInfoConvertor.convert(columnMeta, table, database);
+                    classInfo.addImport(fieldInfo.getFullType());
                     classInfo.getFields().add(fieldInfo);
                 }
         );

@@ -41,26 +41,30 @@
 #### 1.  创建一个表 test_user
 ```java
 
-CREATE TABLE IF NOT EXISTS `test_user`
-(
-    `id`          bigint(20)     NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
-    `name`        varchar(64)    NOT NULL DEFAULT '' COMMENT 'user name ',
-    `birth`       datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'birthday',
-    `age`         int            NOT NULL DEFAULT 0 COMMENT 'age',
-    `height`      float(9, 2)    NOT NULL DEFAULT 0 COMMENT 'height',
-    `weight`      double(19, 2)  NOT NULL DEFAULT 0 COMMENT 'weight',
-    `money`       decimal(20, 2) NOT NULL DEFAULT 0 COMMENT 'money',
-    `address`     varchar(512)   NOT NULL DEFAULT 0 COMMENT 'address',
-    `delete_flag` int            NOT NULL DEFAULT 0 COMMENT 'is deleted',
-    `sex`         tinyint(2)     NOT NULL DEFAULT 0 COMMENT '0 unkown 1 male 2 female',
-    `role_id`     bigint(20)     NOT NULL DEFAULT 0 COMMENT '角色 ID',
-    `extend_1`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段1',
-    `extend_2`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段2',
-    `extend_3`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
-    PRIMARY KEY (`id`),
-    constraint test_user_role_fk
+CREATE TABLE IF NOT EXISTS `test_user`(
+        `id`                  bigint(20)     NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
+        `name`                varchar(64)    NOT NULL DEFAULT '' COMMENT 'user name ',
+        `birth`               datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'birthday',
+        `leave_company_time`  timestamp      NOT NULL COMMENT 'the time leave company',
+        `join_company_date`   date           NOT NULL COMMENT 'what time to join the company',
+        `work_time_work_time` time           NOT NULL COMMENT 'what time to work ervery moring',
+        `work_hours`          int            NOT NULL DEFAULT 0 COMMENT 'how many hours to work everyday',
+        `age`                 smallint       NOT NULL DEFAULT 0 COMMENT 'age',
+        `height`              float(9, 2)    NOT NULL DEFAULT 0 COMMENT 'height',
+        `weight`              double(19, 2)  NOT NULL DEFAULT 0 COMMENT 'weight',
+        `money_income`        decimal(20, 2) NOT NULL DEFAULT 0 COMMENT 'all money income',
+        `money_spend`         decimal(19, 0) NOT NULL DEFAULT 0 COMMENT 'the money spent',
+        `address`             varchar(512)   NOT NULL DEFAULT 0 COMMENT 'address',
+        `delete_flag`         tinyint(1)     NOT NULL DEFAULT 0 COMMENT 'is deleted',
+        `sex`                 tinyint(2)     NOT NULL DEFAULT 0 COMMENT '0 unkown 1 male 2 female',
+        `role_id`             bigint(20)     NOT NULL DEFAULT 0 COMMENT '角色 ID',
+        `extend_1`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段1',
+        `extend_2`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段2',
+        `extend_3`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
+        PRIMARY KEY (`id`),
+        constraint test_user_role_fk
         foreign key (role_id) references test_role (id)
-) comment='the user'
+) comment ='the user'
 
 
 ```
@@ -95,13 +99,19 @@ datasources:
 ```java
 global: # 全局配置
   template_path: '/User/bijian/template'   # 模板所在目录，可以使用当前目录， 例如 $user.dir$/templates
-  output_path: '/User/bijian/output'  # 生成的源码所在目录，可以使用当前目录， 例如 $user.dir$/output
+  output:
+    path: '/User/bijian/output'    #   生成的源码所在目录，可以使用当前目录， 例如 $user.dir$/output
+    #  output_path: '/Users/bijian/workspace_gitee/k-commons/k-generator/output'
+    auto_clean: true # 自动清理上一次生成结果
+    auto_create: true # 如果目录不存在自动生成输出目录       
 modules:
   database:
     name: "kp"
     sql_types: # 支持一些自定义的sql类型映射（可选）
       "datetime": "java.time.LocalTime"  # 自定义：datetime类型, 映射为 java.time.LocalTime
-      "smallint": "java.lang.Short"  # 自定义： smallint 类型, 映射为 java.lang.Short        
+      "smallint": "java.lang.Short"  # 自定义： smallint 类型, 映射为 java.lang.Short
+      "(type=='decimal' && size<=19 && precision==0)": "java.lang.Long"
+      # decimal(size<=19,precision==0), 会被映射为 java.lang.Long 例如 decimal(10,0) 就会被映射为  java.lang.Long  
   list:
     - name: 'User' # 模块的名字
       context:
@@ -130,8 +140,8 @@ templates: # 模板定义
       context:
         'basic_vm_custom_property': 'basic_vm_custom_property_value'  #  模板的自定义变量
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #根据模块名字定义包名
-        class_name: k.string_to_camel(module.name,'upper')+'Basic' #根据模块的名字定义类名
+        package_name: '"com.kylinhunter."+k.str_lower(module.name)' #根据模块名字定义包名
+        class_name: k.str_camel(module.name,'upper')+'Basic' #根据模块的名字定义类名
         super_class: 'java.util.ArrayList' # 父类
         interfaces:  # 接口
           - java.io.Serializable
@@ -142,8 +152,8 @@ templates: # 模板定义
       context:
         'basic_swagger_vm_custom_property': 'basic_swagger_vm_custom_property_value'  # 模板的自定义变量
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #根据模块名字定义包名
-        class_name: k.string_to_camel(module.name,'upper')+'BasicSwagger' #根据模块的名字定义类名
+        package_name: '"com.kylinhunter."+k.str_lower(module.name)' #根据模块名字定义包名
+        class_name: k.str_camel(module.name,'upper')+'BasicSwagger' #根据模块的名字定义类名
         super_class: 'java.util.ArrayList'  # 父类
         interfaces: # 接口
           - java.io.Serializable
@@ -154,8 +164,8 @@ templates: # 模板定义
       context:
         'basic_swagger_snippet_vm_custom_property': 'basic_swagger_snippet_vm_custom_property_value'  # 模板的自定义变量
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #根据模块名字定义包名
-        class_name: k.string_to_camel(module.name,'upper')+'BasicSwaggerSnippet' #根据模块的名字定义类名
+        package_name: '"com.kylinhunter."+k.str_lower(module.name)' #根据模块名字定义包名
+        class_name: k.str_camel(module.name,'upper')+'BasicSwaggerSnippet' #根据模块的名字定义类名
         super_class: 'java.util.ArrayList'  # 父类
         interfaces:# 接口
           - java.io.Serializable
@@ -282,12 +292,13 @@ public class UserBasic extends ArrayList implements Serializable,Cloneable{
     private Float height; // height
     private Double weight; // weight
     private BigDecimal moneyIncome; // all money income
-    private BigDecimal moneySpend; // the money
+    private Long moneySpend; // the money spent
     private String address; // address
     private Boolean deleteFlag; // is deleted
     private Integer sex; // 0 unkown 1 male 2 female
     private Integer roleId; // 角色 ID
 }
+
 
 
 
@@ -373,8 +384,8 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
     private Double weight;
     @ApiModelProperty(value = "all money income")
     private BigDecimal moneyIncome;
-    @ApiModelProperty(value = "the money")
-    private BigDecimal moneySpend;
+    @ApiModelProperty(value = "the money spent")
+    private Long moneySpend;
     @ApiModelProperty(value = "address")
     private String address;
     @ApiModelProperty(value = "is deleted")
@@ -384,7 +395,6 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
     @ApiModelProperty(value = "角色 ID")
     private Integer roleId;
 }
-
 
 
 
@@ -492,8 +502,8 @@ public class UserBasicSwaggerSnippet extends ArrayList implements Serializable,C
     private Double weight;
     @ApiModelProperty(value = "all money income")
     private BigDecimal moneyIncome;
-    @ApiModelProperty(value = "the money")
-    private BigDecimal moneySpend;
+    @ApiModelProperty(value = "the money spent")
+    private Long moneySpend;
     @ApiModelProperty(value = "address")
     private String address;
     @ApiModelProperty(value = "is deleted")
@@ -504,6 +514,7 @@ public class UserBasicSwaggerSnippet extends ArrayList implements Serializable,C
     private Integer roleId;
 
 }
+
 
 
 

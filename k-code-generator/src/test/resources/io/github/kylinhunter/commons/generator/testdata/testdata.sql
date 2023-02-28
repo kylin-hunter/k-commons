@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `test_user`
     `height`              float(9, 2)    NOT NULL DEFAULT 0 COMMENT 'height',
     `weight`              double(19, 2)  NOT NULL DEFAULT 0 COMMENT 'weight',
     `money_income`        decimal(20, 2) NOT NULL DEFAULT 0 COMMENT 'all money income',
-    `money_spend`         decimal(20, 0) NOT NULL DEFAULT 0 COMMENT 'the money ',
+    `money_spend`         decimal(19, 0) NOT NULL DEFAULT 0 COMMENT 'the money spent',
     `address`             varchar(512)   NOT NULL DEFAULT 0 COMMENT 'address',
     `delete_flag`         tinyint(1)     NOT NULL DEFAULT 0 COMMENT 'is deleted',
     `sex`                 tinyint(2)     NOT NULL DEFAULT 0 COMMENT '0 unkown 1 male 2 female',

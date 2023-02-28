@@ -127,7 +127,7 @@ class ResourceHelperTest {
     }
 
     @Test
-    void getText() throws IOException {
+    void getText() {
 
         String path = "/test/file/test1.txt";
         String text1 = ResourceHelper.getText(path);

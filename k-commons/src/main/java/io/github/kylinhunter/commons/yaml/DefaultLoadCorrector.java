@@ -4,9 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.name.CamelToSnake;
+import io.github.kylinhunter.commons.name.CamelToSnakeUtils;
 import io.github.kylinhunter.commons.name.SnakeFormat;
-import io.github.kylinhunter.commons.name.SnakeToCamel;
+import io.github.kylinhunter.commons.name.SnakeToCamelUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -20,10 +20,6 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class DefaultLoadCorrector implements LoadCorrector {
     private static final Pattern PATTERN_PROP_NAME = Pattern.compile("^(\\s*-*\\s*)(\\w+-*\\w+)\\s*:");
-
-    private final SnakeToCamel snakeToCamel;
-
-    private final CamelToSnake camelToSnake;
 
     public static DefaultLoadCorrector singletion;
 
@@ -46,15 +42,16 @@ public class DefaultLoadCorrector implements LoadCorrector {
                 String group2 = matcher.group(2);
                 if (yamlType == YamlType.CAMLE) {
                     try {
-                        return matcher.replaceAll(group1 + snakeToCamel.convert(group2) + ":");
+                        return matcher.replaceAll(group1 + SnakeToCamelUtils.convert(group2) + ":");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else if (yamlType == YamlType.SNAKE_UNDERSCORE) {
-                    return matcher
-                            .replaceAll(group1 + camelToSnake.convert(group2, SnakeFormat.LOWWER_UNDERSCORE) + ":");
+                    return matcher.replaceAll(
+                            group1 + CamelToSnakeUtils.convert(group2, SnakeFormat.LOWWER_UNDERSCORE) + ":");
                 } else {
-                    return matcher.replaceAll(group1 + camelToSnake.convert(group2, SnakeFormat.LOWWER_HYPHEN) + ":");
+                    return matcher.replaceAll(
+                            group1 + CamelToSnakeUtils.convert(group2, SnakeFormat.LOWWER_HYPHEN) + ":");
                 }
             }
 

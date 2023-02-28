@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.strings.CharConst;
 import io.github.kylinhunter.commons.strings.StringConst;
 import lombok.Data;
@@ -14,9 +13,8 @@ import lombok.Data;
  * @description
  * @date 2022-01-01 14:39
  **/
-@C
 @Data
-public class SnakeToCamel {
+public class SnakeToCamelUtils {
 
     /**
      * @param name name
@@ -26,8 +24,8 @@ public class SnakeToCamel {
      * @author BiJi'an
      * @date 2022-11-22 01:25
      */
-    public String convert(String name) {
-        return this.convert(name, CamelFormat.LOWER);
+    public static String convert(String name) {
+        return convert(name, CamelFormat.LOWER);
     }
 
     /**
@@ -39,11 +37,11 @@ public class SnakeToCamel {
      * @author BiJi'an
      * @date 2023-02-08 00:25
      */
-    public String convert(String name, CamelFormat camelFormat) {
+    public static String convert(String name, CamelFormat camelFormat) {
         if (StringUtils.isBlank(name)) {
             return StringConst.EMPTY;
         }
-        if (!SnakeToCamel.isSnake(name)) {
+        if (!SnakeToCamelUtils.isSnake(name)) {
             if (camelFormat == CamelFormat.LOWER) {
                 name = Character.toLowerCase(name.charAt(0)) + name.substring(1);
             } else {

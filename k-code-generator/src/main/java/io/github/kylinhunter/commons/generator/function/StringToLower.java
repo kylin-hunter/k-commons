@@ -21,6 +21,6 @@ public class StringToLower extends AbstractFunction {
     }
 
     public String getName() {
-        return "k.string_to_lower";
+        return "k.str_lower";
     }
 }

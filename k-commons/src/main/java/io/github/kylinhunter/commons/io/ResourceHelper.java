@@ -8,11 +8,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.file.FileUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,14 +37,22 @@ public class ResourceHelper {
      */
     private static PathInfo toPathInfo(String path, PathType defaultType) {
         if (path.startsWith(CLASSPATH_TAG)) {
-            return PathInfo.of(PathType.CLASSPATH, path.substring(CLASSPATH_TAG.length()));
+            return PathInfo.classPath(path.substring(CLASSPATH_TAG.length()));
         } else if (path.startsWith(PROTOCOL_FILE)) {
-            return PathInfo.of(PathType.FILESYSTEM, IOHelper.toURI(path));
+            return PathInfo.filePath(IOHelper.toURI(path));
         } else if (path.startsWith(USER_DIR_TAG)) {
             String filePath = path.replace(USER_DIR_TAG, UserDirUtils.get().getAbsolutePath());
-            return PathInfo.of(PathType.FILESYSTEM, new File(filePath));
+            return PathInfo.filePath(new File(filePath));
         } else {
-            return PathInfo.of(defaultType, path);
+            if (defaultType == null) {
+                defaultType = PathType.CLASSPATH;
+            }
+            if (defaultType == PathType.FILESYSTEM) {
+                return PathInfo.filePath(new File(path));
+            } else {
+                return PathInfo.classPath(path);
+            }
+
         }
 
     }
@@ -221,7 +229,6 @@ public class ResourceHelper {
             return FileUtils.check(file, isFile, required);
 
         }
-
     }
 
     /**
@@ -291,6 +298,26 @@ public class ResourceHelper {
      */
     public static File getDirInClassPath(String classPath, boolean required) {
         return _getFileInClassPath(classPath, false, required);
+    }
+
+    /**
+     * @param path            path
+     * @param defaultPathType defaultPathType
+     * @return java.io.File
+     * @title getPath
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-26 15:36
+     */
+    public static Path getPath(String path, PathType defaultPathType) {
+        PathInfo pathInfo = toPathInfo(path, defaultPathType);
+        PathType pathType = pathInfo.getPathType();
+        if (pathType == PathType.CLASSPATH) {
+            return null;
+        } else {
+            return pathInfo.fileSystemPath;
+
+        }
     }
 
     /**
@@ -386,22 +413,36 @@ public class ResourceHelper {
      * @date 2022-01-01 02:15
      **/
     @Data
-    @AllArgsConstructor
     private static class PathInfo {
         private PathType pathType;
         private File file;
         private String path;
+        private Path fileSystemPath;
 
-        public static PathInfo of(PathType pathType, String path) {
-            return new PathInfo(pathType, null, path);
+        public PathInfo(PathType pathType, String path) {
+            this.pathType = pathType;
+            this.path = path;
+
         }
 
-        public static PathInfo of(PathType pathType, File file) {
-            return new PathInfo(pathType, file, null);
+        public PathInfo(PathType pathType, File file) {
+            this.pathType = pathType;
+            this.file = file;
+            this.path = file.getAbsolutePath();
+            this.fileSystemPath = file.toPath();
+
         }
 
-        public static PathInfo of(PathType pathType, URI uri) {
-            return new PathInfo(pathType, new File(uri), uri.getPath());
+        public static PathInfo classPath(String path) {
+            return new PathInfo(PathType.CLASSPATH, path);
+        }
+
+        public static PathInfo filePath(File file) {
+            return new PathInfo(PathType.FILESYSTEM, file);
+        }
+
+        public static PathInfo filePath(URI uri) {
+            return new PathInfo(PathType.FILESYSTEM, new File(uri));
         }
 
     }

@@ -23,6 +23,7 @@ import io.github.kylinhunter.commons.template.TemplateExecutor;
 import io.github.kylinhunter.commons.template.bean.Output;
 import io.github.kylinhunter.commons.template.bean.OutputBuilder;
 import io.github.kylinhunter.commons.template.bean.TemplateInfo;
+import io.github.kylinhunter.commons.template.config.OutputConfig;
 import io.github.kylinhunter.commons.template.config.TemplateConfig;
 import io.github.kylinhunter.commons.template.exception.TemplateException;
 import lombok.Data;
@@ -143,13 +144,8 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
     @Override
     public void output(OutputProcessor outputProcessor) {
         try {
-            if (templateConfig.isDefaultOutputDirClean()) {
-                for (File file : Objects
-                        .requireNonNull(this.templateConfig.getOutputDir().toFile().listFiles())) {
-                    log.info("delete file=>" + file.getAbsolutePath());
-                    FileUtils.deleteQuietly(file);
-                }
-            }
+            OutputConfig outputConfig = templateConfig.getOutputConfig();
+
             VelocityEngine velocityEngine = this.velocityTemplateEngine.getVelocityEngine();
 
             for (Output output : outputs) {
@@ -179,7 +175,7 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
                         if (!toFile.isFile()) {
                             throw new TemplateException("not a file" + toFile.getAbsolutePath());
                         } else {
-                            if (templateConfig.isOutputOverride()) {
+                            if (outputConfig.isOverride()) {
                                 log.warn("override file=>" + toFile.getAbsolutePath());
                                 writeToFile(toFile, resultText, output.getEncoding());
 
@@ -216,7 +212,8 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
 
     private void writeToFile(File file, String resultText, Charset encoding) throws IOException {
         log.info("output to file=> {}", file.getAbsolutePath());
-        encoding = encoding == null ? templateConfig.getOutputDefaultEncoding() : encoding;
+        OutputConfig outputConfig = templateConfig.getOutputConfig();
+        encoding = encoding == null ? outputConfig.getDefaultEncoding() : encoding;
         FileUtils.writeStringToFile(file, resultText, encoding);
     }
 

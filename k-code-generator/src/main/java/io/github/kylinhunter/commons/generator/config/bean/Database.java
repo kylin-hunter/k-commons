@@ -9,7 +9,7 @@ import lombok.Data;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-02-27 23:39
+ * @date 2023-02-26 23:39
  **/
 @Data
 public class Database {
@@ -22,7 +22,7 @@ public class Database {
      * @title getSqlType
      * @description
      * @author BiJi'an
-     * @date 2023-02-27 23:50
+     * @date 2023-02-26 23:50
      */
     public String getSqlType(String type) {
         return sqlTypes.get(type);

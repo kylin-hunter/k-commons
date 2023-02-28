@@ -41,26 +41,30 @@ read table info using jdbc,to generate source code。
 #### 1. create a table
 ```java
 
-CREATE TABLE IF NOT EXISTS `test_user`
-(
-    `id`          bigint(20)     NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
-    `name`        varchar(64)    NOT NULL DEFAULT '' COMMENT 'user name ',
-    `birth`       datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'birthday',
-    `age`         int            NOT NULL DEFAULT 0 COMMENT 'age',
-    `height`      float(9, 2)    NOT NULL DEFAULT 0 COMMENT 'height',
-    `weight`      double(19, 2)  NOT NULL DEFAULT 0 COMMENT 'weight',
-    `money`       decimal(20, 2) NOT NULL DEFAULT 0 COMMENT 'money',
-    `address`     varchar(512)   NOT NULL DEFAULT 0 COMMENT 'address',
-    `delete_flag` int            NOT NULL DEFAULT 0 COMMENT 'is deleted',
-    `sex`         tinyint(2)     NOT NULL DEFAULT 0 COMMENT '0 unkown 1 male 2 female',
-    `role_id`     bigint(20)     NOT NULL DEFAULT 0 COMMENT '角色 ID',
-    `extend_1`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段1',
-    `extend_2`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段2',
-    `extend_3`    varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
-    PRIMARY KEY (`id`),
-    constraint test_user_role_fk
+CREATE TABLE IF NOT EXISTS `test_user`(
+        `id`                  bigint(20)     NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
+        `name`                varchar(64)    NOT NULL DEFAULT '' COMMENT 'user name ',
+        `birth`               datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'birthday',
+        `leave_company_time`  timestamp      NOT NULL COMMENT 'the time leave company',
+        `join_company_date`   date           NOT NULL COMMENT 'what time to join the company',
+        `work_time_work_time` time           NOT NULL COMMENT 'what time to work ervery moring',
+        `work_hours`          int            NOT NULL DEFAULT 0 COMMENT 'how many hours to work everyday',
+        `age`                 smallint       NOT NULL DEFAULT 0 COMMENT 'age',
+        `height`              float(9, 2)    NOT NULL DEFAULT 0 COMMENT 'height',
+        `weight`              double(19, 2)  NOT NULL DEFAULT 0 COMMENT 'weight',
+        `money_income`        decimal(20, 2) NOT NULL DEFAULT 0 COMMENT 'all money income',
+        `money_spend`         decimal(19, 0) NOT NULL DEFAULT 0 COMMENT 'the money spent',
+        `address`             varchar(512)   NOT NULL DEFAULT 0 COMMENT 'address',
+        `delete_flag`         tinyint(1)     NOT NULL DEFAULT 0 COMMENT 'is deleted',
+        `sex`                 tinyint(2)     NOT NULL DEFAULT 0 COMMENT '0 unkown 1 male 2 female',
+        `role_id`             bigint(20)     NOT NULL DEFAULT 0 COMMENT '角色 ID',
+        `extend_1`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段1',
+        `extend_2`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段2',
+        `extend_3`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
+        PRIMARY KEY (`id`),
+        constraint test_user_role_fk
         foreign key (role_id) references test_role (id)
-) comment='the user'
+) comment ='the user'
 
 
 ```
@@ -95,13 +99,19 @@ datasources:
 ```java
 global: # global config
   template_path: '/User/bijian/template'   # template dir,can use current dir: $user.dir$/templates
-  output_path: '/User/bijian/output'  # output dir,can use current dir: $user.dir$/output
+  output:
+    path: '/User/bijian/output'   # output dir,can use current dir: $user.dir$/output
+    auto_clean: true # auto clean the output path
+    auto_create: true # create the output path if not exists
+        
 modules:
   database:
     name: "kp"
     sql_types: #  custom sql  type
       "datetime": "java.time.LocalTime"  # column declared datetime, is specially marked as java.time.LocalTime
-      "smallint": "java.lang.Short"  # column declared smallint, is specially marked as java.lang.Short        
+      "smallint": "java.lang.Short"  # column declared smallint, is specially marked as java.lang.Short
+      "(type=='decimal' && size<=19 && precision==0)": "java.lang.Long"
+      # column declared decimal(size<=19,precision==0), is marked as java.lang.Longe.g. decimal(10,0) = java.lang.Long  
   list:
     - name: 'User' # module name
       context:
@@ -130,8 +140,8 @@ templates: # tempalte definition
       context:
         'basic_vm_custom_property': 'basic_vm_custom_property_value'  #  template vairable
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #package name
-        class_name: k.string_to_camel(module.name,'upper')+'Basic' #class name
+        package_name: '"com.kylinhunter."+k.str_lower(module.name)' #package name
+        class_name: k.str_camel(module.name,'upper')+'Basic' #class name
         super_class: 'java.util.ArrayList' # super class
         interfaces:  # the interfaces
           - java.io.Serializable
@@ -142,8 +152,8 @@ templates: # tempalte definition
       context:
         'basic_swagger_vm_custom_property': 'basic_swagger_vm_custom_property_value'  # template vairable
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #package name
-        class_name: k.string_to_camel(module.name,'upper')+'BasicSwagger' #class name
+        package_name: '"com.kylinhunter."+k.str_lower(module.name)' #package name
+        class_name: k.str_camel(module.name,'upper')+'BasicSwagger' #class name
         super_class: 'java.util.ArrayList'  # super class
         interfaces: # the interfaces
           - java.io.Serializable
@@ -154,8 +164,8 @@ templates: # tempalte definition
       context:
         'basic_swagger_snippet_vm_custom_property': 'basic_swagger_snippet_vm_custom_property_value'  # template vairable
       strategy:
-        package_name: '"com.kylinhunter."+k.string_to_lower(module.name)' #package name
-        class_name: k.string_to_camel(module.name,'upper')+'BasicSwaggerSnippet' #class name
+        package_name: '"com.kylinhunter."+k.str_lower(module.name)' #package name
+        class_name: k.str_camel(module.name,'upper')+'BasicSwaggerSnippet' #class name
         super_class: 'java.util.ArrayList'  # super class
         interfaces:# the interfaces
           - java.io.Serializable
@@ -283,7 +293,7 @@ public class UserBasic extends ArrayList implements Serializable,Cloneable{
     private Float height; // height
     private Double weight; // weight
     private BigDecimal moneyIncome; // all money income
-    private BigDecimal moneySpend; // the money
+    private Long moneySpend; // the money spent
     private String address; // address
     private Boolean deleteFlag; // is deleted
     private Integer sex; // 0 unkown 1 male 2 female
@@ -374,8 +384,8 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
     private Double weight;
     @ApiModelProperty(value = "all money income")
     private BigDecimal moneyIncome;
-    @ApiModelProperty(value = "the money")
-    private BigDecimal moneySpend;
+    @ApiModelProperty(value = "the money spent")
+    private Long moneySpend;
     @ApiModelProperty(value = "address")
     private String address;
     @ApiModelProperty(value = "is deleted")
@@ -493,8 +503,8 @@ public class UserBasicSwaggerSnippet extends ArrayList implements Serializable,C
     private Double weight;
     @ApiModelProperty(value = "all money income")
     private BigDecimal moneyIncome;
-    @ApiModelProperty(value = "the money")
-    private BigDecimal moneySpend;
+    @ApiModelProperty(value = "the money spent")
+    private Long moneySpend;
     @ApiModelProperty(value = "address")
     private String address;
     @ApiModelProperty(value = "is deleted")

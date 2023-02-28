@@ -10,6 +10,7 @@ import io.github.kylinhunter.commons.io.file.FileExtensions;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.template.TemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
+import io.github.kylinhunter.commons.template.config.OutputConfig;
 import io.github.kylinhunter.commons.template.velocity.VelocityTemplateEngine;
 
 class VelocityTemplateExecutorTest {
@@ -51,9 +52,10 @@ class VelocityTemplateExecutorTest {
         //  template_in_file  and setOutputDir
         templateEngine.customize(config -> {
             File defaultDir = UserDirUtils.getTmpDir("template_output3");
-            config.setOutputDir(defaultDir.toPath());
-            config.setDefaultOutputDirClean(true);
-            config.setTemplateDir(UserDirUtils.getDir("templates").toPath());
+            OutputConfig outputConfig = config.getOutputConfig();
+            outputConfig.setOutputPath(defaultDir.toPath());
+            outputConfig.setAutoClean(true);
+            config.setTemplatePath(UserDirUtils.getDir("templates").toPath());
 
         });
         templateExecutor.tmplate(templateInFile, null, FileExtensions.VM).outputRelativePath("output3_result1.html")
