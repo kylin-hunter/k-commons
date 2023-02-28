@@ -10,5 +10,5 @@ import lombok.Data;
 @Data
 public class Global {
     private String templatePath;
-    private String outputPath;
+    private Output output;
 }

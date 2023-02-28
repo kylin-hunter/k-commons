@@ -34,14 +34,14 @@ class StringToCamelTest {
         columns.add(column);
         tableInfo.setColumnMetas(columns);
 
-        moduleInfo.setTable(tableInfo);
+        moduleInfo.setTableInfo(tableInfo);
         Map<String, Object> env = Maps.newHashMap();
         env.put("module", moduleInfo);
 
-        Object execute = expressionExecutor.execute("k.string_to_camel(module.name,'lower')", env);
+        Object execute = expressionExecutor.execute("k.str_camel(module.name,'lower')", env);
         System.out.println(execute);
 
-        execute = expressionExecutor.execute("k.string_to_camel(module.name,'upper')", env);
+        execute = expressionExecutor.execute("k.str_camel(module.name,'upper')", env);
         System.out.println(execute);
 
     }

@@ -55,7 +55,7 @@ public class TimeCostHelper {
 
             ctMethod.insertAfter(" cost =System.currentTimeMillis()-start;");
 
-                        ctMethod.insertAfter(" System.out.println(\"time cost:\"+cost);");
+            ctMethod.insertAfter(" System.out.println(\"" +method+" time cost:\"+cost);");
 
             CtClass etype = ClassPool.getDefault().get("java.lang.Exception");
             ctMethod.addCatch("{ System.out.println($e); throw $e; }", etype);

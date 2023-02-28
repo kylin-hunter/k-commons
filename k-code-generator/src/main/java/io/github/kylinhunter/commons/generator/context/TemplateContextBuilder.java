@@ -9,8 +9,10 @@ import com.google.common.collect.Lists;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
+import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Modules;
+import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
 import io.github.kylinhunter.commons.generator.constant.ContextConsts;
@@ -18,6 +20,7 @@ import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.FieldInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
+import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import lombok.RequiredArgsConstructor;
@@ -39,15 +42,18 @@ public class TemplateContextBuilder {
     private ModuleInfoReader moduleInfoReader;
     @CSet
     private ExpressionExecutor expressionExecutor;
+    @CSet
+    private FieldInfoConvertor fieldInfoConvertor;
 
     public List<TemplateContext> calculateContext() {
         List<TemplateContext> templateContexts = Lists.newArrayList();
         Modules modules = config.getModules();
+        Database database = modules.getDatabase();
         for (Module module : modules.getList()) {
-            ModuleInfo moduleInfo = moduleInfoReader.read(module);
+            ModuleInfo moduleInfo = moduleInfoReader.read(database, module);
             for (Template template : config.getTemplates().getList()) {
                 if (template.isEnabled()) {
-                    TemplateContext templateContext = new TemplateContext(moduleInfo, module, template);
+                    TemplateContext templateContext = new TemplateContext(moduleInfo, template);
                     calculateContext(templateContext);
                     templateContexts.add(templateContext);
                 }
@@ -70,7 +76,7 @@ public class TemplateContextBuilder {
         templateContext.putContext(ContextConsts.CLASS, templateContext.getClassInfo());
         templateContext.putContext(ContextConsts.MODULE, templateContext.getModuleInfo());
         templateContext.putContext(templateContext.getTemplate().getContext());
-        templateContext.putContext(templateContext.getModule().getContext());
+        templateContext.putContext(templateContext.getModuleInfo().getModule().getContext());
         processPackageName(templateContext);
         processClassName(templateContext);
         processSuperClass(templateContext);
@@ -90,12 +96,13 @@ public class TemplateContextBuilder {
      */
     private void processFields(TemplateContext templateContext) {
         ClassInfo classInfo = templateContext.getClassInfo();
-        templateContext.getModuleInfo().getTable().getColumnMetas().forEach(c -> {
-                    classInfo.addImport(c.getJavaClass());
-                    FieldInfo fieldInfo = new FieldInfo();
-                    fieldInfo.setName(c.getColumnName());
-                    fieldInfo.setComment(c.getRemarks());
-                    fieldInfo.setType(c.getJavaClass().getSimpleName());
+        ModuleInfo moduleInfo = templateContext.getModuleInfo();
+        Database database = moduleInfo.getDatabase();
+        TableInfo tableInfo = moduleInfo.getTableInfo();
+        Table table = tableInfo.getTable();
+        tableInfo.getColumnMetas().forEach(columnMeta -> {
+                    FieldInfo fieldInfo = fieldInfoConvertor.convert(columnMeta, table, database);
+                    classInfo.addImport(fieldInfo.getFullType());
                     classInfo.getFields().add(fieldInfo);
                 }
         );
@@ -172,7 +179,7 @@ public class TemplateContextBuilder {
     private void processComment(TemplateContext templateContext) {
         ModuleInfo moduleInfo = templateContext.getModuleInfo();
         ClassInfo classInfo = templateContext.getClassInfo();
-        TableMeta tableMeta = moduleInfo.getTable().getTableMeta();
+        TableMeta tableMeta = moduleInfo.getTableInfo().getTableMeta();
         classInfo.setComment(StringUtils.defaultString(tableMeta.getRemarks(), tableMeta.getName()));
     }
 

@@ -4,5 +4,6 @@
     <property name="app.name" value="k-generator"/>
     <property name="app.logging.log_file_path_prefix" value="./logs/${app.name}"/>
     <property name="app.logging.log_level" value="ERROR"/>
+    <property name="app.logging.max_history" value="3"/>
     <include resource="io/github/kylinhunter/commons/logs/app/kylinhunter-app.xml"/>
 </configuration>

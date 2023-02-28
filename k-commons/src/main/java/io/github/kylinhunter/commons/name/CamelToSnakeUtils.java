@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.name;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.kylinhunter.commons.component.C;
 import lombok.Data;
 
 /**
@@ -11,9 +10,8 @@ import lombok.Data;
  * @date 2022-01-01 14:39
  **/
 
-@C
 @Data
-public class CamelToSnake {
+public class CamelToSnakeUtils {
 
     /**
      * @param name name
@@ -24,15 +22,24 @@ public class CamelToSnake {
      * @date 2022-11-22 01:25
      */
 
-    public String convert(String name) {
-        return this.convert(name, SnakeFormat.LOWWER_UNDERSCORE);
+    public static String convert(String name) {
+        return convert(name, SnakeFormat.LOWWER_UNDERSCORE);
     }
 
-    public String convert(String name, SnakeFormat snakeFormat) {
+    /**
+     * @param name        name
+     * @param snakeFormat snakeFormat
+     * @return java.lang.String
+     * @title convert
+     * @description
+     * @author BiJi'an
+     * @date 2023-02-26 11:04
+     */
+    public static String convert(String name, SnakeFormat snakeFormat) {
         if (StringUtils.isBlank(name)) {
             return StringUtils.EMPTY;
         }
-        if (SnakeToCamel.isSnake(name)) {
+        if (SnakeToCamelUtils.isSnake(name)) {
             return name;
         }
 

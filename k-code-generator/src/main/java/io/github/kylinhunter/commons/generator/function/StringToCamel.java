@@ -7,9 +7,8 @@ import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorString;
 
-import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.name.CamelFormat;
-import io.github.kylinhunter.commons.name.SnakeToCamel;
+import io.github.kylinhunter.commons.name.SnakeToCamelUtils;
 
 /**
  * @author BiJi'an
@@ -20,17 +19,16 @@ public class StringToCamel extends AbstractFunction {
 
     @Override
     public AviatorObject call(Map<String, Object> env, AviatorObject param1, AviatorObject param2) {
-        SnakeToCamel snakeToCamel = CF.get(SnakeToCamel.class);
         String name = FunctionUtils.getStringValue(param1, env);
         String type = FunctionUtils.getStringValue(param2, env);
         if ("LOWER".equalsIgnoreCase(type)) {
-            return new AviatorString(snakeToCamel.convert(name, CamelFormat.LOWER));
+            return new AviatorString(SnakeToCamelUtils.convert(name, CamelFormat.LOWER));
         } else {
-            return new AviatorString(snakeToCamel.convert(name, CamelFormat.UPPER));
+            return new AviatorString(SnakeToCamelUtils.convert(name, CamelFormat.UPPER));
         }
     }
 
     public String getName() {
-        return "k.string_to_camel";
+        return "k.str_camel";
     }
 }

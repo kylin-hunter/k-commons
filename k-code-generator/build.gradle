@@ -1,3 +1,5 @@
+import org.gradle.internal.jvm.Jvm
+
 dependencies {
     api project(":k-commons")
     api project(":k-jdbc")
@@ -9,6 +11,8 @@ dependencies {
     implementation(rootProject.dependency_management['ojdbc8'])
     implementation(rootProject.dependency_management['commons-dbutils'])
     implementation(rootProject.dependency_management['aviator'])
+
+    testImplementation files(Jvm.current().toolsJar)
 
 
 }

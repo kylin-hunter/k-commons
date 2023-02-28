@@ -11,6 +11,7 @@ import org.reflections.ReflectionUtils;
 
 import com.google.common.collect.Sets;
 
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,10 @@ class CFieldCompSetter {
                 value = compManager.getAll(actualTypeArgumentClasses, true);
                 ReflectUtils.set(compObject, field, value);
             } else {
-                value = compManager.get(compClazz, true);
+                value = compManager.get(compClazz, false);
+                if (value == null) {
+                    throw new InitException(compObject.getClass().getName() + " can't set " + compClazz.getName());
+                }
             }
             ReflectUtils.set(compObject, field, value);
 

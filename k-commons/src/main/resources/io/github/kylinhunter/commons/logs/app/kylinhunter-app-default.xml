@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+File appender logback configuration provided for import, equivalent to the programmatic
+initialization performed by Boot
+-->
+
+<included>
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+
+    <!-- sys properties -->
+    <property name="app.name" value="k-log"/>
+    <property name="app.logging.log_level" value="ERROR"/>
+    <property name="app.logging.max_log_file_size" value="50MB"/>
+    <property name="app.logging.max_history" value="3"/>
+    <property name="app.logging.log_pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %X{x-current-user} - %X{x-trace-id} %logger{12} [%line]: %msg%n"/>
+    <property name="app.logging.console_pattern"
+              value="%black(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%blue(%t)] %highlight(%-5level) %X{x-current-user} - %X{x-trace-id} %yellow(%C{36}[%line]): %msg%n"/>
+    <property name="app.logging.log_file_path_prefix" value="./logs/${app.name}"/>
+
+
+    <!-- configure logger level -->
+    <logger name="org.springframework" level="WARN"/>
+</included>

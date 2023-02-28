@@ -1,14 +1,18 @@
 package io.github.kylinhunter.commons.template.velocity;
 
+import java.io.File;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolManager;
 
 import io.github.kylinhunter.commons.template.AbstractTemplateEngine;
 import io.github.kylinhunter.commons.template.TemplateExecutor;
+import io.github.kylinhunter.commons.template.config.OutputConfig;
 import io.github.kylinhunter.commons.template.constant.VelocityConst;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -51,7 +55,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
                 VelocityConst.VALUE_RESOURCE_LOADER_FILE_CLASS);
 
         // resource.loader.file
-        String templatePath = templateConfig.getTemplateDir().toFile().getAbsolutePath();
+        String templatePath = templateConfig.getTemplatePath().toFile().getAbsolutePath();
         log.info("resource.loader.file.path=>" + templatePath);
         properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, templatePath);
 
@@ -64,6 +68,14 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         this.toolManager = new ToolManager();
         this.toolManager.configure("/io/github/kylinhunter/commons/template/velocity-tools.xml");
 
+
+        if(this.templateConfig.getOutputConfig().isAutoClean()){
+            OutputConfig outputConfig = templateConfig.getOutputConfig();
+            for (File file : Objects.requireNonNull(outputConfig.getOutputPath().toFile().listFiles())) {
+                log.info("delete file=>" + file.getAbsolutePath());
+                FileUtils.deleteQuietly(file);
+            }
+        }
     }
 
     /**

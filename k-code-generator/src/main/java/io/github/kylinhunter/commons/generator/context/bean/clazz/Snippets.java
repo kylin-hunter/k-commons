@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import io.github.kylinhunter.commons.generator.constant.CodeLocation;
 import lombok.Data;
 
 /**
@@ -51,50 +50,27 @@ public class Snippets {
     }
 
     /**
-     * @param snippets snippets
+     * @param snippet snippet
      * @return void
      * @title add
      * @description
      * @author BiJi'an
      * @date 2023-02-19 17:24
      */
-    public void add(String location, String snippets) {
+    public void add(String name, String snippet) {
 
-        switch (location) {
-            case CodeLocation.CLASS_BEFORE:
-                this.compute(CodeLocation.CLASS_BEFORE, snippets);
-                break;
-            case CodeLocation.FIELD_BEFORE:
-                this.compute(CodeLocation.FIELD_BEFORE, snippets);
-                break;
+        if (!StringUtils.isBlank(name) && !StringUtils.isBlank(snippet)) {
+            this.snippets.compute(name, (k, v) -> {
+                        if (v == null) {
+                            v = Lists.newArrayList();
+                        }
+                        v.add(snippet);
+                        return v;
+                    }
 
-            default:
-                throw new IllegalStateException("Unexpected value: " + location);
+            );
         }
 
     }
 
-    /**
-     * @param location location
-     * @param snippets snippets
-     * @return void
-     * @title compute
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-19 00:35
-     */
-    private void compute(String location, String snippets) {
-        this.snippets.compute(location, (k, v) -> {
-
-                    if (v == null) {
-                        v = Lists.newArrayList();
-                    }
-                    v.add(snippets);
-
-                    return v;
-                }
-
-        );
-
-    }
 }

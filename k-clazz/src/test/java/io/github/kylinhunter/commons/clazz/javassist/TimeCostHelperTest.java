@@ -19,7 +19,7 @@ class TimeCostHelperTest {
         KMethod method2 = new KMethod("speak");
         KMethod method3 = new KMethod("answer", String.class);
         final Class<?> watch =
-                TimeCostHelper.watch("io.github.kylinhunter.commons.clazz.Dog", method1, method2, method3);
+                TimeCostHelper.watch("io.github.kylinhunter.commons.Dog", method1, method2, method3);
 
         Animal dog = (Animal) watch.newInstance();
         dog.name();
