@@ -39,6 +39,5 @@ tmp/
 .DS_Store
 Thumbs.db
 /k-code-generator/src_generator/*
-!/k-code-generator/src_generator/empty
 !/k-commons/src/main/resources/io/github/kylinhunter/commons/logs
 

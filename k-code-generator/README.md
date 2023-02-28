@@ -1,4 +1,4 @@
-# bit state
+# code generator
 
 ### Description
 
