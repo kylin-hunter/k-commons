@@ -8,7 +8,6 @@ import java.nio.charset.Charset;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 
-import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 
 /**
@@ -32,6 +31,18 @@ public class IOHelper {
         } catch (Exception e) {
             throw new KIOException("invalid uri:" + uri);
         }
+    }
+
+    /**
+     * @param input input
+     * @return java.lang.String
+     * @title toString
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-04 01:15
+     */
+    public static String toString(InputStream input) {
+        return toString(input, Charset.defaultCharset());
     }
 
     /**
@@ -63,8 +74,6 @@ public class IOHelper {
                 throw new KIOException("InputStream can't be null");
             }
             return IOUtils.toString(input, charsetName);
-        } catch (KRuntimeException e) {
-            throw e;
         } catch (IOException e) {
             throw new KIOException("toString error", e);
         }
