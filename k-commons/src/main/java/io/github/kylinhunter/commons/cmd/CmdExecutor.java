@@ -75,8 +75,8 @@ public class CmdExecutor {
 
             Process process = runtime.exec(cmd);
 
-            Future<String> stdOut = poolExecutor.submit(new CmdResultReader(process, ResultType.STD_OUT));
-            Future<String> stdErr = poolExecutor.submit(new CmdResultReader(process, ResultType.STD_ERR));
+            Future<List<String>> stdOut = poolExecutor.submit(new CmdResultReader(process, ResultType.STD_OUT));
+            Future<List<String>> stdErr = poolExecutor.submit(new CmdResultReader(process, ResultType.STD_ERR));
             boolean success = process.waitFor(timeout, unit);
             if (success) {
                 cmdResult.setExitValue(process.exitValue());
@@ -84,8 +84,8 @@ public class CmdExecutor {
                 cmdResult.setExitValue(Integer.MIN_VALUE);
             }
 
-            cmdResult.setStdOut(stdOut.get());
-            cmdResult.setStdErr(stdErr.get());
+            cmdResult.setStdOuts(stdOut.get());
+            cmdResult.setStdErrs(stdErr.get());
             return cmdResult;
         } catch (Exception e) {
             throw new GeneralException("exec err", e);

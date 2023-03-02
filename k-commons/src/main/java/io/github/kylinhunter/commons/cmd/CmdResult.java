@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.cmd;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -10,8 +12,8 @@ import lombok.Data;
 @Data
 public class CmdResult {
     private int exitValue;
-    private String stdOut;
-    private String stdErr;
+    private List<String> stdOuts;
+    private List<String> stdErrs;
 
     public boolean isSuccess() {
         return exitValue == 0;
