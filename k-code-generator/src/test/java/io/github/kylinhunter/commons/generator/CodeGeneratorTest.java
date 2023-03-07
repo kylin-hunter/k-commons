@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.generator;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalTime;
 
 import org.junit.jupiter.api.Assertions;

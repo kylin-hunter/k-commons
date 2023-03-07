@@ -2,6 +2,8 @@ import org.gradle.internal.jvm.Jvm
 dependencies {
     api project(":k-commons")
     api(rootProject.dependency_management['javassist'])
+    api(rootProject.dependency_management['bytebuddy'])
+    implementation 'net.bytebuddy:byte-buddy-agent:1.14.0'
     api(rootProject.dependency_management['velocity-engine-core'])
     api(rootProject.dependency_management['velocity-tools-generic'])
     testImplementation files(Jvm.current().toolsJar)
@@ -27,8 +29,8 @@ jar {
     manifest {
         attributes(
                 'Main-Class': "io.github.kylinhunter.commons.clazz.Main",
-                'Premain-Class': "io.github.kylinhunter.commons.clazz.a.agent.PreMain",
-                'Agent-Class': "io.github.kylinhunter.commons.clazz.a.agent.AgentMain",
+                'Premain-Class': "io.github.kylinhunter.commons.clazz.agent.PreAgent",
+                'Agent-Class': "io.github.kylinhunter.commons.clazz.agent.AgentMain",
                 'Can-Redefine-Classes': true,
                 'Can-Retransform-Classes': true,
                 'Class-Path': allJars + " ."
