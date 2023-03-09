@@ -1,7 +1,9 @@
-package io.github.kylinhunter.commons.clazz.monitor;
+package io.github.kylinhunter.commons.clazz.agent.plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.kylinhunter.commons.clazz.agent.plugin.mca.MethodCallAnalysisPlugin;
 
 /**
  * @author BiJi'an
@@ -13,9 +15,6 @@ public class PluginFactory {
     public static List<IPlugin> pluginGroup = new ArrayList<>();
 
     static {
-        //链路监控
-        pluginGroup.add(new LinkPlugin());
-        //Jvm监控
-        pluginGroup.add(new JvmPlugin());
+        pluginGroup.add(new MethodCallAnalysisPlugin());
     }
 }

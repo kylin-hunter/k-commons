@@ -2,9 +2,10 @@ package io.github.kylinhunter.commons.util;
 
 import java.util.List;
 
-import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.Assertions;
+ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Lists;
 
 class CollectionUtilsTest {
 

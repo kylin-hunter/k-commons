@@ -9,7 +9,7 @@ import org.apache.commons.compress.utils.Lists;
 
 import io.github.kylinhunter.commons.cmd.CmdResultReader.ResultType;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
-import io.github.kylinhunter.commons.juc.ThreadPools;
+import io.github.kylinhunter.commons.juc.ThreadPoolExecutorFactory;
 
 /**
  * @author BiJi'an
@@ -18,7 +18,8 @@ import io.github.kylinhunter.commons.juc.ThreadPools;
  **/
 public class CmdExecutor {
 
-    private ThreadPoolExecutor poolExecutor = ThreadPools.register(CmdExecutor.class.getSimpleName(), 5, 10, 10);
+    private ThreadPoolExecutor poolExecutor = ThreadPoolExecutorFactory
+            .register(CmdExecutor.class.getSimpleName(), 5, 10, 10);
 
     public void setPoolExecutor(ThreadPoolExecutor poolExecutor) {
         if (poolExecutor != null) {

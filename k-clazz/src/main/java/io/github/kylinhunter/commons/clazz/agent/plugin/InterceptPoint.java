@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.clazz.monitor;
+package io.github.kylinhunter.commons.clazz.agent.plugin;
 
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;

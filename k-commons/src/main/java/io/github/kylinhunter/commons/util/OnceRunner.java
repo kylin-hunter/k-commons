@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.util;
 
 import java.util.Set;
 
-import org.assertj.core.util.Sets;
+import com.google.common.collect.Sets;
 
 /**
  * @author BiJi'an
@@ -17,6 +17,15 @@ public class OnceRunner {
         run(clazz.getName(), r);
     }
 
+    /**
+     * @param name name
+     * @param r    r
+     * @return void
+     * @title run
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-07 23:07
+     */
     public static void run(String name, Runner r) {
         if (r != null) {
             if (!runNames.contains(name)) {
@@ -34,7 +43,7 @@ public class OnceRunner {
     }
 
     @FunctionalInterface
-    interface Runner {
+    public static interface Runner {
         void run();
     }
 }

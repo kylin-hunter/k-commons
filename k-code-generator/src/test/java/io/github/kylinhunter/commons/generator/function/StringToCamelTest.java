@@ -3,9 +3,10 @@ package io.github.kylinhunter.commons.generator.function;
 import java.util.List;
 import java.util.Map;
 
-import org.assertj.core.util.Lists;
+
 import org.junit.jupiter.api.Test;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.component.CF;

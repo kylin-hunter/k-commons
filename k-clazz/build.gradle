@@ -29,7 +29,7 @@ jar {
     manifest {
         attributes(
                 'Main-Class': "io.github.kylinhunter.commons.clazz.Main",
-                'Premain-Class': "io.github.kylinhunter.commons.clazz.agent.PreAgent",
+                'Premain-Class': "io.github.kylinhunter.commons.clazz.agent.PreMain",
                 'Agent-Class': "io.github.kylinhunter.commons.clazz.agent.AgentMain",
                 'Can-Redefine-Classes': true,
                 'Can-Retransform-Classes': true,

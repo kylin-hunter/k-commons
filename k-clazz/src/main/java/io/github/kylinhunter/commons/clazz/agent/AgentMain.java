@@ -19,7 +19,6 @@ public class AgentMain {
      * @date 2022-12-29 00:23
      */
     public static void agentmain(String agentArgs, Instrumentation inst) {
-        System.out.println("agentmain start");
-        System.out.println(agentArgs);
+        System.out.println("agentmain start,agentArgs=" + agentArgs);
     }
 }

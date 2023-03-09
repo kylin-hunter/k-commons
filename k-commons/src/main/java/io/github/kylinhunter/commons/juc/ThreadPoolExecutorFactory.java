@@ -14,7 +14,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  * @description
  * @date 2023-03-04 01:32
  **/
-public class ThreadPools {
+public class ThreadPoolExecutorFactory {
     private static final Map<String, ThreadPoolExecutor> pools = Maps.newHashMap();
 
     /**
@@ -44,7 +44,7 @@ public class ThreadPools {
      * @date 2023-03-03 00:13
      */
 
-    public static synchronized ThreadPoolExecutor create(int corePoolSize, int maximumPoolSize, int capacity) {
+    private static synchronized ThreadPoolExecutor create(int corePoolSize, int maximumPoolSize, int capacity) {
         return new ThreadPoolExecutor(corePoolSize, maximumPoolSize, 60L, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(capacity));
 
@@ -65,4 +65,20 @@ public class ThreadPools {
         }
         return threadPoolExecutor;
     }
+
+    /**
+     * @param name name
+     * @return java.util.concurrent.ThreadPoolExecutor
+     * @title shutdownNow
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-08 19:53
+     */
+    public static void shutdownNow(String name) {
+        final ThreadPoolExecutor threadPoolExecutor = get(name);
+        if (threadPoolExecutor != null) {
+            threadPoolExecutor.shutdownNow();
+        }
+    }
+
 }
