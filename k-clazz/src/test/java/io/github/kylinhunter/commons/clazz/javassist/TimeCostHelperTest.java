@@ -1,8 +1,6 @@
 package io.github.kylinhunter.commons.clazz.javassist;
 
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import io.github.kylinhunter.commons.Animal;
@@ -11,8 +9,6 @@ import io.github.kylinhunter.commons.clazz.exception.ClazzException;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TimeCostHelperTest {
 
-    @Test
-    @Order(1)
     void watch() throws ClazzException, IllegalAccessException, InstantiationException {
 
         KMethod method1 = new KMethod("name");

@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.compress.utils.Lists;
+import com.google.common.collect.Lists;
 
 import io.github.kylinhunter.commons.cmd.CmdResultReader.ResultType;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;

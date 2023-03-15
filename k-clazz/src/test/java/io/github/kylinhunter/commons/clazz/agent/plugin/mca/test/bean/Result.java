@@ -7,10 +7,9 @@ import lombok.Data;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-09 16:28
+ * @date 2023-03-11 16:28
  **/
 @Data
-
 public class Result {
 
     private String result1;

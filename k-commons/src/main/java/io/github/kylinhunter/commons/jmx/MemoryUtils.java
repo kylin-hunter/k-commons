@@ -7,7 +7,7 @@ import java.lang.management.MemoryUsage;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-07 00:47
+ * @date 2023-03-11 00:47
  **/
 public class MemoryUtils {
     private static final long MB = 1048576L;
@@ -17,7 +17,7 @@ public class MemoryUtils {
      * @title printHeapMemory
      * @description
      * @author BiJi'an
-     * @date 2023-03-09 15:00
+     * @date 2023-03-11 15:00
      */
     public static void printHeapMemory() {
         MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
@@ -40,7 +40,7 @@ public class MemoryUtils {
      * @title printNonHeapMemory
      * @description
      * @author BiJi'an
-     * @date 2023-03-09 15:00
+     * @date 2023-03-11 15:00
      */
     public static void printNonHeapMemory() {
         MemoryMXBean memory = ManagementFactory.getMemoryMXBean();

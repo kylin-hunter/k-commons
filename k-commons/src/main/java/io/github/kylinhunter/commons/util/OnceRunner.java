@@ -7,7 +7,7 @@ import com.google.common.collect.Sets;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-07 14:18
+ * @date 2023-03-11 14:18
  **/
 public class OnceRunner {
 
@@ -24,7 +24,7 @@ public class OnceRunner {
      * @title run
      * @description
      * @author BiJi'an
-     * @date 2023-03-07 23:07
+     * @date 2023-03-11 23:07
      */
     public static void run(String name, Runner r) {
         if (r != null) {

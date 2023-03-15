@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.compress.utils.Lists;
+import com.google.common.collect.Lists;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import lombok.Data;

@@ -6,7 +6,7 @@ import java.lang.instrument.Instrumentation;
 import io.github.kylinhunter.commons.clazz.agent.plugin.IPlugin;
 import io.github.kylinhunter.commons.clazz.agent.plugin.InterceptPoint;
 import io.github.kylinhunter.commons.clazz.agent.plugin.PluginFactory;
-import io.github.kylinhunter.commons.clazz.agent.plugin.mca.MethodCostTime;
+import io.github.kylinhunter.commons.clazz.agent.plugin.mca.InvokeAnalysis;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.util.OnceRunner;
 import net.bytebuddy.agent.builder.AgentBuilder;
@@ -28,7 +28,7 @@ public class PreMain {
      * @title java -javaagent:agent.jar=agentArgs
      * @description
      * @author BiJi'an
-     * @date 2023-03-07 23:09
+     * @date 2023-03-11 23:09
      */
     public static void premain(String agentArgs, Instrumentation inst) {
         OnceRunner.run(PreMain.class, () -> {
@@ -57,7 +57,7 @@ public class PreMain {
 
                                                         builder1= builder1.method(interceptPoint.buildMethodsMatcher())
                                                                         .intercept(MethodDelegation
-                                                                                .to(MethodCostTime.class));
+                                                                                .to(InvokeAnalysis.class));
                                                         builder1
                                                                 .make().saveIn(UserDirUtils.getTmpDir("bja"));
 

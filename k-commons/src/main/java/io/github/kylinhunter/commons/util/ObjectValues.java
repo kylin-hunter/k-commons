@@ -5,9 +5,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+
+import com.google.common.collect.Lists;
 
 import io.github.kylinhunter.commons.date.DateUtils;
 

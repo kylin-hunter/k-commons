@@ -35,7 +35,7 @@ public class ScheduledExecutorFactory {
      * @title create
      * @description
      * @author BiJi'an
-     * @date 2023-03-08 20:18
+     * @date 2023-03-11 20:18
      */
 
     private static synchronized ScheduledExecutorService create(int corePoolSize) {
@@ -65,7 +65,7 @@ public class ScheduledExecutorFactory {
      * @title shutdownNow
      * @description
      * @author BiJi'an
-     * @date 2023-03-08 19:53
+     * @date 2023-03-11 19:53
      */
     public static void shutdownNow(String name) {
         ScheduledExecutorService threadPoolExecutor = get(name);

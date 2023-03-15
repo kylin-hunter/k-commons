@@ -10,9 +10,9 @@ import net.bytebuddy.matcher.ElementMatchers;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-07 00:48
+ * @date 2023-03-11 00:48
  **/
-public class MethodCallAnalysisPlugin implements IPlugin {
+public class InvokeAnalysisPlugin implements IPlugin {
 
     @Override
     public String name() {
@@ -31,7 +31,7 @@ public class MethodCallAnalysisPlugin implements IPlugin {
 
                     @Override
                     public ElementMatcher<MethodDescription> buildMethodsMatcher() {
-                        return ElementMatchers.isMethod().and(ElementMatchers.any());
+                        return ElementMatchers.isMethod().and(ElementMatchers.nameContains("doHomeWork"));
                     }
                 }
         };
@@ -39,7 +39,7 @@ public class MethodCallAnalysisPlugin implements IPlugin {
 
     @Override
     public Class adviceClass() {
-        return MethodCostTime.class;
+        return InvokeAnalysis.class;
     }
 
     @Override

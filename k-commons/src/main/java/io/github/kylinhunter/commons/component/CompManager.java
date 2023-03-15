@@ -5,8 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.commons.compress.utils.Lists;
-
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;

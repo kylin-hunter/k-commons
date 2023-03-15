@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-07 00:47
+ * @date 2023-03-11 00:47
  **/
 public class GCUtils {
 
@@ -17,7 +17,7 @@ public class GCUtils {
      * @title printGCInfo
      * @description
      * @author BiJi'an
-     * @date 2023-03-09 15:00
+     * @date 2023-03-11 15:00
      */
     public static void printGCInfo() {
         List<GarbageCollectorMXBean> garbages = ManagementFactory.getGarbageCollectorMXBeans();

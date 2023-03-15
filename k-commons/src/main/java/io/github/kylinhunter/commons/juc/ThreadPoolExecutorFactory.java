@@ -72,7 +72,7 @@ public class ThreadPoolExecutorFactory {
      * @title shutdownNow
      * @description
      * @author BiJi'an
-     * @date 2023-03-08 19:53
+     * @date 2023-03-11 19:53
      */
     public static void shutdownNow(String name) {
         final ThreadPoolExecutor threadPoolExecutor = get(name);
