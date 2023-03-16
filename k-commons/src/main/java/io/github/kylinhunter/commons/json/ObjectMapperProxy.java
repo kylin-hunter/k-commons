@@ -20,14 +20,12 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import io.github.kylinhunter.commons.date.DatePatterns;
 import io.github.kylinhunter.commons.exception.embed.FormatException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-11-21 19:09
  **/
-@Slf4j
 public class ObjectMapperProxy {
 
     public static ObjectMapper defaultObjectMapper;
@@ -125,8 +123,6 @@ public class ObjectMapperProxy {
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
                 throw new FormatException("text readValue error", e);
-            } else {
-                log.error("text readValue error", e);
             }
         }
         return null;
@@ -149,8 +145,6 @@ public class ObjectMapperProxy {
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
                 throw new FormatException("text readValue error", e);
-            } else {
-                log.error("text readValue error", e);
             }
         }
         return null;
@@ -173,8 +167,6 @@ public class ObjectMapperProxy {
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
                 throw new FormatException("text readValue error", e);
-            } else {
-                log.error("text readValue error", e);
             }
         }
         return null;
@@ -195,8 +187,6 @@ public class ObjectMapperProxy {
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
                 throw new FormatException("text readValue error", e);
-            } else {
-                log.error("text readValue error", e);
             }
         }
         return StringUtils.EMPTY;
@@ -217,8 +207,6 @@ public class ObjectMapperProxy {
         } catch (Exception e) {
             if (jsonOption.isThrowIfFailed()) {
                 throw new FormatException("text readValue error", e);
-            } else {
-                log.error("text readValue error", e);
             }
         }
         return EMPTY_BYTES;

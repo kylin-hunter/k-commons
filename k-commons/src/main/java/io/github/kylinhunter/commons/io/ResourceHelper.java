@@ -12,7 +12,7 @@ import java.nio.file.Path;
 
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
-import io.github.kylinhunter.commons.io.file.FileUtils;
+import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import lombok.Data;
 
@@ -226,7 +226,7 @@ public class ResourceHelper {
             return _getFileInClassPath(pathInfo.getPath(), isFile, required);
         } else {
             File file = pathInfo.file;
-            return FileUtils.check(file, isFile, required);
+            return FileUtil.check(file, isFile, required);
 
         }
     }
@@ -246,7 +246,7 @@ public class ResourceHelper {
             url = ResourceHelper.class.getResource(classPath);
         }
         File file = getFile(url);
-        return FileUtils.check(file, isFile, required);
+        return FileUtil.check(file, isFile, required);
 
     }
 

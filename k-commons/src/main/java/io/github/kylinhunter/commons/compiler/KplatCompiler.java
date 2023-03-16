@@ -17,17 +17,14 @@ import javax.tools.ToolProvider;
 import org.apache.commons.io.IOUtils;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
-
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-06-14 00:28
  **/
-@Slf4j
 @Getter
 @Setter
 public class KplatCompiler {

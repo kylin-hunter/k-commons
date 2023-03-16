@@ -5,16 +5,15 @@ import java.util.concurrent.ExecutionException;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
 
 import io.github.kylinhunter.commons.exception.embed.biz.BizException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-08-16 19:54
  **/
-@Slf4j
 public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implements Cache<V> {
 
     private final LoadingCache<CacheKey, V> cache;
@@ -193,10 +192,23 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
         if (cacheConfig.getExpireAfterWrite() > 0) {
             cacheBuilder.expireAfterWrite(cacheConfig.getExpireAfterWrite(), cacheConfig.getExpireTimeUnit());
         }
-
-        cacheBuilder.removalListener(
-                notification -> log.info(notification.getKey() + " remove:" + notification.getCause()));
+        RemovalListener<CacheKey, V> removalListener = getRemovalListener();
+        if (removalListener != null) {
+            cacheBuilder.removalListener(removalListener);
+        }
 
         return cacheBuilder.build(this);
     }
+
+    /**
+     * @return com.google.common.cache.RemovalListener<io.github.kylinhunter.commons.cache.guava.CacheKey, V>
+     * @title getRemovalListener
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-18 00:21
+     */
+    public RemovalListener<CacheKey, V> getRemovalListener() {
+        return null;
+    }
+
 }

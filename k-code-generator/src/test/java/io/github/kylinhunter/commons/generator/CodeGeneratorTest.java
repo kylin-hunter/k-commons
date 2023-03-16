@@ -10,7 +10,7 @@ import io.github.kylinhunter.commons.classloader.ExClassLoaderUtil;
 import io.github.kylinhunter.commons.compiler.KplatCompiler;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
-import io.github.kylinhunter.commons.io.file.FileUtils;
+import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,11 +20,9 @@ class CodeGeneratorTest {
 
     File compileOutputDir = UserDirUtils.getTmpDir("src_generator/classes");
 
-
     @Test
     void execute() throws NoSuchFieldException {
-        FileUtils.cleanDirectoryQuietly(compileOutputDir);
-
+        FileUtil.cleanDirectoryQuietly(compileOutputDir);
 
         CodeGenerator codeGenerator = new CodeGenerator();
         codeGenerator.execute();
@@ -71,7 +69,6 @@ class CodeGeneratorTest {
             Assertions.assertEquals(LocalTime.class, clazz.getDeclaredField("birth").getType());
             Assertions.assertEquals(Short.class, clazz.getDeclaredField("age").getType());
             Assertions.assertEquals(Long.class, clazz.getDeclaredField("moneySpend").getType());
-
 
         }
 

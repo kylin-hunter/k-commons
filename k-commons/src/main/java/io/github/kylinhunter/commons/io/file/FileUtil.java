@@ -3,18 +3,19 @@ package io.github.kylinhunter.commons.io.file;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
 import io.github.kylinhunter.commons.exception.embed.KIOException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022/1/1
  **/
-@Slf4j
-public class FileUtils  {
+
+public class FileUtil {
     @Deprecated
-    private FileUtils() {
+    private FileUtil() {
 
     }
 
@@ -27,14 +28,13 @@ public class FileUtils  {
      * @date 2023-02-26 14:33
      */
     public static void cleanDirectoryQuietly(File file) {
-//        if (file != null && file.isDirectory()) {
-//            try {
-//                cleanDirectory(file);
-//                log.info("clean dir success:" + file.getAbsolutePath());
-//            } catch (IOException e) {
-//                log.error("clean dir error:" + file.getAbsolutePath());
-//            }
-//        }
+        if (file != null && file.isDirectory()) {
+            try {
+                FileUtils.cleanDirectory(file);
+            } catch (IOException ignore) {
+                // ignore
+            }
+        }
 
     }
 

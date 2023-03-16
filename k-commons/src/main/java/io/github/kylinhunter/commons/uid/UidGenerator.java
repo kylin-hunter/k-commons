@@ -4,9 +4,7 @@ import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class UidGenerator {
 
     private static final long INIT_EPOCH = 1632499200000L; // initialized time stamp
@@ -103,9 +101,6 @@ public class UidGenerator {
         TIMESTAMP_SHIFT = sequenceBits + typeBits + workerIdBits + datacenterIdBits; // time stamp shift 12+10 = 22bit
         long timestampBits = 63 - sequenceBits - typeBits - workerIdBits - datacenterIdBits;
         TIMESTAMP_MAX = ~(-1L << timestampBits);
-
-        log.info("timestampBits {}, datacenterIdBits {}, workerIdBits {},typeBits {}, sequenceBits {}",
-                timestampBits, datacenterIdBits, workerIdBits, typeBits, sequenceBits);
 
         if (type > TYPE_MAX || type < 0) {
             throw new ParamException("type Id can't less than 0 or great than " + TYPE_MAX);

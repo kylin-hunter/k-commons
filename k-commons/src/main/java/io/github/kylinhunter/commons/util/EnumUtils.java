@@ -5,16 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
-
 import io.github.kylinhunter.commons.exception.embed.ParamException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description a enum util
  * @date 2022/1/1
  **/
-@Slf4j
 public class EnumUtils {
     private static final Map<Class<?>, Map<Integer, EnumCode>> ENUM_CODES = new HashMap<>();
     private static final Map<Class<?>, Map<String, EnumLabel>> ENUM_LABELS = new HashMap<>();
@@ -222,14 +219,11 @@ public class EnumUtils {
         try {
             return Enum.valueOf(enumType, name);
         } catch (Exception e) {
-            log.error("fromName  error", e);
+            if (throwIfFailed) {
+                throw new ParamException("invalid enum name:" + name);
+            }
         }
-        if (throwIfFailed) {
-            throw new ParamException("invalid enum name:" + name);
-        } else {
-            return null;
-        }
-
+        return null;
     }
 
     public static <T extends Enum<T>> T[] fromName(Class<T> enumType, String[] names) {

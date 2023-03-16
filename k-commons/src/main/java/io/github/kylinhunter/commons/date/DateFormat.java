@@ -8,14 +8,11 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 
 import io.github.kylinhunter.commons.exception.embed.ParamException;
-
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
-@Slf4j
 public class DateFormat {
 
     private String pattern;

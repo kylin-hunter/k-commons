@@ -7,14 +7,12 @@ import java.nio.file.Path;
 
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.SystemException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-06-13 20:10
  **/
-@Slf4j
 public class ExClassLoaderUtil {
 
     /**
@@ -38,8 +36,6 @@ public class ExClassLoaderUtil {
                 URLClassLoader classLoader = (URLClassLoader) parentClassLoader;
                 add.invoke(classLoader, path.toUri().toURL());
             }
-
-            log.info("add addClassPath ==>" + path);
         } catch (Exception e) {
             throw new SystemException("addClassPath error", e);
         }

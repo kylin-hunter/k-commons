@@ -13,7 +13,6 @@ import org.reflections.scanners.Scanners;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.sys.KConst;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
@@ -21,9 +20,8 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022/01/01
  **/
 
-@Slf4j
 public class ErrInfoManager {
-    public static final Map<Integer, ErrInfo> ERR_INFOS = MapUtils.newLinkedHashMap();
+    private static final Map<Integer, ErrInfo> ERR_INFOS = MapUtils.newLinkedHashMap();
 
     static {
         init(KConst.K_BASE_PACKAGE);
@@ -90,8 +88,10 @@ public class ErrInfoManager {
      * @date 2022-11-24 01:30
      */
     public static void println() {
-        log.info("print errInfo code ");
-        ERR_INFOS.forEach((errCode, defaultMsg) -> log.info("erroCode={},defaultMsg={}", errCode, defaultMsg));
+        System.out.println("print errInfo code\n ");
+        ERR_INFOS.forEach((errCode, defaultMsg) ->
+                System.out.println("erroCode=" + errCode + ",defaultMsg=" + defaultMsg)
+        );
 
     }
 

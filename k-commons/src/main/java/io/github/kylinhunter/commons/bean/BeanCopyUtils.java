@@ -10,14 +10,12 @@ import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectorCache;
 import io.github.kylinhunter.commons.exception.embed.FormatException;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-01-01 19:09
  **/
-@Slf4j
 public class BeanCopyUtils {
 
     /**

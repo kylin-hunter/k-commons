@@ -9,21 +9,18 @@ import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.collections.SetUtils;;
-
+import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.ExceptionFinder;
-import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.exception.common.KThrowable;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 import io.github.kylinhunter.commons.sys.KConst;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2021/8/1
  **/
-@Slf4j
 public class ExplainManager {
 
     private static Explainers explainers;
@@ -97,6 +94,7 @@ public class ExplainManager {
                 MapUtils.newHashMap();
         public final Set<Class<? extends Throwable>> allThrowables = SetUtils.newHashSet();
 
+        @SuppressWarnings({"unchecked", "rawtypes"})
         public void add(List<Explainer> explainers) {
             explainers.forEach(explain -> {
 

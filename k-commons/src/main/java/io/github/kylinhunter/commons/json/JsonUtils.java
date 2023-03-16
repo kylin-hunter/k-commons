@@ -6,14 +6,11 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JavaType;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * @author BiJi'an
  * @description json工具
  * @date 2022/01/01
  **/
-@Slf4j
 public class JsonUtils {
 
     /**

@@ -9,13 +9,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.reflections.ReflectionUtils;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
-import io.github.kylinhunter.commons.collections.SetUtils;;
-
+import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
@@ -24,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
  **/
 
 @RequiredArgsConstructor
-@Slf4j
 class CFieldCompSetter {
 
     private CConstructorManager constructorManager;
