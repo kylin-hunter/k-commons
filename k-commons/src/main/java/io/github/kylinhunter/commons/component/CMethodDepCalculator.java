@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.collections.SetUtils;;
 
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 
@@ -21,7 +21,7 @@ import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
  **/
 
 public class CMethodDepCalculator {
-    private final Map<CMethod, Set<CMethod>> dependencies = Maps.newHashMap();
+    private final Map<CMethod, Set<CMethod>> dependencies = MapUtils.newHashMap();
     private final CMethodManager methodManager;
 
     public CMethodDepCalculator(CMethodManager methodManager) {
@@ -64,7 +64,7 @@ public class CMethodDepCalculator {
      * @date 2022-11-08 20:06
      */
     private void calculate(CMethod cmethod) {
-        calculate(cmethod, Sets.newHashSet(cmethod));
+        calculate(cmethod, SetUtils.newHashSet(cmethod));
         cmethod.setDepLevel(dependencies.get(cmethod).size());
     }
 
@@ -84,7 +84,7 @@ public class CMethodDepCalculator {
         for (CMethod cmethod : depCMethods) {
             dependencies.compute(oriCmethod, (k, v) -> {
                 if (v == null) {
-                    v = Sets.newHashSet();
+                    v = SetUtils.newHashSet();
                 }
                 v.add(cmethod);
                 return v;
@@ -92,7 +92,7 @@ public class CMethodDepCalculator {
 
             Method method = cmethod.getMethod();
             if (method.getParameterCount() > 0) {
-                Set<CMethod> tmpCMethods = Sets.newHashSet();
+                Set<CMethod> tmpCMethods = SetUtils.newHashSet();
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 Type[] genericParameterTypes = method.getGenericParameterTypes();
                 for (int i = 0; i < parameterTypes.length; i++) {

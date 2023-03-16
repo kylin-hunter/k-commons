@@ -12,8 +12,9 @@ import java.util.stream.Collectors;
 
 import org.reflections.ReflectionUtils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.bean.BeanCopyUtils;
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertType;
@@ -32,7 +33,7 @@ import lombok.Data;
  **/
 @Data
 public class BeanCopyCache {
-    public static final Map<String, BeanCopy> FIELD_COPYS = Maps.newConcurrentMap();
+    public static final Map<String, BeanCopy> FIELD_COPYS = MapUtils.newConcurrentMap();
     public static BeanCopy DEFAULT_BEAN_COPY = new BeanCopy();
 
     /**
@@ -91,7 +92,7 @@ public class BeanCopyCache {
     @SuppressWarnings("unchecked")
     private static List<FieldConvertor> initFieldConvertor(Class<?> sourceClass, Class<?> targetClass) {
         try {
-            List<FieldConvertor> fieldConvertors = Lists.newArrayList();
+            List<FieldConvertor> fieldConvertors = ListUtils.newArrayList();
             Set<Field> allSourceFields = ReflectionUtils.getAllFields(sourceClass);
             Map<String, Field> targetFields = ReflectionUtils.getAllFields(targetClass).stream()
                     .collect(Collectors.toMap(Field::getName, e -> e, (o, n) -> n));

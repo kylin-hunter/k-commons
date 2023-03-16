@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import lombok.AllArgsConstructor;
@@ -105,11 +105,11 @@ public class JsonUtilsTest {
     @Test
     public void testReadToListObject() {
 
-        String text1 = JsonUtils.writeToString(Lists.newArrayList(testBean, testBean));
+        String text1 = JsonUtils.writeToString(ListUtils.newArrayList(testBean, testBean));
         Assertions.assertEquals("keyValue", JsonUtils.readToListObject(text1, Map.class).get(0).get("key"));
         Assertions.assertEquals("keyValue", JsonUtils.readToListObject(text1, Map.class).get(1).get("key"));
 
-        String text2 = JsonUtils.writeToString(Lists.newArrayList(testBean, testBean));
+        String text2 = JsonUtils.writeToString(ListUtils.newArrayList(testBean, testBean));
         System.out.println("text:" + text2);
         List<TestBean> testBeans = JsonUtils.readToListObject(text2, TestBean.class);
         System.out.println("testBeans:" + testBeans);

@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.reflections.ReflectionUtils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.collections.SetUtils;;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.BeanCreator;
@@ -23,15 +23,15 @@ import lombok.Getter;
  **/
 
 class CMethodManager {
-    private final Map<Class<?>, List<CMethod>> cmethodsMap = Maps.newHashMap();
+    private final Map<Class<?>, List<CMethod>> cmethodsMap = MapUtils.newHashMap();
     @Getter
-    private List<CMethod> cmethods = Lists.newArrayList();
+    private List<CMethod> cmethods = ListUtils.newArrayList();
 
     private final CompManager compManager;
     private final CompTools compTools;
     private final CMethodDepCalculator methodDepCalculator;
     @Getter
-    private final Set<Class<?>> compClasses = Sets.newHashSet();
+    private final Set<Class<?>> compClasses = SetUtils.newHashSet();
 
     public CMethodManager(CompManager compManager) {
         this.compManager = compManager;
@@ -115,7 +115,7 @@ class CMethodManager {
     private void register(Class<?> clazz, CMethod cmethod) {
         cmethodsMap.compute(clazz, (k, v) -> {
             if (v == null) {
-                v = Lists.newArrayList();
+                v = ListUtils.newArrayList();
             }
             if (!v.contains(cmethod)) {
                 if (cmethod.isPrimary()) {

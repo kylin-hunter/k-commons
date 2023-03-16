@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022/1/1
  **/
 @Slf4j
-public class FileUtils extends org.apache.commons.io.FileUtils {
+public class FileUtils  {
     @Deprecated
     private FileUtils() {
 
@@ -27,14 +27,14 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @date 2023-02-26 14:33
      */
     public static void cleanDirectoryQuietly(File file) {
-        if (file != null && file.isDirectory()) {
-            try {
-                cleanDirectory(file);
-                log.info("clean dir success:" + file.getAbsolutePath());
-            } catch (IOException e) {
-                log.error("clean dir error:" + file.getAbsolutePath());
-            }
-        }
+//        if (file != null && file.isDirectory()) {
+//            try {
+//                cleanDirectory(file);
+//                log.info("clean dir success:" + file.getAbsolutePath());
+//            } catch (IOException e) {
+//                log.error("clean dir error:" + file.getAbsolutePath());
+//            }
+//        }
 
     }
 

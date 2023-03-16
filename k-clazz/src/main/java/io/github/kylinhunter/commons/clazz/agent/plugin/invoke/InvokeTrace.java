@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.clazz.agent.plugin.mca;
+package io.github.kylinhunter.commons.clazz.agent.plugin.invoke;
 
 import java.lang.reflect.Method;
 
@@ -7,23 +7,16 @@ import lombok.Data;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-15 17:24
+ * @date 2023-03-18 22:24
  **/
 @Data
 public class InvokeTrace {
-    private String threadId;
-    long start = System.currentTimeMillis();
-    private Method method;
-    private StackTraceElement stacks[];
+    private final long threadId;
+    private final StackTraceElement stacks[];
+    private final Method method;
+    private long start = System.currentTimeMillis();
+
     private long cost;
-
-    public InvokeTrace(StackTraceElement[] stacks, Method method) {
-        Thread thread = Thread.currentThread();
-        this.threadId =this.getThreadId();
-        this.stacks = thread.getStackTrace();
-        this.method = method;
-
-    }
 
     public void end() {
         this.cost = System.currentTimeMillis() - start;
@@ -41,6 +34,8 @@ public class InvokeTrace {
             stringBuilder.append(stack.getMethodName() + "(" + stack.getLineNumber() + ") \n");
 
         }
+        stringBuilder.append("with cost " + this.cost + " ms\n");
+
         return stringBuilder.toString();
     }
 }

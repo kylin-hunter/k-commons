@@ -2,6 +2,8 @@ package io.github.kylinhunter.commons.util;
 
 import java.util.concurrent.TimeUnit;
 
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
+
 /**
  * @description:
  * @author: BiJi'an
@@ -12,7 +14,7 @@ public class ThreadHelper {
         try {
             timeUnit.sleep(count);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new GeneralException("sleep error", e);
         }
     }
 }

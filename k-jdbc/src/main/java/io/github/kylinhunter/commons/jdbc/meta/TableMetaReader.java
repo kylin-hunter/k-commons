@@ -7,8 +7,8 @@ import java.sql.ResultSetMetaData;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
@@ -98,11 +98,11 @@ public class TableMetaReader {
                                              String tableName) {
         List<TableMeta> columnMetaDatas;
         try {
-            columnMetaDatas = Lists.newArrayList();
+            columnMetaDatas = ListUtils.newArrayList();
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[] {"TABLE"});
             ResultSetMetaData tableMetadata = tables.getMetaData();
-            Map<String, Object> rawMetadata = Maps.newHashMap();
+            Map<String, Object> rawMetadata = MapUtils.newHashMap();
             while (tables.next()) {
 
                 TableMeta tableMeta = new TableMeta();

@@ -41,11 +41,7 @@ public class DefaultLoadCorrector implements LoadCorrector {
                 String group1 = matcher.group(1);
                 String group2 = matcher.group(2);
                 if (yamlType == YamlType.CAMLE) {
-                    try {
-                        return matcher.replaceAll(group1 + SnakeToCamelUtils.convert(group2) + ":");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    return matcher.replaceAll(group1 + SnakeToCamelUtils.convert(group2) + ":");
                 } else if (yamlType == YamlType.SNAKE_UNDERSCORE) {
                     return matcher.replaceAll(
                             group1 + CamelToSnakeUtils.convert(group2, SnakeFormat.LOWWER_UNDERSCORE) + ":");
@@ -59,16 +55,4 @@ public class DefaultLoadCorrector implements LoadCorrector {
         return line;
     }
 
-    public static void main(String[] args) {
-        Matcher matcher = PATTERN_PROP_NAME.matcher(" -   my-money: 4");
-        if (matcher.find()) {
-            String group = matcher.group();
-            System.out.println(group);
-            for (int i = 0; i <= matcher.groupCount(); i++) {
-                System.out.println("group(" + i + "):" + matcher.group(i));
-
-            }
-            System.out.println(matcher.replaceAll(matcher.group(1) + matcher.group(2) + ":"));
-        }
-    }
 }

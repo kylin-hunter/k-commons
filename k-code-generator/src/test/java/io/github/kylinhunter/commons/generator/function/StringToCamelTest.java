@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
@@ -28,7 +28,7 @@ class StringToCamelTest {
         tableMeta.setName("tableName");
         tableInfo.setTableMeta(tableMeta);
 
-        List<ColumnMeta> columns = Lists.newArrayList();
+        List<ColumnMeta> columns = ListUtils.newArrayList();
         ColumnMeta column = new ColumnMeta();
         column.setColumnName("columnName");
         column.setJavaClass(List.class);
@@ -36,7 +36,7 @@ class StringToCamelTest {
         tableInfo.setColumnMetas(columns);
 
         moduleInfo.setTableInfo(tableInfo);
-        Map<String, Object> env = Maps.newHashMap();
+        Map<String, Object> env = MapUtils.newHashMap();
         env.put("module", moduleInfo);
 
         Object execute = expressionExecutor.execute("k.str_camel(module.name,'lower')", env);

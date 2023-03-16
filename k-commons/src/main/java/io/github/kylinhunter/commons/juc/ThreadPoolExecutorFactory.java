@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 
@@ -15,7 +15,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  * @date 2023-03-04 01:32
  **/
 public class ThreadPoolExecutorFactory {
-    private static final Map<String, ThreadPoolExecutor> pools = Maps.newHashMap();
+    private static final Map<String, ThreadPoolExecutor> pools = MapUtils.newHashMap();
 
     /**
      * @param corePoolSize    corePoolSize

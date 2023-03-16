@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.clazz.agent.plugin.mca.test.bean;
+package io.github.kylinhunter.commons.clazz.agent.plugin.invoke.test.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

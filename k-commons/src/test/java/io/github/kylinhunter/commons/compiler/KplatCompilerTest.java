@@ -5,8 +5,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Sets;
-
+import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 
 class KplatCompilerTest {
@@ -15,7 +14,7 @@ class KplatCompilerTest {
     public void compile() throws Exception {
         KplatCompiler kplatCompiler = new KplatCompiler();
 
-        Set<String> path = Sets.newTreeSet();
+        Set<String> path = SetUtils.newTreeSet();
         kplatCompiler.findClassPath("org", path);
         kplatCompiler.findClassPath("com", path);
 

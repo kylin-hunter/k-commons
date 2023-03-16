@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.component.CF;
 
@@ -14,7 +14,7 @@ class ColumMatch {
     void execute() {
         ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
 
-        Map<String, Object> env = Maps.newHashMap();
+        Map<String, Object> env = MapUtils.newHashMap();
         env.put("name", "test");
         env.put("size", 10);
         env.put("precision", 11);

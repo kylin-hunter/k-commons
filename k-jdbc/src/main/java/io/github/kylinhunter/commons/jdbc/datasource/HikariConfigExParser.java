@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import io.github.kylinhunter.commons.jdbc.datasource.bean.DataSourceConfig;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.DataSourceInfo;
@@ -39,7 +39,7 @@ public class HikariConfigExParser {
         DataSourceConfig DataSourceConfig = YamlHelper.loadFromPath(DataSourceConfig.class, path);
         List<DataSourceInfo> dataSourceInfos = DataSourceConfig.getDatasources();
 
-        List<HikariConfigEx> hikariConfigExs = Lists.newArrayList();
+        List<HikariConfigEx> hikariConfigExs = ListUtils.newArrayList();
 
         for (int i = 0; i < dataSourceInfos.size(); i++) {
 

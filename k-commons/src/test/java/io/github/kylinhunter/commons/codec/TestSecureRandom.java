@@ -5,26 +5,22 @@ import java.security.SecureRandom;
 
 public class TestSecureRandom {
 
-    public static void main(String[] args) {
-        try {
-            print(SecureRandom.getInstance("SHA1PRNG"), null);
-            print(SecureRandom.getInstance("SHA1PRNG"), null);
-            print(SecureRandom.getInstance("SHA1PRNG"), "123");
-            print(SecureRandom.getInstance("SHA1PRNG"), "123");
+    public static void main(String[] args) throws NoSuchAlgorithmException {
 
-            print(new SecureRandom(), null);
-            print(new SecureRandom(), null);
-            print(new SecureRandom(), "123");
-            print(new SecureRandom(), "123");
+        print(SecureRandom.getInstance("SHA1PRNG"), null);
+        print(SecureRandom.getInstance("SHA1PRNG"), null);
+        print(SecureRandom.getInstance("SHA1PRNG"), "123");
+        print(SecureRandom.getInstance("SHA1PRNG"), "123");
 
-            print(SecureRandom.getInstance("NativePRNG"), null);
-            print(SecureRandom.getInstance("NativePRNG"), null);
-            print(SecureRandom.getInstance("NativePRNG"), "123");
-            print(SecureRandom.getInstance("NativePRNG"), "123");
-        } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        print(new SecureRandom(), null);
+        print(new SecureRandom(), null);
+        print(new SecureRandom(), "123");
+        print(new SecureRandom(), "123");
+
+        print(SecureRandom.getInstance("NativePRNG"), null);
+        print(SecureRandom.getInstance("NativePRNG"), null);
+        print(SecureRandom.getInstance("NativePRNG"), "123");
+        print(SecureRandom.getInstance("NativePRNG"), "123");
 
     }
 

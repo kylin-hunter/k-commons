@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.clazz.agent.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.kylinhunter.commons.clazz.agent.plugin.mca.InvokeAnalysisPlugin;
+import io.github.kylinhunter.commons.clazz.agent.plugin.invoke.InvokeAnalysisPlugin;
 
 /**
  * @author BiJi'an

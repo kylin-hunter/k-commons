@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import io.github.kylinhunter.commons.date.DateUtils;
 
@@ -131,7 +131,7 @@ public class ObjectValues {
             return (List<T>) obj;
         } else if (obj instanceof Collection) {
             Collection<? extends T> c = (Collection<? extends T>) obj;
-            List<T> list = Lists.newArrayList();
+            List<T> list = ListUtils.newArrayList();
             list.addAll(c);
             return list;
         }

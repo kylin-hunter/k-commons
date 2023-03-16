@@ -10,18 +10,18 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.file.FileUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022/1/1
  **/
-@Slf4j
+
 public class ResourceHelper {
     public static final String USER_DIR_TAG = "$user.dir$";
     public static final String PROTOCOL_FILE = "file:";
@@ -341,7 +341,8 @@ public class ResourceHelper {
                 }
             }
         } catch (Exception e) {
-            log.warn("get File error " + url, e);
+            throw new GeneralException("get File error=> " + url, e);
+
         }
         return file;
 

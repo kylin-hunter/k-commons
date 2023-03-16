@@ -4,7 +4,7 @@ import java.beans.BeanInfo;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import lombok.Data;
 
@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 public class BeanIntrospector {
     private BeanInfo beanInfo;
-    private Map<String, PropertyDescriptor> propertyDescriptors = Maps.newHashMap();
+    private Map<String, PropertyDescriptor> propertyDescriptors = MapUtils.newHashMap();
 
     /**
      * @param name               name

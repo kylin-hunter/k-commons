@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.clazz.agent.plugin.mca.test;
+package io.github.kylinhunter.commons.clazz.agent.plugin.invoke.test;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;

@@ -1,18 +1,16 @@
-package io.github.kylinhunter.commons.util;
+package io.github.kylinhunter.commons.collections;
 
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022/1/1
  **/
-@Slf4j
+
 public class CollectionUtils {
 
     /**
@@ -23,10 +21,10 @@ public class CollectionUtils {
      * @author BiJi'an
      * @date 2022/1/1 8:30
      */
-    @SafeVarargs
+    @SuppressWarnings("unchecked")
     public static <T> List<T> merge(boolean reuse, List<T>... results) {
 
-        List<T> dist = reuse ? null : Lists.newArrayList();
+        List<T> dist = reuse ? null : ListUtils.newArrayList();
         for (List<T> result : results) {
             if (result != null && result.size() > 0) {
                 if (dist == null) {

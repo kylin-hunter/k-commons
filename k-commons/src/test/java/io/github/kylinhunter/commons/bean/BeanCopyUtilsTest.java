@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import io.github.kylinhunter.commons.json.JsonUtils;
 import io.github.kylinhunter.commons.serialize.ObjectBytesSerializer;
@@ -33,9 +33,9 @@ class BeanCopyUtilsTest {
         bean1.setDoubleValue1(1.123D);
         bean1.setDoubleValue2(0.123D);
         bean1.setJson(subBean);
-        bean1.setJsonList(Lists.newArrayList(subBean));
+        bean1.setJsonList(ListUtils.newArrayList(subBean));
         bean1.setBytes(subBean);
-        bean1.setBytesList(Lists.newArrayList(subBean));
+        bean1.setBytesList(ListUtils.newArrayList(subBean));
 
         bean1.setXml(subBean);
         bean1.setYaml(subBean);
@@ -46,10 +46,10 @@ class BeanCopyUtilsTest {
         Assertions.assertEquals(bean1.getName1(), bean2.getName1());
         Assertions.assertEquals(null, bean2.getName2());
         Assertions.assertEquals(JsonUtils.writeToString(subBean), bean2.getJson());
-        Assertions.assertEquals(JsonUtils.writeToString(Lists.newArrayList(subBean)), bean2.getJsonList());
+        Assertions.assertEquals(JsonUtils.writeToString(ListUtils.newArrayList(subBean)), bean2.getJsonList());
         Assertions.assertEquals(subBean.getText(),
                 ((SubBean) ObjectBytesSerializer.deserialize(bean2.getBytes())).getText());
-        Assertions.assertEquals(Lists.newArrayList(subBean).get(0).getText(),
+        Assertions.assertEquals(ListUtils.newArrayList(subBean).get(0).getText(),
                 ((List<SubBean>) ObjectBytesSerializer.deserialize(bean2.getBytesList())).get(0).getText()
         );
         Assertions.assertEquals(subBean.getText(), JAXBHelper.unmarshal(SubBean.class, bean2.getXml()).getText());

@@ -9,10 +9,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
+
+;
 
 /**
  * @author BiJi'an
@@ -21,7 +22,7 @@ import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
  **/
 
 public class CConstructorDepCalculator {
-    private final Map<CConstructor, Set<CConstructor>> dependencies = Maps.newHashMap();
+    private final Map<CConstructor, Set<CConstructor>> dependencies = MapUtils.newHashMap();
     private final CConstructorManager constructorManager;
 
     public CConstructorDepCalculator(CConstructorManager constructorManager) {
@@ -64,7 +65,7 @@ public class CConstructorDepCalculator {
      * @date 2022-11-08 20:06
      */
     private void calculate(CConstructor cconstructor) {
-        calculate(cconstructor, Sets.newHashSet(cconstructor));
+        calculate(cconstructor, SetUtils.newHashSet(cconstructor));
         cconstructor.setDepLevel(dependencies.get(cconstructor).size());
     }
 
@@ -85,7 +86,7 @@ public class CConstructorDepCalculator {
         for (CConstructor curConstructor : depCConstructors) {
             dependencies.compute(oriCConstructor, (k, v) -> {
                 if (v == null) {
-                    v = Sets.newHashSet();
+                    v = SetUtils.newHashSet();
                 }
                 v.add(curConstructor);
                 return v;
@@ -93,7 +94,7 @@ public class CConstructorDepCalculator {
 
             Constructor<?> constructor = curConstructor.getConstructor();
             if (constructor.getParameterCount() > 0) {
-                Set<CConstructor> tmpCConstructors = Sets.newHashSet();
+                Set<CConstructor> tmpCConstructors = SetUtils.newHashSet();
                 Class<?>[] parameterTypes = constructor.getParameterTypes();
                 Type[] genericParameterTypes = constructor.getGenericParameterTypes();
                 for (int i = 0; i < parameterTypes.length; i++) {

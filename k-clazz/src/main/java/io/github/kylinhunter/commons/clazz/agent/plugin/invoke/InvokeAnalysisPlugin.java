@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.clazz.agent.plugin.mca;
+package io.github.kylinhunter.commons.clazz.agent.plugin.invoke;
 
 import io.github.kylinhunter.commons.clazz.agent.plugin.IPlugin;
 import io.github.kylinhunter.commons.clazz.agent.plugin.InterceptPoint;
@@ -26,7 +26,8 @@ public class InvokeAnalysisPlugin implements IPlugin {
                     @Override
                     public ElementMatcher<TypeDescription> buildTypesMatcher() {
 
-                        return ElementMatchers.nameStartsWith("io.github.kylinhunter.commons.clazz.agent.plugin.mca.test");
+                        return ElementMatchers.nameStartsWith("io.github.kylinhunter.commons.clazz.agent.plugin.invoke"
+                                + ".test");
                     }
 
                     @Override

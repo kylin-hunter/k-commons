@@ -10,8 +10,7 @@ import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
-import com.google.common.collect.Maps;
-
+import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.sys.KConst;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ErrInfoManager {
-    public static final Map<Integer, ErrInfo> ERR_INFOS = Maps.newLinkedHashMap();
+    public static final Map<Integer, ErrInfo> ERR_INFOS = MapUtils.newLinkedHashMap();
 
     static {
         init(KConst.K_BASE_PACKAGE);

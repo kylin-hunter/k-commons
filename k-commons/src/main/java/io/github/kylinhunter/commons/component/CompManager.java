@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.sys.KConst;
@@ -18,7 +18,7 @@ import lombok.Getter;
  * @date 2023-02-11 10:52
  **/
 public class CompManager {
-    protected final Map<Class<?>, CObjects> allComponents = Maps.newHashMap();
+    protected final Map<Class<?>, CObjects> allComponents = MapUtils.newHashMap();
     @Getter
     protected CompTools compTools;
     protected final ConstructorCompManager constructorCompManager;
@@ -171,7 +171,7 @@ public class CompManager {
     private List<CObjects> register(Class<?> clazz, CObject ccbject) {
         try {
 
-            List<CObjects> allAffectedCObjects = Lists.newArrayList();
+            List<CObjects> allAffectedCObjects = ListUtils.newArrayList();
             CObjects affectedCObject = allComponents.compute(clazz, (k, cobjects) -> {
                 if (cobjects == null) {
                     cobjects = new CObjects();

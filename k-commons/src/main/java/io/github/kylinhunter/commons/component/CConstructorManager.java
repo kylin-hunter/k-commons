@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.collections.SetUtils;;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import lombok.Getter;
@@ -20,11 +20,11 @@ import lombok.Getter;
 
 class CConstructorManager {
 
-    private final Map<Class<?>, List<CConstructor>> constructorsMap = Maps.newHashMap();
+    private final Map<Class<?>, List<CConstructor>> constructorsMap = MapUtils.newHashMap();
     @Getter
-    private List<CConstructor> constructors = Lists.newArrayList();
+    private List<CConstructor> constructors = ListUtils.newArrayList();
     @Getter
-    private final Set<Class<?>> compClasses = Sets.newHashSet();
+    private final Set<Class<?>> compClasses = SetUtils.newHashSet();
     private final CompTools compTools;
     private final CConstructorDepCalculator constructorDepCalculator;
 
@@ -108,7 +108,7 @@ class CConstructorManager {
     private void register(Class<?> clazz, CConstructor cconstructor) {
         constructorsMap.compute(clazz, (k, v) -> {
             if (v == null) {
-                v = Lists.newArrayList();
+                v = ListUtils.newArrayList();
             }
             if (!v.contains(cconstructor)) {
                 if (cconstructor.isPrimary()) {

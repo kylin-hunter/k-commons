@@ -7,7 +7,7 @@ import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
-import com.google.common.collect.Sets;
+import io.github.kylinhunter.commons.collections.SetUtils;;
 
 import lombok.Data;
 
@@ -64,7 +64,7 @@ public class CompTools {
      * @date 2023-02-09 23:26
      */
     public Set<Class<?>> getClassesByAnnotatedWith(Class<? extends Annotation> annotation) {
-        Set<Class<?>> allCompClazzes = Sets.newHashSet();
+        Set<Class<?>> allCompClazzes = SetUtils.newHashSet();
         for (String pkg : pkgs) {
             Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
             allCompClazzes = reflections.getTypesAnnotatedWith(annotation);

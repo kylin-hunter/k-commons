@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import lombok.Data;
@@ -20,8 +20,8 @@ public class CObjects {
     private int order;
     private boolean hasPrimary;
 
-    private List<Object> objects = Lists.newArrayList();
-    private List<CObject> cobjects = Lists.newArrayList();
+    private List<Object> objects = ListUtils.newArrayList();
+    private List<CObject> cobjects = ListUtils.newArrayList();
 
     public void add(CObject cobject) {
 

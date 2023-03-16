@@ -6,10 +6,9 @@ import java.util.Set;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.google.common.collect.Sets;
-
 import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
+import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 
 /**
@@ -21,7 +20,7 @@ public class NumberToStrFieldConvertor extends AbstractFieldConvertor {
     private final static ThreadLocal<DecimalFormat> decimalFormats =
             ThreadLocal.withInitial(() -> new DecimalFormat("#.######"));
 
-    private static final Set<Class<?>> acceptedClazzes = Sets.newHashSet(int.class, Integer.class, long.class,
+    private static final Set<Class<?>> acceptedClazzes = SetUtils.newHashSet(int.class, Integer.class, long.class,
             Long.class, float.class, Float.class, double.class, Double.class);
 
     public NumberToStrFieldConvertor(Direction direction, PropertyDescriptor sourcePD, PropertyDescriptor targetPD) {

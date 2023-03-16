@@ -6,8 +6,8 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import lombok.Data;
 
@@ -18,7 +18,7 @@ import lombok.Data;
  **/
 @Data
 public class Snippets {
-    private Map<String, List<String>> snippets = Maps.newHashMap();
+    private Map<String, List<String>> snippets = MapUtils.newHashMap();
 
     /**
      * @param location location
@@ -62,7 +62,7 @@ public class Snippets {
         if (!StringUtils.isBlank(name) && !StringUtils.isBlank(snippet)) {
             this.snippets.compute(name, (k, v) -> {
                         if (v == null) {
-                            v = Lists.newArrayList();
+                            v = ListUtils.newArrayList();
                         }
                         v.add(snippet);
                         return v;

@@ -5,14 +5,14 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 class JAXBHelperTest {
 
     @Test
     void test() {
 
-        List<Child> children = Lists.newArrayList();
+        List<Child> children = ListUtils.newArrayList();
         children.add(new Child(3, 4));
         children.add(new Child(5, 6));
         Parent parent1 = new Parent(1, 2, children);

@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.util;
 
 import java.util.Set;
 
-import com.google.common.collect.Sets;
+import io.github.kylinhunter.commons.collections.SetUtils;;
 
 /**
  * @author BiJi'an
@@ -11,7 +11,7 @@ import com.google.common.collect.Sets;
  **/
 public class OnceRunner {
 
-    private static final Set<String> runNames = Sets.newHashSet();
+    private static final Set<String> runNames = SetUtils.newHashSet();
 
     public static void run(Class<?> clazz, Runner r) {
         run(clazz.getName(), r);

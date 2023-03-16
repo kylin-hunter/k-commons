@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 /**
  * @author BiJi'an
@@ -12,7 +12,7 @@ import com.google.common.collect.Maps;
  * @date 2022-10-30 18:25
  **/
 public class FilenameUtils {
-    private final static Map<String, String> ACTUAL_EXTENSIONS = Maps.newHashMap();
+    private final static Map<String, String> ACTUAL_EXTENSIONS = MapUtils.newHashMap();
 
     static {
         ACTUAL_EXTENSIONS.put("z", "tar.z");

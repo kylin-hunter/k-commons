@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 import com.zaxxer.hikari.HikariDataSource;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
@@ -23,8 +23,8 @@ public class DataSourceUtils {
     private static final HikariConfigExParser hikariConfigExParser = new HikariConfigExParser();
     @Getter
     private static DataSourceEx defaultDataSource;
-    private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = Maps.newHashMap();
-    private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = Maps.newHashMap();
+    private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = MapUtils.newHashMap();
+    private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = MapUtils.newHashMap();
 
     static {
         init(null);

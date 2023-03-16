@@ -1,8 +1,8 @@
-package io.github.kylinhunter.commons.clazz.agent.plugin.mca.test;
+package io.github.kylinhunter.commons.clazz.agent.plugin.invoke.test;
 
 import java.util.List;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import lombok.Data;
 
@@ -14,8 +14,8 @@ import lombok.Data;
 @Data
 public class Course {
     public final String name;
-    private List<Teacher> teachers = Lists.newArrayList();
-    private List<Student> students = Lists.newArrayList();
+    private List<Teacher> teachers = ListUtils.newArrayList();
+    private List<Student> students = ListUtils.newArrayList();
 
     public Teacher addTeacher(Teacher teacher) {
         this.teachers.add(teacher);

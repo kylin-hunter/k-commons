@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
@@ -46,7 +46,7 @@ public class TemplateContextBuilder {
     private FieldInfoConvertor fieldInfoConvertor;
 
     public List<TemplateContext> calculateContext() {
-        List<TemplateContext> templateContexts = Lists.newArrayList();
+        List<TemplateContext> templateContexts = ListUtils.newArrayList();
         Modules modules = config.getModules();
         Database database = modules.getDatabase();
         for (Module module : modules.getList()) {

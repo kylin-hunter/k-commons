@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.generator.config.bean;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
 public class Template {
     private boolean enabled = true;
     private String name;
-    protected Map<String, Object> context = Maps.newHashMap();
+    protected Map<String, Object> context = MapUtils.newHashMap();
     private TemplateStrategy strategy;
 
     /**

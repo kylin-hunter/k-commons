@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import io.github.kylinhunter.commons.cmd.CmdResultReader.ResultType;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
@@ -39,7 +39,7 @@ public class CmdExecutor {
      */
 
     public List<CmdResult> exec(String... cmds) {
-        List<CmdResult> cmdResults = Lists.newArrayList();
+        List<CmdResult> cmdResults = ListUtils.newArrayList();
         for (String cmd : cmds) {
             cmdResults.add(exec(cmd));
         }

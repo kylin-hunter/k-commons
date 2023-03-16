@@ -3,16 +3,16 @@ package io.github.kylinhunter.commons.generator.config.bean;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import lombok.Data;
 
 @Data
 public class Table {
     private String name;
-    private List<String> skipColumns = Lists.newArrayList();
-    private Map<String, String> columnTypes = Maps.newHashMap();
+    private List<String> skipColumns = ListUtils.newArrayList();
+    private Map<String, String> columnTypes = MapUtils.newHashMap();
 
     /**
      * @param column column

@@ -16,7 +16,7 @@ import javax.tools.ToolProvider;
 
 import org.apache.commons.io.IOUtils;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class KplatCompiler {
 
-    private List<File> sources = Lists.newArrayList();
+    private List<File> sources = ListUtils.newArrayList();
 
     private File output;
 

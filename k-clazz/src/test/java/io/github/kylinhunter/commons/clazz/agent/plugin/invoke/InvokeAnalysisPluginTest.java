@@ -1,9 +1,9 @@
-package io.github.kylinhunter.commons.clazz.agent.plugin.mca;
+package io.github.kylinhunter.commons.clazz.agent.plugin.invoke;
 
-import io.github.kylinhunter.commons.clazz.agent.plugin.mca.test.Campus;
-import io.github.kylinhunter.commons.clazz.agent.plugin.mca.test.Course;
-import io.github.kylinhunter.commons.clazz.agent.plugin.mca.test.Student;
-import io.github.kylinhunter.commons.clazz.agent.plugin.mca.test.Teacher;
+import io.github.kylinhunter.commons.clazz.agent.plugin.invoke.test.Campus;
+import io.github.kylinhunter.commons.clazz.agent.plugin.invoke.test.Course;
+import io.github.kylinhunter.commons.clazz.agent.plugin.invoke.test.Student;
+import io.github.kylinhunter.commons.clazz.agent.plugin.invoke.test.Teacher;
 
 class InvokeAnalysisPluginTest {
 
@@ -25,7 +25,17 @@ class InvokeAnalysisPluginTest {
         final Student student3 = chinese.addStudent(new Student("student3"));
         chinese.addStudent(student1);
 
-        campus.doHomeWork();
+        campus.d1oHomeWork1();
+
+        InvokeTraceManager.getInstance().getTraces().forEach((k, v) -> {
+            System.out.println("trace id=>" + k);
+            v.forEach(t -> {
+                System.out.println(t);
+
+            });
+            System.out.println("===trace end with time ===");
+
+        });
 
     }
 }

@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.cache.guava;
 
-import com.google.common.base.Preconditions;
-
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import lombok.Data;
@@ -20,7 +19,7 @@ public class CacheKey {
     private Object[] params;
 
     public CacheKey(Object... params) {
-        Preconditions.checkArgument(params != null && params.length > 0, "param eror");
+        ExceptionChecker.checkArgument(params != null && params.length > 0, "param eror");
         this.params = params;
     }
 

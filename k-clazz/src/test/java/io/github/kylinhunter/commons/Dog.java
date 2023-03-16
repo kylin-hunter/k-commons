@@ -1,5 +1,9 @@
 package io.github.kylinhunter.commons;
 
+import java.util.concurrent.TimeUnit;
+
+import io.github.kylinhunter.commons.util.ThreadHelper;
+
 /**
  * @author BiJi'an
  * @description
@@ -15,12 +19,7 @@ public class Dog implements Animal {
     @Override
     public void speak() {
         System.out.println("woof");
-
-        try {
-            Thread.sleep(100);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
         System.out.println("woof");
     }
 

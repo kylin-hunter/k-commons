@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import lombok.Data;
 
@@ -16,7 +16,7 @@ import lombok.Data;
  **/
 @Data
 public class Imports {
-    private final List<String> imports = Lists.newArrayList();
+    private final List<String> imports = ListUtils.newArrayList();
 
     @Override
     public String toString() {

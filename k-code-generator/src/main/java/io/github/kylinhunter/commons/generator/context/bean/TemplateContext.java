@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.generator.context.bean;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
@@ -19,7 +19,7 @@ public class TemplateContext {
     private final ModuleInfo moduleInfo;
     private final Template template;
     private ClassInfo classInfo = new ClassInfo();
-    private Map<String, Object> context = Maps.newHashMap();
+    private Map<String, Object> context = MapUtils.newHashMap();
 
     /**
      * @param contextData contextData

@@ -7,7 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 /**
  * @author BiJi'an
@@ -15,8 +15,8 @@ import com.google.common.collect.Lists;
  * @date 2023-02-19 17:17
  **/
 public class Interfaces {
-    private final List<String> shortClassNames = Lists.newArrayList();
-    private final List<String> fullClassNames = Lists.newArrayList();
+    private final List<String> shortClassNames = ListUtils.newArrayList();
+    private final List<String> fullClassNames = ListUtils.newArrayList();
 
     @Override
     public String toString() {

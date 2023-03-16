@@ -8,8 +8,8 @@ import java.util.function.Function;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.collections.SetUtils;;
 
 import io.github.kylinhunter.commons.exception.ExceptionFinder;
 import io.github.kylinhunter.commons.exception.embed.InitException;
@@ -94,8 +94,8 @@ public class ExplainManager {
      **/
     static class Explainers {
         private final Map<Class<? extends Throwable>, Function<Throwable, Explainer.ExplainResult>> allExplainers =
-                Maps.newHashMap();
-        public final Set<Class<? extends Throwable>> allThrowables = Sets.newHashSet();
+                MapUtils.newHashMap();
+        public final Set<Class<? extends Throwable>> allThrowables = SetUtils.newHashSet();
 
         public void add(List<Explainer> explainers) {
             explainers.forEach(explain -> {

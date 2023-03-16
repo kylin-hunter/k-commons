@@ -1,8 +1,8 @@
-package io.github.kylinhunter.commons.clazz.agent.plugin.mca.test;
+package io.github.kylinhunter.commons.clazz.agent.plugin.invoke.test;
 
 import java.util.List;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import lombok.Data;
 
@@ -14,14 +14,14 @@ import lombok.Data;
 @Data
 public class Campus {
     public final String name;
-    private List<Course> courses = Lists.newArrayList();
+    private List<Course> courses = ListUtils.newArrayList();
 
     public Course addClassRoom(Course course) {
         this.courses.add(course);
         return course;
     }
 
-    public void doHomeWork() {
+    public void d1oHomeWork1() {
         courses.forEach(course -> {
             course.getStudents().forEach(student -> {
                 student.doHomeWork();

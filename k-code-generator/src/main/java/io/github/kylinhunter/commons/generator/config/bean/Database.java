@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.generator.config.bean;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import lombok.Data;
 
@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class Database {
     protected String name;
-    private Map<String, String> sqlTypes = Maps.newHashMap();
+    private Map<String, String> sqlTypes = MapUtils.newHashMap();
 
     /**
      * @param type type

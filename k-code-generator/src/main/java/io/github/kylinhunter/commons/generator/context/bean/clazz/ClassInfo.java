@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,7 +27,7 @@ public class ClassInfo {
     private Interfaces interfaces = new Interfaces();
     private Snippets snippets = new Snippets();
     private Imports imports = new Imports();
-    private List<FieldInfo> fields = Lists.newArrayList();
+    private List<FieldInfo> fields = ListUtils.newArrayList();
 
     /**
      * @param clazz clazz

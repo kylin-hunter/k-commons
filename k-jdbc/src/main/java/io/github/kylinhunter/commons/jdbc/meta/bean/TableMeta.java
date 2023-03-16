@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.jdbc.meta.bean;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import lombok.Data;
 import lombok.ToString;
@@ -15,7 +15,7 @@ import lombok.ToString;
 @Data
 @ToString(exclude = "rawMetadatas")
 public class TableMeta {
-    private Map<String, Object> rawMetadatas = Maps.newHashMap();
+    private Map<String, Object> rawMetadatas = MapUtils.newHashMap();
 
     private String name;
 

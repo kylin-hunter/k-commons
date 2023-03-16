@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.generator.config.bean;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import lombok.Data;
 

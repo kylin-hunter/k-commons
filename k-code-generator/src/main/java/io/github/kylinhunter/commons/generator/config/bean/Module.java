@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.generator.config.bean;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +13,7 @@ public class Module {
     @EqualsAndHashCode.Include
     private String name;
     protected Database database;
-    private Map<String, Object> context = Maps.newHashMap();
+    private Map<String, Object> context = MapUtils.newHashMap();
     private Table table;
 
     public void merge(Modules modules) {

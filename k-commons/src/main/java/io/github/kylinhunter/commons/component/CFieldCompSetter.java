@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.reflections.ReflectionUtils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.SetUtils;;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
@@ -78,8 +78,8 @@ class CFieldCompSetter {
      */
     @SuppressWarnings("unchecked")
     private List<CField> getAllCFields() {
-        List<CField> allCFields = Lists.newArrayList();
-        Set<Class<?>> allCompClasses = Sets.newHashSet(constructorManager.getCompClasses());
+        List<CField> allCFields = ListUtils.newArrayList();
+        Set<Class<?>> allCompClasses = SetUtils.newHashSet(constructorManager.getCompClasses());
         allCompClasses.addAll(methodManager.getCompClasses());
         for (Class<?> compClass : allCompClasses) {
             Object o = compManager.get(compClass, true);

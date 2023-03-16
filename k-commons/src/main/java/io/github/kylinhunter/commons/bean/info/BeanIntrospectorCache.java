@@ -5,7 +5,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 
@@ -16,7 +16,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  **/
 public class BeanIntrospectorCache {
 
-    private static final Map<Class<?>, BeanIntrospector> beanIntrospectors = Maps.newHashMap();
+    private static final Map<Class<?>, BeanIntrospector> beanIntrospectors = MapUtils.newHashMap();
 
     /**
      * @param clazz clazz

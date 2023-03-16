@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.clazz.agent;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.type.TypeDescription;
@@ -13,7 +12,6 @@ import net.bytebuddy.utility.nullability.MaybeNull;
  * @description
  * @date 2023-03-11 23:12
  **/
-@ParametersAreNonnullByDefault
 public class AgentListenr implements AgentBuilder.Listener {
 
     @Override

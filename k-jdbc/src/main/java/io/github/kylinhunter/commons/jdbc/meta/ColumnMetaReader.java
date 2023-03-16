@@ -8,8 +8,8 @@ import java.sql.ResultSetMetaData;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CF;
@@ -87,13 +87,13 @@ public class ColumnMetaReader {
                                               String tableName) {
         List<ColumnMeta> columnMetaDatas;
         try {
-            columnMetaDatas = Lists.newArrayList();
+            columnMetaDatas = ListUtils.newArrayList();
             DatabaseMeta databaseMeta = databaseMetaReader.getDatabaseMetaData(connection);
             ColumnParserType columnParserType = databaseMeta.getDbType().getColumnParserType();
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet columns = metaData.getColumns(catalog, schema, tableName, null);
             ResultSetMetaData columnMetadata = columns.getMetaData();
-            Map<String, Object> rawMetadata = Maps.newHashMap();
+            Map<String, Object> rawMetadata = MapUtils.newHashMap();
             ColumnParser columnParser = CF.get(columnParserType);
             while (columns.next()) {
                 ColumnMeta columnMeta = new ColumnMeta();

@@ -5,7 +5,7 @@ import java.util.Map;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
@@ -50,7 +50,7 @@ public class FieldInfoConvertor {
     }
 
     public boolean s(String type, ColumnMeta columnMeta) {
-        Map<String, Object> env = Maps.newHashMap();
+        Map<String, Object> env = MapUtils.newHashMap();
         env.put("type", columnMeta.getTypeName().toLowerCase());
         env.put("size", columnMeta.getColumnSize());
         env.put("precision", columnMeta.getDecimalDigits());

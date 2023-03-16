@@ -9,10 +9,10 @@ import java.util.StringJoiner;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import io.github.kylinhunter.commons.collections.SetUtils;;
 
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.biz.BizException;
 import io.github.kylinhunter.commons.sys.KConst;
 import io.github.kylinhunter.commons.util.ObjectValues;
@@ -26,7 +26,7 @@ public class CacheKeyGenerator {
 
     private static final String DELIMITER = ",";
     private static Map<Class<?>, List<Field>> customKeyFields;
-    private static final Set<Class<?>> basicSerializedClasses = Sets.newHashSet();
+    private static final Set<Class<?>> basicSerializedClasses = SetUtils.newHashSet();
 
     static {
         init(KConst.K_BASE_PACKAGE);
@@ -54,13 +54,13 @@ public class CacheKeyGenerator {
      */
     public static void init(String... pkgs) {
         initBasicSerializedClasses();
-        customKeyFields = Maps.newHashMap();
+        customKeyFields = MapUtils.newHashMap();
         for (String pkg : pkgs) {
             Reflections reflections = new Reflections(pkg, Scanners.FieldsAnnotated);
             Set<Field> fields = reflections.getFieldsAnnotatedWith(Cache.Include.class);
             fields.forEach(field -> customKeyFields.compute(field.getDeclaringClass(), (k, v) -> {
                 if (v == null) {
-                    v = Lists.newArrayList();
+                    v = ListUtils.newArrayList();
                 }
                 field.setAccessible(true);
                 v.add(field);

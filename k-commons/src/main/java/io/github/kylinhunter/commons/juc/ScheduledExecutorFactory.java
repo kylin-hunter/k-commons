@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 
@@ -14,7 +14,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  * @date 2023-03-04 01:32
  **/
 public class ScheduledExecutorFactory {
-    private static final Map<String, ScheduledExecutorService> pools = Maps.newHashMap();
+    private static final Map<String, ScheduledExecutorService> pools = MapUtils.newHashMap();
 
     /**
      * @param corePoolSize corePoolSize

@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class EnumUtils {
             if (enumLabels == null) {
                 synchronized(EnumUtils.class) {
                     if ((enumLabels = ENUM_LABELS.get(enumType)) == null) {
-                        enumLabels = Maps.newHashMap();
+                        enumLabels = MapUtils.newHashMap();
                         ENUM_LABELS.put(enumType, enumLabels);
                         V[] enumConstants = enumType.getEnumConstants();
                         if (enumConstants != null && enumConstants.length > 0) {
@@ -136,7 +136,7 @@ public class EnumUtils {
             if (enumCodes == null) {
                 synchronized(EnumUtils.class) {
                     if ((enumCodes = ENUM_CODES.get(enumType)) == null) {
-                        enumCodes = Maps.newHashMap();
+                        enumCodes = MapUtils.newHashMap();
                         ENUM_CODES.put(enumType, enumCodes);
                         V[] enumConstants = enumType.getEnumConstants();
                         if (enumConstants != null && enumConstants.length > 0) {

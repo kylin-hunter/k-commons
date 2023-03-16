@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 
 class BranchExecutorsTest {
     @Test
     void use() {
 
-        List<String> keys = Lists.newArrayList("1", "2", "3", "4", "5");
+        List<String> keys = ListUtils.newArrayList("1", "2", "3", "4", "5");
 
         keys.forEach(key -> {
 
