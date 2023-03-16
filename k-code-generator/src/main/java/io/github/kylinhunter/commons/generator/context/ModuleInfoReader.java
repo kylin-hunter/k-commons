@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.generator.context;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
+import io.github.kylinhunter.commons.collections.CollectionUtils;
 
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;

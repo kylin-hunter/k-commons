@@ -6,7 +6,6 @@ dependencies {
     api(rootProject.dependency_management['commons-io'])
     api(rootProject.dependency_management['commons-lang3'])
     api(rootProject.dependency_management['guava'])
-    api(rootProject.dependency_management['commons-collections4'])
 
     implementation(rootProject.dependency_management['velocity-engine-core'])
     implementation(rootProject.dependency_management['velocity-tools-generic'])

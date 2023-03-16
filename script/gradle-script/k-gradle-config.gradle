@@ -4,7 +4,7 @@ ext {
             "k-commons": '1.0.13',
             "k-jdbc": '1.0.1',
             "k-clazz": '1.0.1',
-            "k-code-generator": '1.0.2'
+            "k-code-generator": '1.0.3'
     ]
     KYLIN_IMAGE_REPO = "私服地址"
     KYLIN_IMAGE_VERSION = "v1"

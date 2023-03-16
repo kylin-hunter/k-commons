@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons.collections;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-
 
 /**
  * @author BiJi'an
@@ -35,5 +34,17 @@ public class CollectionUtils {
             }
         }
         return dist != null ? dist : Collections.EMPTY_LIST;
+    }
+
+    /**
+     * @param coll coll
+     * @return boolean
+     * @title isEmpty
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-17 00:59
+     */
+    public static boolean isEmpty(final Collection<?> coll) {
+        return coll == null || coll.isEmpty();
     }
 }

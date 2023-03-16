@@ -2,9 +2,9 @@ package io.github.kylinhunter.commons.exception.check;
 
 import java.util.Collection;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 
 /**

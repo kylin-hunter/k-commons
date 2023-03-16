@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.jdbc.datasource;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.CollectionUtils;
+import io.github.kylinhunter.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 
 import io.github.kylinhunter.commons.collections.MapUtils;

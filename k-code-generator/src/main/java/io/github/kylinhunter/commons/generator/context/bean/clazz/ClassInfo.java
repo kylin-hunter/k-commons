@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import io.github.kylinhunter.commons.collections.CollectionUtils;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 
