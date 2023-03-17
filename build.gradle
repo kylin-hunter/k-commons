@@ -100,7 +100,7 @@ subprojects {
 
 
     test {
-//        exclude 'com/kylinhunter/**/Suite**'
+        exclude 'io/github/kylinhunter/**/Suite**'
         useJUnitPlatform()
         testLogging {
             outputs.upToDateWhen { true }
