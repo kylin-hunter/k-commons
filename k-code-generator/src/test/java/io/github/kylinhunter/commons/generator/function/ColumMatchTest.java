@@ -8,7 +8,7 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 
 import io.github.kylinhunter.commons.component.CF;
 
-class ColumMatch {
+class ColumMatchTest {
 
     @Test
     void execute() {

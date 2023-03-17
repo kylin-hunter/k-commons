@@ -1,8 +1,11 @@
 package io.github.kylinhunter.commons.collections;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -86,5 +89,18 @@ public class MapUtils {
      */
     public static boolean isEmpty(Map<?, ?> map) {
         return (map == null || map.isEmpty());
+    }
+
+    public static <K extends Comparable, V> TreeMap<K, V> newTreeMap() {
+        return new TreeMap<>();
+    }
+
+    public static <K, V> TreeMap<K, V> newTreeMap(SortedMap<K, ? extends V> map) {
+        return new TreeMap<>(map);
+    }
+
+    public static <C, K extends C, V> TreeMap<K, V> newTreeMap(Comparator<C> comparator) {
+
+        return new TreeMap<>(comparator);
     }
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.collections.SetUtils;
@@ -20,8 +21,12 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  * @date 2023-02-19 01:15
  **/
 public class BeanIntrospectorCache {
-
     private static final Map<Class<?>, BeanIntrospector> beanIntrospectors = MapUtils.newHashMap();
+    private static final Set<String> skipProperties = SetUtils.newHashSet();
+
+    static {
+        skipProperties.add("class");
+    }
 
     /**
      * @param clazz clazz
@@ -33,8 +38,7 @@ public class BeanIntrospectorCache {
      */
     private static BeanIntrospector init(Class<?> clazz) {
         try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-            BeanIntrospector beanIntrospector = new BeanIntrospector(beanInfo);
+            BeanIntrospector beanIntrospector = new BeanIntrospector(Introspector.getBeanInfo(clazz));
             initPropertyDescriptor(beanIntrospector);
             return beanIntrospector;
         } catch (Exception e) {
@@ -52,12 +56,13 @@ public class BeanIntrospectorCache {
      */
     private static void initPropertyDescriptor(BeanIntrospector beanIntrospector) throws IntrospectionException {
         PropertyDescriptor[] propertyDescriptors = beanIntrospector.getBeanInfo().getPropertyDescriptors();
-        if (propertyDescriptors != null && propertyDescriptors.length > 0) {
+        if (!ArrayUtils.isEmpty(propertyDescriptors)) {
             for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-                if (!propertyDescriptor.getName().equals("class")) {
+                String propName = propertyDescriptor.getName();
+                if (!skipProperties.contains(propName)) {
                     if (propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getReadMethod() != null) {
-                        beanIntrospector.addPropertyDescriptor(propertyDescriptor.getName(), propertyDescriptor);
-                        initPropertyDescriptor(beanIntrospector, propertyDescriptor);
+                        beanIntrospector.addPropertyDescriptor(propName, propertyDescriptor);
+                        initPropertyDescriptor(beanIntrospector, new BeanContext(), 1, "", propertyDescriptor);
                     }
                 }
             }
@@ -74,35 +79,36 @@ public class BeanIntrospectorCache {
      * @date 2023-03-19 14:17
      */
     private static void initPropertyDescriptor(BeanIntrospector beanIntrospector,
+                                               BeanContext beanContext, int level, String parent,
                                                PropertyDescriptor propertyDescriptor) throws IntrospectionException {
+
         Class<?> propertyType = propertyDescriptor.getPropertyType();
+        if (!StringUtils.isEmpty(parent)) {
+            parent = parent + ".";
+        }
+        String propName = propertyDescriptor.getName();
         if (ClassUtils.isPrimitiveOrWrapper(propertyType)) {
-            beanIntrospector.addPropertyDescriptor(propertyDescriptor.getName(), propertyDescriptor);
+            beanIntrospector.addFullPropertyDescriptor(parent + propName, propertyDescriptor);
         } else {
             if (propertyType == String.class) {
-                beanIntrospector.addPropertyDescriptor(propertyDescriptor.getName(), propertyDescriptor);
+                beanIntrospector.addFullPropertyDescriptor(parent + propName, propertyDescriptor);
             } else {
-                if (propertyType != Class.class) {
+
+                beanIntrospector.addFullPropertyDescriptor(parent + propName, propertyDescriptor);
+                if (beanContext.accept(level, propertyType)) {
                     BeanInfo beanInfo = Introspector.getBeanInfo(propertyType);
                     PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
                     if (!ArrayUtils.isEmpty(propertyDescriptors)) {
+                        parent = parent + propName;
                         for (PropertyDescriptor descriptor : propertyDescriptors) {
                             if (descriptor.getWriteMethod() != null && descriptor.getReadMethod() != null) {
-                                initPropertyDescriptor(beanIntrospector, descriptor);
+                                initPropertyDescriptor(beanIntrospector, beanContext, level + 1, parent, descriptor);
                             }
                         }
                     }
                 }
             }
-
         }
-
-    }
-
-    private static Set<Class<?>> supportTypes = SetUtils.newHashSet();
-
-    static {
-        supportTypes.add(String.class);
     }
 
     /**

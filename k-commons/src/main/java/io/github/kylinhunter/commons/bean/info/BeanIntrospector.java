@@ -15,8 +15,8 @@ import lombok.Data;
 @Data
 public class BeanIntrospector {
     private final BeanInfo beanInfo;
-    private Map<String, PropertyDescriptor> propertyDescriptors = MapUtils.newHashMap();
-    private Map<String, PropertyDescriptor> fullPropertyDescriptors = MapUtils.newHashMap();
+    private Map<String, PropertyDescriptor> propertyDescriptors = MapUtils.newTreeMap();
+    private Map<String, PropertyDescriptor> fullPropertyDescriptors = MapUtils.newTreeMap();
 
     /**
      * @param name               name
@@ -29,6 +29,7 @@ public class BeanIntrospector {
      */
     public void addPropertyDescriptor(String name, PropertyDescriptor propertyDescriptor) {
         this.propertyDescriptors.put(name, propertyDescriptor);
+
     }
 
     /**

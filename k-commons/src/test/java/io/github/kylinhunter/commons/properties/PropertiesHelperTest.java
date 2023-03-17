@@ -13,7 +13,6 @@ class PropertiesHelperTest {
     void toProperties() {
         Grandfather bean = new Grandfather();
         Father father = new Father();
-        bean.setFather(father);
         Properties properties = PropertiesHelper.toProperties(bean);
         properties.forEach((k, v) -> {
             System.out.println(k + ":" + v);
