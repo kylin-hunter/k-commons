@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.collections;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -21,7 +22,7 @@ public class MapUtils {
      * @title newHashMap
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 16:06
+     * @date 2023-03-19 16:06
      */
     public static <K, V> HashMap<K, V> newHashMap() {
         return new HashMap<>();
@@ -32,7 +33,7 @@ public class MapUtils {
      * @title newConcurrentMap
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:12
+     * @date 2023-03-19 22:12
      */
     public static <K, V> ConcurrentMap<K, V> newConcurrentMap() {
         return new ConcurrentHashMap<>();
@@ -43,7 +44,7 @@ public class MapUtils {
      * @title newLinkedHashMap
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:12
+     * @date 2023-03-19 22:12
      */
     public static <K, V> LinkedHashMap<K, V> newLinkedHashMap() {
         return new LinkedHashMap<>();
@@ -55,7 +56,7 @@ public class MapUtils {
      * @title capacity
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 16:49
+     * @date 2023-03-19 16:49
      */
     static int capacity(int expectedSize) {
         if (expectedSize >= 0) {
@@ -73,5 +74,17 @@ public class MapUtils {
             return 1;
         }
 
+    }
+
+    /**
+     * @param map map
+     * @return boolean
+     * @title isEmpty
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 15:19
+     */
+    public static boolean isEmpty(Map<?, ?> map) {
+        return (map == null || map.isEmpty());
     }
 }

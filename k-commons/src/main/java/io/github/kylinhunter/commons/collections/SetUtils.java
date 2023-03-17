@@ -19,7 +19,7 @@ public class SetUtils {
      * @title newHashSet
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:44
+     * @date 2023-03-19 22:44
      */
     public static <E> HashSet<E> newHashSet() {
         return new HashSet<>();
@@ -31,7 +31,7 @@ public class SetUtils {
      * @title newHashSet
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:44
+     * @date 2023-03-19 22:44
      */
     @SafeVarargs
     public static <E> HashSet<E> newHashSet(E... elements) {
@@ -46,7 +46,7 @@ public class SetUtils {
      * @title newHashSet
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:45
+     * @date 2023-03-19 22:45
      */
 
     @SuppressWarnings("unchecked")
@@ -65,7 +65,7 @@ public class SetUtils {
      * @title newTreeSet
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:04
+     * @date 2023-03-19 22:04
      */
     public static <E extends Comparable> TreeSet<E> newTreeSet() {
         return new TreeSet<E>();

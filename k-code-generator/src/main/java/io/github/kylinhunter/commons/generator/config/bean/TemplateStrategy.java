@@ -23,7 +23,7 @@ public class TemplateStrategy extends Strategy {
      * @title merge
      * @description
      * @author BiJi'an
-     * @date 2023-02-18 21:02
+     * @date 2023-02-19 21:02
      */
     public void merge(Strategy strategy) {
         if (strategy == null) {

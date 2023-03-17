@@ -18,7 +18,7 @@ public class ListUtils {
      * @title newArrayList
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:51
+     * @date 2023-03-19 22:51
      */
     public static <E> ArrayList<E> newArrayList() {
         return new ArrayList<>();
@@ -30,7 +30,7 @@ public class ListUtils {
      * @title newArrayList
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:51
+     * @date 2023-03-19 22:51
      */
     @SuppressWarnings("unchecked")
     public static <E> ArrayList<E> newArrayList(E... elements) {

@@ -40,7 +40,7 @@ public class ModuleInfoReader {
      * @title read
      * @description
      * @author BiJi'an
-     * @date 2023-02-18 23:26
+     * @date 2023-02-19 23:26
      */
     public ModuleInfo read(Database database, Module module) {
         return new ModuleInfo(database, module, toTable(module));
@@ -52,7 +52,7 @@ public class ModuleInfoReader {
      * @title toTable
      * @description
      * @author BiJi'an
-     * @date 2023-02-17 22:36
+     * @date 2023-03-19 22:36
      */
     private TableInfo toTable(Module module) {
         Table table = module.getTable();

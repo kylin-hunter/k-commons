@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-16 21:03
+ * @date 2023-03-19 21:03
  **/
 public class TestReg {
     private static final Pattern PATTERN_PROP_NAME = Pattern.compile("^(\\s*-*\\s*)(\\w+-*\\w+)\\s*:");

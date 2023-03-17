@@ -83,7 +83,7 @@ public class ExceptionChecker {
      * @title checkNonnegative
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:55
+     * @date 2023-03-19 22:55
      */
     public static void checkNonnegative(int value, String name) {
         if (value < 0) {

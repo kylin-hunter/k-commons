@@ -3,11 +3,10 @@ package io.github.kylinhunter.commons.jdbc.datasource;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
-
+import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.DataSourceConfig;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.DataSourceInfo;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.HikariConfigEx;

@@ -10,7 +10,7 @@ import com.googlecode.aviator.runtime.type.AviatorString;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-02-17 01:00
+ * @date 2023-03-19 01:00
  **/
 public class StringToLower extends AbstractFunction {
 

@@ -48,7 +48,7 @@ public class BeanCopyUtils {
      * @title copy
      * @description
      * @author BiJi'an
-     * @date 2023-02-18 02:14
+     * @date 2023-02-19 02:14
      */
     private static void copy(Object source, Object target, String... ignoreProperties) {
 
@@ -84,7 +84,7 @@ public class BeanCopyUtils {
      * @title isIgnoreProperties
      * @description
      * @author BiJi'an
-     * @date 2023-02-18 02:04
+     * @date 2023-02-19 02:04
      */
     private static boolean isIgnoreProperties(String name, String... ignoreProperties) {
         if (ignoreProperties.length <= 0) {

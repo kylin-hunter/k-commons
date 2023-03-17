@@ -13,7 +13,7 @@ import io.github.kylinhunter.commons.io.ResourceHelper;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-18 11:30
+ * @date 2023-03-19 11:30
  **/
 public class PropertiesReader {
 

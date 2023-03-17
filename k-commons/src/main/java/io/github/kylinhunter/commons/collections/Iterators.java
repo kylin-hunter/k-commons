@@ -6,7 +6,7 @@ import java.util.Iterator;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-18 22:09
+ * @date 2023-03-19 22:09
  **/
 public class Iterators {
 
@@ -17,7 +17,7 @@ public class Iterators {
      * @title addAll
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 22:10
+     * @date 2023-03-19 22:10
      */
     public static <T> boolean addAll(Collection<T> addTo, Iterator<? extends T> iterator) {
         if (addTo != null && iterator != null) {

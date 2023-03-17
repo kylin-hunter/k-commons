@@ -42,7 +42,7 @@ public class CollectionUtils {
      * @title isEmpty
      * @description
      * @author BiJi'an
-     * @date 2023-03-17 00:59
+     * @date 2023-03-19 00:59
      */
     public static boolean isEmpty(final Collection<?> coll) {
         return coll == null || coll.isEmpty();
