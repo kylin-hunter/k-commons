@@ -10,36 +10,29 @@ import lombok.EqualsAndHashCode;
  **/
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ObjecId implements Comparable<ObjecId> {
+public class ObjecId {
+    public static final String ROOT_ID = "#";
+
     @EqualsAndHashCode.Include
-    private String id;
-    private int level;
-    private String parentId;
-    private Class<?> type;
+    protected String id;
+    protected String parentId;
+    protected int level;
 
     public ObjecId(String propName) {
-
-        int i = propName.lastIndexOf(".");
-        if (i > 0) {
-            id = propName.substring(0, i);
+        int index = propName.lastIndexOf(".");
+        if (index > 0) {
+            this.id = propName.substring(0, index);
             this.level = id.split("\\.").length + 1;
-            final int i1 = id.indexOf(".");
-            if (i1 > 0) {
-                this.parentId = id.substring(0, i1);
-
+            int parentIdIndex = this.id.lastIndexOf(".");
+            if (parentIdIndex > 0) {
+                this.parentId = this.id.substring(0, parentIdIndex);
             } else {
-                this.parentId = "#";
+                this.parentId = ROOT_ID;
             }
-
         } else {
-            this.id = "#";
+            this.id = ROOT_ID;
             this.level = 1;
-
         }
     }
 
-    @Override
-    public int compareTo(ObjecId o) {
-        return this.level - o.level;
-    }
 }

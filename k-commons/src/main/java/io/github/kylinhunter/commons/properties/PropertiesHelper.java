@@ -15,8 +15,6 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Maps;
-
 import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.collections.MapUtils;
@@ -24,6 +22,7 @@ import io.github.kylinhunter.commons.date.DateUtils;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.properties.ObjectDescriptor.ObjectFileds;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import io.github.kylinhunter.commons.strings.CharsetConst;
@@ -72,75 +71,58 @@ public class PropertiesHelper {
 
     /**
      * @param properties properties
-     * @return
+     * @param clazz      clazz
+     * @return T
      * @title toBean
      * @description
      * @author BiJi'an
-     * @date 2023-03-19 14:09
+     * @date 2023-03-19 01:21
      */
     public static <T> T toBean(Properties properties, Class<T> clazz) {
         Map<ObjecId, ObjectDescriptor> data = MapUtils.newHashMap();
-        properties.forEach((pName, propValue) -> {
-            String propName = (String) pName;
+        properties.forEach((name, propValue) -> {
+            String propName = (String) name;
             ObjecId objecId = new ObjecId(propName);
-            data.compute(objecId, (oid, od) -> {
-                if (od == null) {
-                    od = new ObjectDescriptor();
+            data.compute(objecId, (oid, objectDescriptor) -> {
+                if (objectDescriptor == null) {
+                    objectDescriptor = new ObjectDescriptor(oid);
                 }
-                od.setObjecId(oid);
-                od.addField(propName, propValue);
-                return od;
+                objectDescriptor.addField(propName, propValue);
+                return objectDescriptor;
             });
         });
         T rootObject = ObjectCreator.create(clazz);
         BeanIntrospector beanIntrospector = BeanIntrospectors.get(clazz);
 
-        Map<String, Object> objectPool = Maps.newHashMap();
+        Map<String, Object> objectPool = MapUtils.newHashMap();
         Stream<ObjectDescriptor> objectDescriptors = data.values().stream().sorted();
         objectDescriptors.forEach(objectDescriptor -> {
-            ObjectDescriptor.ObjectFileds objectFileds = objectDescriptor.getObjectFileds();
             ObjecId objecId = objectDescriptor.getObjecId();
+            ObjectFileds fields = objectDescriptor.getFields();
             if (objecId.getLevel() == 1) {
-                objecId.setType(clazz);
-
-                objectFileds.getDatas().forEach((n, f) -> {
-                    PropertyDescriptor propertyDescriptor = beanIntrospector.getPropertyDescriptor(n);
-                    Method writeMethod = propertyDescriptor.getWriteMethod();
-                    ReflectUtils.invoke(rootObject, writeMethod,
-                            ObjectValues.get(f.getValue(), writeMethod.getParameterTypes()[0]));
-
+                fields.forEach((name, field) -> {
+                    PropertyDescriptor propertyDescriptor = beanIntrospector.getPropertyDescriptor(name);
+                    Method method = propertyDescriptor.getWriteMethod();
+                    Object value = ObjectValues.get(field.getValue(), method.getParameterTypes()[0]);
+                    ReflectUtils.invoke(rootObject, method, value);
                 });
                 objectPool.put(objecId.getId(), rootObject);
             } else {
-
-                final Object parentObj = objectPool.get(objecId.getParentId());
-                PropertyDescriptor fullPropertyDescriptor =
-                        beanIntrospector.getFullPropertyDescriptor(objecId.getId());
-                Method writeMethod = fullPropertyDescriptor.getWriteMethod();
-
-                Class<?> parameterType = writeMethod.getParameterTypes()[0];
-
-                Object o = ObjectCreator.create(parameterType);
-                ReflectUtils.invoke(parentObj, writeMethod, o);
-                objectPool.put(objecId.getId(), o);
-
-                objectFileds.getDatas().forEach((n, f) -> {
+                Object parentObj = objectPool.get(objecId.getParentId());
+                PropertyDescriptor objPropertyDescriptor = beanIntrospector.getFullPropertyDescriptor(objecId.getId());
+                Method writeMethod = objPropertyDescriptor.getWriteMethod();
+                Object object = ObjectCreator.create(writeMethod.getParameterTypes()[0]);
+                ReflectUtils.invoke(parentObj, writeMethod, object);
+                fields.forEach((n, f) -> {
                     PropertyDescriptor propertyDescriptor = beanIntrospector.getFullPropertyDescriptor(n);
-                    Method writeMethod2 = propertyDescriptor.getWriteMethod();
-                    final Class<?> parameterType1 = writeMethod2.getParameterTypes()[0];
-                    ReflectUtils.invoke(o, writeMethod2,
-                            ObjectValues.get(f.getValue(), parameterType1));
-
+                    Method method = propertyDescriptor.getWriteMethod();
+                    Object value = ObjectValues.get(f.getValue(), method.getParameterTypes()[0]);
+                    ReflectUtils.invoke(object, method, value);
                 });
-
-                System.out.println(objectDescriptor);
+                objectPool.put(objecId.getId(), object);
 
             }
-            System.out.println(objectDescriptor);
         });
-
-        System.out.println(rootObject.getClass());
-
         return rootObject;
     }
 

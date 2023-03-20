@@ -2,7 +2,9 @@ package io.github.kylinhunter.commons.util;
 
 import java.util.Set;
 
-import io.github.kylinhunter.commons.collections.SetUtils;;
+import io.github.kylinhunter.commons.collections.SetUtils;
+
+;
 
 /**
  * @author BiJi'an

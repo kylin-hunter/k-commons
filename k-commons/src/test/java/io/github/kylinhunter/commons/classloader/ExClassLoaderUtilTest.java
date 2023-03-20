@@ -7,23 +7,22 @@ import org.junit.jupiter.api.Test;
 
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
+import io.github.kylinhunter.commons.util.OnceRunner;
 
 class ExClassLoaderUtilTest {
-    static boolean first = true;
 
     @Test
-    void loadClass() throws IllegalAccessException, InstantiationException {
-
-        if (first) {
+    void loadClass() {
+        OnceRunner.run(ExClassLoaderUtilTest.class, () -> {
             Assertions.assertThrows(GeneralException.class,
-                    () -> ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test"));
+                    () -> ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test1"));
 
             File ext = UserDirUtils.getDir("ext");
             ExClassLoaderUtil.addClassPath(ext.toPath());
             Class<Object> objectClass = ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test");
-            objectClass.newInstance();
-            first = false;
-        }
+            ObjectCreator.create(objectClass);
+        });
 
     }
 }

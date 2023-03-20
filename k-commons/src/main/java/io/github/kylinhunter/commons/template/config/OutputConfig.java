@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.template.config;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -63,8 +64,8 @@ public class OutputConfig {
      * @date 2023-02-26 15:20
      */
     public void setOutputPath(String outputPath) {
-        Path path = ResourceHelper.getPath(outputPath, ResourceHelper.PathType.FILESYSTEM);
-        this.setOutputPath(path);
+        File dir = ResourceHelper.getDir(outputPath, ResourceHelper.PathType.FILESYSTEM, true);
+        this.setOutputPath(dir.toPath());
 
     }
 

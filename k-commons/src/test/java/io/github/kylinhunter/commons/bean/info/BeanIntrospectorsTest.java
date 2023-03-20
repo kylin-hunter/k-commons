@@ -17,28 +17,28 @@ class BeanIntrospectorsTest {
         propertyDescriptors.forEach((k, v) -> {
             System.out.println(k + ":" + v.getReadMethod().getName());
         });
-        Assertions.assertEquals(16, propertyDescriptors.size());
+        Assertions.assertEquals(17, propertyDescriptors.size());
 
         System.out.println("getFullPropertyDescriptor=Grandfather");
         Map<String, PropertyDescriptor> fullPropertyDescriptors = beanIntrospector.getFullPropertyDescriptors();
         fullPropertyDescriptors.forEach((k, v) -> {
             System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
         });
-        Assertions.assertEquals(84, fullPropertyDescriptors.size());
+        Assertions.assertEquals(87, fullPropertyDescriptors.size());
 
         fullPropertyDescriptors = BeanIntrospectors.get(Father.class).getFullPropertyDescriptors();
         System.out.println("getFullPropertyDescriptor=Father");
         fullPropertyDescriptors.forEach((k, v) -> {
             System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
         });
-        Assertions.assertEquals(136, fullPropertyDescriptors.size());
+        Assertions.assertEquals(141, fullPropertyDescriptors.size());
 
         fullPropertyDescriptors = BeanIntrospectors.get(Son.class).getFullPropertyDescriptors();
         System.out.println("getFullPropertyDescriptor=Son");
         fullPropertyDescriptors.forEach((k, v) -> {
             System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
         });
-        Assertions.assertEquals(85, fullPropertyDescriptors.size());
+        Assertions.assertEquals(87, fullPropertyDescriptors.size());
 
     }
 

@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.io;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -78,5 +80,24 @@ public class IOHelper {
             throw new KIOException("toString error", e);
         }
 
+    }
+
+    /**
+     * @param file file
+     * @return java.io.FileInputStream
+     * @title newFileInputStream
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 00:16
+     */
+    public static FileInputStream getFileInputStream(File file) {
+        try {
+            if (file != null && file.exists() && file.isFile()) {
+                return new FileInputStream(file);
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.properties;
 
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import lombok.Data;
@@ -12,8 +13,8 @@ import lombok.Data;
  **/
 @Data
 public class ObjectDescriptor implements Comparable<ObjectDescriptor> {
-    private ObjecId objecId;
-    private ObjectFileds objectFileds = new ObjectFileds();
+    private final ObjecId objecId;
+    private ObjectFileds fields = new ObjectFileds();
 
     /**
      * @param name  name
@@ -25,12 +26,15 @@ public class ObjectDescriptor implements Comparable<ObjectDescriptor> {
      * @date 2023-03-19 14:36
      */
     public void addField(String name, Object value) {
-        this.objectFileds.add(name, value);
+        this.fields.add(name, value);
     }
 
+    /**
+     * @see Comparable#compareTo
+     */
     @Override
     public int compareTo(ObjectDescriptor o) {
-        return this.objecId.getLevel() - o.objecId.getLevel();
+        return this.objecId.level - o.objecId.level;
     }
 
     /**
@@ -42,9 +46,13 @@ public class ObjectDescriptor implements Comparable<ObjectDescriptor> {
     public static class ObjectFiled {
         private final String name;
         private final Object value;
-
     }
 
+    /**
+     * @author BiJi'an
+     * @description
+     * @date 2023-03-19 10:50
+     **/
     @Data
     public static class ObjectFileds {
         private Map<String, ObjectFiled> datas = MapUtils.newHashMap();
@@ -60,9 +68,19 @@ public class ObjectDescriptor implements Comparable<ObjectDescriptor> {
          */
         public void add(String name, Object value) {
             this.datas.put(name, new ObjectFiled(name, value));
-
         }
 
+        /**
+         * @param action action
+         * @return void
+         * @title forEach
+         * @description
+         * @author BiJi'an
+         * @date 2023-03-21 01:29
+         */
+        public void forEach(BiConsumer<String, ObjectFiled> action) {
+            datas.forEach(action);
+        }
     }
 
 }
