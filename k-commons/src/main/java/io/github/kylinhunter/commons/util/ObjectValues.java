@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
-
 import io.github.kylinhunter.commons.date.DateUtils;
 
 /**
@@ -136,6 +136,35 @@ public class ObjectValues {
             return list;
         }
         return Collections.emptyList();
+    }
+
+    public static <T> T get(Object obj, Class<T> clazz) {
+        if (obj != null && clazz != null) {
+            final Class<?> objClazz = obj.getClass();
+            if (clazz.isAssignableFrom(objClazz)) {
+                return (T) obj;
+            } else {
+                if (ClassUtils.isPrimitiveOrWrapper(clazz)) {
+                    if (clazz == int.class || clazz == Integer.class) {
+                        return (T) (Integer) NumberUtils.toInt(String.valueOf(obj));
+                    } else if (clazz == long.class || clazz == Long.class) {
+                        return (T) (Long) NumberUtils.toLong(String.valueOf(obj));
+                    } else if (clazz == float.class || clazz == Float.class) {
+                        return (T) (Float) NumberUtils.toFloat(String.valueOf(obj));
+                    } else if (clazz == double.class || clazz == Double.class) {
+                        return (T) (Double) NumberUtils.toDouble(String.valueOf(obj));
+                    } else if (clazz == short.class || clazz == Short.class) {
+                        return (T) (Short) NumberUtils.toShort(String.valueOf(obj));
+                    } else if (clazz == boolean.class || clazz == Boolean.class) {
+                        return (T) (Boolean) BooleanUtils.toBoolean(String.valueOf(obj));
+                    }
+                } else if (clazz == String.class) {
+                    return (T) String.valueOf(obj);
+                }
+            }
+        }
+
+        return null;
     }
 }
 

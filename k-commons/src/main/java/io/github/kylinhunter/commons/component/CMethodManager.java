@@ -13,7 +13,7 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.collections.SetUtils;;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.reflect.BeanCreator;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import lombok.Getter;
 
 /**
@@ -72,7 +72,7 @@ class CMethodManager {
      */
     @SuppressWarnings("unchecked")
     private void calculate(Class<?> compClazz) {
-        Object ccObject = BeanCreator.createBean(compClazz);
+        Object ccObject = ObjectCreator.create(compClazz);
         compManager.register(compClazz, ccObject);
         Set<Method> methods = ReflectionUtils.getAllMethods(compClazz);
         for (Method method : methods) {

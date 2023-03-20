@@ -10,7 +10,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  * @description
  * @date 2022/1/1
  **/
-public class BeanCreator {
+public class ObjectCreator {
 
     /**
      * @param clazz          clazz
@@ -22,7 +22,7 @@ public class BeanCreator {
      * @author BiJi'an
      * @date 2022-12-03 20:44
      */
-    public static <T> T createBean(Class<T> clazz, Class<?>[] parameterTypes, Object[] parameters) {
+    public static <T> T create(Class<T> clazz, Class<?>[] parameterTypes, Object[] parameters) {
         try {
             Constructor<T> constructor = clazz.getConstructor(parameterTypes);
             return constructor.newInstance(parameters);
@@ -40,7 +40,7 @@ public class BeanCreator {
      * @author BiJi'an
      * @date 2023-01-20 00:10
      */
-    public static <T> T createBean(Class<T> clazz) {
+    public static <T> T create(Class<T> clazz) {
         try {
             Constructor<T> constructor = clazz.getConstructor();
             return constructor.newInstance();
@@ -59,7 +59,7 @@ public class BeanCreator {
      * @author BiJi'an
      * @date 2023-02-12 23:59
      */
-    public static <T> T createBean(Constructor<T> constructor, Object... initargs) {
+    public static <T> T create(Constructor<T> constructor, Object... initargs) {
         try {
             return constructor.newInstance(initargs);
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class BeanCreator {
      * @author BiJi'an
      * @date 2023-02-12 00:06
      */
-    public static <T> T createBean(Object obj, Method method, Object... args) {
+    public static <T> T create(Object obj, Method method, Object... args) {
         return ReflectUtils.invoke(obj, method, args);
     }
 }

@@ -28,7 +28,7 @@ public class ReflectUtils {
             method.setAccessible(true);
             return (T) method.invoke(obj, args);
         } catch (Exception e) {
-            throw new InitException("invoke error", e);
+            throw new InitException("invoke error:" + method != null ? method.getName() : "", e);
         }
     }
 

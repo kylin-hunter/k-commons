@@ -27,6 +27,7 @@ public class ResourceHelper {
     public static final String PROTOCOL_FILE = "file:";
     public static final String CLASSPATH_TAG = "classpath:";
 
+
     /**
      * @param path path
      * @return java.lang.String
@@ -35,6 +36,8 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2022-01-21 00:52
      */
+
+    // 改造-class file 顺序都支持
     private static PathInfo toPathInfo(String path, PathType defaultType) {
         if (path.startsWith(CLASSPATH_TAG)) {
             return PathInfo.classPath(path.substring(CLASSPATH_TAG.length()));

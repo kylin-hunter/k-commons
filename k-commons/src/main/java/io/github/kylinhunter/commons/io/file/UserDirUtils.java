@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
@@ -200,11 +199,10 @@ public class UserDirUtils {
      */
     private static void forceMkdir(final File directory) {
 
-        try {
-            FileUtils.forceMkdir(directory);
-        } catch (IOException e) {
-            throw new KIOException("forceMkdir  error", e);
+        if ((directory != null) && (!directory.mkdirs() && !directory.isDirectory())) {
+            throw new KIOException("Cannot create directory '" + directory + "'.");
         }
+
     }
 
 }

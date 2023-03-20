@@ -22,7 +22,7 @@ import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldCopy;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
-import io.github.kylinhunter.commons.bean.info.BeanIntrospectorCache;
+import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import lombok.Data;
 
@@ -150,9 +150,9 @@ public class BeanCopyCache {
     private static FieldConvertor initFieldConvertor(Direction direction, Class<?> sourceClass, Class<?> targetClass,
                                                      String fieldName, ConvertType convertType)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        BeanIntrospector sourceBeanIntrospector = BeanIntrospectorCache.get(sourceClass);
+        BeanIntrospector sourceBeanIntrospector = BeanIntrospectors.get(sourceClass);
         PropertyDescriptor sourcePD = sourceBeanIntrospector.getPropertyDescriptor(fieldName);
-        BeanIntrospector targetBeanIntrospector = BeanIntrospectorCache.get(targetClass);
+        BeanIntrospector targetBeanIntrospector = BeanIntrospectors.get(targetClass);
         PropertyDescriptor targetPD = targetBeanIntrospector.getPropertyDescriptor(fieldName);
         if (sourcePD != null && targetPD != null) {
             Method read = sourcePD.getReadMethod();

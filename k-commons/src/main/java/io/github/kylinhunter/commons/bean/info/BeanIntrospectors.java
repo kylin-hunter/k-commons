@@ -20,7 +20,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  * @description
  * @date 2023-02-19 01:15
  **/
-public class BeanIntrospectorCache {
+public class BeanIntrospectors {
     private static final Map<Class<?>, BeanIntrospector> beanIntrospectors = MapUtils.newHashMap();
     private static final Set<String> skipProperties = SetUtils.newHashSet();
 
@@ -122,7 +122,7 @@ public class BeanIntrospectorCache {
     public static BeanIntrospector get(Class<?> clazz) {
         BeanIntrospector beanIntrospector = beanIntrospectors.get(clazz);
         if (beanIntrospector == null) {
-            synchronized(BeanIntrospectorCache.class) {
+            synchronized(BeanIntrospectors.class) {
                 beanIntrospector = beanIntrospectors.get(clazz);
                 if (beanIntrospector == null) {
                     beanIntrospector = init(clazz);

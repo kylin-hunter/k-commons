@@ -6,11 +6,11 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class BeanIntrospectorCacheTest {
+class BeanIntrospectorsTest {
 
     @Test
     void get() {
-        BeanIntrospector beanIntrospector = BeanIntrospectorCache.get(Grandfather.class);
+        BeanIntrospector beanIntrospector = BeanIntrospectors.get(Grandfather.class);
         System.out.println("getPropertyDescriptors=Grandfather");
 
         final Map<String, PropertyDescriptor> propertyDescriptors = beanIntrospector.getPropertyDescriptors();
@@ -26,14 +26,14 @@ class BeanIntrospectorCacheTest {
         });
         Assertions.assertEquals(84, fullPropertyDescriptors.size());
 
-        fullPropertyDescriptors = BeanIntrospectorCache.get(Father.class).getFullPropertyDescriptors();
+        fullPropertyDescriptors = BeanIntrospectors.get(Father.class).getFullPropertyDescriptors();
         System.out.println("getFullPropertyDescriptor=Father");
         fullPropertyDescriptors.forEach((k, v) -> {
             System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
         });
         Assertions.assertEquals(136, fullPropertyDescriptors.size());
 
-        fullPropertyDescriptors = BeanIntrospectorCache.get(Son.class).getFullPropertyDescriptors();
+        fullPropertyDescriptors = BeanIntrospectors.get(Son.class).getFullPropertyDescriptors();
         System.out.println("getFullPropertyDescriptor=Son");
         fullPropertyDescriptors.forEach((k, v) -> {
             System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());

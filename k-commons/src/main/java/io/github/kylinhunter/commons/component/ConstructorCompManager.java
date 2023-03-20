@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.reflect.BeanCreator;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import lombok.RequiredArgsConstructor;
 
@@ -55,7 +55,7 @@ class ConstructorCompManager {
         Class<?> clazz = cconstructor.getClazz();
         int parameterCount = constructor.getParameterCount();
         if (parameterCount <= 0) {
-            compManager.register(clazz, cconstructor, BeanCreator.createBean(constructor));
+            compManager.register(clazz, cconstructor, ObjectCreator.create(constructor));
         } else {
             Class<?>[] parameterTypes = constructor.getParameterTypes();
             Type[] genericParameterTypes = constructor.getGenericParameterTypes();
@@ -79,7 +79,7 @@ class ConstructorCompManager {
                     throw new InitException("no component:" + clazz.getName());
                 }
             }
-            this.compManager.register(clazz, cconstructor, BeanCreator.createBean(constructor, parameterObj));
+            this.compManager.register(clazz, cconstructor, ObjectCreator.create(constructor, parameterObj));
 
         }
     }

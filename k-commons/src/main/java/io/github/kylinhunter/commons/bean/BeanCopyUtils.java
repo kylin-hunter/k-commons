@@ -7,7 +7,7 @@ import java.util.Map;
 import io.github.kylinhunter.commons.bean.copy.BeanCopy;
 import io.github.kylinhunter.commons.bean.copy.BeanCopyCache;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
-import io.github.kylinhunter.commons.bean.info.BeanIntrospectorCache;
+import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.exception.embed.FormatException;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 
@@ -52,10 +52,10 @@ public class BeanCopyUtils {
      */
     private static void copy(Object source, Object target, String... ignoreProperties) {
 
-        BeanIntrospector sourceBeanIntrospector = BeanIntrospectorCache.get(source.getClass());
+        BeanIntrospector sourceBeanIntrospector = BeanIntrospectors.get(source.getClass());
         Map<String, PropertyDescriptor> sourcePds = sourceBeanIntrospector.getPropertyDescriptors();
 
-        BeanIntrospector targetBeanIntrospector = BeanIntrospectorCache.get(target.getClass());
+        BeanIntrospector targetBeanIntrospector = BeanIntrospectors.get(target.getClass());
         Map<String, PropertyDescriptor> targetPds = targetBeanIntrospector.getPropertyDescriptors();
 
         sourcePds.forEach((name, pdSource) -> {

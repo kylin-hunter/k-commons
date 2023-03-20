@@ -22,10 +22,9 @@ public class BeanContext {
      * @title accept
      * @description
      * @author BiJi'an
-     * @date 2023-03-18 00:40
+     * @date 2023-03-19 00:40
      */
     public boolean accept(int level, Class<?> clazz) {
-        System.out.println(level + ":" + clazz.getName());
         for (int i = 1; i < level; i++) {
             Set<Class<?>> classes = duplicates.computeIfAbsent(i, (k) -> SetUtils.newHashSet());
             if (classes.contains(clazz)) {

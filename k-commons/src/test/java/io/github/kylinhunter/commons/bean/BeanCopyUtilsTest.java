@@ -14,6 +14,7 @@ import io.github.kylinhunter.commons.yaml.YamlHelper;
 
 class BeanCopyUtilsTest {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void test() {
 
@@ -44,7 +45,7 @@ class BeanCopyUtilsTest {
         BeanCopyUtils.copyProperties(bean1, bean2, "name2");
 
         Assertions.assertEquals(bean1.getName1(), bean2.getName1());
-        Assertions.assertEquals(null, bean2.getName2());
+        Assertions.assertNull(bean2.getName2());
         Assertions.assertEquals(JsonUtils.writeToString(subBean), bean2.getJson());
         Assertions.assertEquals(JsonUtils.writeToString(ListUtils.newArrayList(subBean)), bean2.getJsonList());
         Assertions.assertEquals(subBean.getText(),
@@ -60,7 +61,7 @@ class BeanCopyUtilsTest {
         BeanCopyUtils.copyProperties(bean2, bean1Reverse, "name2");
 
         Assertions.assertEquals(bean1.getName1(), bean1Reverse.getName1());
-        Assertions.assertEquals(null, bean1Reverse.getName2());
+        Assertions.assertNull(bean1Reverse.getName2());
 
         Assertions.assertEquals(bean1.getIntValue1(), bean1Reverse.getIntValue1());
         Assertions.assertEquals(bean1.getIntValue2(), bean1Reverse.getIntValue2());

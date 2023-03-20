@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.reflect.BeanCreator;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import lombok.RequiredArgsConstructor;
 
@@ -59,7 +59,7 @@ class MethodCompManager {
         Class<?> compClazz = method.getReturnType();
         if (parameterCount <= 0) {
             this.compManager.
-                    register(compClazz, cmethod, BeanCreator.createBean(object, method));
+                    register(compClazz, cmethod, ObjectCreator.create(object, method));
         } else {
             Class<?>[] parameterTypes = method.getParameterTypes();
             Type[] genericParameterTypes = method.getGenericParameterTypes();
@@ -86,7 +86,7 @@ class MethodCompManager {
 
             }
             this.compManager
-                    .register(compClazz, cmethod, BeanCreator.createBean(object, method, parameterObj));
+                    .register(compClazz, cmethod, ObjectCreator.create(object, method, parameterObj));
 
         }
     }
