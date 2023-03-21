@@ -5,9 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
 import io.github.kylinhunter.commons.io.ResourceHelper;
@@ -44,11 +45,25 @@ public class PropertiesHelper {
      * @date 2023-03-19 01:28
      */
     public static Properties load(String path) {
+        return load(path, CharsetConst.UTF_8);
+    }
+
+    /**
+     * @param path    path
+     * @param charset charset
+     * @return java.util.Properties
+     * @title load
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-21 23:20
+     */
+    public static Properties load(String path, String charset) {
         Properties properties = new Properties();
-        try (InputStream inputStream = ResourceHelper.getInputStream(path, ResourceHelper.PathType.FILESYSTEM)) {
-            properties.load(inputStream);
+        try (InputStream inputStream = ResourceHelper.getInputStream(path, ResourceHelper.PathType.FILESYSTEM);
+             InputStreamReader read = new InputStreamReader(inputStream, charset)) {
+            properties.load(read);
         } catch (IOException e) {
-            throw new KIOException("load error", e);
+            throw new KIOException("load properties error", e);
         }
         return properties;
 
@@ -79,10 +94,10 @@ public class PropertiesHelper {
      * @date 2023-03-19 01:21
      */
     public static <T> T toBean(Properties properties, Class<T> clazz) {
-        Map<ObjecId, ObjectDescriptor> data = MapUtils.newHashMap();
+        Map<ObjectDescriptor.ObjecId, ObjectDescriptor> data = MapUtils.newHashMap();
         properties.forEach((name, propValue) -> {
             String propName = (String) name;
-            ObjecId objecId = new ObjecId(propName);
+            ObjectDescriptor.ObjecId objecId = new ObjectDescriptor.ObjecId(propName);
             data.compute(objecId, (oid, objectDescriptor) -> {
                 if (objectDescriptor == null) {
                     objectDescriptor = new ObjectDescriptor(oid);
@@ -97,12 +112,16 @@ public class PropertiesHelper {
         Map<String, Object> objectPool = MapUtils.newHashMap();
         Stream<ObjectDescriptor> objectDescriptors = data.values().stream().sorted();
         objectDescriptors.forEach(objectDescriptor -> {
-            ObjecId objecId = objectDescriptor.getObjecId();
+            ObjectDescriptor.ObjecId objecId = objectDescriptor.getObjecId();
             ObjectFileds fields = objectDescriptor.getFields();
             if (objecId.getLevel() == 1) {
                 fields.forEach((name, field) -> {
                     PropertyDescriptor propertyDescriptor = beanIntrospector.getPropertyDescriptor(name);
+                    if (propertyDescriptor == null) {
+                        throw new GeneralException("no read or write method:" + name);
+                    }
                     Method method = propertyDescriptor.getWriteMethod();
+
                     Object value = ObjectValues.get(field.getValue(), method.getParameterTypes()[0]);
                     ReflectUtils.invoke(rootObject, method, value);
                 });
@@ -150,9 +169,7 @@ public class PropertiesHelper {
      * @date 2023-03-19 00:53
      */
     public static Properties store(Object obj, File file, String charset) {
-        Properties properties = toProperties(obj);
-        return store(properties, file, Charsets.toCharset(charset));
-
+        return store(toProperties(obj), file, charset);
     }
 
     /**
@@ -166,22 +183,8 @@ public class PropertiesHelper {
      * @date 2023-03-19 01:03
      */
     public static Properties store(Properties properties, File file, String charset) {
-        return store(properties, file, Charsets.toCharset(charset));
-    }
-
-    /**
-     * @param properties properties
-     * @param file       file
-     * @param charset    charset
-     * @return void
-     * @title store
-     * @description
-     * @author BiJi'an
-     * @date 2023-03-19 01:03
-     */
-    public static Properties store(Properties properties, File file, Charset charset) {
         try (FileOutputStream out = new FileOutputStream(file);
-             OutputStreamWriter fileWriter = new OutputStreamWriter(out, charset)) {
+             OutputStreamWriter fileWriter = new OutputStreamWriter(out, Charsets.toCharset(charset))) {
             properties.store(fileWriter, "auto create properties at " + DateUtils.formatNow());
             return properties;
         } catch (Exception e) {
@@ -209,7 +212,18 @@ public class PropertiesHelper {
         return properties;
     }
 
-    public static void toProperties(Properties properties, String parent, Object obj, PropertyDescriptor pd) {
+    /**
+     * @param properties properties
+     * @param parent     parent
+     * @param obj        obj
+     * @param pd         pd
+     * @return void
+     * @title toProperties
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-21 23:21
+     */
+    private static void toProperties(Properties properties, String parent, Object obj, PropertyDescriptor pd) {
         if (!StringUtils.isEmpty(parent)) {
             parent += ".";
         }

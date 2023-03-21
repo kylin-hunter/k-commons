@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.clazz.agent.plugin.invoke;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
-import io.github.kylinhunter.commons.clazz.agent.config.PropertiesReader;
+import io.github.kylinhunter.commons.clazz.agent.config.AgentConfigReader;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
@@ -18,7 +18,7 @@ public class InvokeAnalysis {
 
     private static InvokeTraceManager invokeTraceManager = InvokeTraceManager.getInstance();
 
-    private static PropertiesReader propertiesReader =new PropertiesReader();
+    private static AgentConfigReader agentConfigReader =new AgentConfigReader();
     @RuntimeType
     public static Object intercept(@Origin Method method, @AllArguments Object[] arguments,
                                    @SuperCall Callable<?> callable)

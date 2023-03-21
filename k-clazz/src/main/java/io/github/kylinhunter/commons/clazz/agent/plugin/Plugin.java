@@ -5,12 +5,13 @@ package io.github.kylinhunter.commons.clazz.agent.plugin;
  * @description
  * @date 2023-03-11 00:46
  **/
-public interface IPlugin {
+public interface Plugin {
     String name();
 
-    InterceptPoint[] buildInterceptPoint();
+    PluginConfig[] buildInterceptPoint();
 
     Class adviceClass();
+
     void other();
 
 }

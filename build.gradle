@@ -56,8 +56,9 @@ subprojects {
 
 
     dependencies {
-
-        implementation("ch.qos.logback:logback-classic")
+        if(project.name!='k-clazz'){
+            implementation("ch.qos.logback:logback-classic")
+        }
         implementation("org.projectlombok:lombok")
         annotationProcessor 'org.projectlombok:lombok'
 

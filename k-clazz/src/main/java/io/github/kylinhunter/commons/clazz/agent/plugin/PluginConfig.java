@@ -9,7 +9,7 @@ import net.bytebuddy.matcher.ElementMatcher;
  * @description
  * @date 2023-03-11 00:47
  **/
-public interface InterceptPoint {
+public interface PluginConfig {
     //类匹配规则
     ElementMatcher<TypeDescription> buildTypesMatcher();
 
