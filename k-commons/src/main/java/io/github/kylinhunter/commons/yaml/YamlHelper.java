@@ -94,9 +94,8 @@ public class YamlHelper {
      */
     public static <T> T loadFromText(Class<T> clazz, String text, NameRule nameRule) {
         try {
-            if (nameRule != null) {
-                text = defaultKeyCorrector.correct(text, nameRule);
-            }
+
+            text = defaultKeyCorrector.correct(text, nameRule);
             return new Yaml().loadAs(text, clazz);
 
         } catch (Exception e) {

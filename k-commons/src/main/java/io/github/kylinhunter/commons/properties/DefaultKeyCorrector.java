@@ -35,6 +35,7 @@ public class DefaultKeyCorrector implements KeyCorrector {
             }
             return newKey;
         }
+
         return key;
     }
 }

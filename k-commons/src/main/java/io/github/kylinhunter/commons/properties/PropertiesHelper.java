@@ -151,7 +151,6 @@ public class PropertiesHelper {
      */
     public static <T> T toBean(Properties properties, NameRule nameRule, Class<T> clazz) {
         if (nameRule != null) {
-
             Properties newProperties = new Properties();
             properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
             properties = newProperties;
