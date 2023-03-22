@@ -3,14 +3,13 @@ package io.github.kylinhunter.commons.yaml;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.io.IOUtils;
 import org.yaml.snakeyaml.Yaml;
 
-import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.io.IOHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.name.NameRule;
 
 /**
  * @author BiJi'an
@@ -18,6 +17,8 @@ import io.github.kylinhunter.commons.io.ResourceHelper;
  * @date 2022-11-01 22:01
  **/
 public class YamlHelper {
+    private static DefaultLoadCorrector defaultLoadCorrector = new DefaultLoadCorrector();
+    private static DefaultDumpCorrector defaultDumpCorrector = new DefaultDumpCorrector();
 
     /**
      * @param clazz clazz
@@ -44,7 +45,7 @@ public class YamlHelper {
      */
     public static <T> T loadFromPath(Class<T> clazz, String path, boolean autoCamel) {
         if (autoCamel) {
-            return loadFromPath(clazz, path, CF.get(DefaultLoadCorrector.class));
+            return loadFromPath(clazz, path, defaultLoadCorrector);
         } else {
             return loadFromPath(clazz, path, null);
         }
@@ -102,7 +103,7 @@ public class YamlHelper {
      */
     public static <T> T loadFromText(Class<T> clazz, String text, boolean autoCamel) {
         if (autoCamel) {
-            return loadFromText(clazz, text, CF.get(DefaultLoadCorrector.class));
+            return loadFromText(clazz, text, defaultLoadCorrector);
         } else {
             return loadFromText(clazz, text, null);
         }
@@ -122,7 +123,7 @@ public class YamlHelper {
         try {
 
             if (loadCorrector != null) {
-                text = loadCorrector.correct(text, YamlType.CAMLE);
+                text = loadCorrector.correct(text, NameRule.CAMEL_LOW);
             }
             return new Yaml().loadAs(text, clazz);
 
@@ -147,7 +148,7 @@ public class YamlHelper {
 
     /**
      * @param obj      obj
-     * @param yamlType yamlType
+     * @param nameRule nameRule
      * @return java.lang.String
      * @title dumpAsMap
      * @description
@@ -155,9 +156,9 @@ public class YamlHelper {
      * @date 2023-02-04 00:20
      */
 
-    public static String dumpAsMap(Object obj, YamlType yamlType) {
-        if (yamlType != null) {
-            return dumpAsMap(obj, yamlType, CF.get(DefaultDumpCorrector.class));
+    public static String dumpAsMap(Object obj, NameRule nameRule) {
+        if (nameRule != null) {
+            return dumpAsMap(obj, nameRule, defaultDumpCorrector);
         } else {
             return dumpAsMap(obj, null, null);
 
@@ -174,11 +175,11 @@ public class YamlHelper {
      * @author BiJi'an
      * @date 2023-02-04 00:09
      */
-    public static String dumpAsMap(Object obj, YamlType yamlType, DumpCorrector dumpCorrector) {
+    public static String dumpAsMap(Object obj, NameRule nameRule, DumpCorrector dumpCorrector) {
         try {
             String text = new Yaml().dumpAsMap(obj);
             if (dumpCorrector != null) {
-                return dumpCorrector.correct(text, yamlType);
+                return dumpCorrector.correct(text, nameRule);
             } else {
                 return text;
             }

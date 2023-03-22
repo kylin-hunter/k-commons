@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Properties;
+import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ClassUtils;
@@ -19,14 +20,14 @@ import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
-import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.name.NameRule;
+import io.github.kylinhunter.commons.name.NameUtils;
 import io.github.kylinhunter.commons.properties.ObjectDescriptor.ObjectFileds;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
-import io.github.kylinhunter.commons.strings.CharsetConst;
 import io.github.kylinhunter.commons.util.ObjectValues;
 
 /**
@@ -45,7 +46,7 @@ public class PropertiesHelper {
      * @date 2023-03-19 01:28
      */
     public static Properties load(String path) {
-        return load(path, CharsetConst.UTF_8);
+        return load(path, "");
     }
 
     /**
@@ -55,13 +56,14 @@ public class PropertiesHelper {
      * @title load
      * @description
      * @author BiJi'an
-     * @date 2023-03-21 23:20
+     * @date 2023-03-19 23:20
      */
     public static Properties load(String path, String charset) {
         Properties properties = new Properties();
         try (InputStream inputStream = ResourceHelper.getInputStream(path, ResourceHelper.PathType.FILESYSTEM);
-             InputStreamReader read = new InputStreamReader(inputStream, charset)) {
+             InputStreamReader read = new InputStreamReader(inputStream, Charsets.toCharset(charset))) {
             properties.load(read);
+
         } catch (IOException e) {
             throw new KIOException("load properties error", e);
         }
@@ -76,12 +78,54 @@ public class PropertiesHelper {
      * @title load
      * @description
      * @author BiJi'an
-     * @date 2023-03-19 14:10
+     * @date 2023-03-19 00:01
      */
     public static <T> T load(String path, Class<T> clazz) {
-        Properties properties = load(path);
-        return toBean(properties, clazz);
+        return load(path, null, null, clazz);
 
+    }
+
+    /**
+     * @param path     path
+     * @param nameRule nameRule
+     * @param clazz    clazz
+     * @return T
+     * @title load
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 00:01
+     */
+    public static <T> T load(String path, NameRule nameRule, Class<T> clazz) {
+        return load(path, null, nameRule, clazz);
+
+    }
+
+    /**
+     * @param path  path
+     * @param clazz clazz
+     * @return T
+     * @title load
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 14:10
+     */
+    public static <T> T load(String path, String charset, NameRule nameRule, Class<T> clazz) {
+        Properties properties = load(path, charset);
+        return toBean(properties, nameRule, clazz);
+
+    }
+
+    /**
+     * @param properties properties
+     * @param clazz      clazz
+     * @return T
+     * @title toBean
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 00:00
+     */
+    public static <T> T toBean(Properties properties, Class<T> clazz) {
+        return toBean(properties, null, clazz);
     }
 
     /**
@@ -93,7 +137,13 @@ public class PropertiesHelper {
      * @author BiJi'an
      * @date 2023-03-19 01:21
      */
-    public static <T> T toBean(Properties properties, Class<T> clazz) {
+    public static <T> T toBean(Properties properties, NameRule nameRule, Class<T> clazz) {
+        if (nameRule != null) {
+
+            Properties newProperties = new Properties();
+            properties.forEach((k, v) -> newProperties.put(newKey(k, nameRule), v));
+            properties = newProperties;
+        }
         Map<ObjectDescriptor.ObjecId, ObjectDescriptor> data = MapUtils.newHashMap();
         properties.forEach((name, propValue) -> {
             String propName = (String) name;
@@ -117,32 +167,40 @@ public class PropertiesHelper {
             if (objecId.getLevel() == 1) {
                 fields.forEach((name, field) -> {
                     PropertyDescriptor propertyDescriptor = beanIntrospector.getPropertyDescriptor(name);
-                    if (propertyDescriptor == null) {
-                        throw new GeneralException("no read or write method:" + name);
+                    if (propertyDescriptor != null) {
+                        Method method = propertyDescriptor.getWriteMethod();
+                        Object value = ObjectValues.get(field.getValue(), method.getParameterTypes()[0]);
+                        ReflectUtils.invoke(rootObject, method, value);
                     }
-                    Method method = propertyDescriptor.getWriteMethod();
 
-                    Object value = ObjectValues.get(field.getValue(), method.getParameterTypes()[0]);
-                    ReflectUtils.invoke(rootObject, method, value);
                 });
                 objectPool.put(objecId.getId(), rootObject);
             } else {
                 Object parentObj = objectPool.get(objecId.getParentId());
                 PropertyDescriptor objPropertyDescriptor = beanIntrospector.getFullPropertyDescriptor(objecId.getId());
-                Method writeMethod = objPropertyDescriptor.getWriteMethod();
-                Object object = ObjectCreator.create(writeMethod.getParameterTypes()[0]);
-                ReflectUtils.invoke(parentObj, writeMethod, object);
-                fields.forEach((n, f) -> {
-                    PropertyDescriptor propertyDescriptor = beanIntrospector.getFullPropertyDescriptor(n);
-                    Method method = propertyDescriptor.getWriteMethod();
-                    Object value = ObjectValues.get(f.getValue(), method.getParameterTypes()[0]);
-                    ReflectUtils.invoke(object, method, value);
-                });
-                objectPool.put(objecId.getId(), object);
+                if (objPropertyDescriptor != null) {
+                    Method writeMethod = objPropertyDescriptor.getWriteMethod();
+                    Object object = ObjectCreator.create(writeMethod.getParameterTypes()[0]);
+                    ReflectUtils.invoke(parentObj, writeMethod, object);
+                    fields.forEach((n, f) -> {
+                        PropertyDescriptor propertyDescriptor = beanIntrospector.getFullPropertyDescriptor(n);
+                        if (propertyDescriptor != null) {
+                            Method method = propertyDescriptor.getWriteMethod();
+                            Object value = ObjectValues.get(f.getValue(), method.getParameterTypes()[0]);
+                            ReflectUtils.invoke(object, method, value);
+                        }
+
+                    });
+                    objectPool.put(objecId.getId(), object);
+                }
 
             }
         });
         return rootObject;
+    }
+
+    public static Properties store(Object obj, File file) {
+        return store(obj, null, file);
     }
 
     /**
@@ -154,8 +212,8 @@ public class PropertiesHelper {
      * @author BiJi'an
      * @date 2023-03-19 00:47
      */
-    public static Properties store(Object obj, File file) {
-        return store(obj, file, CharsetConst.UTF_8);
+    public static Properties store(Object obj, NameRule nameRule, File file) {
+        return store(obj, nameRule, file, null);
     }
 
     /**
@@ -168,8 +226,8 @@ public class PropertiesHelper {
      * @author BiJi'an
      * @date 2023-03-19 00:53
      */
-    public static Properties store(Object obj, File file, String charset) {
-        return store(toProperties(obj), file, charset);
+    public static Properties store(Object obj, NameRule nameRule, File file, String charset) {
+        return store(toProperties(obj, nameRule), file, charset);
     }
 
     /**
@@ -193,6 +251,10 @@ public class PropertiesHelper {
 
     }
 
+    public static Properties toProperties(Object obj) {
+        return toProperties(obj, null);
+    }
+
     /**
      * @param obj obj
      * @return java.util.Properties
@@ -201,7 +263,7 @@ public class PropertiesHelper {
      * @author BiJi'an
      * @date 2023-03-19 01:06
      */
-    public static Properties toProperties(Object obj) {
+    public static Properties toProperties(Object obj, NameRule nameRule) {
         Properties properties = new Properties();
         BeanIntrospector beanIntrospector = BeanIntrospectors.get(obj.getClass());
         Map<String, PropertyDescriptor> pds = beanIntrospector.getPropertyDescriptors();
@@ -209,7 +271,41 @@ public class PropertiesHelper {
             PropertyDescriptor propertyDescriptor = entry.getValue();
             toProperties(properties, "", obj, propertyDescriptor);
         }
+        if (nameRule != null) {
+            Properties newProperties = new Properties();
+            properties.forEach((k, v) -> newProperties.put(newKey(k, nameRule), v));
+            return newProperties;
+        }
         return properties;
+    }
+
+    /**
+     * @param key      key
+     * @param nameRule nameRule
+     * @return java.lang.Object
+     * @title newKey
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 20:49
+     */
+    private static Object newKey(Object key, NameRule nameRule) {
+        if (key instanceof String) {
+            String newKey = (String) key;
+            String[] keyPath = StringUtils.split(newKey, ".");
+            if (keyPath.length <= 1) {
+                newKey = NameUtils.convert(newKey, nameRule);
+            } else {
+                StringJoiner stringJoiner = new StringJoiner(".");
+                for (String s : keyPath) {
+                    stringJoiner.add(NameUtils.convert(s, nameRule));
+
+                }
+                newKey = stringJoiner.toString();
+            }
+            return newKey;
+        }
+        return key;
+
     }
 
     /**
@@ -221,7 +317,7 @@ public class PropertiesHelper {
      * @title toProperties
      * @description
      * @author BiJi'an
-     * @date 2023-03-21 23:21
+     * @date 2023-03-19 23:21
      */
     private static void toProperties(Properties properties, String parent, Object obj, PropertyDescriptor pd) {
         if (!StringUtils.isEmpty(parent)) {

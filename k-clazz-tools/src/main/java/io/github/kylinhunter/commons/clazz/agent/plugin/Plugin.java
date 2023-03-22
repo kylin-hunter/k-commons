@@ -1,0 +1,17 @@
+package io.github.kylinhunter.commons.clazz.agent.plugin;
+
+/**
+ * @author BiJi'an
+ * @description
+ * @date 2023-03-11 00:46
+ **/
+public interface Plugin {
+    String name();
+
+    PluginConfig1[] buildInterceptPoint();
+
+    Class adviceClass();
+
+    void other();
+
+}

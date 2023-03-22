@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.bean.info;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author BiJi'an
@@ -10,6 +11,7 @@ import lombok.EqualsAndHashCode;
  **/
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@ToString(callSuper = true)
 public class Father extends People {
     @EqualsAndHashCode.Include
     private String p01;

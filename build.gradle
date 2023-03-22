@@ -56,7 +56,7 @@ subprojects {
 
 
     dependencies {
-        if(project.name!='k-clazz'){
+        if(project.name!='k-clazz-tools'){
             implementation("ch.qos.logback:logback-classic")
         }
         implementation("org.projectlombok:lombok")

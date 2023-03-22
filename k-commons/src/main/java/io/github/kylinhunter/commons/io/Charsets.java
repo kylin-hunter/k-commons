@@ -18,6 +18,7 @@ public class Charsets {
      * @date 2023-03-19 00:59
      */
     public static Charset toCharset(final String charsetName) {
-        return charsetName == null ? Charset.defaultCharset() : Charset.forName(charsetName);
+        return (charsetName == null || charsetName.length() == 0) ? Charset.defaultCharset()
+                : Charset.forName(charsetName);
     }
 }

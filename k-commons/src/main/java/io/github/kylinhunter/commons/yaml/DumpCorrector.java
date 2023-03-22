@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.yaml;
 
+import io.github.kylinhunter.commons.name.NameRule;
+
 /**
  * @author BiJi'an
  * @description
@@ -9,12 +11,12 @@ package io.github.kylinhunter.commons.yaml;
 public interface DumpCorrector {
     /**
      * @param text     text
-     * @param yamlType yamlType
+     * @param nameRule nameRule
      * @return java.lang.String
      * @title correct
      * @description
      * @author BiJi'an
      * @date 2023-02-04 00:36
      */
-    String correct(String text, YamlType yamlType);
+    String correct(String text, NameRule nameRule);
 }

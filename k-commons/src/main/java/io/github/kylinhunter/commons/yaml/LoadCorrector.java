@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.yaml;
 
+import io.github.kylinhunter.commons.name.NameRule;
+
 /**
  * @author BiJi'an
  * @description
@@ -8,13 +10,13 @@ package io.github.kylinhunter.commons.yaml;
 @FunctionalInterface
 public interface LoadCorrector {
     /**
+     * @param text     text
+     * @param nameRule nameRule
+     * @return java.lang.String
      * @title correct
      * @description
      * @author BiJi'an
-     * @param text
-     * @param yamlType
      * @date 2023-02-04 00:36
-     * @return java.lang.String
      */
-    String correct(String text, YamlType yamlType);
+    String correct(String text, NameRule nameRule);
 }
