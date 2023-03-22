@@ -41,7 +41,7 @@ public class YamlHelper {
      * @date 2022-11-01 22:01
      */
     public static <T> T loadFromPath(Class<T> clazz, String path) {
-        return loadFromPath(clazz, path, NameRule.CAMEL_LOW);
+        return loadFromPath(clazz, path, null);
     }
 
     /**
@@ -80,7 +80,7 @@ public class YamlHelper {
      * @date 2022-11-01 22:01
      */
     public static <T> T loadFromText(Class<T> clazz, String text) {
-        return loadFromText(clazz, text, NameRule.CAMEL_LOW);
+        return loadFromText(clazz, text, null);
     }
 
     /**

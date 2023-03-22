@@ -11,6 +11,7 @@ import io.github.kylinhunter.commons.jdbc.datasource.bean.DataSourceConfig;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.DataSourceInfo;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.HikariConfigEx;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.PoolInfo;
+import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.yaml.YamlHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class HikariConfigExParser {
      */
     public List<HikariConfigEx> load(String path) {
         path = StringUtils.defaultString(path, DEFAULT_PATH);
-        DataSourceConfig DataSourceConfig = YamlHelper.loadFromPath(DataSourceConfig.class, path);
+        DataSourceConfig DataSourceConfig = YamlHelper.loadFromPath(DataSourceConfig.class, path, NameRule.CAMEL_LOW);
         List<DataSourceInfo> dataSourceInfos = DataSourceConfig.getDatasources();
 
         List<HikariConfigEx> hikariConfigExs = ListUtils.newArrayList();
