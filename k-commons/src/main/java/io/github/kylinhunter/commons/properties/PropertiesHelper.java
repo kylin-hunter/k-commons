@@ -10,7 +10,6 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ClassUtils;
@@ -24,7 +23,6 @@ import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.name.NameRule;
-import io.github.kylinhunter.commons.name.NameUtils;
 import io.github.kylinhunter.commons.properties.ObjectDescriptor.ObjectFileds;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
@@ -36,6 +34,20 @@ import io.github.kylinhunter.commons.util.ObjectValues;
  * @date 2023-03-19 11:30
  **/
 public class PropertiesHelper {
+
+    private static KeyCorrector defaultKeyCorrector = new DefaultKeyCorrector();
+
+    /**
+     * @param keyCorrector keyCorrector
+     * @return void
+     * @title resetKeyCorrector
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 00:39
+     */
+    public static void resetDefaultKeyCorrector(KeyCorrector keyCorrector) {
+        defaultKeyCorrector = keyCorrector;
+    }
 
     /**
      * @param path path
@@ -141,7 +153,7 @@ public class PropertiesHelper {
         if (nameRule != null) {
 
             Properties newProperties = new Properties();
-            properties.forEach((k, v) -> newProperties.put(newKey(k, nameRule), v));
+            properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
             properties = newProperties;
         }
         Map<ObjectDescriptor.ObjecId, ObjectDescriptor> data = MapUtils.newHashMap();
@@ -273,39 +285,10 @@ public class PropertiesHelper {
         }
         if (nameRule != null) {
             Properties newProperties = new Properties();
-            properties.forEach((k, v) -> newProperties.put(newKey(k, nameRule), v));
+            properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
             return newProperties;
         }
         return properties;
-    }
-
-    /**
-     * @param key      key
-     * @param nameRule nameRule
-     * @return java.lang.Object
-     * @title newKey
-     * @description
-     * @author BiJi'an
-     * @date 2023-03-19 20:49
-     */
-    private static Object newKey(Object key, NameRule nameRule) {
-        if (key instanceof String) {
-            String newKey = (String) key;
-            String[] keyPath = StringUtils.split(newKey, ".");
-            if (keyPath.length <= 1) {
-                newKey = NameUtils.convert(newKey, nameRule);
-            } else {
-                StringJoiner stringJoiner = new StringJoiner(".");
-                for (String s : keyPath) {
-                    stringJoiner.add(NameUtils.convert(s, nameRule));
-
-                }
-                newKey = stringJoiner.toString();
-            }
-            return newKey;
-        }
-        return key;
-
     }
 
     /**

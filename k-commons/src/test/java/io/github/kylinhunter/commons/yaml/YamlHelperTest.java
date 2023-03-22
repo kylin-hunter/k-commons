@@ -24,9 +24,9 @@ class YamlHelperTest {
             String yamlText = IOHelper.toString(inputStream, StandardCharsets.UTF_8);
             System.out.println("file string=> \n" + yamlText);
 
-            YamlBean yamlBeanFromPath = YamlHelper.loadFromPath(YamlBean.class, path, true);
+            YamlBean yamlBeanFromPath = YamlHelper.loadFromPath(YamlBean.class, path, NameRule.CAMEL_LOW);
             System.out.println("yamlBeanFromPath:" + yamlBeanFromPath);
-            YamlBean yamlBeanFromText = YamlHelper.loadFromText(YamlBean.class, yamlText, true);
+            YamlBean yamlBeanFromText = YamlHelper.loadFromText(YamlBean.class, yamlText, NameRule.CAMEL_LOW);
             System.out.println("yamlBeanFromText:" + yamlBeanFromText);
             assertEquals(yamlBeanFromPath, yamlBeanFromText);
 
@@ -40,14 +40,14 @@ class YamlHelperTest {
             String dumpText2 = YamlHelper.dumpAsMap(yamlBeanFromPath, NameRule.SNAKE_LOW_UNDERSCORE);
             System.out.println("dumpText2 =>\n" + dumpText2);
             assertTrue(dumpText2.contains("my_money"));
-            YamlBean yamlBeanFromDumpText2 = YamlHelper.loadFromText(YamlBean.class, dumpText2, true);
+            YamlBean yamlBeanFromDumpText2 = YamlHelper.loadFromText(YamlBean.class, dumpText2, NameRule.CAMEL_LOW);
             System.out.println("yamlBeanFromDumpText2:" + yamlBeanFromDumpText2);
             assertEquals(yamlBeanFromPath, yamlBeanFromDumpText2);
 
             String dumpText3 = YamlHelper.dumpAsMap(yamlBeanFromPath, NameRule.SNAKE_LOW_HYPHEN);
             System.out.println("dumpText3 =>\n" + dumpText3);
             assertTrue(dumpText3.contains("my-money"));
-            YamlBean yamlBeanFromDumpText3 = YamlHelper.loadFromText(YamlBean.class, dumpText3, true);
+            YamlBean yamlBeanFromDumpText3 = YamlHelper.loadFromText(YamlBean.class, dumpText3, NameRule.CAMEL_LOW);
             System.out.println("yamlBeanFromDumpText3:" + yamlBeanFromDumpText3);
             assertEquals(yamlBeanFromPath, yamlBeanFromDumpText3);
         }

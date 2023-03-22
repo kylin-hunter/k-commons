@@ -8,7 +8,7 @@ import io.github.kylinhunter.commons.name.NameRule;
  * @date 2023-01-03 19:32
  **/
 @FunctionalInterface
-public interface DumpCorrector {
+public interface KeyCorrector {
     /**
      * @param text     text
      * @param nameRule nameRule

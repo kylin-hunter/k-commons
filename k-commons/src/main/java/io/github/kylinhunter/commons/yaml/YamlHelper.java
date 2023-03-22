@@ -17,8 +17,19 @@ import io.github.kylinhunter.commons.name.NameRule;
  * @date 2022-11-01 22:01
  **/
 public class YamlHelper {
-    private static DefaultLoadCorrector defaultLoadCorrector = new DefaultLoadCorrector();
-    private static DefaultDumpCorrector defaultDumpCorrector = new DefaultDumpCorrector();
+    private static KeyCorrector defaultKeyCorrector = new DefaultKeyCorrector();
+
+    /**
+     * @param keyCorrector keyCorrector
+     * @return void
+     * @title resetKeyCorrector
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 00:39
+     */
+    public static void resetDefaultKeyCorrector(KeyCorrector keyCorrector) {
+        defaultKeyCorrector = keyCorrector;
+    }
 
     /**
      * @param clazz clazz
@@ -30,25 +41,7 @@ public class YamlHelper {
      * @date 2022-11-01 22:01
      */
     public static <T> T loadFromPath(Class<T> clazz, String path) {
-        return loadFromPath(clazz, path, true);
-    }
-
-    /**
-     * @param clazz     clazz
-     * @param path      path
-     * @param autoCamel autoCamel
-     * @return T
-     * @title loadFromClassPath
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-04 16:52
-     */
-    public static <T> T loadFromPath(Class<T> clazz, String path, boolean autoCamel) {
-        if (autoCamel) {
-            return loadFromPath(clazz, path, defaultLoadCorrector);
-        } else {
-            return loadFromPath(clazz, path, null);
-        }
+        return loadFromPath(clazz, path, NameRule.CAMEL_LOW);
     }
 
     /**
@@ -60,7 +53,7 @@ public class YamlHelper {
      * @author BiJi'an
      * @date 2022-11-01 22:01
      */
-    public static <T> T loadFromPath(Class<T> clazz, String path, LoadCorrector loadCorrector) {
+    public static <T> T loadFromPath(Class<T> clazz, String path, NameRule nameRule) {
         try (InputStream inputStream = ResourceHelper.getInputStream(path)) {
             if (inputStream == null) {
                 throw new ParamException(" inputStream is null ,invalid path: " + path);
@@ -68,7 +61,7 @@ public class YamlHelper {
 
             String text = IOHelper.toString(inputStream, StandardCharsets.UTF_8);
 
-            return loadFromText(clazz, text, loadCorrector);
+            return loadFromText(clazz, text, nameRule);
 
         } catch (KRuntimeException e) {
             throw e;
@@ -87,26 +80,7 @@ public class YamlHelper {
      * @date 2022-11-01 22:01
      */
     public static <T> T loadFromText(Class<T> clazz, String text) {
-        return loadFromText(clazz, text, true);
-
-    }
-
-    /**
-     * @param clazz     clazz
-     * @param text      text
-     * @param autoCamel autoCamel
-     * @return T
-     * @title loadFromText
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-04 16:50
-     */
-    public static <T> T loadFromText(Class<T> clazz, String text, boolean autoCamel) {
-        if (autoCamel) {
-            return loadFromText(clazz, text, defaultLoadCorrector);
-        } else {
-            return loadFromText(clazz, text, null);
-        }
+        return loadFromText(clazz, text, NameRule.CAMEL_LOW);
     }
 
     /**
@@ -118,12 +92,10 @@ public class YamlHelper {
      * @author BiJi'an
      * @date 2022-11-01 22:01
      */
-    public static <T> T loadFromText(Class<T> clazz, String text, LoadCorrector loadCorrector) {
-
+    public static <T> T loadFromText(Class<T> clazz, String text, NameRule nameRule) {
         try {
-
-            if (loadCorrector != null) {
-                text = loadCorrector.correct(text, NameRule.CAMEL_LOW);
+            if (nameRule != null) {
+                text = defaultKeyCorrector.correct(text, nameRule);
             }
             return new Yaml().loadAs(text, clazz);
 
@@ -157,32 +129,11 @@ public class YamlHelper {
      */
 
     public static String dumpAsMap(Object obj, NameRule nameRule) {
-        if (nameRule != null) {
-            return dumpAsMap(obj, nameRule, defaultDumpCorrector);
-        } else {
-            return dumpAsMap(obj, null, null);
-
-        }
-
-    }
-
-    /**
-     * @param obj           obj
-     * @param dumpCorrector dumpCorrector
-     * @return java.lang.String
-     * @title dumpAsMap
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-04 00:09
-     */
-    public static String dumpAsMap(Object obj, NameRule nameRule, DumpCorrector dumpCorrector) {
         try {
             String text = new Yaml().dumpAsMap(obj);
-            if (dumpCorrector != null) {
-                return dumpCorrector.correct(text, nameRule);
-            } else {
-                return text;
-            }
+
+            return defaultKeyCorrector.correct(text, nameRule);
+
         } catch (Exception e) {
             throw new ParamException("dumpAsMap error ", e);
         }

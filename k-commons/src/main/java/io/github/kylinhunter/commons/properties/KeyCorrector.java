@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.yaml;
+package io.github.kylinhunter.commons.properties;
 
 import io.github.kylinhunter.commons.name.NameRule;
 
@@ -8,9 +8,9 @@ import io.github.kylinhunter.commons.name.NameRule;
  * @date 2023-01-03 19:32
  **/
 @FunctionalInterface
-public interface LoadCorrector {
+public interface KeyCorrector {
     /**
-     * @param text     text
+     * @param key      key
      * @param nameRule nameRule
      * @return java.lang.String
      * @title correct
@@ -18,5 +18,5 @@ public interface LoadCorrector {
      * @author BiJi'an
      * @date 2023-02-04 00:36
      */
-    String correct(String text, NameRule nameRule);
+    Object correct(Object key, NameRule nameRule);
 }
