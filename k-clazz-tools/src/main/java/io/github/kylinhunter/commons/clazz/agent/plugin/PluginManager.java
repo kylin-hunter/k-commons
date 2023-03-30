@@ -2,9 +2,10 @@ package io.github.kylinhunter.commons.clazz.agent.plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
-import io.github.kylinhunter.commons.clazz.agent.plugin.invoke.InvokeAnalysisPlugin;
 import lombok.Data;
 
 /**
@@ -13,12 +14,22 @@ import lombok.Data;
  * @date 2023-03-11 00:50
  **/
 @Data
-public class PluginCenter {
+public class PluginManager {
+    private static Logger log = Logger.getLogger(PluginManager.class.toString());
 
     public static final List<Plugin> plugins = new ArrayList<>();
 
     static {
-        plugins.add(new InvokeAnalysisPlugin());
+        init();
+    }
+
+    private static void init() {
+        ServiceLoader<Plugin> allPlugins = ServiceLoader.load(Plugin.class);
+        log.info("init plugins ");
+        allPlugins.forEach(plugin -> {
+            log.info("init plugins: " + plugin.name());
+            PluginManager.plugins.add(plugin);
+        });
     }
 
     /**

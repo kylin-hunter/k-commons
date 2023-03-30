@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin.config;
 
-import io.github.kylinhunter.commons.clazz.agent.plugin.config.TypeMatcher;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -10,5 +11,7 @@ import lombok.Data;
  **/
 @Data
 public class PluginConfig {
-    private TypeMatcher typeMatcher;
+    private String name;
+    private List<TypeMatcher> packageMatchers;
+    private List<TypeMatcher> methodMatchers;
 }

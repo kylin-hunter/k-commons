@@ -8,7 +8,7 @@ package io.github.kylinhunter.commons.clazz.agent.plugin;
 public interface Plugin {
     String name();
 
-    PluginConfig1[] buildInterceptPoint();
+    PluginPoint[] buildInterceptPoint();
 
     Class adviceClass();
 

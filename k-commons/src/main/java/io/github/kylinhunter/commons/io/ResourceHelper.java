@@ -58,6 +58,32 @@ public class ResourceHelper {
     }
 
     /**
+     * @title getInputStream
+     * @description
+     * @author BiJi'an
+     * @param path path
+     * @param required required
+     * @date 2023-03-19 15:22
+     * @return java.io.InputStream
+     */
+    public static InputStream getInputStream(String path, boolean required) {
+        return getInputStream(path, PathType.CLASSPATH, required);
+    }
+
+    /**
+     * @param path         path
+     * @param priorityType priorityType
+     * @return java.io.InputStream
+     * @title getInputStream
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-19 14:55
+     */
+    public static InputStream getInputStream(String path, PathType priorityType) {
+        return getInputStream(path, priorityType, false);
+    }
+
+    /**
      * @param path path
      * @return java.io.InputStream
      * @title getInputStream
@@ -65,29 +91,34 @@ public class ResourceHelper {
      * @author BiJi'an
      * @date 2022-01-01 02:11
      */
-    public static InputStream getInputStream(String path, PathType priorityType) {
+    public static InputStream getInputStream(String path, PathType priorityType, boolean required) {
         PathInfo pathInfo = toPathInfo(path);
         PathType pathType = pathInfo.getType();
+        InputStream inputStream;
         if (pathType == PathType.CLASSPATH) {
-            return ResourceHelper.getInputStreamInClassPath(pathInfo.getPath());
+            inputStream = ResourceHelper.getInputStreamInClassPath(pathInfo.getPath());
         } else if (pathType == PathType.FILESYSTEM) {
-            return IOHelper.getFileInputStream(pathInfo.file);
+            inputStream = IOHelper.getFileInputStream(pathInfo.file);
         } else {
-            InputStream inputStream;
+
             if (priorityType == PathType.FILESYSTEM) {
                 inputStream = IOHelper.getFileInputStream(new File(pathInfo.getPath()));
                 if (inputStream == null) {
-                    return ResourceHelper.getInputStreamInClassPath(pathInfo.getPath());
+                    inputStream = ResourceHelper.getInputStreamInClassPath(pathInfo.getPath());
                 }
             } else {
                 inputStream = ResourceHelper.getInputStreamInClassPath(pathInfo.getPath());
                 if (inputStream == null) {
-                    return IOHelper.getFileInputStream(new File(pathInfo.getPath()));
+                    inputStream = IOHelper.getFileInputStream(new File(pathInfo.getPath()));
                 }
             }
-            return inputStream;
 
         }
+        if (required && inputStream == null) {
+            throw new KIOException("inputStream must can't be  null :" + path);
+
+        }
+        return inputStream;
     }
 
     /**
@@ -149,9 +180,9 @@ public class ResourceHelper {
     }
 
     /**
-     * @param path            path
+     * @param path         path
      * @param priorityType priorityType
-     * @param required        required
+     * @param required     required
      * @return java.io.File
      * @title getFile
      * @description
@@ -189,7 +220,7 @@ public class ResourceHelper {
     }
 
     /**
-     * @param path            path
+     * @param path         path
      * @param priorityType priorityType
      * @return java.io.File
      * @title getDir
@@ -202,7 +233,7 @@ public class ResourceHelper {
     }
 
     /**
-     * @param path            path
+     * @param path         path
      * @param priorityType priorityType
      * @return java.io.File
      * @title getDir
@@ -345,7 +376,7 @@ public class ResourceHelper {
     }
 
     /**
-     * @param path        path
+     * @param path         path
      * @param priorityType priorityType
      * @return java.lang.String
      * @title getText
@@ -383,9 +414,9 @@ public class ResourceHelper {
     }
 
     /**
-     * @param path        path
+     * @param path         path
      * @param priorityType priorityType
-     * @param charset     charset
+     * @param charset      charset
      * @return java.lang.String
      * @title getText
      * @description

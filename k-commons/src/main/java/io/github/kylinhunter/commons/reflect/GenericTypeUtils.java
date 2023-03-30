@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.reflect.bean.ActualType;
 
 /**
@@ -245,9 +244,8 @@ public class GenericTypeUtils {
                         Type actualTypeArgument = actualTypeArguments[i];
                         if (actualTypeArgument instanceof Class<?>) {
                             clazzes[i] = (Class<?>) actualTypeArgument;
-
                         } else {
-                            throw new GeneralException("not a class=>" + actualTypeArgument.getTypeName());
+                            clazzes[i] = null;
                         }
                     }
                     return new ActualType(rawType, clazzes);

@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.bean.info;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -49,5 +51,11 @@ public class Father extends People {
 
     @EqualsAndHashCode.Include
     private Son son;
+
+    @EqualsAndHashCode.Include
+    private List<Son> sonList;
+
+    @EqualsAndHashCode.Include
+    private Son[] sonArrays;
 
 }

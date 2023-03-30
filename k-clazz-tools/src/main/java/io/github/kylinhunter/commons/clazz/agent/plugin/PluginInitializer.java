@@ -33,7 +33,7 @@ public class PluginInitializer {
 
         log.info("premain start,agentArgs=" + agentArgs);
         AgentArgsHelper.init(agentArgs);
-        PluginCenter.forEach(plugin -> process(plugin, inst));
+        PluginManager.forEach(plugin -> process(plugin, inst));
     }
 
     /**
@@ -49,15 +49,15 @@ public class PluginInitializer {
         PluginConfig pluginConfig = AgentArgsHelper.getConfig(PluginConfig.class);
         log.info(pluginConfig.toString());
 
-        PluginConfig1[] pluginConfig1s = plugin.buildInterceptPoint();
-        if (pluginConfig1s != null) {
-            for (PluginConfig1 pluginConfig1 : pluginConfig1s) {
-                if (pluginConfig1 != null) {
+        PluginPoint[] pluginPoints = plugin.buildInterceptPoint();
+        if (pluginPoints != null) {
+            for (PluginPoint pluginPoint : pluginPoints) {
+                if (pluginPoint != null) {
                     AgentBuilder.Default builder = new AgentBuilder.Default();
-                    ElementMatcher<TypeDescription> typeDescriptionElementMatcher = pluginConfig1.buildTypesMatcher();
+                    ElementMatcher<TypeDescription> typeDescriptionElementMatcher = pluginPoint.buildTypesMatcher();
                     if (typeDescriptionElementMatcher != null) {
                         builder.type(typeDescriptionElementMatcher)
-                                .transform(new InvokeTransformer(pluginConfig1)
+                                .transform(new InvokeTransformer(pluginPoint)
                                 ).with(agentListenr).installOn(inst);
                     }
                 }

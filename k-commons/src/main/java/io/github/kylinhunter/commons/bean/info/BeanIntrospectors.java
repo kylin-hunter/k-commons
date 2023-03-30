@@ -5,14 +5,11 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 
 /**
@@ -22,11 +19,6 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  **/
 public class BeanIntrospectors {
     private static final Map<Class<?>, BeanIntrospector> beanIntrospectors = MapUtils.newHashMap();
-    private static final Set<String> skipProperties = SetUtils.newHashSet();
-
-    static {
-        skipProperties.add("class");
-    }
 
     /**
      * @param clazz clazz
@@ -58,62 +50,76 @@ public class BeanIntrospectors {
         PropertyDescriptor[] propertyDescriptors = beanIntrospector.getBeanInfo().getPropertyDescriptors();
         if (!ArrayUtils.isEmpty(propertyDescriptors)) {
             for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-                String propName = propertyDescriptor.getName();
-                if (!skipProperties.contains(propName)) {
-                    if (propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getReadMethod() != null) {
-                        beanIntrospector.addPropertyDescriptor(propName, propertyDescriptor);
-                        initPropertyDescriptor(beanIntrospector, new BeanContext(), 1, "", propertyDescriptor);
-                    }
-                }
+                ExPropertyDescriptor exPropertyDescriptor = BeanInfoHelper.getExFieldDescriptor(propertyDescriptor);
+                beanIntrospector.addPropertyDescriptor(propertyDescriptor.getName(), exPropertyDescriptor);
+                initFullPropertyDescriptor(beanIntrospector, new DuplicateRemover(), 1, "", exPropertyDescriptor);
             }
         }
     }
 
     /**
-     * @param beanIntrospector   beanIntrospector
-     * @param propertyDescriptor propertyDescriptor
+     * @param beanIntrospector beanIntrospector
+     * @param propertyAccessor propertyAccessor
+     * @param level            level
+     * @param parent           parent
+     * @param exPd             exPd
      * @return void
-     * @title initPropertyDescriptor
+     * @title initFullPropertyDescriptor
      * @description
      * @author BiJi'an
-     * @date 2023-03-19 14:17
+     * @date 2023-04-01 10:52
      */
-    private static void initPropertyDescriptor(BeanIntrospector beanIntrospector,
-                                               BeanContext beanContext, int level, String parent,
-                                               PropertyDescriptor propertyDescriptor) throws IntrospectionException {
+    private static void initFullPropertyDescriptor(BeanIntrospector beanIntrospector, DuplicateRemover propertyAccessor,
+                                                   int level, String parent,
+                                                   ExPropertyDescriptor exPd) throws IntrospectionException {
 
-        Class<?> propertyType = propertyDescriptor.getPropertyType();
+        if (!exPd.isCanReadWrite()) {
+            return;
+        }
         if (!StringUtils.isEmpty(parent)) {
             parent = parent + ".";
         }
-        String propName = propertyDescriptor.getName();
-        if (ClassUtils.isPrimitiveOrWrapper(propertyType)) {
-            beanIntrospector.addFullPropertyDescriptor(parent + propName, propertyDescriptor);
-        } else {
-            if (propertyType == String.class) {
-                beanIntrospector.addFullPropertyDescriptor(parent + propName, propertyDescriptor);
-            } else {
+        String propName = exPd.getName();
+        ExPropType type = exPd.getExPropType();
+        beanIntrospector.addFullPropertyDescriptor(parent + propName, exPd);
 
-                beanIntrospector.addFullPropertyDescriptor(parent + propName, propertyDescriptor);
-                if (beanContext.accept(level, propertyType)) {
-                    BeanInfo beanInfo = Introspector.getBeanInfo(propertyType);
-                    PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-                    if (!ArrayUtils.isEmpty(propertyDescriptors)) {
-                        parent = parent + propName;
-                        for (PropertyDescriptor descriptor : propertyDescriptors) {
-                            if (descriptor.getWriteMethod() != null && descriptor.getReadMethod() != null) {
-                                initPropertyDescriptor(beanIntrospector, beanContext, level + 1, parent, descriptor);
-                            }
-                        }
+        // add sub type
+        if (type == ExPropType.CUSTOM) {
+            if (!propertyAccessor.duplicate(level, exPd)) {
+                BeanInfo beanInfo = Introspector.getBeanInfo(exPd.getPropertyType());
+                PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+                if (!ArrayUtils.isEmpty(propertyDescriptors)) {
+                    parent = parent + propName;
+                    for (PropertyDescriptor descriptor : propertyDescriptors) {
+                        ExPropertyDescriptor exPdSub = BeanInfoHelper.getExFieldDescriptor(descriptor);
+                        initFullPropertyDescriptor(beanIntrospector, propertyAccessor, level + 1, parent, exPdSub);
+
                     }
                 }
             }
+        } else if (type == ExPropType.ARRAY || type == ExPropType.LIST) {
+            Class<?> propActualClazz = exPd.getPropActualClazz();
+            if (propActualClazz != null) {
+                BeanInfo beanInfo = Introspector.getBeanInfo(propActualClazz);
+                PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+                if (!ArrayUtils.isEmpty(propertyDescriptors)) {
+                    parent = parent + propName ;
+                    for (PropertyDescriptor descriptor : propertyDescriptors) {
+                        ExPropertyDescriptor exPdSub = BeanInfoHelper.getExFieldDescriptor(descriptor);
+
+                        initFullPropertyDescriptor(beanIntrospector, propertyAccessor, level + 1, parent,
+                                exPdSub);
+                    }
+                }
+            }
+
         }
+
     }
 
     /**
      * @param clazz clazz
-     * @return java.util.List<java.beans.PropertyDescriptor>
+     * @return java.util.List<PropertyDescriptor>
      * @title get
      * @description
      * @author BiJi'an

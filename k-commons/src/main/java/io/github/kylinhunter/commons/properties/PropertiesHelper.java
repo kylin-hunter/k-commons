@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.properties;
 
-import java.beans.PropertyDescriptor;
+import static java.lang.reflect.Array.newInstance;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,22 +9,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
-import java.util.stream.Stream;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
-import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.bean.info.ExPropType;
+import io.github.kylinhunter.commons.bean.info.ExPropertyDescriptor;
+import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.name.NameRule;
-import io.github.kylinhunter.commons.properties.ObjectDescriptor.ObjectFileds;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import io.github.kylinhunter.commons.util.ObjectValues;
@@ -45,6 +48,7 @@ public class PropertiesHelper {
      * @author BiJi'an
      * @date 2023-03-19 00:39
      */
+    @SuppressWarnings("unused")
     public static void resetDefaultKeyCorrector(KeyCorrector keyCorrector) {
         defaultKeyCorrector = keyCorrector;
     }
@@ -72,10 +76,9 @@ public class PropertiesHelper {
      */
     public static Properties load(String path, String charset) {
         Properties properties = new Properties();
-        try (InputStream inputStream = ResourceHelper.getInputStream(path, ResourceHelper.PathType.FILESYSTEM);
+        try (InputStream inputStream = ResourceHelper.getInputStream(path, ResourceHelper.PathType.FILESYSTEM, true);
              InputStreamReader read = new InputStreamReader(inputStream, Charsets.toCharset(charset))) {
             properties.load(read);
-
         } catch (IOException e) {
             throw new KIOException("load properties error", e);
         }
@@ -141,6 +144,37 @@ public class PropertiesHelper {
     }
 
     /**
+     * @param objectPool objectPool
+     * @param propFiled  propFiled
+     * @return io.github.kylinhunter.commons.properties.PropObject
+     * @title getPropObject
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-31 01:34
+     */
+    private static PropObject createPropObject(PropObjectPool objectPool, PropFiled propFiled) {
+        PropObject curObject = objectPool.add(new PropObject(propFiled.getObjecId()));
+
+        if (!curObject.isRoot()) {
+            String parentId = curObject.getParentId();
+            PropObject parentObj = objectPool.get(parentId);
+            PropObject curObj = curObject;
+            while (!curObj.isRoot() && parentObj == null) {
+
+                PropObject newParentObject = objectPool.add(new PropObject(curObj.parentId));
+                PropFiled nowField = new PropFiled(curObj.getObjecId());
+                newParentObject.addField(nowField);
+                curObj = newParentObject;
+                parentObj = objectPool.get(curObj.parentId);
+
+            }
+            parentObj.addField(new PropFiled(curObj.getObjecId()));
+        }
+        return curObject;
+
+    }
+
+    /**
      * @param properties properties
      * @param clazz      clazz
      * @return T
@@ -155,59 +189,153 @@ public class PropertiesHelper {
             properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
             properties = newProperties;
         }
-        Map<ObjectDescriptor.ObjecId, ObjectDescriptor> data = MapUtils.newHashMap();
+
+        PropObjectPool objectPool = new PropObjectPool();
+        // add root object
+        objectPool.add(new PropObject(PropObject.ROOT_ID, ObjectCreator.create(clazz)));
+
+        // process all propObject
         properties.forEach((name, propValue) -> {
-            String propName = (String) name;
-            ObjectDescriptor.ObjecId objecId = new ObjectDescriptor.ObjecId(propName);
-            data.compute(objecId, (oid, objectDescriptor) -> {
-                if (objectDescriptor == null) {
-                    objectDescriptor = new ObjectDescriptor(oid);
-                }
-                objectDescriptor.addField(propName, propValue);
-                return objectDescriptor;
-            });
+            String fullName = (String) name;
+            PropFiled propFiled = new PropFiled(fullName, propValue);
+            PropObject curObject = objectPool.get(propFiled.getObjecId());
+            if (curObject == null) {
+                curObject = createPropObject(objectPool, propFiled);
+            }
+            curObject.addField(propFiled);
         });
-        T rootObject = ObjectCreator.create(clazz);
-        BeanIntrospector beanIntrospector = BeanIntrospectors.get(clazz);
 
-        Map<String, Object> objectPool = MapUtils.newHashMap();
-        Stream<ObjectDescriptor> objectDescriptors = data.values().stream().sorted();
-        objectDescriptors.forEach(objectDescriptor -> {
-            ObjectDescriptor.ObjecId objecId = objectDescriptor.getObjecId();
-            ObjectFileds fields = objectDescriptor.getFields();
-            if (objecId.getLevel() == 1) {
-                fields.forEach((name, field) -> {
-                    PropertyDescriptor propertyDescriptor = beanIntrospector.getPropertyDescriptor(name);
-                    if (propertyDescriptor != null) {
-                        Method method = propertyDescriptor.getWriteMethod();
-                        Object value = ObjectValues.get(field.getValue(), method.getParameterTypes()[0]);
-                        ReflectUtils.invoke(rootObject, method, value);
+        List<PropObject> propObjects = objectPool.resort(); // resort
+
+        propObjects.forEach(propObject -> {
+            //System.out.println("=>" + propObject.getObjecId() + ":" + propObject.getClazz().getSimpleName());
+            Object curObj = propObject.getObj();
+            BeanIntrospector beanIntrospector = propObject.getBeanIntrospector();
+
+            if (!propObject.isRoot()) {
+                PropObject parentPropObject = objectPool.get(propObject.getParentId());
+                Object parentObj = parentPropObject.getObj();
+                Objects.requireNonNull(parentObj);
+
+                if (parentObj.getClass().isArray()) {
+                    Object ss[] = (Object[]) parentObj;
+                    curObj = ss[0];
+                    beanIntrospector = BeanIntrospectors.get(curObj.getClass());
+                    propObject.setBeanIntrospector(beanIntrospector);
+
+                } else if (List.class.isAssignableFrom(parentObj.getClass())) {
+                    List list = (List) parentObj;
+                    curObj = list.get(0);
+                    beanIntrospector = BeanIntrospectors.get(curObj.getClass());
+                    propObject.setBeanIntrospector(beanIntrospector);
+                } else {
+                    BeanIntrospector parentBeanIntrospector = parentPropObject.getBeanIntrospector();
+
+                    ExPropertyDescriptor propertyDescriptor =
+                            parentBeanIntrospector.getExPropertyDescriptor(propObject.getParentName());
+
+                    Objects.requireNonNull(propertyDescriptor);
+
+                    Method readMethod = propertyDescriptor.getReadMethod();
+
+                    try {
+                        curObj = ReflectUtils.invoke(parentPropObject.getObj(), readMethod);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                    Objects.requireNonNull(curObj);
 
-                });
-                objectPool.put(objecId.getId(), rootObject);
-            } else {
-                Object parentObj = objectPool.get(objecId.getParentId());
-                PropertyDescriptor objPropertyDescriptor = beanIntrospector.getFullPropertyDescriptor(objecId.getId());
-                if (objPropertyDescriptor != null) {
-                    Method writeMethod = objPropertyDescriptor.getWriteMethod();
-                    Object object = ObjectCreator.create(writeMethod.getParameterTypes()[0]);
-                    ReflectUtils.invoke(parentObj, writeMethod, object);
-                    fields.forEach((n, f) -> {
-                        PropertyDescriptor propertyDescriptor = beanIntrospector.getFullPropertyDescriptor(n);
-                        if (propertyDescriptor != null) {
-                            Method method = propertyDescriptor.getWriteMethod();
-                            Object value = ObjectValues.get(f.getValue(), method.getParameterTypes()[0]);
-                            ReflectUtils.invoke(object, method, value);
+                    if (curObj.getClass().isArray()) {
+                        Object ss[] = (Object[]) curObj;
+                        curObj = ss[0];
+                        beanIntrospector = BeanIntrospectors.get(curObj.getClass());
+                        propObject.setBeanIntrospector(beanIntrospector);
+                    } else if (List.class.isAssignableFrom(curObj.getClass())) {
+                        List list = (List) curObj;
+                        curObj = list.get(0);
+                        beanIntrospector = BeanIntrospectors.get(curObj.getClass());
+                        propObject.setBeanIntrospector(beanIntrospector);
+                    } else {
+                        propObject.setObj(curObj);
+
+                        propObject.setClazz(propertyDescriptor.getPropertyType());
+
+                        ExPropType exPropType = propertyDescriptor.getExPropType();
+                        if (exPropType == ExPropType.ARRAY || exPropType == ExPropType.LIST) {
+                            beanIntrospector = BeanIntrospectors.get(propertyDescriptor.getPropActualClazz());
+                        } else {
+                            beanIntrospector = BeanIntrospectors.get(propertyDescriptor.getPropertyType());
                         }
 
-                    });
-                    objectPool.put(objecId.getId(), object);
+                        Objects.requireNonNull(beanIntrospector);
+                        propObject.setBeanIntrospector(beanIntrospector);
+                        propObject.setPropertyDescriptor(propertyDescriptor);
+                    }
+
+                }
+
+            }
+
+            for (PropFiled propFiled : propObject.getPropFileds()) {
+
+                ExPropertyDescriptor propertyDescriptor = beanIntrospector.getExPropertyDescriptor(propFiled.getName());
+
+                Objects.requireNonNull(propertyDescriptor);
+                Method readMethod = propertyDescriptor.getReadMethod();
+                Method writeMethod = propertyDescriptor.getWriteMethod();
+                Class<?> propActualClazz = propertyDescriptor.getPropActualClazz();
+                Class<?> propertyType = propertyDescriptor.getPropertyType();
+                ExPropType exPropType = propertyDescriptor.getExPropType();
+
+                if (exPropType == ExPropType.PRIMITIVE_OR_WRAPPER) {
+                    Object o = ObjectValues.get(propFiled.getValue(), propertyType);
+                    ReflectUtils.invoke(curObj, writeMethod, o);
+
+                } else if (exPropType == ExPropType.ARRAY) {
+
+                    Object[] arr = ReflectUtils.invoke(curObj, readMethod);
+                    if (arr == null) {
+                        arr = (Object[]) newInstance(propActualClazz, 1);
+
+                    } else {
+                        arr = Arrays.copyOf(arr, arr.length + 1);
+                    }
+                    Object[] params = new Object[] {arr};
+                    ReflectUtils.invoke(curObj, writeMethod, params);
+                    arr[arr.length - 1] = ObjectCreator.create(propActualClazz);
+                    PropObject arrPropObject = objectPool.get(propFiled.getFullName());
+                    arrPropObject.setObj(arr);
+
+                } else if (exPropType == ExPropType.LIST) {
+                    List list = ReflectUtils.invoke(curObj, readMethod);
+                    if (list == null) {
+                        list = ListUtils.newArrayList();
+                        ReflectUtils.invoke(curObj, writeMethod, list);
+                    }
+                    list.add(ObjectCreator.create(propActualClazz));
+                    PropObject listPropObject = objectPool.get(propFiled.getFullName());
+                    listPropObject.setObj(list);
+                } else {
+
+                    if (propertyType == String.class) {
+                        ReflectUtils.invoke(curObj, writeMethod, ObjectValues.getString(propFiled.getValue()));
+                    } else if (exPropType == ExPropType.CUSTOM) {
+
+                        if (propFiled.isBean()) {
+                            Object o = ObjectCreator.create(propertyType);
+                            ReflectUtils.invoke(curObj, writeMethod, o);
+                            PropObject propObject1 = objectPool.get(propFiled.getFullName());
+                            propObject1.setObj(o);
+                        }
+
+                    }
+
                 }
 
             }
         });
-        return rootObject;
+
+        return (T) objectPool.getRoot().getObj();
     }
 
     public static Properties store(Object obj, File file) {
@@ -277,9 +405,9 @@ public class PropertiesHelper {
     public static Properties toProperties(Object obj, NameRule nameRule) {
         Properties properties = new Properties();
         BeanIntrospector beanIntrospector = BeanIntrospectors.get(obj.getClass());
-        Map<String, PropertyDescriptor> pds = beanIntrospector.getPropertyDescriptors();
-        for (Map.Entry<String, PropertyDescriptor> entry : pds.entrySet()) {
-            PropertyDescriptor propertyDescriptor = entry.getValue();
+        Map<String, ExPropertyDescriptor> pds = beanIntrospector.getExPropertyDescriptors();
+        for (Map.Entry<String, ExPropertyDescriptor> entry : pds.entrySet()) {
+            ExPropertyDescriptor propertyDescriptor = entry.getValue();
             toProperties(properties, "", obj, propertyDescriptor);
         }
         if (nameRule != null) {
@@ -294,36 +422,77 @@ public class PropertiesHelper {
      * @param properties properties
      * @param parent     parent
      * @param obj        obj
-     * @param pd         pd
+     * @param exPd       exPd
      * @return void
      * @title toProperties
      * @description
      * @author BiJi'an
      * @date 2023-03-19 23:21
      */
-    private static void toProperties(Properties properties, String parent, Object obj, PropertyDescriptor pd) {
+    private static void toProperties(Properties properties, String parent, Object obj, ExPropertyDescriptor exPd) {
+
+        if (!exPd.isCanReadWrite()) {
+            return;
+        }
         if (!StringUtils.isEmpty(parent)) {
             parent += ".";
         }
-        String propName = parent + pd.getName();
-        Method readMethod = pd.getReadMethod();
+
+        ExPropType type = exPd.getExPropType();
+        String propName = parent + exPd.getName();
+
+        Method readMethod = exPd.getReadMethod();
         Object result = ReflectUtils.invoke(obj, readMethod);
         Class<?> returnType = readMethod.getReturnType();
-        if (result != null) {
-            if (ClassUtils.isPrimitiveOrWrapper(returnType)) {
-                properties.put(propName, String.valueOf(result));
-            } else if (returnType == String.class) {
-                properties.put(propName, result);
-            } else {
-                BeanIntrospector beanIntrospector = BeanIntrospectors.get(returnType);
-                beanIntrospector.getPropertyDescriptors().forEach(
-                        (name, propertyDescriptor) -> toProperties(properties, propName, result, propertyDescriptor)
-                );
-
-            }
-        } else {
-            properties.put(propName, "");
+        if (result == null) {
+            return;
         }
 
+        // add sub type
+        if (type == ExPropType.PRIMITIVE_OR_WRAPPER) {
+            properties.put(propName, String.valueOf(result));
+
+        } else if (returnType == String.class) {
+            if (!StringUtils.isEmpty((String) result)) {
+                properties.put(propName, result);
+            }
+        } else if (type == ExPropType.LIST) {
+            Class<?> propActualClazz = exPd.getPropActualClazz();
+            BeanIntrospector beanIntrospector = BeanIntrospectors.get(propActualClazz);
+
+            List<?> objs = (List<?>) result;
+            for (int i = 0; i < objs.size(); i++) {
+                Map<String, ExPropertyDescriptor> exPropertyDescriptors =
+                        beanIntrospector.getExPropertyDescriptors();
+                for (Map.Entry<String, ExPropertyDescriptor> entry : exPropertyDescriptors.entrySet()) {
+                    ExPropertyDescriptor propertyDescriptor = entry.getValue();
+                    toProperties(properties, propName + "[" + i + "]", objs.get(i), propertyDescriptor);
+
+                }
+            }
+        } else if (type == ExPropType.ARRAY) {
+            Class<?> propActualClazz = exPd.getPropActualClazz();
+            BeanIntrospector beanIntrospector = BeanIntrospectors.get(propActualClazz);
+
+            Object[] objs = (Object[]) result;
+            for (int i = 0; i < objs.length; i++) {
+                Map<String, ExPropertyDescriptor> exPropertyDescriptors =
+                        beanIntrospector.getExPropertyDescriptors();
+                for (Map.Entry<String, ExPropertyDescriptor> entry : exPropertyDescriptors.entrySet()) {
+                    ExPropertyDescriptor propertyDescriptor = entry.getValue();
+                    toProperties(properties, propName + "[" + i + "]", objs[i], propertyDescriptor);
+
+                }
+            }
+        } else {
+            BeanIntrospector beanIntrospector = BeanIntrospectors.get(returnType);
+            beanIntrospector.getExPropertyDescriptors().forEach(
+                    (name, propertyDescriptor) -> {
+                        toProperties(properties, propName, result, propertyDescriptor);
+                    }
+            );
+
+        }
     }
+
 }

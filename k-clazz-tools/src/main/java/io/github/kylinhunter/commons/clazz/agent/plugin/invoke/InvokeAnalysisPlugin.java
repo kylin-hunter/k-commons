@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.clazz.agent.plugin.invoke;
 
 import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
 import io.github.kylinhunter.commons.clazz.agent.plugin.Plugin;
-import io.github.kylinhunter.commons.clazz.agent.plugin.PluginConfig1;
+import io.github.kylinhunter.commons.clazz.agent.plugin.PluginPoint;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -10,8 +10,8 @@ import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  * -javaagent:/Users/bijian/workspace_gitee/k-commons/k-clazz-tools/build/libs/k-clazz-tools-1.0.1
- * .jar=config-file=/Users/bijian/workspace_gitee/k-commons/k-clazz-tools/src/main/resources/k-invoke-analysis
- * .properties
+ * .jar=config-file=/Users/bijian/workspace_gitee/k-commons/k-clazz-tools/src/main/resources/k-agent-plugin-invoke
+ * -analysis.properties
  *
  * @author BiJi'an
  * @description
@@ -21,18 +21,17 @@ public class InvokeAnalysisPlugin implements Plugin {
 
     @Override
     public String name() {
-        return "timecost";
+        return "invoke-analysis";
     }
 
     @Override
-    public PluginConfig1[] buildInterceptPoint() {
+    public PluginPoint[] buildInterceptPoint() {
 
         InvokeAnalysisConfig config = AgentArgsHelper.getConfig(InvokeAnalysisConfig.class);
-        return new PluginConfig1[] {
-                new PluginConfig1() {
+        return new PluginPoint[] {
+                new PluginPoint() {
                     @Override
                     public ElementMatcher<TypeDescription> buildTypesMatcher() {
-
                         return ElementMatchers
                                 .nameStartsWith("io.github.kylinhunter.commons.clazz.agent.plugin.invoke" + ".test");
                     }

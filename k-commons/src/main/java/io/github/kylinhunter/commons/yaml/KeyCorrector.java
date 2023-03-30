@@ -5,7 +5,7 @@ import io.github.kylinhunter.commons.name.NameRule;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-01-03 19:32
+ * @date 2023-04-01 19:32
  **/
 @FunctionalInterface
 public interface KeyCorrector {

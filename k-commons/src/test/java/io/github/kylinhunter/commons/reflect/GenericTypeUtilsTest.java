@@ -14,6 +14,7 @@ class GenericTypeUtilsTest {
     @Test
     void test() throws NoSuchMethodException {
 
+
         System.out.println("===>test super type");
         ActualType actualType = GenericTypeUtils.getSuperClassActualType(TestClassForGeneric.class);
         System.out.println(actualType);

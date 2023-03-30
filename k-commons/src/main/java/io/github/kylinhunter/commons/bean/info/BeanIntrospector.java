@@ -15,34 +15,44 @@ import lombok.Data;
 @Data
 public class BeanIntrospector {
     private final BeanInfo beanInfo;
+    private Map<String, ExPropertyDescriptor> exPropertyDescriptors = MapUtils.newTreeMap();
+    private Map<String, ExPropertyDescriptor> fullExPropertyDescriptors = MapUtils.newTreeMap();
+
     private Map<String, PropertyDescriptor> propertyDescriptors = MapUtils.newTreeMap();
     private Map<String, PropertyDescriptor> fullPropertyDescriptors = MapUtils.newTreeMap();
 
     /**
-     * @param name               name
-     * @param propertyDescriptor propertyDescriptor
+     * @param name                 name
+     * @param exPropertyDescriptor exPropertyDescriptor
      * @return void
      * @title put
      * @description
      * @author BiJi'an
      * @date 2023-02-19 01:53
      */
-    public void addPropertyDescriptor(String name, PropertyDescriptor propertyDescriptor) {
-        this.propertyDescriptors.put(name, propertyDescriptor);
+    public void addPropertyDescriptor(String name, ExPropertyDescriptor exPropertyDescriptor) {
+        if (exPropertyDescriptor != null) {
+            this.exPropertyDescriptors.put(name, exPropertyDescriptor);
+            this.propertyDescriptors.put(name, exPropertyDescriptor.getPropertyDescriptor());
+        }
 
     }
 
     /**
-     * @param name               name
-     * @param propertyDescriptor propertyDescriptor
+     * @param name                 name
+     * @param exPropertyDescriptor exPropertyDescriptor
      * @return void
      * @title addFullPropertyDescriptor
      * @description
      * @author BiJi'an
      * @date 2023-03-19 15:59
      */
-    public void addFullPropertyDescriptor(String name, PropertyDescriptor propertyDescriptor) {
-        this.fullPropertyDescriptors.put(name, propertyDescriptor);
+    public void addFullPropertyDescriptor(String name, ExPropertyDescriptor exPropertyDescriptor) {
+        if (exPropertyDescriptor != null) {
+            this.fullExPropertyDescriptors.put(name, exPropertyDescriptor);
+            this.fullPropertyDescriptors.put(name, exPropertyDescriptor.getPropertyDescriptor());
+        }
+
     }
 
     /**
@@ -53,8 +63,21 @@ public class BeanIntrospector {
      * @author BiJi'an
      * @date 2023-02-19 02:22
      */
+    public ExPropertyDescriptor getExPropertyDescriptor(String name) {
+        return exPropertyDescriptors.get(name);
+    }
+
+    /**
+     * @param name name
+     * @return java.beans.PropertyDescriptor
+     * @title getPropertyDescriptor
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-01 10:58
+     */
     public PropertyDescriptor getPropertyDescriptor(String name) {
         return propertyDescriptors.get(name);
+
     }
 
     /**
@@ -65,7 +88,7 @@ public class BeanIntrospector {
      * @author BiJi'an
      * @date 2023-03-19 16:00
      */
-    public PropertyDescriptor getFullPropertyDescriptor(String name) {
-        return fullPropertyDescriptors.get(name);
+    public ExPropertyDescriptor getFullPropertyDescriptor(String name) {
+        return fullExPropertyDescriptors.get(name);
     }
 }

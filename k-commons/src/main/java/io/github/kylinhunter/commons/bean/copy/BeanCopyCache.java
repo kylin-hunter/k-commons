@@ -12,10 +12,6 @@ import java.util.stream.Collectors;
 
 import org.reflections.ReflectionUtils;
 
-
-import io.github.kylinhunter.commons.collections.ListUtils;
-import io.github.kylinhunter.commons.collections.MapUtils;
-
 import io.github.kylinhunter.commons.bean.BeanCopyUtils;
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertType;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
@@ -23,6 +19,8 @@ import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldCopy;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import lombok.Data;
 
