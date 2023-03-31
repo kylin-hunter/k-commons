@@ -14,13 +14,12 @@ import lombok.Data;
 public class ExPropertyDescriptor {
     private PropertyDescriptor propertyDescriptor;
     private boolean canReadWrite;
-    private ExPropType exPropType = ExPropType.ORIGINAL;
-    private Class<?>[] actualClazzes;
+    private ExPropType exPropType = ExPropType.UNKNOWN;
+    private Class<?>[] GenericActualClazzes;
 
     public ExPropertyDescriptor(PropertyDescriptor propertyDescriptor) {
         this.propertyDescriptor = propertyDescriptor;
-        this.canReadWrite =
-                propertyDescriptor.getWriteMethod() != null && this.propertyDescriptor.getReadMethod() != null;
+        this.canReadWrite = propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getReadMethod() != null;
     }
 
     /**
@@ -30,9 +29,9 @@ public class ExPropertyDescriptor {
      * @author BiJi'an
      * @date 2023-03-19 14:34
      */
-    public Class<?> getPropActualClazz() {
-        if (actualClazzes != null && actualClazzes.length > 0) {
-            return actualClazzes[0];
+    public Class<?> getActualClazz() {
+        if (GenericActualClazzes != null && GenericActualClazzes.length > 0) {
+            return GenericActualClazzes[0];
         }
         return null;
     }

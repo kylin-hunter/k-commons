@@ -62,7 +62,8 @@ public class PropObjectPool {
      * @author BiJi'an
      * @date 2023-04-01 16:21
      */
-    public List<PropObject> resort() {
+    public List<PropObject> getSortedPropObjes() {
         return datas.values().stream().sorted().collect(Collectors.toList());
     }
+
 }

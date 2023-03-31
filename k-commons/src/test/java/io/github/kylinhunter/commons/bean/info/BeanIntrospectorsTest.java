@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import io.github.kylinhunter.commons.bean.info.complex.Grandfather;
+import io.github.kylinhunter.commons.bean.info.simple.SimpleGrandfather;
+
 class BeanIntrospectorsTest {
 
     @Test
@@ -18,31 +21,9 @@ class BeanIntrospectorsTest {
                 propertyDescriptors.entrySet().stream().filter((e) -> e.getValue().isCanReadWrite())
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey, Map.Entry::getValue));
-        propertyDescriptors.forEach((k, v) -> {
-            System.out.println(k + ":" + v.getReadMethod().getName());
-        });
+        propertyDescriptors.forEach((k, v) -> System.out.println(k + ":" + v.getReadMethod().getName()));
         Assertions.assertEquals(17, propertyDescriptors.size());
 
-        System.out.println("getFullPropertyDescriptor=Grandfather");
-        Map<String, ExPropertyDescriptor> fullPropertyDescriptors = beanIntrospector.getFullExPropertyDescriptors();
-        fullPropertyDescriptors.forEach((k, v) -> {
-            System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
-        });
-        Assertions.assertEquals(159, fullPropertyDescriptors.size());
-
-        fullPropertyDescriptors = BeanIntrospectors.get(Father.class).getFullExPropertyDescriptors();
-        System.out.println("getFullPropertyDescriptor=Father");
-        fullPropertyDescriptors.forEach((k, v) -> {
-            System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
-        });
-        Assertions.assertEquals(605, fullPropertyDescriptors.size());
-
-        fullPropertyDescriptors = BeanIntrospectors.get(Son.class).getFullExPropertyDescriptors();
-        System.out.println("getFullPropertyDescriptor=Son");
-        fullPropertyDescriptors.forEach((k, v) -> {
-            System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
-        });
-        Assertions.assertEquals(159, fullPropertyDescriptors.size());
 
     }
 
@@ -57,18 +38,10 @@ class BeanIntrospectorsTest {
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey, Map.Entry::getValue));
 
-        propertyDescriptors.forEach((k, v) -> {
-            System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
-        });
+        propertyDescriptors.forEach((k, v) -> System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName()));
 
         Assertions.assertEquals(2, propertyDescriptors.size());
 
-        System.out.println("getFullPropertyDescriptor=Grandfather");
-        Map<String, ExPropertyDescriptor> fullPropertyDescriptors = beanIntrospector.getFullExPropertyDescriptors();
-        fullPropertyDescriptors.forEach((k, v) -> {
-            System.out.println(k + ":" + v.getReadMethod().getReturnType().getSimpleName());
-        });
-        Assertions.assertEquals(15, fullPropertyDescriptors.size());
 
     }
 

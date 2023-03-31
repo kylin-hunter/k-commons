@@ -1,12 +1,12 @@
 package io.github.kylinhunter.commons.properties;
 
-import io.github.kylinhunter.commons.bean.info.Father;
-import io.github.kylinhunter.commons.bean.info.Grandfather;
-import io.github.kylinhunter.commons.bean.info.SimpleFather;
-import io.github.kylinhunter.commons.bean.info.SimpleGrandSon;
-import io.github.kylinhunter.commons.bean.info.SimpleGrandfather;
-import io.github.kylinhunter.commons.bean.info.SimpleSon;
-import io.github.kylinhunter.commons.bean.info.Son;
+import io.github.kylinhunter.commons.bean.info.complex.Father;
+import io.github.kylinhunter.commons.bean.info.complex.Grandfather;
+import io.github.kylinhunter.commons.bean.info.complex.Son;
+import io.github.kylinhunter.commons.bean.info.simple.SimpleFather;
+import io.github.kylinhunter.commons.bean.info.simple.SimpleGrandSon;
+import io.github.kylinhunter.commons.bean.info.simple.SimpleGrandfather;
+import io.github.kylinhunter.commons.bean.info.simple.SimpleSon;
 import io.github.kylinhunter.commons.collections.ListUtils;
 
 /**
@@ -18,13 +18,15 @@ public class TestDataHelper {
 
     public static SimpleGrandfather prepareSimpleData() {
         SimpleFather father = createSimpleFather();
-        SimpleSon son = createSimpleSon(false, true);
-        SimpleSon son1 = createSimpleSon(true, true);
-        SimpleSon son2 = createSimpleSon(true, true);
+        SimpleSon son0 = createSimpleSon(0, false, true);
+        SimpleSon son1 = createSimpleSon(1, true, true);
+        SimpleSon son2 = createSimpleSon(2, true, true);
+        SimpleSon son3 = createSimpleSon(3, true, true);
+        SimpleSon son4 = createSimpleSon(4, true, true);
 
-        father.setSon(son);
+        father.setSon(son0);
         father.setSonList(ListUtils.newArrayList(son1, son2));
-        father.setSonArrays(new SimpleSon[] {son1, son2});
+        father.setSonArrays(new SimpleSon[] {son3, son4});
         SimpleGrandfather grandfather = createSimpleGrandfather();
         grandfather.setFather(father);
         grandfather.setName("grandfather-name");
@@ -45,18 +47,19 @@ public class TestDataHelper {
 
     }
 
-    private static SimpleSon createSimpleSon(boolean withName, boolean withGrandSon) {
+    private static SimpleSon createSimpleSon(int index, boolean withName, boolean withGrandSon) {
 
         SimpleSon son = new SimpleSon();
-        if (withGrandSon) {
-            SimpleGrandSon simpleGrandSon1 = new SimpleGrandSon("grandson-name1");
-            SimpleGrandSon simpleGrandSon2 = new SimpleGrandSon("grandson-name2");
-            son.setGrandSonArr(new SimpleGrandSon[]{simpleGrandSon1,simpleGrandSon2});
-            son.setGrandSonList(ListUtils.newArrayList(simpleGrandSon1,simpleGrandSon2));
-
-        }
         if (withName) {
-            son.setName("son-name");
+            son.setName("son-name" + index);
+        }
+
+        if (withGrandSon) {
+            SimpleGrandSon simpleGrandSon1 = new SimpleGrandSon("(" + "son-name" + index + ")" + "grandson-name1");
+            SimpleGrandSon simpleGrandSon2 = new SimpleGrandSon("(" + "son-name" + index + ")" + "grandson-name2");
+            son.setGrandSonArr(new SimpleGrandSon[] {simpleGrandSon1, simpleGrandSon2});
+            son.setGrandSonList(ListUtils.newArrayList(simpleGrandSon1, simpleGrandSon2));
+
         }
 
         return son;

@@ -16,10 +16,7 @@ import lombok.Data;
 public class BeanIntrospector {
     private final BeanInfo beanInfo;
     private Map<String, ExPropertyDescriptor> exPropertyDescriptors = MapUtils.newTreeMap();
-    private Map<String, ExPropertyDescriptor> fullExPropertyDescriptors = MapUtils.newTreeMap();
-
     private Map<String, PropertyDescriptor> propertyDescriptors = MapUtils.newTreeMap();
-    private Map<String, PropertyDescriptor> fullPropertyDescriptors = MapUtils.newTreeMap();
 
     /**
      * @param name                 name
@@ -34,23 +31,6 @@ public class BeanIntrospector {
         if (exPropertyDescriptor != null) {
             this.exPropertyDescriptors.put(name, exPropertyDescriptor);
             this.propertyDescriptors.put(name, exPropertyDescriptor.getPropertyDescriptor());
-        }
-
-    }
-
-    /**
-     * @param name                 name
-     * @param exPropertyDescriptor exPropertyDescriptor
-     * @return void
-     * @title addFullPropertyDescriptor
-     * @description
-     * @author BiJi'an
-     * @date 2023-03-19 15:59
-     */
-    public void addFullPropertyDescriptor(String name, ExPropertyDescriptor exPropertyDescriptor) {
-        if (exPropertyDescriptor != null) {
-            this.fullExPropertyDescriptors.put(name, exPropertyDescriptor);
-            this.fullPropertyDescriptors.put(name, exPropertyDescriptor.getPropertyDescriptor());
         }
 
     }
@@ -80,15 +60,4 @@ public class BeanIntrospector {
 
     }
 
-    /**
-     * @param name name
-     * @return java.beans.PropertyDescriptor
-     * @title getFullPropertyDescriptor
-     * @description
-     * @author BiJi'an
-     * @date 2023-03-19 16:00
-     */
-    public ExPropertyDescriptor getFullPropertyDescriptor(String name) {
-        return fullExPropertyDescriptors.get(name);
-    }
 }

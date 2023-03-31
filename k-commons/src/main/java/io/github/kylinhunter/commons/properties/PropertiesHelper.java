@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,6 @@ import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.bean.info.ExPropType;
 import io.github.kylinhunter.commons.bean.info.ExPropertyDescriptor;
-import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
@@ -174,6 +174,104 @@ public class PropertiesHelper {
 
     }
 
+    private static <T> PropObjectPool toPropObjectPool(Properties properties, Class<T> clazz) {
+        PropObjectPool propObjectPool = new PropObjectPool();
+
+        // add root object
+        propObjectPool.add(new PropObject(PropObject.ROOT_ID, ObjectCreator.create(clazz)));
+
+        // process all propObject
+        properties.forEach((name, propValue) -> {
+            String fullName = (String) name;
+            PropFiled propFiled = new PropFiled(fullName, propValue);
+            PropObject curObject = propObjectPool.get(propFiled.getObjecId());
+            if (curObject == null) {
+                curObject = createPropObject(propObjectPool, propFiled);
+            }
+            curObject.addField(propFiled);
+        });
+
+        return propObjectPool;
+    }
+
+    public static void processPropFileds(PropObjectPool objectPool, PropObject propObject) {
+        BeanIntrospector beanIntrospector = propObject.getBeanIntrospector();
+        Objects.requireNonNull(beanIntrospector);
+        Object curObj = propObject.getObj();
+        for (PropFiled propFiled : propObject.getPropFileds()) {
+            ExPropertyDescriptor propertyDescriptor = beanIntrospector.getExPropertyDescriptor(propFiled.getName());
+            Objects.requireNonNull(propertyDescriptor);
+            Method readMethod = propertyDescriptor.getReadMethod();
+            Method writeMethod = propertyDescriptor.getWriteMethod();
+            Class<?> propActualClazz = propertyDescriptor.getActualClazz();
+            Class<?> propertyType = propertyDescriptor.getPropertyType();
+            ExPropType exPropType = propertyDescriptor.getExPropType();
+
+            if (exPropType == ExPropType.PRIMITIVE_OR_WRAPPER) {
+                Object o = ObjectValues.get(propFiled.getValue(), propertyType);
+                ReflectUtils.invoke(curObj, writeMethod, o);
+
+            } else if (propertyType == String.class) {
+                ReflectUtils.invoke(curObj, writeMethod, ObjectValues.getString(propFiled.getValue()));
+            } else if (exPropType == ExPropType.ARRAY) {
+
+                if (propFiled.arrIndex >= 0) {
+                    int arrLen = propFiled.arrIndex + 1;
+
+                    Object[] arr = ReflectUtils.invoke(curObj, readMethod);
+                    if (arr == null) {
+                        arr = (Object[]) newInstance(propActualClazz, arrLen);
+                    } else {
+                        arr = Arrays.copyOf(arr, arrLen);
+                    }
+                    Object[] params = new Object[] {arr};
+                    ReflectUtils.invoke(curObj, writeMethod, params);
+                    Object newObj = ObjectCreator.create(propActualClazz);
+                    arr[propFiled.arrIndex] = newObj;
+                    PropObject arrPropObject = objectPool.get(propFiled.getFullName());
+                    arrPropObject.setObj(newObj);
+
+                }
+
+            } else if (exPropType == ExPropType.LIST) {
+                if (propFiled.arrIndex >= 0) {
+                    int listSize = propFiled.arrIndex + 1;
+
+                    List list = ReflectUtils.invoke(curObj, readMethod);
+                    if (list == null) {
+                        list = new ArrayList(listSize);
+                    } else {
+
+                        List newList = new ArrayList(listSize);
+                        newList.addAll(list);
+                        list = newList;
+                    }
+                    for (int i = list.size(); i < listSize; i++) {
+
+                        list.add(null);
+                    }
+                    ReflectUtils.invoke(curObj, writeMethod, list);
+
+                    Object newObj = ObjectCreator.create(propActualClazz);
+                    list.set(propFiled.arrIndex, newObj);
+                    PropObject listPropObject = objectPool.get(propFiled.getFullName());
+                    listPropObject.setObj(newObj);
+                }
+
+            } else if (exPropType == ExPropType.NON_JDK_TYPE) {
+
+                if (propFiled.isBean()) {
+                    Object o = ObjectCreator.create(propertyType);
+                    ReflectUtils.invoke(curObj, writeMethod, o);
+                    PropObject propObject1 = objectPool.get(propFiled.getFullName());
+                    propObject1.setObj(o);
+                }
+
+            }
+
+        }
+    }
+
     /**
      * @param properties properties
      * @param clazz      clazz
@@ -190,149 +288,18 @@ public class PropertiesHelper {
             properties = newProperties;
         }
 
-        PropObjectPool objectPool = new PropObjectPool();
-        // add root object
-        objectPool.add(new PropObject(PropObject.ROOT_ID, ObjectCreator.create(clazz)));
-
-        // process all propObject
-        properties.forEach((name, propValue) -> {
-            String fullName = (String) name;
-            PropFiled propFiled = new PropFiled(fullName, propValue);
-            PropObject curObject = objectPool.get(propFiled.getObjecId());
-            if (curObject == null) {
-                curObject = createPropObject(objectPool, propFiled);
-            }
-            curObject.addField(propFiled);
-        });
-
-        List<PropObject> propObjects = objectPool.resort(); // resort
+        PropObjectPool objectPool = toPropObjectPool(properties, clazz);
+        List<PropObject> propObjects = objectPool.getSortedPropObjes(); // resort
 
         propObjects.forEach(propObject -> {
-            //System.out.println("=>" + propObject.getObjecId() + ":" + propObject.getClazz().getSimpleName());
-            Object curObj = propObject.getObj();
-            BeanIntrospector beanIntrospector = propObject.getBeanIntrospector();
-
-            if (!propObject.isRoot()) {
+            propObject.fieldResort();
+            if (propObject.isRoot()) {
+                processPropFileds(objectPool, propObject);
+            } else {
                 PropObject parentPropObject = objectPool.get(propObject.getParentId());
-                Object parentObj = parentPropObject.getObj();
-                Objects.requireNonNull(parentObj);
-
-                if (parentObj.getClass().isArray()) {
-                    Object ss[] = (Object[]) parentObj;
-                    curObj = ss[0];
-                    beanIntrospector = BeanIntrospectors.get(curObj.getClass());
-                    propObject.setBeanIntrospector(beanIntrospector);
-
-                } else if (List.class.isAssignableFrom(parentObj.getClass())) {
-                    List list = (List) parentObj;
-                    curObj = list.get(0);
-                    beanIntrospector = BeanIntrospectors.get(curObj.getClass());
-                    propObject.setBeanIntrospector(beanIntrospector);
-                } else {
-                    BeanIntrospector parentBeanIntrospector = parentPropObject.getBeanIntrospector();
-
-                    ExPropertyDescriptor propertyDescriptor =
-                            parentBeanIntrospector.getExPropertyDescriptor(propObject.getParentName());
-
-                    Objects.requireNonNull(propertyDescriptor);
-
-                    Method readMethod = propertyDescriptor.getReadMethod();
-
-                    try {
-                        curObj = ReflectUtils.invoke(parentPropObject.getObj(), readMethod);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Objects.requireNonNull(curObj);
-
-                    if (curObj.getClass().isArray()) {
-                        Object ss[] = (Object[]) curObj;
-                        curObj = ss[0];
-                        beanIntrospector = BeanIntrospectors.get(curObj.getClass());
-                        propObject.setBeanIntrospector(beanIntrospector);
-                    } else if (List.class.isAssignableFrom(curObj.getClass())) {
-                        List list = (List) curObj;
-                        curObj = list.get(0);
-                        beanIntrospector = BeanIntrospectors.get(curObj.getClass());
-                        propObject.setBeanIntrospector(beanIntrospector);
-                    } else {
-                        propObject.setObj(curObj);
-
-                        propObject.setClazz(propertyDescriptor.getPropertyType());
-
-                        ExPropType exPropType = propertyDescriptor.getExPropType();
-                        if (exPropType == ExPropType.ARRAY || exPropType == ExPropType.LIST) {
-                            beanIntrospector = BeanIntrospectors.get(propertyDescriptor.getPropActualClazz());
-                        } else {
-                            beanIntrospector = BeanIntrospectors.get(propertyDescriptor.getPropertyType());
-                        }
-
-                        Objects.requireNonNull(beanIntrospector);
-                        propObject.setBeanIntrospector(beanIntrospector);
-                        propObject.setPropertyDescriptor(propertyDescriptor);
-                    }
-
-                }
-
+                processPropFileds(objectPool, propObject);
             }
 
-            for (PropFiled propFiled : propObject.getPropFileds()) {
-
-                ExPropertyDescriptor propertyDescriptor = beanIntrospector.getExPropertyDescriptor(propFiled.getName());
-
-                Objects.requireNonNull(propertyDescriptor);
-                Method readMethod = propertyDescriptor.getReadMethod();
-                Method writeMethod = propertyDescriptor.getWriteMethod();
-                Class<?> propActualClazz = propertyDescriptor.getPropActualClazz();
-                Class<?> propertyType = propertyDescriptor.getPropertyType();
-                ExPropType exPropType = propertyDescriptor.getExPropType();
-
-                if (exPropType == ExPropType.PRIMITIVE_OR_WRAPPER) {
-                    Object o = ObjectValues.get(propFiled.getValue(), propertyType);
-                    ReflectUtils.invoke(curObj, writeMethod, o);
-
-                } else if (exPropType == ExPropType.ARRAY) {
-
-                    Object[] arr = ReflectUtils.invoke(curObj, readMethod);
-                    if (arr == null) {
-                        arr = (Object[]) newInstance(propActualClazz, 1);
-
-                    } else {
-                        arr = Arrays.copyOf(arr, arr.length + 1);
-                    }
-                    Object[] params = new Object[] {arr};
-                    ReflectUtils.invoke(curObj, writeMethod, params);
-                    arr[arr.length - 1] = ObjectCreator.create(propActualClazz);
-                    PropObject arrPropObject = objectPool.get(propFiled.getFullName());
-                    arrPropObject.setObj(arr);
-
-                } else if (exPropType == ExPropType.LIST) {
-                    List list = ReflectUtils.invoke(curObj, readMethod);
-                    if (list == null) {
-                        list = ListUtils.newArrayList();
-                        ReflectUtils.invoke(curObj, writeMethod, list);
-                    }
-                    list.add(ObjectCreator.create(propActualClazz));
-                    PropObject listPropObject = objectPool.get(propFiled.getFullName());
-                    listPropObject.setObj(list);
-                } else {
-
-                    if (propertyType == String.class) {
-                        ReflectUtils.invoke(curObj, writeMethod, ObjectValues.getString(propFiled.getValue()));
-                    } else if (exPropType == ExPropType.CUSTOM) {
-
-                        if (propFiled.isBean()) {
-                            Object o = ObjectCreator.create(propertyType);
-                            ReflectUtils.invoke(curObj, writeMethod, o);
-                            PropObject propObject1 = objectPool.get(propFiled.getFullName());
-                            propObject1.setObj(o);
-                        }
-
-                    }
-
-                }
-
-            }
         });
 
         return (T) objectPool.getRoot().getObj();
@@ -457,7 +424,7 @@ public class PropertiesHelper {
                 properties.put(propName, result);
             }
         } else if (type == ExPropType.LIST) {
-            Class<?> propActualClazz = exPd.getPropActualClazz();
+            Class<?> propActualClazz = exPd.getActualClazz();
             BeanIntrospector beanIntrospector = BeanIntrospectors.get(propActualClazz);
 
             List<?> objs = (List<?>) result;
@@ -471,7 +438,7 @@ public class PropertiesHelper {
                 }
             }
         } else if (type == ExPropType.ARRAY) {
-            Class<?> propActualClazz = exPd.getPropActualClazz();
+            Class<?> propActualClazz = exPd.getActualClazz();
             BeanIntrospector beanIntrospector = BeanIntrospectors.get(propActualClazz);
 
             Object[] objs = (Object[]) result;

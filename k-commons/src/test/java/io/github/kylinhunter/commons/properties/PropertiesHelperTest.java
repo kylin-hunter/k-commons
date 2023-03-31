@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import io.github.kylinhunter.commons.bean.info.Grandfather;
-import io.github.kylinhunter.commons.bean.info.SimpleGrandfather;
+import io.github.kylinhunter.commons.bean.info.complex.Grandfather;
+import io.github.kylinhunter.commons.bean.info.simple.SimpleGrandfather;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.name.NameRule;
 
@@ -19,17 +19,20 @@ class PropertiesHelperTest {
 
     @Test
     public void testToBeanAndToPropertiesSimple() {
-        SimpleGrandfather grandfather = TestDataHelper.prepareSimpleData();
-        Properties properties = PropertiesHelper.toProperties(grandfather);
+        SimpleGrandfather grandfather1 = TestDataHelper.prepareSimpleData();
+        Properties properties = PropertiesHelper.toProperties(grandfather1);
         System.out.println("properties:" + properties);
         properties.forEach((k, v) -> {
             System.out.println(k + ":" + v);
 
         });
 
+
         SimpleGrandfather grandfather2 = PropertiesHelper.toBean(properties, SimpleGrandfather.class);
+
+        System.out.println("grandfather1:" + grandfather1);
         System.out.println("grandfather2:" + grandfather2);
-        Assertions.assertEquals(grandfather, grandfather2);
+        Assertions.assertEquals(grandfather1, grandfather2);
         //
         //        Properties properties2 = PropertiesHelper.toProperties(grandfather2);
         //        System.out.println("properties2:" + properties2);
@@ -37,7 +40,7 @@ class PropertiesHelperTest {
         //        SimpleGrandfather grandfather3 = PropertiesHelper.toBean(properties2, SimpleGrandfather.class);
         //        System.out.println("grandfather3:" + grandfather3);
         //
-        //        Assertions.assertEquals(grandfather, grandfather3);
+        //        Assertions.assertEquals(grandfather1, grandfather3);
     }
 
     @Test
@@ -47,7 +50,7 @@ class PropertiesHelperTest {
         System.out.println("grandfather-before:" + grandfather);
         File propFile = UserDirUtils.getTmpFile("properties/store.properties");
         Properties properties = PropertiesHelper.store(grandfather, propFile);
-        Assertions.assertEquals(83, properties.size());
+        Assertions.assertEquals(195, properties.size());
         Grandfather loadGrandFather = PropertiesHelper.load(propFile.getAbsolutePath(), Grandfather.class);
         System.out.println("grandfather-after :" + loadGrandFather);
         Assertions.assertEquals(grandfather, loadGrandFather);
@@ -61,7 +64,7 @@ class PropertiesHelperTest {
         System.out.println("grandfather:" + grandfather);
         File propFile = UserDirUtils.getTmpFile("properties/store_SNAKE_LOW_UNDERSCORE.properties");
         Properties properties = PropertiesHelper.store(grandfather, NameRule.SNAKE_LOW_UNDERSCORE, propFile);
-        Assertions.assertEquals(83, properties.size());
+        Assertions.assertEquals(195, properties.size());
         Grandfather loadGrandFather = PropertiesHelper.load(propFile.getAbsolutePath(), NameRule.CAMEL_LOW,
                 Grandfather.class);
         System.out.println("loadGrandFather:" + loadGrandFather);
@@ -75,7 +78,7 @@ class PropertiesHelperTest {
         System.out.println("grandfather:" + grandfather);
         File propFile = UserDirUtils.getTmpFile("properties/store_CAMEL_UPPER.properties");
         Properties properties = PropertiesHelper.store(grandfather, NameRule.CAMEL_UPPER, propFile);
-        Assertions.assertEquals(83, properties.size());
+        Assertions.assertEquals(195, properties.size());
         Grandfather loadGrandFather = PropertiesHelper.load(propFile.getAbsolutePath(), NameRule.CAMEL_LOW,
                 Grandfather.class);
         System.out.println("loadGrandFather:" + loadGrandFather);

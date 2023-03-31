@@ -1,5 +1,8 @@
 package io.github.kylinhunter.commons.properties;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import lombok.Data;
 
 /**
@@ -8,12 +11,15 @@ import lombok.Data;
  * @date 2023-03-19 10:50
  **/
 @Data
-public class PropFiled {
+public class PropFiled implements Comparable<PropFiled> {
     private String objecId;
     private String name;
     private String fullName;
     private Object value;
     private boolean bean;
+    protected int arrIndex = -1;
+
+    private static final Pattern pattern = Pattern.compile("\\[(\\d*)\\]");
 
     public PropFiled(String fullName) {
         this(fullName, true, null);
@@ -52,10 +58,23 @@ public class PropFiled {
         } else {
             this.name = fullName;
         }
-        index = this.name.indexOf("[");
+
+        index = this.name.lastIndexOf("[");
         if (index > 0) {
+            Matcher matcher = pattern.matcher(name.substring(index));
+            if (matcher.find()) {
+                this.arrIndex = Integer.parseInt(matcher.group(1));
+
+            }
+
             this.name = this.name.substring(0, index);
         }
+
+    }
+
+    @Override
+    public int compareTo(PropFiled o) {
+        return this.getFullName().compareTo(o.fullName);
     }
 
 }

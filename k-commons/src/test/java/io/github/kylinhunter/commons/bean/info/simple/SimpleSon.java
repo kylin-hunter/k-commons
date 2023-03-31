@@ -1,10 +1,11 @@
-package io.github.kylinhunter.commons.bean.info;
+package io.github.kylinhunter.commons.bean.info.simple;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * @author BiJi'an
@@ -21,4 +22,12 @@ public class SimpleSon {
     @EqualsAndHashCode.Include
     private List<SimpleGrandSon> grandSonList;
 
+    @Override
+    public String toString() {
+        return new StringJoiner("\n ", SimpleSon.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("grandSonArr=" + Arrays.toString(grandSonArr))
+                .add("grandSonList=" + grandSonList)
+                .toString();
+    }
 }

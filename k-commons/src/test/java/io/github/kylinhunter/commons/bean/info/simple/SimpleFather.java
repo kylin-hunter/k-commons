@@ -1,12 +1,13 @@
-package io.github.kylinhunter.commons.bean.info;
+package io.github.kylinhunter.commons.bean.info.simple;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringJoiner;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * @author BiJi'an
@@ -37,4 +38,16 @@ public class SimpleFather {
     @EqualsAndHashCode.Include
     private SimpleSon[] sonArrays;
 
+    @Override
+    public String toString() {
+        return new StringJoiner("\n", SimpleFather.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("son=" + son)
+                .add("sonList=" + sonList)
+                .add("sonList2=" + sonList2)
+                .add("sonSet=" + sonSet)
+                .add("sonMap=" + sonMap)
+                .add("sonArrays=" + Arrays.toString(sonArrays))
+                .toString();
+    }
 }

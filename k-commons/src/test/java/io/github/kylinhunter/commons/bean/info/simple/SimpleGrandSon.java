@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.bean.info;
+package io.github.kylinhunter.commons.bean.info.simple;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

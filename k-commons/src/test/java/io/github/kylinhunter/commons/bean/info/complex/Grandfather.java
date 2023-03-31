@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.bean.info;
+package io.github.kylinhunter.commons.bean.info.complex;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

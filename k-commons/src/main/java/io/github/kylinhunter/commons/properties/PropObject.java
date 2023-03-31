@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.properties;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +29,7 @@ public class PropObject implements Comparable<PropObject> {
     private static final Pattern pattern = Pattern.compile("\\[(\\d*)\\]");
     private List<PropFiled> propFileds = ListUtils.newArrayList();
     private Object obj;
-    protected int parentIndex = -1;
+    protected int arrIndex = -1;
 
     /**
      * @param objecId objecId
@@ -62,7 +63,7 @@ public class PropObject implements Comparable<PropObject> {
                 if (index > 0) {
                     Matcher matcher = pattern.matcher(parentId.substring(index));
                     if (matcher.find()) {
-                        this.parentIndex = Integer.parseInt(matcher.group(1));
+                        this.arrIndex = Integer.parseInt(matcher.group(1));
 
                     }
                 }
@@ -131,6 +132,11 @@ public class PropObject implements Comparable<PropObject> {
             return this.objecId.compareTo(o.objecId);
         }
         return i;
+    }
+
+    public void fieldResort() {
+        Collections.sort(this.propFileds);
+
     }
 
 }

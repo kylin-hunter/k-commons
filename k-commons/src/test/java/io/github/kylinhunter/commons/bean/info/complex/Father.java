@@ -1,4 +1,6 @@
-package io.github.kylinhunter.commons.bean.info;
+package io.github.kylinhunter.commons.bean.info.complex;
+
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,9 +12,9 @@ import lombok.ToString;
  * @date 2023-03-19 01:31
  **/
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @ToString(callSuper = true)
-public class Son extends People {
+public class Father extends People {
     @EqualsAndHashCode.Include
     private String p01;
     @EqualsAndHashCode.Include
@@ -39,12 +41,21 @@ public class Son extends People {
     private Boolean p12;
     @EqualsAndHashCode.Include
     private boolean p13;
-    @EqualsAndHashCode.Include
-    private String specialSon;
 
     @EqualsAndHashCode.Include
-    private Father father5;
+    private String specialFather;
     @EqualsAndHashCode.Include
-    private Father father6;
+    private Father father3;
+    @EqualsAndHashCode.Include
+    private Father father4;
+
+    @EqualsAndHashCode.Include
+    private Son son;
+
+    @EqualsAndHashCode.Include
+    private List<Son> sonList;
+
+    @EqualsAndHashCode.Include
+    private Son[] sonArrays;
 
 }
