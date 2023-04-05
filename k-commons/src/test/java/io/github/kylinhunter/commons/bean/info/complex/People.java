@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
  * @date 2023-03-19 17:24
  **/
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class People {
     @EqualsAndHashCode.Include
     private String p01;

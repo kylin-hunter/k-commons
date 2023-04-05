@@ -2,7 +2,12 @@ package io.github.kylinhunter.commons.bean.info;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.List;
 
+import org.apache.commons.lang3.ClassUtils;
+
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
+import io.github.kylinhunter.commons.reflect.bean.ActualType;
 import lombok.Data;
 
 /**
@@ -15,11 +20,34 @@ public class ExPropertyDescriptor {
     private PropertyDescriptor propertyDescriptor;
     private boolean canReadWrite;
     private ExPropType exPropType = ExPropType.UNKNOWN;
-    private Class<?>[] GenericActualClazzes;
+    private Class<?>[] genericActualClazzes;
 
-    public ExPropertyDescriptor(PropertyDescriptor propertyDescriptor) {
-        this.propertyDescriptor = propertyDescriptor;
-        this.canReadWrite = propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getReadMethod() != null;
+    public ExPropertyDescriptor(PropertyDescriptor pd) {
+        this.propertyDescriptor = pd;
+        this.canReadWrite = pd.getWriteMethod() != null && pd.getReadMethod() != null;
+
+        Class<?> propertyType = pd.getPropertyType();
+
+        if (ClassUtils.isPrimitiveOrWrapper(propertyType)) {
+            this.exPropType = ExPropType.PRIMITIVE_OR_WRAPPER;
+        } else if (propertyType == String.class) {
+            this.exPropType = ExPropType.STRING;
+        } else if (propertyType.isArray()) {
+            this.exPropType = ExPropType.ARRAY;
+            this.genericActualClazzes = new Class[] {propertyType.getComponentType()};
+        } else if (List.class.isAssignableFrom(propertyType)) {
+            this.exPropType = ExPropType.LIST;
+            ActualType actualType = GenericTypeUtils.getMethodReturnActualType(pd.getReadMethod());
+            if (actualType != null && actualType.getType(0) != null) {
+                this.genericActualClazzes = actualType.getTypes();
+            }
+        } else {
+            String packageName = ClassUtils.getPackageName(propertyType);
+            if (!packageName.startsWith("java.") && !packageName.startsWith("com.sun")) {
+                this.exPropType = ExPropType.NON_JDK_TYPE;
+            }
+        }
+
     }
 
     /**
@@ -30,8 +58,8 @@ public class ExPropertyDescriptor {
      * @date 2023-03-19 14:34
      */
     public Class<?> getActualClazz() {
-        if (GenericActualClazzes != null && GenericActualClazzes.length > 0) {
-            return GenericActualClazzes[0];
+        if (genericActualClazzes != null && genericActualClazzes.length > 0) {
+            return genericActualClazzes[0];
         }
         return null;
     }
