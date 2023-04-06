@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.bean.info.complex;
+package io.github.kylinhunter.commons.properties.data;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,7 +37,4 @@ public class People {
     private Boolean p12;
     @EqualsAndHashCode.Include
     private boolean p13;
-
-    @EqualsAndHashCode.Include
-    private String specialPeople;
 }
