@@ -26,6 +26,7 @@ public class BeanIntrospector {
 
     public BeanIntrospector(Class<?> clazz) {
         try {
+            this.clazz = clazz;
             this.beanInfo = Introspector.getBeanInfo(clazz);
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
             if (!ArrayUtils.isEmpty(propertyDescriptors)) {

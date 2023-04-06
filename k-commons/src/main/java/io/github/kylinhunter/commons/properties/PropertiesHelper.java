@@ -22,7 +22,9 @@ import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.bean.info.ExPropType;
 import io.github.kylinhunter.commons.bean.info.ExPropertyDescriptor;
+import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
 import io.github.kylinhunter.commons.io.ResourceHelper;
@@ -39,6 +41,7 @@ import io.github.kylinhunter.commons.util.ObjectValues;
 public class PropertiesHelper {
 
     private static KeyCorrector defaultKeyCorrector = new DefaultKeyCorrector();
+    private static final int MAX_LEVEL = 1000;
 
     /**
      * @param keyCorrector keyCorrector
@@ -144,37 +147,32 @@ public class PropertiesHelper {
     }
 
     /**
-     * @param objectPool objectPool
-     * @param propFiled  propFiled
-     * @return io.github.kylinhunter.commons.properties.PropObject
-     * @title getPropObject
+     * @param properties properties
+     * @param clazz      clazz
+     * @return T
+     * @title toBean
      * @description
      * @author BiJi'an
-     * @date 2023-03-31 01:34
+     * @date 2023-03-19 01:21
      */
-    private static PropObject createPropObject(PropObjectPool objectPool, PropFiled propFiled) {
-        PropObject curObject = objectPool.add(new PropObject(propFiled.getObjecId()));
-
-        if (!curObject.isRoot()) {
-            String parentId = curObject.getParentId();
-            PropObject parentObj = objectPool.get(parentId);
-            PropObject curObj = curObject;
-            while (!curObj.isRoot() && parentObj == null) {
-
-                PropObject newParentObject = objectPool.add(new PropObject(curObj.parentId));
-                PropFiled nowField = new PropFiled(curObj.getObjecId());
-                newParentObject.addField(nowField);
-                curObj = newParentObject;
-                parentObj = objectPool.get(curObj.parentId);
-
-            }
-            parentObj.addField(new PropFiled(curObj.getObjecId()));
+    @SuppressWarnings("unchecked")
+    public static <T> T toBean(Properties properties, NameRule nameRule, Class<T> clazz) {
+        if (nameRule != null) {
+            Properties newProperties = new Properties();
+            properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
+            properties = newProperties;
         }
-        return curObject;
+        PropObjectPool objectPool = createPropObjectPool(properties, clazz);
+        List<PropObject> propObjects = objectPool.getSortedPropObjes(); // resort
+        propObjects.forEach(propObject -> {
+            propObject.fieldResort();
+            processPropFileds(objectPool, propObject);
+        });
 
+        return (T) objectPool.getRoot().getObj();
     }
 
-    private static <T> PropObjectPool toPropObjectPool(Properties properties, Class<T> clazz) {
+    private static <T> PropObjectPool createPropObjectPool(Properties properties, Class<T> clazz) {
         PropObjectPool propObjectPool = new PropObjectPool();
 
         // add root object
@@ -194,13 +192,56 @@ public class PropertiesHelper {
         return propObjectPool;
     }
 
-    public static void processPropFileds(PropObjectPool objectPool, PropObject propObject) {
-        BeanIntrospector beanIntrospector = propObject.getBeanIntrospector();
+    /**
+     * @param objectPool objectPool
+     * @param propFiled  propFiled
+     * @return io.github.kylinhunter.commons.properties.PropObject
+     * @title getPropObject
+     * @description
+     * @author BiJi'an
+     * @date 2023-03-31 01:34
+     */
+    private static PropObject createPropObject(PropObjectPool objectPool, PropFiled propFiled) {
+        PropObject curObject = objectPool.add(new PropObject(propFiled.getObjecId()));
+        if (!curObject.isRoot()) {
+            String parentId = curObject.getParentId();
+            PropObject parentObj = objectPool.get(parentId);
+            PropObject curObj = curObject;
+            int level = 0;
+            while (parentObj == null) {
+                if (++level > MAX_LEVEL) {
+                    throw new GeneralException("create too many level one time , > " + MAX_LEVEL);
+                }
+                PropObject newParentObject = objectPool.add(new PropObject(curObj.parentId));
+                PropFiled nowField = new PropFiled(curObj.getObjecId());
+                newParentObject.addField(nowField);
+                curObj = newParentObject;
+                parentObj = objectPool.get(curObj.parentId);
+            }
+            parentObj.addField(new PropFiled(curObj.getObjecId()));
+        }
+        return curObject;
+
+    }
+
+    /**
+     * @param objectPool    objectPool
+     * @param curPropObject curPropObject
+     * @return void
+     * @title processPropFileds
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-06 20:42
+     */
+    private static void processPropFileds(PropObjectPool objectPool, PropObject curPropObject) {
+        BeanIntrospector beanIntrospector = curPropObject.getBeanIntrospector();
         Objects.requireNonNull(beanIntrospector);
-        Object curObj = propObject.getObj();
-        for (PropFiled propFiled : propObject.getPropFileds()) {
+        Object curObj = curPropObject.getObj();
+        for (PropFiled propFiled : curPropObject.getPropFileds()) {
+
             ExPropertyDescriptor propertyDescriptor = beanIntrospector.getExPropertyDescriptor(propFiled.getName());
             Objects.requireNonNull(propertyDescriptor);
+
             Method readMethod = propertyDescriptor.getReadMethod();
             Method writeMethod = propertyDescriptor.getWriteMethod();
             Class<?> propActualClazz = propertyDescriptor.getActualClazz();
@@ -213,96 +254,64 @@ public class PropertiesHelper {
 
             } else if (propertyType == String.class) {
                 ReflectUtils.invoke(curObj, writeMethod, ObjectValues.getString(propFiled.getValue()));
-            } else if (exPropType == ExPropType.ARRAY) {
 
-                if (propFiled.arrIndex >= 0) {
-                    int arrLen = propFiled.arrIndex + 1;
-
-                    Object[] arr = ReflectUtils.invoke(curObj, readMethod);
-                    if (arr == null) {
-                        arr = (Object[]) newInstance(propActualClazz, arrLen);
-                    } else {
-                        arr = Arrays.copyOf(arr, arrLen);
-                    }
-                    Object[] params = new Object[] {arr};
-                    ReflectUtils.invoke(curObj, writeMethod, params);
-                    Object newObj = ObjectCreator.create(propActualClazz);
-                    arr[propFiled.arrIndex] = newObj;
-                    PropObject arrPropObject = objectPool.get(propFiled.getFullName());
-                    arrPropObject.setObj(newObj);
-
-                }
-
-            } else if (exPropType == ExPropType.LIST) {
-                if (propFiled.arrIndex >= 0) {
-                    int listSize = propFiled.arrIndex + 1;
-
-                    List list = ReflectUtils.invoke(curObj, readMethod);
-                    if (list == null) {
-                        list = new ArrayList(listSize);
-                    } else {
-
-                        List newList = new ArrayList(listSize);
-                        newList.addAll(list);
-                        list = newList;
-                    }
-                    for (int i = list.size(); i < listSize; i++) {
-
-                        list.add(null);
-                    }
-                    ReflectUtils.invoke(curObj, writeMethod, list);
-
-                    Object newObj = ObjectCreator.create(propActualClazz);
-                    list.set(propFiled.arrIndex, newObj);
-                    PropObject listPropObject = objectPool.get(propFiled.getFullName());
-                    listPropObject.setObj(newObj);
-                }
-
-            } else if (exPropType == ExPropType.NON_JDK_TYPE) {
-
-                if (propFiled.isBean()) {
-                    Object o = ObjectCreator.create(propertyType);
-                    ReflectUtils.invoke(curObj, writeMethod, o);
-                    PropObject propObject1 = objectPool.get(propFiled.getFullName());
-                    propObject1.setObj(o);
-                }
-
-            }
-
-        }
-    }
-
-    /**
-     * @param properties properties
-     * @param clazz      clazz
-     * @return T
-     * @title toBean
-     * @description
-     * @author BiJi'an
-     * @date 2023-03-19 01:21
-     */
-    public static <T> T toBean(Properties properties, NameRule nameRule, Class<T> clazz) {
-        if (nameRule != null) {
-            Properties newProperties = new Properties();
-            properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
-            properties = newProperties;
-        }
-
-        PropObjectPool objectPool = toPropObjectPool(properties, clazz);
-        List<PropObject> propObjects = objectPool.getSortedPropObjes(); // resort
-
-        propObjects.forEach(propObject -> {
-            propObject.fieldResort();
-            if (propObject.isRoot()) {
-                processPropFileds(objectPool, propObject);
             } else {
-                PropObject parentPropObject = objectPool.get(propObject.getParentId());
-                processPropFileds(objectPool, propObject);
+                PropObject fullNamePropObject = objectPool.get(propFiled.getFullName());
+                Objects.requireNonNull(fullNamePropObject, "can't find full name Obj: " + propFiled.getFullName());
+
+                if (exPropType == ExPropType.ARRAY) {
+
+                    if (propFiled.arrIndex >= 0) {
+                        int arrLen = propFiled.arrIndex + 1;
+                        Object[] arr = ReflectUtils.invoke(curObj, readMethod);
+                        if (arr == null) {
+                            arr = (Object[]) newInstance(propActualClazz, arrLen);
+                        } else {
+                            arr = Arrays.copyOf(arr, arrLen);
+                        }
+                        Object[] params = new Object[] {arr};
+                        ReflectUtils.invoke(curObj, writeMethod, params);
+                        Object newObj = ObjectCreator.create(propActualClazz);
+                        arr[propFiled.arrIndex] = newObj;
+
+                        fullNamePropObject.setObj(newObj);
+
+                    }
+
+                } else if (exPropType == ExPropType.LIST) {
+                    if (propFiled.arrIndex >= 0) {
+                        int listSize = propFiled.arrIndex + 1;
+
+                        List<Object> list = ReflectUtils.invoke(curObj, readMethod);
+                        if (list == null) {
+                            list = ListUtils.newArrayList();
+                        } else {
+                            List <Object> newList = ListUtils.newArrayList();
+                            newList.addAll(list);
+                            list = newList;
+                        }
+                        for (int i = list.size(); i < listSize; i++) {
+
+                            list.add(null);
+                        }
+                        ReflectUtils.invoke(curObj, writeMethod, list);
+
+                        Object newObj = ObjectCreator.create(propActualClazz);
+                        list.set(propFiled.arrIndex, newObj);
+                        fullNamePropObject.setObj(newObj);
+                    }
+
+                } else if (exPropType == ExPropType.NON_JDK_TYPE) {
+                    if (propFiled.isBean()) {
+                        Object o = ObjectCreator.create(propertyType);
+                        ReflectUtils.invoke(curObj, writeMethod, o);
+                        fullNamePropObject.setObj(o);
+                    }
+
+                }
             }
 
-        });
-
-        return (T) objectPool.getRoot().getObj();
+        }
     }
 
     public static Properties store(Object obj, File file) {
@@ -454,9 +463,7 @@ public class PropertiesHelper {
         } else {
             BeanIntrospector beanIntrospector = BeanIntrospectors.get(returnType);
             beanIntrospector.getExPropertyDescriptors().forEach(
-                    (name, propertyDescriptor) -> {
-                        toProperties(properties, propName, result, propertyDescriptor);
-                    }
+                    (name, propertyDescriptor) -> toProperties(properties, propName, result, propertyDescriptor)
             );
 
         }

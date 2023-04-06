@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.bean.info.simple;
+package io.github.kylinhunter.commons.properties.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,10 +12,11 @@ import lombok.ToString;
  * @date 2023-03-19 01:31
  **/
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleGrandSon {
+@ToString(callSuper = true)
+public class GrandSon extends People {
     @EqualsAndHashCode.Include
     private String name;
 

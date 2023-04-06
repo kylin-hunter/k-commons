@@ -26,7 +26,7 @@ public class PropObject implements Comparable<PropObject> {
     public Class<?> clazz;
     private BeanIntrospector beanIntrospector;
     private ExPropertyDescriptor propertyDescriptor;
-    private static final Pattern pattern = Pattern.compile("\\[(\\d*)\\]");
+    private static final Pattern pattern = Pattern.compile("\\[(\\d*)]");
     private List<PropFiled> propFileds = ListUtils.newArrayList();
     private Object obj;
     protected int arrIndex = -1;

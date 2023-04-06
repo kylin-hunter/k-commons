@@ -19,7 +19,7 @@ public class PropFiled implements Comparable<PropFiled> {
     private boolean bean;
     protected int arrIndex = -1;
 
-    private static final Pattern pattern = Pattern.compile("\\[(\\d*)\\]");
+    private static final Pattern pattern = Pattern.compile("\\[(\\d*)]");
 
     public PropFiled(String fullName) {
         this(fullName, true, null);
@@ -29,16 +29,6 @@ public class PropFiled implements Comparable<PropFiled> {
         this(fullName, false, value);
     }
 
-    /**
-     * @param fullName fullName
-     * @param bean     bean
-     * @param value    value
-     * @return
-     * @title PropFiled
-     * @description
-     * @author BiJi'an
-     * @date 2023-03-31 01:05
-     */
     private PropFiled(String fullName, boolean bean, Object value) {
         this.fullName = fullName;
         this.bean = bean;

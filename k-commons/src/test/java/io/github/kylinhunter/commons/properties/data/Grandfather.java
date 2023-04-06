@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.bean.info.simple;
+package io.github.kylinhunter.commons.properties.data;
 
 import java.util.StringJoiner;
 
@@ -12,15 +12,15 @@ import lombok.EqualsAndHashCode;
  **/
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SimpleGrandfather {
+public class Grandfather {
     @EqualsAndHashCode.Include
     private String name;
     @EqualsAndHashCode.Include
-    private SimpleFather father;
+    private Father father;
 
     @Override
     public String toString() {
-        return new StringJoiner("\n", SimpleGrandfather.class.getSimpleName() + "[", "]")
+        return new StringJoiner("\n", Grandfather.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
                 .add("father=" + father)
                 .toString();
