@@ -7,8 +7,7 @@ dependencies {
     api(rootProject.dependency_management['commons-lang3'])
     api(rootProject.dependency_management['guava'])
 
-    implementation(rootProject.dependency_management['velocity-engine-core'])
-    implementation(rootProject.dependency_management['velocity-tools-generic'])
+
 
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")

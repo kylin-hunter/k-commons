@@ -1,5 +1,9 @@
 package io.github.kylinhunter.commons.reflect;
 
+import java.util.Objects;
+
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
+
 /**
  * @author BiJi'an
  * @description
@@ -7,4 +11,13 @@ package io.github.kylinhunter.commons.reflect;
  **/
 public class ClassUtil {
 
+    @SuppressWarnings("unchecked")
+    public static <T> Class<T> loadClass(String className) {
+        try {
+            Objects.requireNonNull(className);
+            return (Class<T>) Class.forName(className);
+        } catch (Exception e) {
+            throw new GeneralException("loadClass error ", e);
+        }
+    }
 }

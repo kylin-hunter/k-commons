@@ -9,11 +9,11 @@ import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Global;
 import io.github.kylinhunter.commons.generator.config.bean.Output;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
+import io.github.kylinhunter.commons.generator.template.TemplateEngine;
+import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
+import io.github.kylinhunter.commons.generator.template.velocity.VelocityTemplateEngine;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper.PathType;
-import io.github.kylinhunter.commons.template.TemplateEngine;
-import io.github.kylinhunter.commons.template.config.OutputConfig;
-import io.github.kylinhunter.commons.template.velocity.VelocityTemplateEngine;
 
 /**
  * @author BiJi'an

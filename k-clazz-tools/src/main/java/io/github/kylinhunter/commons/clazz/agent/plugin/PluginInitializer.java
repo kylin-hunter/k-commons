@@ -6,7 +6,9 @@ import java.util.logging.Logger;
 import io.github.kylinhunter.commons.clazz.agent.AgentListenr;
 import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.PluginConfig;
-import io.github.kylinhunter.commons.clazz.agent.plugin.invoke.InvokeTransformer;
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -48,23 +50,20 @@ public class PluginInitializer {
     private void process(Plugin plugin, Instrumentation inst) {
         PluginConfig pluginConfig = AgentArgsHelper.getConfig(PluginConfig.class);
         log.info(pluginConfig.toString());
+        String transformer = pluginConfig.getTransformer();
+        Class<AgentTransformer> transformerClazz = ClassUtil.loadClass(transformer);
 
-        PluginPoint[] pluginPoints = plugin.buildInterceptPoint();
-        if (pluginPoints != null) {
-            for (PluginPoint pluginPoint : pluginPoints) {
-                if (pluginPoint != null) {
-                    AgentBuilder.Default builder = new AgentBuilder.Default();
-                    ElementMatcher<TypeDescription> typeDescriptionElementMatcher = pluginPoint.buildTypesMatcher();
-                    if (typeDescriptionElementMatcher != null) {
-                        builder.type(typeDescriptionElementMatcher)
-                                .transform(new InvokeTransformer(pluginPoint)
-                                ).with(agentListenr).installOn(inst);
-                    }
-                }
-
-            }
+        PluginPoint[] pluginPoints = plugin.buildPluginPoint();
+        ExceptionChecker.checkNotNull(pluginPoints);
+        for (PluginPoint pluginPoint : pluginPoints) {
+            ElementMatcher<TypeDescription> typesMatcher = pluginPoint.buildTypesMatcher();
+            ExceptionChecker.checkNotNull(typesMatcher);
+            ExceptionChecker.checkNotNull(pluginPoint);
+            AgentTransformer agentTransformer = ObjectCreator.create(transformerClazz);
+            agentTransformer.setPluginPoint(pluginPoint);
+            AgentBuilder.Default builder = new AgentBuilder.Default();
+            builder.type(typesMatcher).transform(agentTransformer).with(agentListenr).installOn(inst);
         }
-
         plugin.other();
     }
 }

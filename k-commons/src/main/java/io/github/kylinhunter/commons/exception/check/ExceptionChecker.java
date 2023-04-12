@@ -14,6 +14,13 @@ import io.github.kylinhunter.commons.exception.embed.ParamException;
  **/
 public class ExceptionChecker {
 
+    public static <T> T checkNotNull(T reference) {
+        if (reference == null) {
+            throw new ParamException("can't be null");
+        }
+        return reference;
+    }
+
     /**
      * @param reference    reference
      * @param errorMessage errorMessage

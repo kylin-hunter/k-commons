@@ -12,6 +12,7 @@ import lombok.Data;
 @Data
 public class PluginConfig {
     private String name;
+    private String transformer;
     private List<TypeMatcher> packageMatchers;
     private List<TypeMatcher> methodMatchers;
 }

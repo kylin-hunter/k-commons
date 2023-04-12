@@ -1,12 +1,13 @@
 package io.github.kylinhunter.commons.clazz.agent.config;
 
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.properties.PropertiesHelper;
-import io.github.kylinhunter.commons.reflect.ObjectCreator;
 
 /**
  * @author BiJi'an
@@ -49,11 +50,20 @@ public class AgentArgsHelper {
     @SuppressWarnings("unchecked")
     public static <T> T getConfig(Class<T> clazz) {
         return (T) config.computeIfAbsent(clazz, (k) -> {
-            String configFile = AGENT_ARGS.getConfigFile();
-            if (!StringUtils.isEmpty(configFile)) {
-                return PropertiesHelper.load(configFile, clazz);
-            }
-            return ObjectCreator.create(clazz);
+            return getConfig2(clazz);
         });
+    }
+
+    public static <T> T getConfig2(Class<T> clazz) {
+
+        String configFile = AGENT_ARGS.getConfigFile();
+        if (!StringUtils.isEmpty(configFile)) {
+            Properties properties = PropertiesHelper.load(configFile);
+
+            return null;
+        } else {
+            throw new AgentException(" no config file be specified ");
+        }
+
     }
 }

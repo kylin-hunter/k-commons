@@ -7,6 +7,7 @@ import com.mysql.cj.MysqlType;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.jdbc.meta.parser.ColumnParser;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
 
 /**
  * @author BiJi'an
@@ -24,10 +25,10 @@ public class ColumnParserMysql implements ColumnParser {
             MysqlType mysqlType = MysqlType.getByJdbcType(dataType);
             String className = mysqlType.getClassName();
             if (!StringUtils.isEmpty(className)) {
-                return Class.forName(className);
+                return ClassUtil.loadClass(className);
             }
         } catch (Exception e) {
-            throw new InitException("can't get javaClass");
+            throw new InitException("can't get javaClass", e);
         }
         return null;
     }

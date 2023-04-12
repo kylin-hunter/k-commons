@@ -1,0 +1,45 @@
+import org.gradle.internal.jvm.Jvm
+dependencies {
+
+    api (project(":k-clazz-tools"))
+    api(rootProject.dependency_management['bytebuddy'])
+    api(rootProject.dependency_management['byte-buddy-agent'])
+    testImplementation files(Jvm.current().toolsJar)
+}
+
+
+jar.enabled = true
+bootJar.enabled(false)
+
+def allJars = (configurations.runtimeClasspath)
+        .findAll{it.isFile()}
+        .collect { 'lib/' + it.name }
+        .join(' ')
+
+task copyDependencies(type: Copy){
+    from configurations.runtimeClasspath
+    into "$buildDir/libs/lib"
+}
+jar.dependsOn(copyDependencies)
+
+jar {
+    exclude("logback.xml")
+    manifest {
+        attributes(
+                'Main-Class': "io.github.kylinhunter.commons.clazz.Main",
+                'Premain-Class': "io.github.kylinhunter.commons.clazz.agent.PreMain",
+                'Agent-Class': "io.github.kylinhunter.commons.clazz.agent.AgentMain",
+                'Can-Redefine-Classes': true,
+                'Can-Retransform-Classes': true,
+                'Class-Path': allJars + " ."
+        )
+    }
+}
+test {
+    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    println jvmArgs
+}
+
+
+
+

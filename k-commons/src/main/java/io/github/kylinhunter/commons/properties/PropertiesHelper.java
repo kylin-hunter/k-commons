@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -240,7 +239,7 @@ public class PropertiesHelper {
         for (PropFiled propFiled : curPropObject.getPropFileds()) {
 
             ExPropertyDescriptor propertyDescriptor = beanIntrospector.getExPropertyDescriptor(propFiled.getName());
-            Objects.requireNonNull(propertyDescriptor);
+            Objects.requireNonNull(propertyDescriptor, propFiled.getName() + " can't be null");
 
             Method readMethod = propertyDescriptor.getReadMethod();
             Method writeMethod = propertyDescriptor.getWriteMethod();
@@ -286,7 +285,7 @@ public class PropertiesHelper {
                         if (list == null) {
                             list = ListUtils.newArrayList();
                         } else {
-                            List <Object> newList = ListUtils.newArrayList();
+                            List<Object> newList = ListUtils.newArrayList();
                             newList.addAll(list);
                             list = newList;
                         }

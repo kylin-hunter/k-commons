@@ -9,8 +9,9 @@ import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
-import io.github.kylinhunter.commons.template.TemplateEngine;
-import io.github.kylinhunter.commons.template.TemplateExecutor;
+
+import io.github.kylinhunter.commons.generator.template.TemplateEngine;
+import io.github.kylinhunter.commons.generator.template.TemplateExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
