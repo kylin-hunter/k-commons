@@ -27,7 +27,7 @@ public class PluginManager {
         ServiceLoader<Plugin> allPlugins = ServiceLoader.load(Plugin.class);
         log.info("init plugins ");
         allPlugins.forEach(plugin -> {
-            log.info("init plugins: " + plugin.name());
+            log.info("init plugins: " + plugin.getName());
             PluginManager.plugins.add(plugin);
         });
     }

@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.github.kylinhunter.commons.clazz.agent.plugin.Plugin;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.properties.PropertiesHelper;
@@ -16,7 +17,7 @@ import io.github.kylinhunter.commons.properties.PropertiesHelper;
  **/
 public class AgentArgsHelper {
     private static final AgentArgs AGENT_ARGS = new AgentArgs();
-    private static final Map<Class<?>, Object> config = MapUtils.newHashMap();
+    private static final Map<Class<?>, Object> configs = MapUtils.newHashMap();
 
     /**
      * @param agentArgs agentArgs
@@ -48,21 +49,29 @@ public class AgentArgsHelper {
      * @date 2023-03-19 14:43
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getConfig(Class<T> clazz) {
-        return (T) config.computeIfAbsent(clazz, (k) -> {
-            return getConfig2(clazz);
-        });
-    }
-
-    public static <T> T getConfig2(Class<T> clazz) {
-
-        String configFile = AGENT_ARGS.getConfigFile();
-        if (!StringUtils.isEmpty(configFile)) {
-            Properties properties = PropertiesHelper.load(configFile);
-
-            return null;
+    public static <T> T getConfig(Class<T> clazz, Plugin plugin) {
+        T t = (T) configs.get(clazz);
+        if (t != null) {
+            return t;
         } else {
-            throw new AgentException(" no config file be specified ");
+            String configFile = AGENT_ARGS.getConfigFile();
+            if (StringUtils.isEmpty(configFile)) {
+
+                throw new AgentException(" no config file be specified ");
+            } else {
+                String name = plugin.getName();
+                Properties properties = PropertiesHelper.load(configFile);
+                Properties propertiesNew = new Properties();
+
+                String prefix = "plugins." + name + ".";
+                properties.forEach((k, v) -> {
+                    String key = (String) k;
+                    if (key.startsWith(prefix)) {
+                        propertiesNew.put(key.substring(prefix.length()), v);
+                    }
+                });
+                return PropertiesHelper.toBean(propertiesNew, plugin.getConfigClazz());
+            }
         }
 
     }

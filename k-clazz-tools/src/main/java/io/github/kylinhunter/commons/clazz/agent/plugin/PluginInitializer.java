@@ -48,7 +48,7 @@ public class PluginInitializer {
      * @date 2023-03-19 15:46
      */
     private void process(Plugin plugin, Instrumentation inst) {
-        PluginConfig pluginConfig = AgentArgsHelper.getConfig(PluginConfig.class);
+        PluginConfig pluginConfig = AgentArgsHelper.getConfig(PluginConfig.class, plugin);
         log.info(pluginConfig.toString());
         String transformer = pluginConfig.getTransformer();
         Class<AgentTransformer> transformerClazz = ClassUtil.loadClass(transformer);

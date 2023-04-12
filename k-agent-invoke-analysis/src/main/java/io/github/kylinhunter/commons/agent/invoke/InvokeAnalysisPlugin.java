@@ -20,14 +20,18 @@ import net.bytebuddy.matcher.ElementMatchers;
 public class InvokeAnalysisPlugin implements Plugin {
 
     @Override
-    public String name() {
+    public String getName() {
         return "invoke-analysis";
+    }
+
+    @Override
+    public <T> Class<T> getConfigClazz() {
+        return (Class<T>) InvokeAnalysisConfig.class;
     }
 
     @Override
     public PluginPoint[] buildPluginPoint() {
 
-        InvokeAnalysisConfig config = AgentArgsHelper.getConfig(InvokeAnalysisConfig.class);
         return new PluginPoint[] {
                 new PluginPoint() {
                     @Override

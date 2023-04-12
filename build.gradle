@@ -68,6 +68,7 @@ subprojects {
 
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testImplementation 'org.junit.platform:junit-platform-suite'
+        testImplementation 'org.mockito:mockito-core'
 
 
         testImplementation(rootProject.dependency_management['jmockit'])
