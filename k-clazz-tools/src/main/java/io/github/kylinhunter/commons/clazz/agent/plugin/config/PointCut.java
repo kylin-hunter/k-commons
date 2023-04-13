@@ -8,8 +8,7 @@ import lombok.Data;
  * @date 2023-03-19 16:36
  **/
 @Data
-public class TypeMatcher {
-    private String nameStartsWith;
-    private String nameContains;
-    private String nameRegex;
+public class PointCut {
+    private TypeMatcher typeMatcher = new TypeMatcher();
+    private TypeMatcher methodMatcher = new TypeMatcher();
 }

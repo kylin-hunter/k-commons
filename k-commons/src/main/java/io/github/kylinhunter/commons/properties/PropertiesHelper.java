@@ -23,6 +23,7 @@ import io.github.kylinhunter.commons.bean.info.ExPropType;
 import io.github.kylinhunter.commons.bean.info.ExPropertyDescriptor;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
@@ -161,6 +162,7 @@ public class PropertiesHelper {
             properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
             properties = newProperties;
         }
+        ExceptionChecker.checkNotNull(clazz);
         PropObjectPool objectPool = createPropObjectPool(properties, clazz);
         List<PropObject> propObjects = objectPool.getSortedPropObjes(); // resort
         propObjects.forEach(propObject -> {

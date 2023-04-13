@@ -5,10 +5,13 @@ import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.github.kylinhunter.commons.clazz.agent.plugin.AgentTransformer;
 import io.github.kylinhunter.commons.clazz.agent.plugin.Plugin;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.PluginConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.properties.PropertiesHelper;
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 
 /**
  * @author BiJi'an
@@ -18,6 +21,7 @@ import io.github.kylinhunter.commons.properties.PropertiesHelper;
 public class AgentArgsHelper {
     private static final AgentArgs AGENT_ARGS = new AgentArgs();
     private static final Map<Class<?>, Object> configs = MapUtils.newHashMap();
+    private static final String FIX_PREFIX = "plugins.";
 
     /**
      * @param agentArgs agentArgs
@@ -41,7 +45,7 @@ public class AgentArgsHelper {
     }
 
     /**
-     * @param clazz clazz
+     * @param plugin plugin
      * @return T
      * @title loadConfig
      * @description
@@ -49,28 +53,27 @@ public class AgentArgsHelper {
      * @date 2023-03-19 14:43
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getConfig(Class<T> clazz, Plugin plugin) {
-        T t = (T) configs.get(clazz);
+    public static <T extends PluginConfig, V extends AgentTransformer> T loadConfig(Plugin<T, V> plugin) {
+        Class<T> configDefinition = GenericTypeUtils.getSuperClassActualType(plugin.getClass(), 0);
+        T t = (T) configs.get(configDefinition);
         if (t != null) {
             return t;
         } else {
             String configFile = AGENT_ARGS.getConfigFile();
             if (StringUtils.isEmpty(configFile)) {
-
                 throw new AgentException(" no config file be specified ");
             } else {
                 String name = plugin.getName();
                 Properties properties = PropertiesHelper.load(configFile);
                 Properties propertiesNew = new Properties();
-
-                String prefix = "plugins." + name + ".";
+                String prefix = FIX_PREFIX + name + ".";
                 properties.forEach((k, v) -> {
                     String key = (String) k;
                     if (key.startsWith(prefix)) {
                         propertiesNew.put(key.substring(prefix.length()), v);
                     }
                 });
-                return PropertiesHelper.toBean(propertiesNew, plugin.getConfigClazz());
+                return PropertiesHelper.toBean(propertiesNew, configDefinition);
             }
         }
 
