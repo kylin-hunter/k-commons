@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class DataSourceUtilsTest {
@@ -25,5 +26,6 @@ class DataSourceUtilsTest {
             }
             System.out.println();
         }
+        Assertions.assertTrue(objs.size() > 0);
     }
 }

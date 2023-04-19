@@ -22,5 +22,6 @@ class ColumnMetaReaderTest {
             System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
         }
 
+
     }
 }

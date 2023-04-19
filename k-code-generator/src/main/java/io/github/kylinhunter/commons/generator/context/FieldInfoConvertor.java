@@ -39,17 +39,17 @@ public class FieldInfoConvertor {
      */
     public FieldInfo convert(ColumnMeta columnMeta, Table table, Database database) {
 
-        String columnType = convert2(columnMeta, table, database);
+        String fieldType = convertFieldType(columnMeta, table, database);
         FieldInfo fieldInfo = new FieldInfo();
-        fieldInfo.setType(ClassUtils.getShortClassName(columnType));
-        fieldInfo.setFullType(columnType);
+        fieldInfo.setType(ClassUtils.getShortClassName(fieldType));
+        fieldInfo.setFullType(fieldType);
         fieldInfo.setName(SnakeToCamelUtils.convert(columnMeta.getColumnName()));
         fieldInfo.setColumnName(columnMeta.getColumnName());
         fieldInfo.setComment(columnMeta.getRemarks());
         return fieldInfo;
     }
 
-    public boolean s(String type, ColumnMeta columnMeta) {
+    public boolean support(String type, ColumnMeta columnMeta) {
         Map<String, Object> env = MapUtils.newHashMap();
         env.put("type", columnMeta.getTypeName().toLowerCase());
         env.put("size", columnMeta.getColumnSize());
@@ -65,25 +65,23 @@ public class FieldInfoConvertor {
      * @author BiJi'an
      * @date 2023-02-26 19:07
      */
-    private String convert2(ColumnMeta columnMeta, Table table, Database database) {
-        String columnType = table.getColumnType(columnMeta.getColumnName());
-        if (!StringUtils.isEmpty(columnType)) {
-            return columnType;
+    private String convertFieldType(ColumnMeta columnMeta, Table table, Database database) {
+        String fieldType = table.getColumnType(columnMeta.getColumnName());
+        if (!StringUtils.isEmpty(fieldType)) {
+            return fieldType;
         }
 
-        columnType = database.getSqlType(columnMeta.getTypeName().toLowerCase());
-        if (!StringUtils.isEmpty(columnType)) {
-            return columnType;
+        fieldType = database.getSqlType(columnMeta.getTypeName().toLowerCase());
+        if (!StringUtils.isEmpty(fieldType)) {
+            return fieldType;
         }
         Map<String, String> sqlTypes = database.getSqlTypes();
 
         for (Map.Entry<String, String> entry : sqlTypes.entrySet()) {
-            String type = entry.getKey();
-            String clzzName = entry.getValue();
-            if (s(type, columnMeta)) {
-                return clzzName;
+            String sqlType = entry.getKey();
+            if (support(sqlType, columnMeta)) {
+                return entry.getValue();
             }
-
         }
         return columnMeta.getJavaClass().getName();
 
