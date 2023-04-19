@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.agent.invoke;
 
-import io.github.kylinhunter.commons.clazz.agent.plugin.config.PluginConfig;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

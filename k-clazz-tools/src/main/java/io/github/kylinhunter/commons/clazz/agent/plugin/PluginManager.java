@@ -1,11 +1,12 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin;
 
+import java.lang.instrument.Instrumentation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.function.Consumer;
 import java.util.logging.Logger;
 
+import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
 import lombok.Data;
 
 /**
@@ -16,14 +17,13 @@ import lombok.Data;
 @Data
 public class PluginManager {
     private static Logger log = Logger.getLogger(PluginManager.class.toString());
-
     public static final List<Plugin> plugins = new ArrayList<>();
 
     static {
-        init();
+        loadPlugins();
     }
 
-    private static void init() {
+    private static void loadPlugins() {
         ServiceLoader<Plugin> allPlugins = ServiceLoader.load(Plugin.class);
         log.info("init plugins ");
         allPlugins.forEach(plugin -> {
@@ -33,15 +33,18 @@ public class PluginManager {
     }
 
     /**
-     * @param action action
+     * @param agentArgs agentArgs
+     * @param inst      inst
      * @return void
-     * @title forEach
+     * @title initialize
      * @description
      * @author BiJi'an
-     * @date 2023-03-19 00:14
+     * @date 2023-03-19 00:19
      */
-    public static void forEach(Consumer<Plugin> action) {
-        plugins.forEach(action);
+    public static void initialize(String agentArgs, Instrumentation inst) {
+        log.info("premain start,agentArgs=" + agentArgs);
+        AgentArgsHelper.init(agentArgs);
+        plugins.forEach(plugin -> plugin.init(inst));
     }
 
 }

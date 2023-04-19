@@ -1,10 +1,13 @@
 package io.github.kylinhunter.commons.agent.invoke;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.ProtectionDomain;
 
 import io.github.kylinhunter.commons.clazz.agent.plugin.AbstractAgentTransformer;
+import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
+import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
@@ -18,16 +21,18 @@ import net.bytebuddy.utility.JavaModule;
  **/
 public class InvokeTransformer extends AbstractAgentTransformer {
 
+
     @Override
     public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder, TypeDescription typeDescription,
                                             ClassLoader classLoader, JavaModule module,
                                             ProtectionDomain protectionDomain) {
-        builder = builder.method(pluginPoint.getMethodMatcher()).
+         builder = builder.method(pluginPoint.getMethodMatcher()).
                 intercept(MethodDelegation.to(InvokeAnalysis.class));
         try {
+//            File dir = ResourceHelper.getDir(pluginConfig.getClassSaveDir());
             builder.make().saveIn(UserDirUtils.getTmpDir("bja"));
         } catch (IOException e) {
-            throw new GeneralException("save to dir error", e);
+            throw new AgentException("save to dir error", e);
         }
         return builder;
     }

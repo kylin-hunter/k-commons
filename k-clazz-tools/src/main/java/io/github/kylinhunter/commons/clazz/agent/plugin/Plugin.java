@@ -1,29 +1,20 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin;
 
-import java.util.List;
+import java.lang.instrument.Instrumentation;
 
-import io.github.kylinhunter.commons.clazz.agent.plugin.config.PluginConfig;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-03-11 00:46
  **/
-public interface Plugin<T extends PluginConfig, V extends AgentTransformer> {
+public interface Plugin<T extends PluginConfig> {
     String getName();
-
-    List<PluginPoint> getPluginPoints();
-
-    void setConfig(T t);
-
-    void init();
 
     T getConfig();
 
-    Class adviceClass();
+    void init(Instrumentation inst);
 
-    Class<V> getTransformer();
-
-    void setTransformer( Class<V> v);
-
+    Class<? extends AgentTransformer> transformerDefinition();
 }

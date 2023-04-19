@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.clazz.agent;
 
 import java.lang.instrument.Instrumentation;
 
-import io.github.kylinhunter.commons.clazz.agent.plugin.PluginInitializer;
+import io.github.kylinhunter.commons.clazz.agent.plugin.PluginManager;
 import io.github.kylinhunter.commons.util.OnceRunner;
 
 /**
@@ -11,7 +11,6 @@ import io.github.kylinhunter.commons.util.OnceRunner;
  * @date 2022-12-29 00:23
  **/
 public class PreMain {
-    private static final PluginInitializer pluginInitializer = new PluginInitializer();
 
     /**
      * @param agentArgs agentArgs
@@ -23,7 +22,7 @@ public class PreMain {
      * @date 2023-03-11 23:09
      */
     public static void premain(String agentArgs, Instrumentation inst) {
-        OnceRunner.run(PreMain.class, () -> pluginInitializer.initialize(agentArgs, inst));
+        OnceRunner.run(PreMain.class, () -> PluginManager.initialize(agentArgs, inst));
 
     }
 

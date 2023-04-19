@@ -12,14 +12,14 @@ class InvokeAnalysisConfigTest {
 
     @Test
     void getConfig() {
-        Plugin<InvokeAnalysisConfig,InvokeTransformer> plugin = new InvokeAnalysisPlugin();
+        InvokeAnalysisPlugin plugin = new InvokeAnalysisPlugin();
         System.out.println(plugin.getName());
         System.out.println(plugin.getName());
         File file = ResourceHelper.getFileInClassPath("k-agent-plugin-invoke-analysis.properties");
         AgentArgsHelper.init("config-file=" + file.getAbsolutePath());
 
-        InvokeAnalysisConfig pluginConfig = AgentArgsHelper.loadConfig(plugin);
-        System.out.println(pluginConfig);
+//        InvokeAnalysisConfig pluginConfig = AgentArgsHelper.loadConfig(plugin);
+//        System.out.println(pluginConfig);
 
     }
 }

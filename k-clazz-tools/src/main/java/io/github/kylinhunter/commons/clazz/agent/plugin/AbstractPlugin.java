@@ -1,19 +1,23 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin;
 
+import java.lang.instrument.Instrumentation;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-import io.github.kylinhunter.commons.clazz.agent.plugin.config.PluginConfig;
-import io.github.kylinhunter.commons.clazz.agent.plugin.config.PointCut;
-import io.github.kylinhunter.commons.clazz.agent.plugin.config.TypeMatcher;
+import io.github.kylinhunter.commons.clazz.agent.AgentListenr;
+import io.github.kylinhunter.commons.clazz.agent.plugin.bean.PluginPoint;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.PluginConfigReader;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PointCut;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.description.NamedElement;
+import net.bytebuddy.agent.builder.AgentBuilder;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  * @author BiJi'an
@@ -22,64 +26,89 @@ import net.bytebuddy.matcher.ElementMatchers;
  **/
 @Data
 @RequiredArgsConstructor
-public abstract class AbstractPlugin<T extends PluginConfig, V extends
-        AgentTransformer> implements Plugin<T, V> {
-
+public abstract class AbstractPlugin<T extends PluginConfig> implements Plugin<T> {
+    private final List<PluginPoint> pluginPoints = ListUtils.newArrayList();
+    private final AgentListenr defaultAgentListenr = new AgentListenr();
+    private PluginConfigReader pluginConfigReader = new PluginConfigReader();
     private final String name;
-
     private T config;
-    private Class<V> transformer;
 
-    @Override
-    public Class<V> getTransformer() {
-        return transformer;
+    /**
+     * @return void
+     * @title buildConfig
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-16 22:43
+     */
+    protected void buildConfig() {
+        Class<T> configClazz = GenericTypeUtils.getSuperClassActualType(this.getClass(), 0);
+        ExceptionChecker.checkNotNull(configClazz, "config definition can't be null");
+        pluginConfigReader.read(configClazz, this.name);
     }
 
-    private List<PluginPoint> pluginPoints = ListUtils.newArrayList();
+    /**
+     * @param pluginPoint pluginPoint
+     * @return io.github.kylinhunter.commons.clazz.agent.plugin.AgentTransformer
+     * @title createAgentTransformer
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-15 11:03
+     */
+    protected AgentTransformer buildTransformer(PluginPoint pluginPoint) {
+        Class<? extends AgentTransformer> clazz = this.transformerDefinition();
+        AgentTransformer agentTransformer = ObjectCreator.create(clazz);
+        agentTransformer.setPluginPoint(pluginPoint);
+        agentTransformer.setPluginConfig(this.config);
+        return agentTransformer;
+    }
 
-    public void buildPluginPoint() {
-        List<PointCut> pointCuts = config.getPointCuts();
+    /**
+     * @return void
+     * @title buildPluginPoint
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-15 11:03
+     */
+    protected void buildPluginPoints() {
+        List<PointCut> pointCuts = config.getPoints();
         if (!CollectionUtils.isEmpty(pointCuts)) {
             for (PointCut pointCut : pointCuts) {
                 PluginPoint pluginPoint = new PluginPoint();
-                pluginPoint.setTypeMatcher(toElementMatcher(pointCut.getTypeMatcher()));
-                pluginPoint.setMethodMatcher(toElementMatcher(pointCut.getMethodMatcher()));
+                pluginPoint.setTypeMatcher(pointCut.getType().toElementMatcher());
+                pluginPoint.setMethodMatcher(pointCut.getMethod().toElementMatcher());
                 this.pluginPoints.add(pluginPoint);
             }
         }
     }
 
-    public <S extends NamedElement> ElementMatcher<S> toElementMatcher(TypeMatcher typeMatcher) {
-        String nameStartsWith = typeMatcher.getNameStartsWith();
-        ElementMatcher.Junction<S> elementMatcherJunction = null;
-        if (!StringUtils.isEmpty(nameStartsWith)) {
-            elementMatcherJunction = ElementMatchers.nameStartsWith(nameStartsWith);
+    /**
+     * @return void
+     * @title buildTransformer
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-15 11:30
+     */
+    protected void buildAgent(Instrumentation inst) {
+        for (PluginPoint pluginPoint : pluginPoints) {
+            AgentBuilder.Default builder = new AgentBuilder.Default();
+            ElementMatcher<TypeDescription> typesMatcher = pluginPoint.getTypeMatcher();
+            AgentTransformer agentTransformer = this.buildTransformer(pluginPoint);
+            builder.type(typesMatcher).transform(agentTransformer).with(defaultAgentListenr).installOn(inst);
         }
-
-        String nameContains = typeMatcher.getNameContains();
-        if (!StringUtils.isEmpty(nameContains)) {
-            if (elementMatcherJunction == null) {
-                elementMatcherJunction = ElementMatchers.nameContains(nameContains);
-            } else {
-                elementMatcherJunction = elementMatcherJunction.or(ElementMatchers.nameContains(nameContains));
-
-            }
-        }
-
-        String nameRegex = typeMatcher.getNameRegex();
-        if (!StringUtils.isEmpty(nameRegex)) {
-            if (elementMatcherJunction == null) {
-                elementMatcherJunction = ElementMatchers.nameMatches(nameContains);
-            } else {
-                elementMatcherJunction = elementMatcherJunction.or(ElementMatchers.nameMatches(nameContains));
-
-            }
-        }
-        return elementMatcherJunction;
     }
 
-    public void init() {
-        this.buildPluginPoint();
+    /**
+     * @param inst inst
+     * @return void
+     * @title init
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-16 2:26
+     */
+    public void init(Instrumentation inst) {
+        this.buildConfig();
+        this.buildPluginPoints();
+        this.buildAgent(inst);
     }
 
 }

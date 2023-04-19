@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.clazz.agent.plugin;
+package io.github.kylinhunter.commons.clazz.agent.plugin.bean;
 
 import lombok.Data;
 import net.bytebuddy.description.method.MethodDescription;
