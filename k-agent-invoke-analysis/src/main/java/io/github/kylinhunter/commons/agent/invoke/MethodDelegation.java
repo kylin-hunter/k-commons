@@ -14,7 +14,7 @@ import net.bytebuddy.implementation.bind.annotation.SuperCall;
  * @description
  * @date 2023-03-11 10:36
  **/
-public class InvokeAnalysis {
+public class MethodDelegation {
 
     private static InvokeTraceManager invokeTraceManager = InvokeTraceManager.getInstance();
 

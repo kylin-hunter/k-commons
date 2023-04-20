@@ -3,6 +3,7 @@ package io.github.kylinhunter.commons.clazz.agent.plugin.config;
 import java.util.Properties;
 
 import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.properties.PropertiesHelper;
 
@@ -23,7 +24,7 @@ public class PluginConfigReader {
      * @author BiJi'an
      * @date 2023-04-15 22:44
      */
-    public <T> T read(Class<T> clazz, String pluginName) {
+    public <T extends PluginConfig> T read(Class<T> clazz, String pluginName) {
         Properties properties = loadProperties(pluginName);
         return PropertiesHelper.toBean(properties, clazz);
 

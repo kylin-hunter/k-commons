@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.security.ProtectionDomain;
 
+import org.apache.commons.lang3.StringUtils;
+
 import io.github.kylinhunter.commons.clazz.agent.plugin.AbstractAgentTransformer;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.DebugConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
-import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.utility.JavaModule;
 
 /**
@@ -21,20 +21,31 @@ import net.bytebuddy.utility.JavaModule;
  **/
 public class InvokeTransformer extends AbstractAgentTransformer {
 
-
     @Override
     public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder, TypeDescription typeDescription,
                                             ClassLoader classLoader, JavaModule module,
                                             ProtectionDomain protectionDomain) {
-         builder = builder.method(pluginPoint.getMethodMatcher()).
-                intercept(MethodDelegation.to(InvokeAnalysis.class));
-        try {
-//            File dir = ResourceHelper.getDir(pluginConfig.getClassSaveDir());
-            builder.make().saveIn(UserDirUtils.getTmpDir("bja"));
-        } catch (IOException e) {
-            throw new AgentException("save to dir error", e);
-        }
+        builder = builder.method(pluginPoint.getMethodMatcher()).
+                intercept(net.bytebuddy.implementation.MethodDelegation.to(MethodDelegation.class));
+        debug(builder);
         return builder;
+    }
+
+    private void debug(DynamicType.Builder<?> builder) {
+        try {
+            DebugConfig debug = pluginConfig.getDebug();
+            if (debug != null && debug.isEnabled()) {
+                String classSaveDir = debug.getClassSaveDir();
+                if (!StringUtils.isEmpty(classSaveDir)) {
+                    File dir = ResourceHelper.getDir(classSaveDir, ResourceHelper.PathType.FILESYSTEM, true);
+                    builder.make().saveIn(dir);
+                }
+
+            }
+        } catch (IOException e) {
+            throw new AgentException("debug error", e);
+        }
+
     }
 
 }

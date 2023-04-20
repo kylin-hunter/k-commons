@@ -9,12 +9,12 @@ import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig
  * @description
  * @date 2023-03-11 00:46
  **/
-public interface Plugin<T extends PluginConfig> {
+public interface Plugin {
     String getName();
 
-    T getConfig();
-
     void init(Instrumentation inst);
+
+    Class<? extends PluginConfig> configDefinition();
 
     Class<? extends AgentTransformer> transformerDefinition();
 }

@@ -61,7 +61,11 @@ public class FileUtil {
 
         }
         if (required) {
-            throw new KIOException("can't be null");
+            if (isFile) {
+                throw new KIOException(" file can't be null");
+            } else {
+                throw new KIOException(" dir  can't be null");
+            }
         }
         return null;
     }

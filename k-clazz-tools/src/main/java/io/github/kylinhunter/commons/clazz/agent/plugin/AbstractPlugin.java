@@ -12,7 +12,6 @@ import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PointCut;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
-import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +26,13 @@ import net.bytebuddy.matcher.ElementMatcher;
  **/
 @Data
 @RequiredArgsConstructor
-public abstract class AbstractPlugin<T extends PluginConfig> implements Plugin<T> {
+public abstract class AbstractPlugin implements Plugin {
     private Logger logger = Logger.getLogger(AbstractPlugin.class.toString());
     private final List<PluginPoint> pluginPoints = ListUtils.newArrayList();
     private final AgentListenr defaultAgentListenr = new AgentListenr();
     private PluginConfigReader pluginConfigReader = new PluginConfigReader();
     private final String name;
-    private T config;
+    private PluginConfig config;
 
     /**
      * @return void
@@ -43,7 +42,7 @@ public abstract class AbstractPlugin<T extends PluginConfig> implements Plugin<T
      * @date 2023-04-16 22:43
      */
     protected void buildConfig() {
-        Class<T> configClazz = GenericTypeUtils.getSuperClassActualType(this.getClass(), 0);
+        Class<? extends PluginConfig> configClazz = this.configDefinition();
         ExceptionChecker.checkNotNull(configClazz, "config definition can't be null");
         this.config = pluginConfigReader.read(configClazz, this.name);
     }

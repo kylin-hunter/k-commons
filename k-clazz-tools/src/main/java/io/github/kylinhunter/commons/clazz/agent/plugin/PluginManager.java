@@ -18,7 +18,7 @@ import lombok.Data;
 @Data
 public class PluginManager {
     private static Logger log;
-    public static final List<Plugin<?>> plugins = new ArrayList<>();
+    public static final List<Plugin> plugins = new ArrayList<>();
 
     /**
      * @return void
@@ -39,7 +39,6 @@ public class PluginManager {
      * @author BiJi'an
      * @date 2023-04-22 00:47
      */
-    @SuppressWarnings("rawtypes")
     private static void loadPlugins(Instrumentation inst) {
 
         ServiceLoader<Plugin> allPlugins = ServiceLoader.load(Plugin.class);
