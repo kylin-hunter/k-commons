@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.log.jul;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.logging.LogManager;
 
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
@@ -14,6 +13,7 @@ import io.github.kylinhunter.commons.io.ResourceHelper;
  * @date 2023-04-20 16:41
  **/
 public class JULManager {
+    private static final String CONFIG_FILE = "k-jul-logging.properties";
 
     /**
      * @return
@@ -24,13 +24,14 @@ public class JULManager {
      */
     public static void init() {
         try {
-            URL resource = ResourceHelper.class.getResource("/logging.properties");
-            InputStream inputStream = ResourceHelper.getInputStreamInClassPath("logging.properties");
-            System.out.println("resource"+resource);
-            System.out.println("inputStream111"+inputStream);
-            LogManager logManager = LogManager.getLogManager();
+            InputStream inputStream = ResourceHelper.getInputStreamInClassPath(CONFIG_FILE);
+            if (inputStream != null) {
+                LogManager logManager = LogManager.getLogManager();
+                logManager.readConfiguration(inputStream);
+            } else {
+                System.err.println("no config file  be found :" + CONFIG_FILE);
+            }
 
-            logManager.readConfiguration(inputStream);
         } catch (IOException e) {
             throw new GeneralException(" jul init error", e);
         }

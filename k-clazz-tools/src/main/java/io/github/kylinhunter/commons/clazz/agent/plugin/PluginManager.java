@@ -17,20 +17,37 @@ import lombok.Data;
  **/
 @Data
 public class PluginManager {
-    private static Logger log = Logger.getLogger(PluginManager.class.toString());
-    public static final List<Plugin> plugins = new ArrayList<>();
+    private static Logger log;
+    public static final List<Plugin<?>> plugins = new ArrayList<>();
 
-    static {
-//        loadPlugins();
+    /**
+     * @return void
+     * @title initLog
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-22 00:47
+     */
+    private static void initLog() {
+        JULManager.init();
+        log = Logger.getLogger(PluginManager.class.toString());
     }
 
-    private static  int a=1;
-    public static void loadPlugins() {
+    /**
+     * @return void
+     * @title loadPlugins
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-22 00:47
+     */
+    @SuppressWarnings("rawtypes")
+    private static void loadPlugins(Instrumentation inst) {
+
         ServiceLoader<Plugin> allPlugins = ServiceLoader.load(Plugin.class);
-        log.info("load plugins  start"+(a++));
+        log.info("load plugins  start");
         allPlugins.forEach(plugin -> {
             log.info("load plugins: " + plugin.getName());
-            PluginManager.plugins.add(plugin);
+            plugin.init(inst);
+            plugins.add(plugin);
         });
         log.info("load plugins  end");
     }
@@ -45,12 +62,10 @@ public class PluginManager {
      * @date 2023-03-19 00:19
      */
     public static void initialize(String agentArgs, Instrumentation inst) {
-
-        JULManager.init();
-        log.info("premain start,agentArgs=" + agentArgs);
-        PluginManager.loadPlugins();
+        initLog();
+        log.info("initialize ,agentArgs=" + agentArgs);
         AgentArgsHelper.init(agentArgs);
-        plugins.forEach(plugin -> plugin.init(inst));
+        loadPlugins(inst);
     }
 
 }

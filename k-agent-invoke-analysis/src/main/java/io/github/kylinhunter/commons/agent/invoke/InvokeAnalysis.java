@@ -18,7 +18,6 @@ public class InvokeAnalysis {
 
     private static InvokeTraceManager invokeTraceManager = InvokeTraceManager.getInstance();
 
-    private static AgentArgsHelper agentArgsHelper =new AgentArgsHelper();
     @RuntimeType
     public static Object intercept(@Origin Method method, @AllArguments Object[] arguments,
                                    @SuperCall Callable<?> callable)

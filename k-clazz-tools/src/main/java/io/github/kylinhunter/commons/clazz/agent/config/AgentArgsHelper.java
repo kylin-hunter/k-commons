@@ -22,6 +22,7 @@ public class AgentArgsHelper {
      * @date 2023-03-19 14:37
      */
     public static void init(String agentArgs) {
+
         String[] propGroups = StringUtils.split(agentArgs, ';');
         if (propGroups != null && propGroups.length > 0) {
             for (String propGroup : propGroups) {
