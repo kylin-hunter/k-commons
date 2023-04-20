@@ -24,6 +24,7 @@ jar.dependsOn(copyDependencies)
 
 jar {
     exclude("logback.xml")
+    exclude("k-jul-logging.properties")
     manifest {
         attributes(
                 'Main-Class': "io.github.kylinhunter.commons.clazz.Main",

@@ -2,7 +2,9 @@ package io.github.kylinhunter.commons.agent.invoke.testdata;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
+import io.github.kylinhunter.commons.clazz.agent.plugin.PluginManager;
 import io.github.kylinhunter.commons.util.ThreadHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +17,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Student implements HomeWork {
+    private static Logger log = Logger.getLogger(PluginManager.class.toString());
+
     @EqualsAndHashCode.Include
     public final String name;
 
@@ -34,13 +38,13 @@ public class Student implements HomeWork {
     }
 
     private void slowDoing() {
-        System.out.println("I'm " + name + ", I'm  donging homework slowly,with 100 milliseconds");
+        log.info("I'm " + name + ", I'm  donging homework slowly,with 100 milliseconds");
         ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
 
     }
 
     private void fastDoing() {
-        System.out.println("I'm " + name + ", I'm  donging homework fast,with 10 milliseconds");
+        log.info("I'm " + name + ", I'm  donging homework fast,with 10 milliseconds");
         ThreadHelper.sleep(10, TimeUnit.MILLISECONDS);
 
     }

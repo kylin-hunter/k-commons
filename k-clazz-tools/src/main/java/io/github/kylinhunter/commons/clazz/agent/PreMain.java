@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.clazz.agent;
 
+import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 
 import io.github.kylinhunter.commons.clazz.agent.plugin.PluginManager;
@@ -21,7 +22,9 @@ public class PreMain {
      * @author BiJi'an
      * @date 2023-03-11 23:09
      */
-    public static void premain(String agentArgs, Instrumentation inst) {
+    public static void premain(String agentArgs, Instrumentation inst) throws IOException {
+
+
         OnceRunner.run(PreMain.class, () -> PluginManager.initialize(agentArgs, inst));
 
     }

@@ -29,6 +29,7 @@ bootJar.enabled(false)
 
 jar {
     exclude("logback.xml")
+    exclude("k-jul-logging.properties")
 }
 test {
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"

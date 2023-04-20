@@ -3,6 +3,7 @@ import org.gradle.internal.jvm.Jvm
 dependencies {
     api project(":k-commons")
     api project(":k-jdbc")
+    implementation("ch.qos.logback:logback-classic")
     api(rootProject.dependency_management['velocity-engine-core'])
     api(rootProject.dependency_management['velocity-tools-generic'])
     api(rootProject.dependency_management['springfox-swagger2'])

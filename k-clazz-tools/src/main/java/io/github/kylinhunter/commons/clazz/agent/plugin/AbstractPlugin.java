@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.clazz.agent.plugin;
 
 import java.lang.instrument.Instrumentation;
 import java.util.List;
+import java.util.logging.Logger;
 
 import io.github.kylinhunter.commons.clazz.agent.AgentListenr;
 import io.github.kylinhunter.commons.clazz.agent.plugin.bean.PluginPoint;
@@ -27,6 +28,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 @Data
 @RequiredArgsConstructor
 public abstract class AbstractPlugin<T extends PluginConfig> implements Plugin<T> {
+    private Logger logger = Logger.getLogger(AbstractPlugin.class.toString());
     private final List<PluginPoint> pluginPoints = ListUtils.newArrayList();
     private final AgentListenr defaultAgentListenr = new AgentListenr();
     private PluginConfigReader pluginConfigReader = new PluginConfigReader();
@@ -43,7 +45,7 @@ public abstract class AbstractPlugin<T extends PluginConfig> implements Plugin<T
     protected void buildConfig() {
         Class<T> configClazz = GenericTypeUtils.getSuperClassActualType(this.getClass(), 0);
         ExceptionChecker.checkNotNull(configClazz, "config definition can't be null");
-        pluginConfigReader.read(configClazz, this.name);
+        this.config = pluginConfigReader.read(configClazz, this.name);
     }
 
     /**
@@ -106,9 +108,11 @@ public abstract class AbstractPlugin<T extends PluginConfig> implements Plugin<T
      * @date 2023-04-16 2:26
      */
     public void init(Instrumentation inst) {
+        logger.info("init plugin[" + this.name + "]  start");
         this.buildConfig();
         this.buildPluginPoints();
         this.buildAgent(inst);
+        logger.info("init plugin[" + this.name + "]  end");
     }
 
 }

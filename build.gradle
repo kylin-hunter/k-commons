@@ -56,9 +56,6 @@ subprojects {
 
 
     dependencies {
-        if (project.name != 'k-commons' && project.name != 'k-clazz-tools' && project.name != 'k-agent-invoke-analysis') {
-            implementation("ch.qos.logback:logback-classic")
-        }
         compileOnly("org.projectlombok:lombok")
         annotationProcessor 'org.projectlombok:lombok'
 

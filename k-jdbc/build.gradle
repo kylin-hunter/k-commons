@@ -1,5 +1,6 @@
 dependencies {
     api project(":k-commons")
+    implementation("ch.qos.logback:logback-classic")
     api(rootProject.dependency_management['HikariCP'])
     implementation(rootProject.dependency_management['mysql-connector-java'])
     implementation(rootProject.dependency_management['ojdbc8'])
