@@ -10,7 +10,7 @@ import io.github.kylinhunter.commons.io.ResourceHelper;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-04-20 16:41
+ * @date 2023-04-22 16:41
  **/
 public class JULManager {
     private static final String CONFIG_FILE = "k-jul-logging.properties";
@@ -20,7 +20,7 @@ public class JULManager {
      * @title init
      * @description
      * @author BiJi'an
-     * @date 2023-04-20 16:41
+     * @date 2023-04-22 16:41
      */
     public static void init() {
         try {

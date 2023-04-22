@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
 
@@ -39,35 +40,27 @@ public class FileUtil {
     }
 
     /**
-     * @param file file
-     * @return void
-     * @title mustFile
+     * @param file   file
+     * @param isFile isFile
+     * @return java.io.File
+     * @title checkValidFile
      * @description
      * @author BiJi'an
-     * @date 2023-01-08 01:02
+     * @date 2023-04-22 23:31
      */
-    public static File check(File file, boolean isFile, boolean required) {
-        if (file != null && file.exists()) {
-            if (isFile) {
-                if (file.isFile()) {
-                    return file;
+    public static File checkValidFile(File file, boolean isFile) {
 
-                }
-            } else {
-                if (file.isDirectory()) {
-                    return file;
-                }
+        Objects.requireNonNull(file);
+        if (file.exists()) {
+            if (isFile && !file.isFile()) {
+                throw new KIOException(" not a file " + file.getAbsolutePath());
+            } else if (!isFile && !file.isDirectory()) {
+                throw new KIOException(" not a directory " + file.getAbsolutePath());
             }
-
+        } else {
+            throw new KIOException(file.getAbsolutePath() + "  no exist ");
         }
-        if (required) {
-            if (isFile) {
-                throw new KIOException(" file can't be null");
-            } else {
-                throw new KIOException(" dir  can't be null");
-            }
-        }
-        return null;
+        return file;
     }
 
 }
