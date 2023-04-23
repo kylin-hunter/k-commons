@@ -1,5 +1,7 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin.config.bean;
 
+import java.io.File;
+
 import lombok.Data;
 
 /**
@@ -11,4 +13,6 @@ import lombok.Data;
 public class DebugConfig {
     private boolean enabled;
     private String classSaveDir;
+    private boolean classSaveDirAutoClean = true;
+    private File fileClassSaveDir;
 }

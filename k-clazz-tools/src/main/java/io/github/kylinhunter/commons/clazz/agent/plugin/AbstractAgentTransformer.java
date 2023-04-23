@@ -9,4 +9,10 @@ public abstract class AbstractAgentTransformer implements AgentTransformer {
     protected PluginPoint pluginPoint;
     protected PluginConfig pluginConfig;
 
+    @Override
+    public void init(PluginConfig pluginConfig, PluginPoint pluginPoint) {
+        this.pluginConfig = pluginConfig;
+        this.pluginPoint = pluginPoint;
+    }
+
 }

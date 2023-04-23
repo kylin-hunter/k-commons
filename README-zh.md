@@ -13,16 +13,32 @@
 ```
 #####2、gradle (gradle.org)
 ```java
-        implementation 'io.github.kylin-hunter:k-commons:1.0.9'
+        implementation 'io.github.kylin-hunter:k-xxxx:x.x.x'
 ```
 #####3、maven (maven.apache.org)
 ```java
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>k-commons</artifactId>
-          <version>1.0.9</version>
+            <artifactId>k-xxxxx</artifactId>
+          <version>x.x.x</version>
         </dependency>
 ```
+#####4、文档支持
+> k-commons/doc/bean/BeanCopyUtils.md
+
+> k-commons/doc/bean/BeanCopyUtils-zh.md
+
+> k-commons/doc/state/BitState.md 
+
+> k-commons/doc/state/BitState-zh.md
+
+> k-commons/doc/uid/UidGenerator.md
+
+> k-commons/doc/uid/UidGenerator-zh.md
+
+> k-code-generator/README.md
+
+> k-code-generator/README-zh.md
 
 #### 版权 | License
 

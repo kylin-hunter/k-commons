@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.agent.invoke.testdata;
+package io.github.kylinhunter.commons.agent.invoke.test;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.agent.invoke.testdata.bean;
+package io.github.kylinhunter.commons.agent.invoke.test.bean;
 
 import java.util.UUID;
 

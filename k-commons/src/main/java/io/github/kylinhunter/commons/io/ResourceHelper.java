@@ -92,7 +92,7 @@ public class ResourceHelper {
             return Objects.requireNonNull(inputStream);
         } catch (Exception e) {
             if (required) {
-                throw new KIOException("can't get inputStream :" + path);
+                throw new KIOException("can't get inputStream :" + path, e);
             }
         }
 
@@ -262,7 +262,7 @@ public class ResourceHelper {
             return FileUtil.checkValidFile(file, isFile);
         } catch (Exception e) {
             if (required) {
-                throw new KIOException("can't get file :" + path);
+                throw new KIOException("can't get file :" + path, e);
             }
         }
         return null;
@@ -336,7 +336,7 @@ public class ResourceHelper {
             return FileUtil.checkValidFile(file, isFile);
         } catch (Exception e) {
             if (required) {
-                throw new KIOException("can't get file :" + classPath);
+                throw new KIOException("can't get file :" + classPath, e);
             }
         }
         return null;
@@ -353,39 +353,29 @@ public class ResourceHelper {
      */
     private static File _getFileInClassPath(String classPath) {
 
-        URL url = ResourceHelper.class.getClassLoader().getResource(classPath);
-        if (url == null) {
-            url = ResourceHelper.class.getResource(classPath);
-            return getFile(url);
-        }
-        return null;
-    }
-
-    /**
-     * @param url url
-     * @return java.io.File
-     * @title getFile
-     * @description
-     * @author BiJi'an
-     * @date 2022-01-01 02:11
-     */
-    private static File getFile(URL url) {
-        File file = null;
         try {
+            URL url = ResourceHelper.class.getClassLoader().getResource(classPath);
+            if (url == null) {
+                url = ResourceHelper.class.getResource(classPath);
+            }
             if (url != null) {
-                file = new File(url.getPath());
-                if (!file.exists()) {
+                File file = new File(url.getPath());
+                if (file.exists()) {
+                    return file;
+                } else {
                     String path = url.toURI().getPath();
                     if (path != null) {
                         file = new File(path);
+                        if (file.exists()) {
+                            return file;
+                        }
                     }
                 }
             }
+            return null;
         } catch (Exception e) {
-            throw new KIOException("get File error=> " + url, e);
+            throw new KIOException("get file from classpath error", e);
         }
-        return file;
-
     }
 
     /**

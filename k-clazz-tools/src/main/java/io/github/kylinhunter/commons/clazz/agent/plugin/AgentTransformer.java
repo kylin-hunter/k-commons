@@ -6,10 +6,6 @@ import net.bytebuddy.agent.builder.AgentBuilder;
 
 public interface AgentTransformer extends AgentBuilder.Transformer {
 
-    void setPluginPoint(PluginPoint pluginPoint);
-    void setPluginConfig(PluginConfig pluginConfig);
-
-
-
+    void init(PluginConfig pluginConfig, PluginPoint pluginPoint);
 
 }

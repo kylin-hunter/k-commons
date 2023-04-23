@@ -38,10 +38,9 @@ public class AgentListenr implements AgentBuilder.Listener {
     @Override
     public void onError(String typeName, @MaybeNull ClassLoader classLoader, @MaybeNull JavaModule module,
                         boolean loaded, Throwable throwable) {
-        log.info("onError：" + typeName);
+        log.info("onError：" + typeName + "=>" + throwable.getMessage());
         throwable.printStackTrace();
     }
-
 
     @Override
     public void onComplete(String typeName, @MaybeNull ClassLoader classLoader, @MaybeNull JavaModule module,

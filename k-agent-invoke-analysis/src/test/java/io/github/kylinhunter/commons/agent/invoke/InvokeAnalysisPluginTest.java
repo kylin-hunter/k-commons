@@ -1,9 +1,9 @@
 package io.github.kylinhunter.commons.agent.invoke;
 
-import io.github.kylinhunter.commons.agent.invoke.testdata.Campus;
-import io.github.kylinhunter.commons.agent.invoke.testdata.Course;
-import io.github.kylinhunter.commons.agent.invoke.testdata.Student;
-import io.github.kylinhunter.commons.agent.invoke.testdata.Teacher;
+import io.github.kylinhunter.commons.agent.invoke.test.Campus;
+import io.github.kylinhunter.commons.agent.invoke.test.Course;
+import io.github.kylinhunter.commons.agent.invoke.test.Student;
+import io.github.kylinhunter.commons.agent.invoke.test.Teacher;
 
 class InvokeAnalysisPluginTest {
 

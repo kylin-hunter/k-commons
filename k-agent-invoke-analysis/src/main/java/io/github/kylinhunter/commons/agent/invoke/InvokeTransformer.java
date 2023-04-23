@@ -2,16 +2,22 @@ package io.github.kylinhunter.commons.agent.invoke;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.security.ProtectionDomain;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.clazz.agent.plugin.AbstractAgentTransformer;
+import io.github.kylinhunter.commons.clazz.agent.plugin.bean.PluginPoint;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.DebugConfig;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.util.ThreadHelper;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.utility.JavaModule;
 
 /**
@@ -21,13 +27,21 @@ import net.bytebuddy.utility.JavaModule;
  **/
 public class InvokeTransformer extends AbstractAgentTransformer {
 
+    public InvokeTransformer() {
+    }
+
     @Override
     public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder, TypeDescription typeDescription,
                                             ClassLoader classLoader, JavaModule module,
                                             ProtectionDomain protectionDomain) {
-        builder = builder.method(pluginPoint.getMethodMatcher()).
-                intercept(net.bytebuddy.implementation.MethodDelegation.to(MethodDelegation.class));
+        builder = builder.method(pluginPoint.getMethodMatcher())
+                .intercept(MethodDelegation.to(InvokeMethodDelegation.class));
         debug(builder);
+        String         path = "org/apache/commons/io/FileUtils.class";
+
+
+        URL resource = InvokeTransformer.class.getClassLoader().getResource(path);
+        ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
         return builder;
     }
 
@@ -40,12 +54,12 @@ public class InvokeTransformer extends AbstractAgentTransformer {
                     File dir = ResourceHelper.getDir(classSaveDir, ResourceHelper.PathType.FILESYSTEM, true);
                     builder.make().saveIn(dir);
                 }
-
             }
         } catch (IOException e) {
             throw new AgentException("debug error", e);
         }
 
     }
+
 
 }

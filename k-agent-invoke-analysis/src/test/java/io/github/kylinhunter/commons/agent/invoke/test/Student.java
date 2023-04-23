@@ -1,5 +1,6 @@
-package io.github.kylinhunter.commons.agent.invoke.testdata;
+package io.github.kylinhunter.commons.agent.invoke.test;
 
+import java.net.URL;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -39,6 +40,9 @@ public class Student implements HomeWork {
 
     private void slowDoing() {
         log.info("I'm " + name + ", I'm  donging homework slowly,with 100 milliseconds");
+        String         path = "org/apache/commons/io/FileUtils.class";
+
+        URL resource = Student.class.getClassLoader().getResource(path);
         ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
 
     }

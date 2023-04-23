@@ -1,10 +1,18 @@
 package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOExceptionList;
+import org.apache.commons.io.file.Counters;
+import org.apache.commons.io.file.PathUtils;
+import org.apache.commons.io.file.StandardDeleteOption;
 
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 
@@ -49,8 +57,9 @@ public class FileUtil {
      * @date 2023-04-22 23:31
      */
     public static File checkValidFile(File file, boolean isFile) {
-
-        Objects.requireNonNull(file);
+        if (file == null) {
+            throw new KIOException("file can't be null");
+        }
         if (file.exists()) {
             if (isFile && !file.isFile()) {
                 throw new KIOException(" not a file " + file.getAbsolutePath());

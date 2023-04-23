@@ -3,7 +3,14 @@ dependencies {
     api (project(":k-commons")) {
         exclude group: 'org.reflections', module: 'reflections'
         exclude group: 'com.google.guava', module: 'guava'
+//        exclude group: 'commons-io', module: 'commons-io'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+        exclude group: 'com.fasterxml.jackson.datatype', module: 'jackson-datatype-jsr310'
         exclude group: 'commons-io', module: 'commons-io'
+        exclude group: 'commons-codec', module: 'commons-codec'
+        exclude group: 'org.apache.commons', module: 'commons-compress'
+        exclude group: 'org.dom4j', module: 'dom4j'
+        exclude group: 'org.yaml', module: 'snakeyaml'
     }
     api(rootProject.dependency_management['bytebuddy'])
     api(rootProject.dependency_management['byte-buddy-agent'])

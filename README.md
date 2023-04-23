@@ -23,6 +23,22 @@ a Common tool collection
           <version>1.0.9</version>
         </dependency>
 ```
+#####4、Document
+> k-commons/doc/bean/BeanCopyUtils.md
+
+> k-commons/doc/bean/BeanCopyUtils-zh.md
+
+> k-commons/doc/state/BitState.md 
+
+> k-commons/doc/state/BitState-zh.md
+
+> k-commons/doc/uid/UidGenerator.md
+
+> k-commons/doc/uid/UidGenerator-zh.md
+
+> k-code-generator/README.md
+
+> k-code-generator/README-zh.md
 
 #### License
 
