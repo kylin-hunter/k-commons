@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
-
-import org.apache.commons.io.FileUtils;
+import java.io.IOException;
 
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 
@@ -14,10 +13,8 @@ import io.github.kylinhunter.commons.exception.embed.KIOException;
 public class UserDirUtils {
     private static final File USER_DIR = new File(System.getProperty("user.dir"));
     private static final String PATH_OF_USER_DIR = USER_DIR.getAbsolutePath();
-    private static final String USER_DIR_CONFIG = "configurationBuilder";
+    private static final String USER_DIR_CONFIG = "config";
     private static final String USER_DIR_TMP = "tmp";
-    private static final String USER_DIR_TMP_JAVA = USER_DIR_TMP + "/src/main/java";
-    private static final String USER_DIR_TMP_RESOURCE = USER_DIR_TMP + "/src/main/resources";
 
     /**
      * @return java.io.File
@@ -64,7 +61,11 @@ public class UserDirUtils {
     }
 
     public static File getFile(String child) {
-        return getFile(child, true);
+        return getFile(child, true, false);
+    }
+
+    public static File getFile(String child, boolean createParent) {
+        return getFile(child, createParent, false);
     }
 
     /**
@@ -75,7 +76,7 @@ public class UserDirUtils {
      * @author BiJi'an
      * @date 2022-01-01 01:57
      */
-    public static File getFile(String child, boolean createParent) {
+    public static File getFile(String child, boolean createParent, boolean createFile) {
         File file = new File(USER_DIR, child);
         if (file.exists()) {
             if (file.isDirectory()) {
@@ -84,6 +85,14 @@ public class UserDirUtils {
         } else {
             if (!file.getParentFile().exists() && createParent) {
                 forceMkdir(file.getParentFile());
+            }
+            if (createFile) {
+                try {
+                    //noinspection ResultOfMethodCallIgnored
+                    file.createNewFile();
+                } catch (IOException e) {
+                    throw new KIOException("create a empty file error" + file.getAbsolutePath(), e);
+                }
             }
         }
         return file;
@@ -131,30 +140,13 @@ public class UserDirUtils {
      * @date 2022-01-01 01:57
      */
     public static File getTmpFile(String child, boolean createParent) {
-        return getFile(USER_DIR_TMP + File.separator + child, createParent);
+        return getFile(USER_DIR_TMP + File.separator + child, createParent, false);
 
     }
 
-    /**
-     * @return java.io.File
-     * @title getUserDirTmpJava
-     * @description
-     * @author BiJi'an
-     * @date 2022-01-01 01:57
-     */
-    public static File getTmpDirJava() {
-        return getDir(USER_DIR_TMP_JAVA, true);
-    }
+    public static File getTmpFile(String child, boolean createParent, boolean createFile) {
+        return getFile(USER_DIR_TMP + File.separator + child, createParent, createFile);
 
-    /**
-     * @return java.io.File
-     * @title getUserDirTmpResource
-     * @description
-     * @author BiJi'an
-     * @date 2022-01-01 01:58
-     */
-    public static File getTmpDirResource() {
-        return getDir(USER_DIR_TMP_RESOURCE, true);
     }
 
     /**
@@ -179,14 +171,8 @@ public class UserDirUtils {
     public static void deleteQuietly(final File file) {
 
         if (file != null && file.getAbsolutePath().startsWith(PATH_OF_USER_DIR)) {
-            FileUtils.deleteQuietly(file);
+            FileUtil.deleteQuietly(file);
         }
-
-    }
-
-    public static File getUserDirTmpResource() {
-
-        return getDir(USER_DIR_TMP_RESOURCE, true);
 
     }
 

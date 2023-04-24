@@ -58,8 +58,7 @@ public abstract class AbstractPlugin implements Plugin {
                 File dir = ResourceHelper.getDir(classSaveDir, ResourceHelper.PathType.FILESYSTEM, true);
                 debug.setFileClassSaveDir(dir);
                 if (debug.isClassSaveDirAutoClean()) {
-//                    FileUtil.cleanDirectoryQuietly(dir);
-                    System.out.println("clean" + dir.getAbsolutePath());
+                    FileUtil.cleanDirectoryQuietly(dir);
                 }
             }
 

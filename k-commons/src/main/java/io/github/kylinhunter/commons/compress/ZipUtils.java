@@ -14,8 +14,9 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+
+import io.github.kylinhunter.commons.io.file.FileUtil;
 
 /**
  * @author BiJi'an
@@ -34,7 +35,7 @@ public class ZipUtils {
      */
     public static File zip(List<File> files, File zipFile) throws IOException {
         if (!zipFile.getParentFile().exists()) {
-            FileUtils.forceMkdirParent(zipFile);
+            FileUtil.forceMkdirParent(zipFile);
         }
         try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(zipFile)) {
             zos.setUseZip64(Zip64Mode.AsNeeded);
@@ -72,7 +73,7 @@ public class ZipUtils {
                 if (!entry.isDirectory()) {
                     File outputFile = new File(unzipPath + File.separator + entry.getName());
                     if (!outputFile.getParentFile().exists()) {
-                        FileUtils.forceMkdirParent(outputFile);
+                        FileUtil.forceMkdirParent(outputFile);
                     }
                     try (InputStream input = zipFile.getInputStream(entry);
                          FileOutputStream fos = new FileOutputStream(outputFile)) {
@@ -99,7 +100,7 @@ public class ZipUtils {
                 if (!entry.isDirectory()) {
                     File outputFile = new File(unzipPath + File.separator + entry.getName());
                     if (!outputFile.getParentFile().exists()) {
-                        FileUtils.forceMkdirParent(outputFile);
+                        FileUtil.forceMkdirParent(outputFile);
                     }
                     try (FileOutputStream fos = new FileOutputStream(outputFile)) {
                         IOUtils.copyLarge(zipArchiveInputStream, fos, buffer);

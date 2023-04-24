@@ -1,9 +1,10 @@
 import org.gradle.internal.jvm.Jvm
+
 dependencies {
-    api (project(":k-commons")) {
+    api(project(":k-commons")) {
         exclude group: 'org.reflections', module: 'reflections'
         exclude group: 'com.google.guava', module: 'guava'
-//        exclude group: 'commons-io', module: 'commons-io'
+        exclude group: 'commons-io', module: 'commons-io'
         exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
         exclude group: 'com.fasterxml.jackson.datatype', module: 'jackson-datatype-jsr310'
         exclude group: 'commons-io', module: 'commons-io'
