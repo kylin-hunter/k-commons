@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.io.path;
+package io.github.kylinhunter.commons.io.file.path;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;

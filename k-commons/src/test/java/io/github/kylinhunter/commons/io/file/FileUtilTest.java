@@ -3,61 +3,80 @@ package io.github.kylinhunter.commons.io.file;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class FileUtilTest {
-    @Test
-    void test() {
-        /*
-        ln ./test1.txt ./test1_hard_link.txt
-        ln -s  ./test1.txt ./test1_soft_link.txt
-        ln -s ./test1Dir ./test1Dir_soft_link
-         */
-        print("/Users/bijian/tmp/test1.txt");
+    static String base_dir = "io-test";
+    static File baseDir = UserDirUtils.getTmpDir(base_dir);
+    static File dir1;
+    static File dir2;
+    static File dir3;
 
-        print("/Users/bijian/tmp/test1_hard_link.txt");
+    @BeforeAll
+    static void beforeAll() {
+        FileUtil.cleanDirectoryQuietly(baseDir);
+        dir1 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir1");
+        dir2 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir2");
+        dir3 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir3");
+        System.out.println(dir1.getAbsolutePath());
+        System.out.println(dir2.getAbsolutePath());
+        System.out.println(dir3.getAbsolutePath());
+    }
 
-        print("/Users/bijian/tmp/test1_soft_link.txt");
-
-        print("/Users/bijian/tmp/test1Dir");
-
-        print("/Users/bijian/tmp/test1Dir_soft_link");
+    @AfterAll
+    static void afterAll() {
 
     }
 
-    void print(String pathStr) {
-        Path path = Paths.get(pathStr);
-        System.out.println("===");
-        System.out.println(path);
-        System.out.println(Files.exists(path)+":"+Files.exists(path, LinkOption.NOFOLLOW_LINKS));
-        System.out.println(Files.isDirectory(path)+":"+Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS));
+    @Test
+    void getFile() throws IOException {
+        File file = FileUtil.getFile(dir2.getAbsolutePath(), "test11.txt");
+        System.out.println(file.getAbsolutePath());
+        Assertions.assertFalse(Files.exists(file.toPath()));
+
+        file = FileUtil.getFile(true, dir2.getAbsolutePath(), "test12.txt");
+        System.out.println(file.getAbsolutePath());
+        Assertions.assertFalse(Files.exists(file.toPath()));
+
+        file = FileUtil.getFile(true, true, dir2.getAbsolutePath(), "test13.txt");
+        System.out.println(file.getAbsolutePath());
+        Assertions.assertTrue(Files.exists(file.toPath()));
+
+        file = FileUtil.getFile(dir2, "test21.txt");
+        System.out.println(file.getAbsolutePath());
+        Assertions.assertFalse(Files.exists(file.toPath()));
+
+        file = FileUtil.getFile(dir2, true, "test22.txt");
+        System.out.println(file.getAbsolutePath());
+        Assertions.assertFalse(Files.exists(file.toPath()));
+
+        file = FileUtil.getFile(dir2, true, true, "test23.txt");
+        System.out.println(file.getAbsolutePath());
+        Assertions.assertTrue(Files.exists(file.toPath()));
 
     }
 
     @Test
     void cleanDirectoryQuietly() throws IOException {
-        File tmpDir = UserDirUtils.getTmpDir("io-test");
-        FileUtils.cleanDirectory(tmpDir);
-        Assertions.assertTrue(FileUtils.isEmptyDirectory(tmpDir));
-        File file1 = UserDirUtils.getTmpFile("io-test/test1/" + UUID.randomUUID().toString(), true, true);
+        Assertions.assertTrue(FileUtil.isEmptyDirectory(dir1));
+        File file1 = UserDirUtils.getTmpFile(base_dir + "/dir1/test1/" + UUID.randomUUID().toString(), true, true);
         System.out.println(file1.getAbsolutePath());
-        File file2 = UserDirUtils.getTmpFile("io-test/test2/" + UUID.randomUUID().toString(), true, true);
+        File file2 = UserDirUtils.getTmpFile(base_dir + "/dir1/test2/" + UUID.randomUUID().toString(), true, true);
         System.out.println(file2.getAbsolutePath());
-        File file3 = UserDirUtils.getTmpFile("io-test/test2/" + UUID.randomUUID().toString(), true, true);
+        File file3 = UserDirUtils.getTmpFile(base_dir + "/dir1/test2/" + UUID.randomUUID().toString(), true, true);
         System.out.println(file3.getAbsolutePath());
-        Collection<File> files = FileUtils.listFiles(tmpDir, null, true);
+        Collection<File> files = FileUtil.listFiles(dir1, null, true);
         files.forEach(System.out::println);
         Assertions.assertEquals(3, files.size());
-        Assertions.assertFalse(FileUtils.isEmptyDirectory(tmpDir));
-        FileUtil.cleanDirectoryQuietly(tmpDir);
-        Assertions.assertTrue(FileUtils.isEmptyDirectory(tmpDir));
+        Assertions.assertFalse(FileUtil.isEmptyDirectory(dir1));
+        FileUtil.cleanDirectoryQuietly(dir1);
+        Assertions.assertTrue(FileUtil.isEmptyDirectory(dir1));
     }
+
 }

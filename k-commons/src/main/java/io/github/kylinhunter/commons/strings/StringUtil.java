@@ -7,6 +7,7 @@ package io.github.kylinhunter.commons.strings;
  **/
 public class StringUtil {
     public static final String EMPTY = "";
+    public static final String[] EMPTY_STRING_ARRAY = {};
 
     /**
      * @param cs cs

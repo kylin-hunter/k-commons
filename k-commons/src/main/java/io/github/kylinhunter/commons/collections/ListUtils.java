@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+
 /**
  * @author BiJi'an
  * @description
@@ -22,6 +24,11 @@ public class ListUtils {
      */
     public static <E> ArrayList<E> newArrayList() {
         return new ArrayList<>();
+    }
+
+    public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
+        ExceptionChecker.checkNonnegative(initialArraySize, "initialArraySize");
+        return new ArrayList(initialArraySize);
     }
 
     /**

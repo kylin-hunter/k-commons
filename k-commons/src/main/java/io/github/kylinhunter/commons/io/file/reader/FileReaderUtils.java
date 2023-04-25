@@ -3,10 +3,13 @@ package io.github.kylinhunter.commons.io.file.reader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 
@@ -79,6 +82,35 @@ public class FileReaderUtils {
             throw new KIOException("process error", e);
         }
 
+    }
+
+    /**
+     * @param file file
+     * @return byte[]
+     * @title readFileToByteArray
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:32
+     */
+    public static byte[] readFileToByteArray(final File file) throws IOException {
+        try (InputStream inputStream = openInputStream(file)) {
+            final long fileLength = file.length();
+            // file.length() may return 0 for system-dependent entities, treat 0 as unknown length - see IO-453
+            return fileLength > 0 ? IOUtils.toByteArray(inputStream, fileLength) : IOUtils.toByteArray(inputStream);
+        }
+    }
+
+    /**
+     * @param file file
+     * @return java.io.FileInputStream
+     * @title openInputStream
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:32
+     */
+    public static FileInputStream openInputStream(final File file) throws IOException {
+        Objects.requireNonNull(file, "file");
+        return new FileInputStream(file);
     }
 
 }

@@ -3,10 +3,19 @@ package io.github.kylinhunter.commons.io.file;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
-import io.github.kylinhunter.commons.io.path.PathUtil;
+import io.github.kylinhunter.commons.io.file.filter.DefaultPathFilter;
+import io.github.kylinhunter.commons.io.file.filter.PathFilter;
+import io.github.kylinhunter.commons.io.file.filter.SuffixPathFilter;
+import io.github.kylinhunter.commons.io.file.path.PathUtil;
 import io.github.kylinhunter.commons.strings.StringUtil;
 
 /**
@@ -16,16 +25,280 @@ import io.github.kylinhunter.commons.strings.StringUtil;
  **/
 
 public class FileUtil {
+    /**
+     * @param file file
+     * @return java.io.File
+     * @title delete
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:22
+     */
+    public static File delete(final File file) {
+        try {
+            Objects.requireNonNull(file, "file");
+            Files.delete(file.toPath());
+            return file;
+        } catch (IOException e) {
+            throw new KIOException("delete error", e);
+        }
+    }
 
+    /**
+     * @param directory    directory
+     * @param createParent createParent
+     * @param createFile   createFile
+     * @param isFile       isFile
+     * @param names        names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 01:21
+     */
+    private static File getFileOrDir(final File directory, boolean createParent, boolean createFile,
+                                     boolean isFile, final String... names) {
+        Objects.requireNonNull(names, "names");
+        File file = directory;
+        for (final String name : names) {
+            ExceptionChecker.checkNotEmpty(name, "name can't be empty");
+            if (file == null) {
+                file = new File(name);
+            } else {
+                file = new File(file, name);
+            }
+        }
+        if (file.exists()) {
+            if (isFile && !file.isDirectory()) {
+                throw new KIOException("not a file=>" + file.getAbsolutePath());
+            } else if (!isFile && file.isFile()) {
+                throw new KIOException("not a dir=>" + file.getAbsolutePath());
+            }
+            return file;
+        } else {
+            if (createParent || createFile) {
+
+                if (!isFile) {
+                    forceMkdir(file);
+                } else {
+                    forceMkdirParent(file);
+
+                }
+            }
+            if (createFile) {
+                try {
+                    //noinspection ResultOfMethodCallIgnored
+                    file.createNewFile();
+                } catch (IOException e) {
+                    throw new KIOException("create file error", e);
+                }
+            }
+        }
+        return file;
+    }
+
+    /**
+     * @param directory    directory
+     * @param createParent createParent
+     * @param createFile   createFile
+     * @param names        names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 01:22
+     */
+    public static File getFile(final File directory, boolean createParent, boolean createFile, final String... names) {
+        return getFileOrDir(directory, createParent, createFile, true, names);
+    }
+
+    /**
+     * @param dir   dir
+     * @param names names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:59
+     */
+    public static File getFile(File dir, final String... names) {
+        return getFile(dir, false, false, names);
+    }
+
+    /**
+     * @param dir          dir
+     * @param createParent createParent
+     * @param names        names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:59
+     */
+    public static File getFile(File dir, boolean createParent, final String... names) {
+        return getFile(dir, createParent, false, names);
+    }
+
+    /**
+     * @param names names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:59
+     */
+    public static File getFile(final String... names) {
+        return getFile(null, false, false, names);
+    }
+
+    /**
+     * @param createParent createParent
+     * @param names        names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:59
+     */
+    public static File getFile(boolean createParent, final String... names) {
+        return getFile(null, createParent, false, names);
+    }
+
+    /**
+     * @param createParent createParent
+     * @param createFile   createFile
+     * @param names        names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 01:00
+     */
+    public static File getFile(boolean createParent, boolean createFile, final String... names) {
+        return getFile(null, createParent, createFile, names);
+    }
+
+    /**
+     * @param dir          dir
+     * @param createParent createParent
+     * @param names        names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:59
+     */
+    public static File getDir(File dir, boolean createParent, final String... names) {
+        return getFileOrDir(dir, createParent, false, false, names);
+    }
+    /**
+     * @param dir   dir
+     * @param names names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:59
+     */
+    public static File getDir(File dir, final String... names) {
+        return getDir(dir, false, names);
+    }
+
+
+
+    /**
+     * @param names names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:59
+     */
+    public static File getDir(final String... names) {
+        return getDir(null, false, names);
+    }
+
+    /**
+     * @param createParent createParent
+     * @param names        names
+     * @return java.io.File
+     * @title getFile
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:59
+     */
+    public static File getDir(boolean createParent, final String... names) {
+        return getDir(null, createParent, names);
+    }
+
+    /**
+     * @param directory directory
+     * @return boolean
+     * @title isEmptyDirectory
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 00:01
+     */
+    public static boolean isEmptyDirectory(final File directory) {
+        return PathUtil.isEmptyDirectory(directory.toPath());
+    }
+
+    /**
+     * @param directory  directory
+     * @param extensions extensions
+     * @param recursive  recursive
+     * @return java.util.Collection<java.io.File>
+     * @title listFiles
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-25 16:17
+     */
+    public static Collection<File> listFiles(final File directory, final String[] extensions, final boolean recursive) {
+        try (Stream<File> paths = streamFiles(directory, recursive, extensions)) {
+            return paths.collect(Collectors.toList());
+        }
+    }
+
+    /**
+     * @param directory  directory
+     * @param recursive  recursive
+     * @param extensions extensions
+     * @return java.util.stream.Stream<java.io.File>
+     * @title streamFiles
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-25 15:27
+     */
+    public static Stream<File> streamFiles(final File directory, final boolean recursive, final String... extensions) {
+        final PathFilter filter = extensions == null ? DefaultPathFilter.INSTANCE
+                : DefaultPathFilter.INSTANCE.and(new SuffixPathFilter(extensions));
+        int dep = recursive ? Integer.MAX_VALUE : 1;
+        return PathUtil.walk(directory.toPath(), filter, dep, false).map(Path::toFile);
+    }
+
+    /**
+     * @param file file
+     * @return void
+     * @title forceMkdirParent
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-25 15:09
+     */
     public static void forceMkdirParent(final File file) {
         Objects.requireNonNull(file, "file");
         final File parent = file.getParentFile();
         if (parent == null) {
             return;
         }
-        if ((parent != null) && (!parent.mkdirs() && !parent.isDirectory())) {
+        if (!parent.mkdirs() && !parent.isDirectory()) {
             throw new KIOException("Cannot create directory '" + parent + "'.");
         }
+    }
+
+    private static File forceMkdir(final File directory) {
+        if ((directory != null) && (!directory.mkdirs() && !directory.isDirectory())) {
+            throw new KIOException("Cannot create directory '" + directory + "'.");
+        }
+        return directory;
     }
 
     /**
@@ -73,6 +346,7 @@ public class FileUtil {
      * @author BiJi'an
      * @date 2023-04-22 23:47
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static boolean deleteQuietly(final File file) {
         if (file == null) {
             return false;
@@ -120,11 +394,7 @@ public class FileUtil {
      */
     public static void forceDelete(final File file) {
         Objects.requireNonNull(file, "file");
-        try {
-            PathUtil.delete(file.toPath(), PathUtil.EMPTY_LINK_OPTION_ARRAY);
-        } catch (final IOException e) {
-            throw new KIOException("Cannot delete file: " + file, e);
-        }
+        PathUtil.delete(file.toPath(), PathUtil.EMPTY_LINK_OPTION_ARRAY);
     }
 
     /**

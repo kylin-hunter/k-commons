@@ -6,14 +6,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.reader.FileReaderUtils;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ZipUtilsTest {
@@ -23,11 +24,11 @@ class ZipUtilsTest {
     public void testZip() throws IOException {
 
         File dir = ResourceHelper.getDirInClassPath("test/file");
-        File[] files = FileUtils.listFiles(dir, null, true).toArray(new File[0]);
+        File[] files = FileUtil.listFiles(dir, null, true).toArray(new File[0]);
         List<File> fileList = Arrays.stream(files).collect(Collectors.toList());
         File file = UserDirUtils.getFile("/tmp/test_unzip/testzip.zip", false);
         if (file.exists()) {
-            FileUtils.delete(file);
+            FileUtil.delete(file);
         }
         ZipUtils.zip(fileList, file);
     }
@@ -37,12 +38,11 @@ class ZipUtilsTest {
     public void testUnZip() throws IOException {
         File file = UserDirUtils.getFile("/tmp/test_unzip/testzip.zip", false);
         File dir1 = UserDirUtils.getDir("/tmp/test_unzip/testzip1", true);
-        FileUtils.forceDelete(dir1);
+        FileUtil.forceDelete(dir1);
         ZipUtils.unzip(file, dir1);
 
-
         File dir2 = UserDirUtils.getDir("/tmp/test_unzip/testzip2", true);
-        FileUtils.forceDelete(dir2);
-        ZipUtils.unzip(FileUtils.readFileToByteArray(file), dir2);
+        FileUtil.forceDelete(dir2);
+        ZipUtils.unzip(FileReaderUtils.readFileToByteArray(file), dir2);
     }
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URI;
 import java.nio.charset.Charset;
 
@@ -17,7 +18,28 @@ import io.github.kylinhunter.commons.exception.embed.KIOException;
  * @description
  * @date 2023-01-24 22:17
  **/
-public class IOHelper {
+public class IOHelper implements Serializable {
+
+    /**
+     * The Windows separator character.
+     */
+    private static final char WINDOWS_SEPARATOR = '\\';
+
+    /**
+     * The system separator character.
+     */
+    private static final char SYSTEM_SEPARATOR = File.separatorChar;
+
+    /**
+     * @return boolean
+     * @title isSystemWindows
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-25 19:51
+     */
+    public static boolean isSystemWindows() {
+        return SYSTEM_SEPARATOR == WINDOWS_SEPARATOR;
+    }
 
     /**
      * @param uri uri
