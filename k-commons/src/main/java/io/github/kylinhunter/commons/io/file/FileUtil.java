@@ -31,7 +31,7 @@ public class FileUtil {
      * @title delete
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:22
+     * @date 2023-04-22 00:22
      */
     public static File delete(final File file) {
         try {
@@ -53,7 +53,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 01:21
+     * @date 2023-04-22 01:21
      */
     private static File getFileOrDir(final File directory, boolean createParent, boolean createFile,
                                      boolean isFile, final String... names) {
@@ -105,7 +105,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 01:22
+     * @date 2023-04-22 01:22
      */
     public static File getFile(final File directory, boolean createParent, boolean createFile, final String... names) {
         return getFileOrDir(directory, createParent, createFile, true, names);
@@ -118,7 +118,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:59
+     * @date 2023-04-22 00:59
      */
     public static File getFile(File dir, final String... names) {
         return getFile(dir, false, false, names);
@@ -132,7 +132,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:59
+     * @date 2023-04-22 00:59
      */
     public static File getFile(File dir, boolean createParent, final String... names) {
         return getFile(dir, createParent, false, names);
@@ -144,7 +144,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:59
+     * @date 2023-04-22 00:59
      */
     public static File getFile(final String... names) {
         return getFile(null, false, false, names);
@@ -157,7 +157,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:59
+     * @date 2023-04-22 00:59
      */
     public static File getFile(boolean createParent, final String... names) {
         return getFile(null, createParent, false, names);
@@ -171,7 +171,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 01:00
+     * @date 2023-04-22 01:00
      */
     public static File getFile(boolean createParent, boolean createFile, final String... names) {
         return getFile(null, createParent, createFile, names);
@@ -185,7 +185,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:59
+     * @date 2023-04-22 00:59
      */
     public static File getDir(File dir, boolean createParent, final String... names) {
         return getFileOrDir(dir, createParent, false, false, names);
@@ -198,7 +198,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:59
+     * @date 2023-04-22 00:59
      */
     public static File getDir(File dir, final String... names) {
         return getDir(dir, false, names);
@@ -210,7 +210,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:59
+     * @date 2023-04-22 00:59
      */
     public static File getDir(final String... names) {
         return getDir(null, false, names);
@@ -223,7 +223,7 @@ public class FileUtil {
      * @title getFile
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:59
+     * @date 2023-04-22 00:59
      */
     public static File getDir(boolean createParent, final String... names) {
         return getDir(null, createParent, names);
@@ -235,7 +235,7 @@ public class FileUtil {
      * @title isEmptyDirectory
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:01
+     * @date 2023-04-22 00:01
      */
     public static boolean isEmptyDirectory(final File directory) {
         return PathUtil.isEmptyDirectory(directory.toPath());
@@ -249,7 +249,7 @@ public class FileUtil {
      * @title listFiles
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 16:17
+     * @date 2023-04-22 16:17
      */
     public static Collection<File> listFiles(final File directory, final String[] extensions, final boolean recursive) {
         try (Stream<File> paths = streamFiles(directory, recursive, extensions)) {
@@ -265,7 +265,7 @@ public class FileUtil {
      * @title streamFiles
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 15:27
+     * @date 2023-04-22 15:27
      */
     public static Stream<File> streamFiles(final File directory, final boolean recursive, final String... extensions) {
         final PathFilter filter = extensions == null ? DefaultPathFilter.INSTANCE
@@ -280,7 +280,7 @@ public class FileUtil {
      * @title forceMkdirParent
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 15:09
+     * @date 2023-04-22 15:09
      */
     public static void forceMkdirParent(final File file) {
         Objects.requireNonNull(file, "file");

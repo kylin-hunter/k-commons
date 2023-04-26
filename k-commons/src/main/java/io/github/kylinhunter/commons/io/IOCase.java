@@ -8,7 +8,7 @@ import lombok.Getter;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-04-25 19:42
+ * @date 2023-04-22 19:42
  **/
 @Getter
 public enum IOCase implements Serializable {
@@ -37,7 +37,7 @@ public enum IOCase implements Serializable {
      * @title checkCompareTo
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 20:07
+     * @date 2023-04-22 20:07
      */
     public int checkCompareTo(final String str1, final String str2) {
         Objects.requireNonNull(str1, "str1");
@@ -52,7 +52,7 @@ public enum IOCase implements Serializable {
      * @title checkEquals
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 20:07
+     * @date 2023-04-22 20:07
      */
     public boolean checkEquals(final String str1, final String str2) {
         Objects.requireNonNull(str1, "str1");
@@ -67,7 +67,7 @@ public enum IOCase implements Serializable {
      * @title checkStartsWith
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 20:07
+     * @date 2023-04-22 20:07
      */
     public boolean checkStartsWith(final String str, final String start) {
         return str != null && start != null && str.regionMatches(!sensitive, 0, start, 0, start.length());
@@ -80,7 +80,7 @@ public enum IOCase implements Serializable {
      * @title checkEndsWith
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 20:08
+     * @date 2023-04-22 20:08
      */
     public boolean checkEndsWith(final String str, final String end) {
         if (str == null || end == null) {
@@ -98,7 +98,7 @@ public enum IOCase implements Serializable {
      * @title checkIndexOf
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 20:08
+     * @date 2023-04-22 20:08
      */
     public int checkIndexOf(final String str, final int strStartIndex, final String search) {
         final int endIndex = str.length() - search.length();
@@ -120,7 +120,7 @@ public enum IOCase implements Serializable {
      * @title checkRegionMatches
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 20:08
+     * @date 2023-04-22 20:08
      */
     public boolean checkRegionMatches(final String str, final int strStartIndex, final String search) {
         return str.regionMatches(!sensitive, strStartIndex, search, 0, search.length());

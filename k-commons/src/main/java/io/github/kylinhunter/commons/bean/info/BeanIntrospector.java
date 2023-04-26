@@ -48,7 +48,7 @@ public class BeanIntrospector {
      * @title getExPropertyDescriptors
      * @description
      * @author BiJi'an
-     * @date 2023-04-27 01:46
+     * @date 2023-04-22 01:46
      */
     public Map<String, ExPropertyDescriptor> getExPropertyDescriptors() {
 
@@ -60,7 +60,7 @@ public class BeanIntrospector {
      * @title getPropertyDescriptors
      * @description
      * @author BiJi'an
-     * @date 2023-04-27 01:46
+     * @date 2023-04-22 01:46
      */
     public Map<String, PropertyDescriptor> getPropertyDescriptors() {
         return Collections.unmodifiableMap(propertyDescriptors);
