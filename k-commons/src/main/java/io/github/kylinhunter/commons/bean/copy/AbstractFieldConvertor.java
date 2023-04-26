@@ -6,17 +6,18 @@ import io.github.kylinhunter.commons.bean.copy.convertor.ConvertExcetion;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
 import io.github.kylinhunter.commons.exception.embed.InternalException;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-01-01 19:09
  **/
-@Data
+
+@AllArgsConstructor
 public abstract class AbstractFieldConvertor implements FieldConvertor {
 
-    protected final Direction direction;
+    private final Direction direction;
     protected final PropertyDescriptor sourcePD;
     protected final PropertyDescriptor targetPD;
 

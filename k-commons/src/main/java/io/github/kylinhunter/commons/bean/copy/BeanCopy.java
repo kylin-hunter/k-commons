@@ -4,15 +4,16 @@ import java.util.List;
 
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertExcetion;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor;
-import lombok.Data;
+import lombok.Setter;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-01-01 19:09
  **/
-@Data
+
 public class BeanCopy {
+    @Setter
     private List<FieldConvertor> fieldConvertors;
 
     public boolean isEmpty() {
