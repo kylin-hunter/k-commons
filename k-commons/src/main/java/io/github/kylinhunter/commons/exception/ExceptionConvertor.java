@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.exception;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.explain.ExplainManager;
 import io.github.kylinhunter.commons.exception.explain.Explainer;
@@ -33,22 +34,22 @@ public class ExceptionConvertor {
      * @author BiJi'an
      * @date 2022-05-18 00:30
      */
+    @SuppressFBWarnings("BC_UNCONFIRMED_CAST")
     public static KRuntimeException convert(Throwable exception, boolean withCause) {
         try {
             if (KRuntimeException.class.isAssignableFrom(exception.getClass())) {
                 return (KRuntimeException) exception;
-            } else {
-
-                Explainer.ExplainResult explainResult = ExplainManager.explain(exception);
-                if (withCause) {
-                    return new KRuntimeException(explainResult.getErrInfo(), explainResult.getExtra(),
-                            explainResult.getMsg(), exception);
-                } else {
-                    return new KRuntimeException(explainResult.getErrInfo(), explainResult.getExtra(),
-                            explainResult.getMsg());
-                }
-
             }
+
+            Explainer.ExplainResult explainResult = ExplainManager.explain(exception);
+            if (withCause) {
+                return new KRuntimeException(explainResult.getErrInfo(), explainResult.getExtra(),
+                        explainResult.getMsg(), exception);
+            } else {
+                return new KRuntimeException(explainResult.getErrInfo(), explainResult.getExtra(),
+                        explainResult.getMsg());
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.compress.archivers.zip.Zip64Mode;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
@@ -28,19 +30,36 @@ public class ZipUtils {
      * @param files   files
      * @param zipFile zipFile
      * @return java.io.File
+     * @title zip
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 23:10
+     */
+    public static File zip(List<File> files, File zipFile) throws IOException {
+        return zip(files, null, zipFile);
+    }
+
+    /**
+     * @param files   files
+     * @param zipFile zipFile
+     * @return java.io.File
      * @title doZip
      * @description
      * @author BiJi'an
      * @date 2022-11-06 23:37
      */
-    public static File zip(List<File> files, File zipFile) throws IOException {
+    public static File zip(List<File> files, File rootDir, File zipFile) throws IOException {
         if (!zipFile.getParentFile().exists()) {
             FileUtil.forceMkdirParent(zipFile);
         }
+        Objects.requireNonNull(files, "files");
+        Path rootPath = rootDir != null ? rootDir.toPath() : null;
+
         try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(zipFile)) {
             zos.setUseZip64(Zip64Mode.AsNeeded);
             for (File file : files) {
-                ZipArchiveEntry entry = new ZipArchiveEntry(file, file.getName());
+                String entryName = getRelativePath(rootPath, file);
+                ZipArchiveEntry entry = new ZipArchiveEntry(file, entryName);
                 zos.putArchiveEntry(entry);
                 try (InputStream inputStream = new FileInputStream(file)) {
                     IOUtils.copy(inputStream, zos);
@@ -52,6 +71,27 @@ public class ZipUtils {
             throw new IOException("zip error", e);
         }
         return zipFile;
+    }
+
+    /**
+     * @param rootPath rootPath
+     * @param file     file
+     * @return java.lang.String
+     * @title getRelativePath
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 23:45
+     */
+    private static String getRelativePath(Path rootPath, File file) {
+        if (rootPath != null) {
+            Path filePath = file.toPath();
+            int index = filePath.toString().indexOf(rootPath.toString());
+            if (index >= 0) {
+                return rootPath.relativize(filePath).toString();
+            }
+        }
+        return file.getName();
+
     }
 
     /**
@@ -71,7 +111,7 @@ public class ZipUtils {
             while (zipFileEntries.hasMoreElements()) {
                 ZipArchiveEntry entry = zipFileEntries.nextElement();
                 if (!entry.isDirectory()) {
-                    File outputFile = new File(unzipPath + File.separator + entry.getName());
+                    File outputFile = FileUtil.getFile(unzipPath, true, entry.getName());
                     if (!outputFile.getParentFile().exists()) {
                         FileUtil.forceMkdirParent(outputFile);
                     }
@@ -88,6 +128,15 @@ public class ZipUtils {
         }
     }
 
+    /**
+     * @param content   content
+     * @param unzipPath unzipPath
+     * @return void
+     * @title unzip
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-26 23:58
+     */
     public static void unzip(byte[] content, File unzipPath) throws IOException {
 
         try (ZipArchiveInputStream zipArchiveInputStream = new ZipArchiveInputStream(
@@ -98,7 +147,7 @@ public class ZipUtils {
 
             while ((entry = zipArchiveInputStream.getNextZipEntry()) != null) {
                 if (!entry.isDirectory()) {
-                    File outputFile = new File(unzipPath + File.separator + entry.getName());
+                    File outputFile = FileUtil.getFile(unzipPath, true, entry.getName());
                     if (!outputFile.getParentFile().exists()) {
                         FileUtil.forceMkdirParent(outputFile);
                     }
