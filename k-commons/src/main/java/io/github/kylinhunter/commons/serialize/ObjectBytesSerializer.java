@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.exception.embed.InternalException;
 
 /**
@@ -47,6 +48,7 @@ public class ObjectBytesSerializer {
      * @author BiJi'an
      * @date 2022-12-16 23:23
      */
+    @SuppressFBWarnings("OBJECT_DESERIALIZATION")
     @SuppressWarnings("unchecked")
     public static <T> T deserialize(byte[] bytes) {
 

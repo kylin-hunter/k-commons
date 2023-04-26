@@ -68,7 +68,7 @@ public class FileUtil {
             }
         }
         if (file.exists()) {
-            if (isFile && !file.isDirectory()) {
+            if (isFile && file.isDirectory()) {
                 throw new KIOException("not a file=>" + file.getAbsolutePath());
             } else if (!isFile && file.isFile()) {
                 throw new KIOException("not a dir=>" + file.getAbsolutePath());
@@ -190,6 +190,7 @@ public class FileUtil {
     public static File getDir(File dir, boolean createParent, final String... names) {
         return getFileOrDir(dir, createParent, false, false, names);
     }
+
     /**
      * @param dir   dir
      * @param names names
@@ -202,8 +203,6 @@ public class FileUtil {
     public static File getDir(File dir, final String... names) {
         return getDir(dir, false, names);
     }
-
-
 
     /**
      * @param names names

@@ -77,14 +77,14 @@ public class ResourceHelper {
                 inputStream = IOHelper.getFileInputStream(pathInfo.getFile());
             } else {
                 if (priorityType == PathType.FILESYSTEM) {
-                    inputStream = IOHelper.getFileInputStream(new File(path));
+                    inputStream = IOHelper.getFileInputStream(FileUtil.getFile(path));
                     if (inputStream == null) {
                         inputStream = ResourceHelper.getInputStreamInClassPath(path);
                     }
                 } else {
                     inputStream = ResourceHelper.getInputStreamInClassPath(path);
                     if (inputStream == null) {
-                        inputStream = IOHelper.getFileInputStream(new File(path));
+                        inputStream = IOHelper.getFileInputStream(FileUtil.getFile(path));
                     }
                 }
             }
@@ -245,7 +245,7 @@ public class ResourceHelper {
             } else {
                 if (priorityType == PathType.FILESYSTEM) {
                     try {
-                        return FileUtil.checkValidFile(new File(path), isFile);
+                        return FileUtil.checkValidFile(FileUtil.getFile(path), isFile);
                     } catch (Exception e) {
                         file = _getFileInClassPath(pathInfo.getPath());
                     }
@@ -254,7 +254,7 @@ public class ResourceHelper {
                     try {
                         return FileUtil.checkValidFile(_getFileInClassPath(pathInfo.getPath()), isFile);
                     } catch (Exception e) {
-                        file = new File(path);
+                        file = FileUtil.getFile(path);
                     }
                 }
             }
@@ -461,7 +461,8 @@ public class ResourceHelper {
                 this.path = this.file.getAbsolutePath();
             } else if (path.startsWith(USER_DIR_TAG)) {
                 this.type = PathType.FILESYSTEM;
-                this.file = new File(path.replace(USER_DIR_TAG, UserDirUtils.get().getAbsolutePath()));
+                String replacePath = path.replace(USER_DIR_TAG, UserDirUtils.get().getAbsolutePath());
+                this.file = new File(replacePath);
                 this.path = this.file.getAbsolutePath();
             } else {
                 this.type = PathType.UNKNOWN;

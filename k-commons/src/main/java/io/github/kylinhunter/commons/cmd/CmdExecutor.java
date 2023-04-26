@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.collections.ListUtils;
 
 import io.github.kylinhunter.commons.cmd.CmdResultReader.ResultType;
@@ -69,6 +70,7 @@ public class CmdExecutor {
      * @author BiJi'an
      * @date 2023-03-04 16:03
      */
+    @SuppressFBWarnings("COMMAND_INJECTION")
     public CmdResult exec(String cmd, long timeout, TimeUnit unit) {
         try {
             CmdResult cmdResult = new CmdResult();
