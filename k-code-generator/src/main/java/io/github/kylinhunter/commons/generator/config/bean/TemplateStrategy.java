@@ -5,11 +5,13 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import io.github.kylinhunter.commons.strings.CharsetConst;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
 public class TemplateStrategy extends Strategy {
     protected String packageName;
     private String superClass;

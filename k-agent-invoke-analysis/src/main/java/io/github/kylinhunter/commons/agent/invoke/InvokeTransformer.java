@@ -40,7 +40,6 @@ public class InvokeTransformer extends AbstractAgentTransformer {
         String         path = "org/apache/commons/io/FileUtils.class";
 
 
-        URL resource = InvokeTransformer.class.getClassLoader().getResource(path);
         ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
         return builder;
     }

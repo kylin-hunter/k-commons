@@ -51,6 +51,9 @@ public class CompConfiguration {
 
             String templatePath = global.getTemplatePath();
             File dirTemplate = ResourceHelper.getDir(templatePath, PathType.FILESYSTEM);
+            if(dirTemplate==null){
+                throw new CodeException("invalid templatePath" + templatePath);
+            }
             templateConfig.setTemplatePath(dirTemplate.toPath());
             if (dirTemplate == null || !dirTemplate.exists()) {
                 throw new CodeException("invalid templatePath" + templatePath);

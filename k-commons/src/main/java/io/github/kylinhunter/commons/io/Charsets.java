@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.io;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author BiJi'an
@@ -8,6 +9,8 @@ import java.nio.charset.Charset;
  * @date 2023-03-19 00:59
  **/
 public class Charsets {
+    public static final Charset UTF_8 = StandardCharsets.UTF_8;
+    public static final String UTF_8_VALUE= StandardCharsets.UTF_8.name();
 
     /**
      * @param charsetName charsetName

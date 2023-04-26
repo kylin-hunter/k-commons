@@ -18,10 +18,13 @@ buildscript {
     }
 
 }
-
+plugins {
+    id "com.github.spotbugs" version "5.0.14"
+}
 allprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
+    apply plugin: 'com.github.spotbugs'
     apply from: "$rootProject.rootDir/script/gradle-script/k-gradle-allprojects.gradle"
 
     sourceCompatibility = JavaVersion.VERSION_1_8

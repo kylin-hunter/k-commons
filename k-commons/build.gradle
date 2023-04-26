@@ -8,6 +8,8 @@ dependencies {
     api(rootProject.dependency_management['guava'])
 
 
+    compileOnly("com.google.code.findbugs:annotations:3.0.1u2")
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
 
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")

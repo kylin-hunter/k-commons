@@ -9,7 +9,6 @@ public class UidGenerator {
 
     private static final long INIT_EPOCH = 1632499200000L; // initialized time stamp
     @Getter
-    @Setter
     private long sequence; //  sequence
 
     @Getter
@@ -25,7 +24,6 @@ public class UidGenerator {
     private long datacenterId; //  datacenter id
 
     @Getter
-    @Setter
     private long lastTimestamp = -1L; // last time stamp
 
     private final int TYPE_SHIFT;  // work id shift , default: 12bit

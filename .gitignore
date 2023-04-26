@@ -42,3 +42,4 @@ Thumbs.db
 !/k-code-generator/src_generator/empty
 !/k-commons/src/main/resources/io/github/kylinhunter/commons/logs
 
+/*/out/

@@ -3,6 +3,8 @@ package io.github.kylinhunter.commons.agent.invoke;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -10,8 +12,8 @@ import lombok.ToString;
  * @description
  * @date 2023-03-19 16:34
  **/
-@Data
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
 @ToString(callSuper = true)
 public class InvokeAnalysisConfig extends PluginConfig {
 }

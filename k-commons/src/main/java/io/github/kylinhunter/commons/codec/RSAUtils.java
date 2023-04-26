@@ -63,7 +63,7 @@ public class RSAUtils {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             int modulusSize = rsaKey.getModulus().bitLength() / 8;
             int maxSingleSize = modulusSize - 11;
-            byte[][] dataArray = splitArray(data.getBytes(), maxSingleSize);
+            byte[][] dataArray = splitArray(data.getBytes(StandardCharsets.UTF_8), maxSingleSize);
 
             for (byte[] s : dataArray) {
                 out.write(cipher.doFinal(s));
@@ -156,7 +156,7 @@ public class RSAUtils {
 
         try {
             int modulusSize = rsaKey.getModulus().bitLength() / 8;
-            byte[] dataBytes = data.getBytes();
+            byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
             byte[] decodeData = Base64.getDecoder().decode(dataBytes);
             byte[][] splitArrays = splitArray(decodeData, modulusSize);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
