@@ -23,7 +23,7 @@ public class MemoryUtils {
         MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
         MemoryUsage headMemory = memory.getHeapMemoryUsage();
 
-        String info = String.format("\ninit: %s\t max: %s\t used: %s\t committed: %s\t use rate: %s\n",
+        String info = String.format("%ninit: %s\t max: %s\t used: %s\t committed: %s\t use rate: %s%n",
                 headMemory.getInit() / MB + "MB",
                 headMemory.getMax() / MB + "MB", headMemory.getUsed() / MB + "MB",
                 headMemory.getCommitted() / MB + "MB",
@@ -47,7 +47,7 @@ public class MemoryUtils {
 
         MemoryUsage nonheadMemory = memory.getNonHeapMemoryUsage();
 
-        String info = String.format("init: %s\t max: %s\t used: %s\t committed: %s\t use rate: %s\n",
+        String info = String.format("init: %s\t max: %s\t used: %s\t committed: %s\t use rate: %s%n",
                 nonheadMemory.getInit() / MB + "MB",
                 nonheadMemory.getMax() / MB + "MB", nonheadMemory.getUsed() / MB + "MB",
                 nonheadMemory.getCommitted() / MB + "MB",
