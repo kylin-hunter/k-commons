@@ -20,7 +20,7 @@ import io.github.kylinhunter.commons.io.file.filter.PathFilter;
  * @date 2023-04-22 14:39
  **/
 public class PathUtil {
-    public static final LinkOption[] NOFOLLOW_LINK_OPTION_ARRAY = {LinkOption.NOFOLLOW_LINKS};
+    protected static final LinkOption[] NOFOLLOW_LINK_OPTION_ARRAY = {LinkOption.NOFOLLOW_LINKS};
 
     public static final LinkOption[] EMPTY_LINK_OPTION_ARRAY = {};
 

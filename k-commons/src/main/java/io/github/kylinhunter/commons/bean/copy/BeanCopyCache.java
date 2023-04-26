@@ -32,7 +32,7 @@ import lombok.Data;
 @Data
 public class BeanCopyCache {
     public static final Map<String, BeanCopy> FIELD_COPYS = MapUtils.newConcurrentMap();
-    public static BeanCopy DEFAULT_BEAN_COPY = new BeanCopy();
+    public static final BeanCopy DEFAULT_BEAN_COPY = new BeanCopy();
 
     /**
      * @param sourceClass sourceClass

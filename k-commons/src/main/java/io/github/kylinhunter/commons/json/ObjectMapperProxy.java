@@ -28,8 +28,8 @@ import io.github.kylinhunter.commons.exception.embed.FormatException;
  **/
 public class ObjectMapperProxy {
 
-    public static ObjectMapper defaultObjectMapper;
-    public static ObjectMapper snakeObjectMapper;
+    private static ObjectMapper defaultObjectMapper;
+    private static ObjectMapper snakeObjectMapper;
     public static final byte[] EMPTY_BYTES = new byte[0];
 
     static {
