@@ -24,7 +24,7 @@ public class MD5Utils {
      * @title md5
      * @description
      * @author BiJi'an
-     * @date 2022-11-20 16:54
+     * @date 2022-11-20 16:55
      */
     public static String md5(String text) {
         return md5(text.getBytes(StandardCharsets.UTF_8));
