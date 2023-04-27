@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.stream.Stream;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.file.filter.PathFilter;
 
@@ -20,7 +21,8 @@ import io.github.kylinhunter.commons.io.file.filter.PathFilter;
  * @date 2023-04-22 14:39
  **/
 public class PathUtil {
-    protected static final LinkOption[] NOFOLLOW_LINK_OPTION_ARRAY = {LinkOption.NOFOLLOW_LINKS};
+    @SuppressFBWarnings("MS_PKGPROTECT")
+    public static final LinkOption[] NOFOLLOW_LINK_OPTION_ARRAY = {LinkOption.NOFOLLOW_LINKS};
 
     public static final LinkOption[] EMPTY_LINK_OPTION_ARRAY = {};
 
@@ -34,7 +36,7 @@ public class PathUtil {
      * @title walk
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 15:25
+     * @date 2023-04-22 15:25
      */
     public static Stream<Path> walk(final Path start, final PathFilter pathFilter, final int maxDepth,
                                     final boolean readAttributes, final FileVisitOption... options) {
@@ -53,7 +55,7 @@ public class PathUtil {
      * @title readBasicFileAttributes
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 15:24
+     * @date 2023-04-22 15:24
      */
     public static BasicFileAttributes readBasicFileAttributes(final Path path) {
         try {
@@ -138,7 +140,7 @@ public class PathUtil {
      * @title isEmptyDirectory
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:27
+     * @date 2023-04-22 00:27
      */
     public static boolean isEmptyDirectory(final Path directory) {
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {

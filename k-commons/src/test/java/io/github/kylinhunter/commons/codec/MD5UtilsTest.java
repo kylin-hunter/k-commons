@@ -23,7 +23,7 @@ class MD5UtilsTest {
     @Test
     void testMd5WithSalt() {
         String text = "bijian";
-        String salt = "$1$salt";
+        String salt = "$1$kylinhunter";
         System.out.println("salt:" + salt);
         String md5 = MD5Utils.md5(text, salt);
         System.out.println(md5);

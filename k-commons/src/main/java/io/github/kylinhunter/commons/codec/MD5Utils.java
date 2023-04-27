@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.Md5Crypt;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.exception.embed.CryptException;
 
 /**
@@ -50,6 +51,7 @@ public class MD5Utils {
      * @author BiJi'an
      * @date 2022-11-20 16:53
      */
+    @SuppressFBWarnings("WEAK_MESSAGE_DIGEST_MD5")
     public static String md5(byte[] bytes) {
         return DigestUtils.md5Hex(bytes);
     }
@@ -62,6 +64,7 @@ public class MD5Utils {
      * @author BiJi'an
      * @date 2022-11-20 16:53
      */
+    @SuppressFBWarnings("WEAK_MESSAGE_DIGEST_MD5")
     public static String md5(InputStream inputStream) {
         try {
             return DigestUtils.md5Hex(inputStream);

@@ -33,7 +33,7 @@ public class ZipUtils {
      * @title zip
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 23:10
+     * @date 2023-04-22 23:10
      */
     public static File zip(List<File> files, File zipFile) throws IOException {
         return zip(files, null, zipFile);
@@ -80,7 +80,7 @@ public class ZipUtils {
      * @title getRelativePath
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 23:45
+     * @date 2023-04-22 23:45
      */
     private static String getRelativePath(Path rootPath, File file) {
         if (rootPath != null) {
@@ -135,7 +135,7 @@ public class ZipUtils {
      * @title unzip
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 23:58
+     * @date 2023-04-22 23:58
      */
     public static void unzip(byte[] content, File unzipPath) throws IOException {
 

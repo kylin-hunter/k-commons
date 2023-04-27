@@ -12,7 +12,7 @@ import io.github.kylinhunter.commons.strings.StringUtil;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-04-25 19:12
+ * @date 2023-04-22 19:12
  **/
 public class SuffixPathFilter extends AbstractPathFilter {
     private final String[] suffixes;
@@ -46,7 +46,7 @@ public class SuffixPathFilter extends AbstractPathFilter {
      * @title initSuffixes
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 20:49
+     * @date 2023-04-22 20:49
      */
     private void initSuffixes() {
         for (int i = 0; i < suffixes.length; i++) {
@@ -71,7 +71,7 @@ public class SuffixPathFilter extends AbstractPathFilter {
      * @title accept
      * @description
      * @author BiJi'an
-     * @date 2023-04-25 20:49
+     * @date 2023-04-22 20:49
      */
     private boolean accept(final String name) {
         for (final String suffix : this.suffixes) {

@@ -1,9 +1,6 @@
 package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
-import java.io.IOException;
-
-import io.github.kylinhunter.commons.exception.embed.KIOException;
 
 /**
  * @author BiJi'an
@@ -47,17 +44,8 @@ public class UserDirUtils {
      * @date 2022-01-01 01:57
      */
     public static File getDir(String child, boolean create) {
-        File file = new File(USER_DIR, child);
-        if (file.exists()) {
-            if (file.isFile()) {
-                throw new KIOException("not a dir" + file.getAbsolutePath());
-            }
-        } else {
-            if (create) {
-                forceMkdir(file);
-            }
-        }
-        return file;
+
+        return FileUtil.getDir(USER_DIR, create, child);
     }
 
     public static File getFile(String child) {
@@ -77,25 +65,7 @@ public class UserDirUtils {
      * @date 2022-01-01 01:57
      */
     public static File getFile(String child, boolean createParent, boolean createFile) {
-        File file = new File(USER_DIR, child);
-        if (file.exists()) {
-            if (file.isDirectory()) {
-                throw new KIOException("not a file" + file.getAbsolutePath());
-            }
-        } else {
-            if (!file.getParentFile().exists() && createParent) {
-                forceMkdir(file.getParentFile());
-            }
-            if (createFile) {
-                try {
-                    //noinspection ResultOfMethodCallIgnored
-                    file.createNewFile();
-                } catch (IOException e) {
-                    throw new KIOException("create a empty file error" + file.getAbsolutePath(), e);
-                }
-            }
-        }
-        return file;
+        return FileUtil.getFile(USER_DIR, createParent, createFile, child);
     }
 
     /**
@@ -158,7 +128,6 @@ public class UserDirUtils {
      */
     public static File getDirConfig() {
         return getDir(USER_DIR_CONFIG, true);
-
     }
 
     /**
@@ -172,21 +141,6 @@ public class UserDirUtils {
 
         if (file != null && file.getAbsolutePath().startsWith(PATH_OF_USER_DIR)) {
             FileUtil.deleteQuietly(file);
-        }
-
-    }
-
-    /**
-     * @param directory the dir
-     * @title forceMkdir
-     * @description
-     * @author BiJi'an
-     * @date 2022-01-01 01:58
-     */
-    private static void forceMkdir(final File directory) {
-
-        if ((directory != null) && (!directory.mkdirs() && !directory.isDirectory())) {
-            throw new KIOException("Cannot create directory '" + directory + "'.");
         }
 
     }

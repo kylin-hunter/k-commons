@@ -17,15 +17,15 @@ public class AbstractCacheTest {
         int i = 0;
         while ((i++) < 10) {
 
-            value = guavaCache.get(new Integer(1), new Integer(2));
+            value = guavaCache.get(Integer.valueOf(1), Integer.valueOf(2));
             System.out.println(value);
             ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
         }
-        guavaCache.put(new Object[] {new Integer(1), new Integer(2)}, 100L);
-        value = guavaCache.get(new Integer(1), new Integer(2));
+        guavaCache.put(new Object[] {Integer.valueOf(1), Integer.valueOf(2)}, 100L);
+        value = guavaCache.get(Integer.valueOf(1), Integer.valueOf(2));
         System.out.println(value);
-        guavaCache.invalidate(new Integer(1), new Integer(2));
-        value = guavaCache.get(new Integer(1), new Integer(2));
+        guavaCache.invalidate(Integer.valueOf(1), Integer.valueOf(2));
+        value = guavaCache.get(Integer.valueOf(1), Integer.valueOf(2));
         System.out.println(value);
 
     }

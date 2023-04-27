@@ -12,9 +12,12 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class JavaIOFileTest {
+    private static String dir = "/Users/bijian/workspace_gitee/k-commons-test/java-io-test/";
+
     @Test
     void test() throws IOException {
         /*
@@ -23,39 +26,52 @@ class JavaIOFileTest {
         ln -s ./test_dir1 ./test_dir1_soft_link
          */
 
-        Path basePath = Paths.get("/Users/bijian/workspace_gitee/k-commons-test/tmp/");
+        Path basePath = Paths.get(UserDirUtils.getDir("src/test/resources/test/java-io-test", false).getPath());
+        if (Files.exists(basePath)) {
 
-        print(basePath.resolve("test1.txt"));
+            print(basePath.resolve("test1.txt"), true, true, false, false);
 
-        print(basePath.resolve("test1_hard_link.txt"));
+            print(basePath.resolve("test1_hard_link.txt"), true, true, false, false);
 
-        print(basePath.resolve("test1_soft_link.txt"));
+            print(basePath.resolve("test1_soft_link.txt"), true, true, false, false);
 
-        print(basePath.resolve("test_dir1"));
+            print(basePath.resolve("test_dir1"), true, true, true, true);
 
-        print(basePath.resolve("test_dir1_soft_link"));
-        System.out.println("### walkFileTree  start###");
-        Files.walkFileTree(basePath, new TmpFilevisitor());
-        System.out.println("### walkFileTree  end###");
+            print(basePath.resolve("test_dir1_soft_link"), true, true, true, false);
+            System.out.println("### walkFileTree  start###");
+            Files.walkFileTree(basePath, new TmpFilevisitor());
+            System.out.println("### walkFileTree  end###");
 
-        System.out.println("### walk  FOLLOW_LINK Sstart###");
-        Stream<File> fileStream = Files.walk(basePath, FileVisitOption.FOLLOW_LINKS).map(Path::toFile);
-        fileStream.forEach(file -> System.out.println(file.getAbsolutePath()));
-        fileStream.close();
-        System.out.println("### walk  FOLLOW_LINKS end###");
+            System.out.println("### walk  FOLLOW_LINK Sstart###");
+            Stream<File> fileStream = Files.walk(basePath, FileVisitOption.FOLLOW_LINKS).map(Path::toFile);
+            fileStream.forEach(file -> System.out.println(file.getAbsolutePath()));
+            fileStream.close();
+            System.out.println("### walk  FOLLOW_LINKS end###");
 
-        System.out.println("### walk NO FOLLOW_LINK Sstart###");
-        fileStream = Files.walk(basePath).map(Path::toFile);
-        fileStream.forEach(file -> System.out.println(file.getAbsolutePath()));
-        fileStream.close();
-        System.out.println("### walk NO FOLLOW_LINKS end###");
+            System.out.println("### walk NO FOLLOW_LINK Sstart###");
+            fileStream = Files.walk(basePath).map(Path::toFile);
+            fileStream.forEach(file -> System.out.println(file.getAbsolutePath()));
+            fileStream.close();
+            System.out.println("### walk NO FOLLOW_LINKS end###");
+        }
+
     }
 
-    void print(Path path) {
+    void print(Path path, boolean b1, boolean b2, boolean b3, boolean b4) {
         System.out.println("###" + path + "###");
-        System.out.println("exist:" + Files.exists(path) + ":" + Files.exists(path, LinkOption.NOFOLLOW_LINKS));
+        boolean exists1 = Files.exists(path);
+        Assertions.assertEquals(b1, exists1);
+        boolean exists2 = Files.exists(path, LinkOption.NOFOLLOW_LINKS);
+        Assertions.assertEquals(b2, exists2);
+        System.out.println("exist:" + exists1 + ":" + exists1);
+
+        boolean isDirectory1 = Files.isDirectory(path);
+        boolean isDirectory2 = Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS);
+        Assertions.assertEquals(b3, isDirectory1);
+        Assertions.assertEquals(b4, isDirectory2);
+
         System.out.println(
-                "isDirectory:" + Files.isDirectory(path) + ":" + Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS));
+                "isDirectory:" + isDirectory1 + ":" + isDirectory2);
 
     }
 

@@ -457,12 +457,12 @@ public class ResourceHelper {
                 this.path = path.substring(CLASSPATH_TAG.length());
             } else if (path.startsWith(PROTOCOL_FILE)) {
                 this.type = PathType.FILESYSTEM;
-                this.file = new File(IOHelper.toURI(path));
+                this.file = FileUtil.newFile(IOHelper.toURI(path));
                 this.path = this.file.getAbsolutePath();
             } else if (path.startsWith(USER_DIR_TAG)) {
                 this.type = PathType.FILESYSTEM;
                 String replacePath = path.replace(USER_DIR_TAG, UserDirUtils.get().getAbsolutePath());
-                this.file = new File(replacePath);
+                this.file = FileUtil.newFile(replacePath);
                 this.path = this.file.getAbsolutePath();
             } else {
                 this.type = PathType.UNKNOWN;

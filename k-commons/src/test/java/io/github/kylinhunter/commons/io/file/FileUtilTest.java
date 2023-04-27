@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class FileUtilTest {
-    static String base_dir = "io-test";
+    static String base_dir = "file-util-test";
     static File baseDir = UserDirUtils.getTmpDir(base_dir);
     static File dir1;
     static File dir2;

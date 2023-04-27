@@ -90,7 +90,7 @@ public class FileReaderUtils {
      * @title readFileToByteArray
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:32
+     * @date 2023-04-22 00:32
      */
     public static byte[] readFileToByteArray(final File file) throws IOException {
         try (InputStream inputStream = openInputStream(file)) {
@@ -106,7 +106,7 @@ public class FileReaderUtils {
      * @title openInputStream
      * @description
      * @author BiJi'an
-     * @date 2023-04-26 00:32
+     * @date 2023-04-22 00:32
      */
     public static FileInputStream openInputStream(final File file) throws IOException {
         Objects.requireNonNull(file, "file");

@@ -43,3 +43,4 @@ Thumbs.db
 !/k-commons/src/main/resources/io/github/kylinhunter/commons/logs
 
 /*/out/
+/k-commons/src/test/resources/test/java-io-test/
