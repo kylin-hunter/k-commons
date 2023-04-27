@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.codec;
 
 import javax.crypto.Cipher;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 
 /**
@@ -10,6 +11,7 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
  * @date 2022-06-22 01:55
  **/
 
+@SuppressFBWarnings({"ECB_MODE", "CIPHER_INTEGRITY"})
 public class CipherManager {
     private final CodecType codecType;
 

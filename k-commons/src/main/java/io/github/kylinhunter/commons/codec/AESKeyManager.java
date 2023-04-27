@@ -22,12 +22,10 @@ public class AESKeyManager {
     private final String defaultKeyStr;
     private static final String DEFAULT_SEED = "kplat";
     private final AESKeyCache keyCache = new AESKeyCache();
-    private CipherManager.CodecType codecType;
 
     public AESKeyManager(CipherManager.CodecType codecType) {
         this.defaultKey = this.newKey();
         this.defaultKeyStr = this.keyToString(this.defaultKey);
-        this.codecType = codecType;
     }
 
     /**
