@@ -52,14 +52,14 @@ public class ExceptionConvertorTest {
         KRuntimeException convert = ExceptionConvertor.convert(testException2, true);
 
         Assertions.assertEquals(KRuntimeException.class, convert.getClass());
-        Assertions.assertEquals(TestExplainerSupplier.errInfoInfoTest2, convert.getErrInfo());
+        Assertions.assertEquals(TestExplainerSupplier.errInfoInfoTest, convert.getErrInfo());
         Assertions.assertEquals("errInfo2-msg", convert.getMessage());
         Assertions.assertEquals("extra", convert.getExtra());
         Assertions.assertNotNull(convert.getCause());
 
         convert = ExceptionConvertor.convert(testException2, false);
         Assertions.assertEquals(KRuntimeException.class, convert.getClass());
-        Assertions.assertEquals(TestExplainerSupplier.errInfoInfoTest2, convert.getErrInfo());
+        Assertions.assertEquals(TestExplainerSupplier.errInfoInfoTest, convert.getErrInfo());
         Assertions.assertEquals("extra", convert.getExtra());
         Assertions.assertEquals("errInfo2-msg", convert.getMessage());
         Assertions.assertNull(convert.getCause());

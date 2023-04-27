@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.codec;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -25,7 +26,7 @@ public class RSAUtils {
 
     public static String encrypt(String data) {
         RSAPrivateKey defaultPrivateKey = rsaKeyManager.getDefaultPrivateKey();
-        Cipher cipher = cipherManager.getEnCipher(defaultPrivateKey);
+        Cipher cipher = cipherManager.getEnCipher();
         return encrypt(data, cipher, defaultPrivateKey);
 
     }
@@ -35,7 +36,7 @@ public class RSAUtils {
     }
 
     public static String encryptPub(String data, RSAPublicKey publicKey) {
-        Cipher cipher = cipherManager.getEnCipher(publicKey);
+        Cipher cipher = cipherManager.getEnCipher();
         return encrypt(data, cipher, publicKey);
     }
 
@@ -44,7 +45,7 @@ public class RSAUtils {
     }
 
     public static String encryptPrivate(String data, RSAPrivateKey rasPriateKey) {
-        Cipher cipher = cipherManager.getEnCipher(rasPriateKey);
+        Cipher cipher = cipherManager.getEnCipher();
         return encrypt(data, cipher, rasPriateKey);
     }
 
@@ -61,6 +62,8 @@ public class RSAUtils {
     private static String encrypt(String data, Cipher cipher, RSAKey rsaKey) {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            cipher.init(Cipher.ENCRYPT_MODE, (Key) rsaKey);
+
             int modulusSize = rsaKey.getModulus().bitLength() / 8;
             int maxSingleSize = modulusSize - 11;
             byte[][] dataArray = splitArray(data.getBytes(StandardCharsets.UTF_8), maxSingleSize);
@@ -84,7 +87,7 @@ public class RSAUtils {
      */
     public static String decrypt(String data) {
         RSAPublicKey defaultPubKey = rsaKeyManager.getDefaultPubKey();
-        Cipher cipher = cipherManager.getDeCipher(defaultPubKey);
+        Cipher cipher = cipherManager.getDeCipher();
         return decrypt(data, cipher, defaultPubKey);
     }
 
@@ -111,7 +114,7 @@ public class RSAUtils {
      * @date 2022-11-20 23:37
      */
     public static String decryptPub(String data, RSAPublicKey rsaPublicKey) {
-        Cipher cipher = cipherManager.getDeCipher(rsaPublicKey);
+        Cipher cipher = cipherManager.getDeCipher();
         return decrypt(data, cipher, rsaPublicKey);
     }
 
@@ -138,7 +141,7 @@ public class RSAUtils {
      * @date 2022-11-20 23:39
      */
     public static String decryptPrivate(String data, RSAPrivateKey rsaPrivateKe) {
-        Cipher cipher = cipherManager.getDeCipher(rsaPrivateKe);
+        Cipher cipher = cipherManager.getDeCipher();
         return decrypt(data, cipher, rsaPrivateKe);
     }
 
@@ -155,6 +158,8 @@ public class RSAUtils {
     private static String decrypt(String data, Cipher cipher, RSAKey rsaKey) {
 
         try {
+            cipher.init(Cipher.DECRYPT_MODE, (Key) rsaKey);
+
             int modulusSize = rsaKey.getModulus().bitLength() / 8;
             byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
             byte[] decodeData = Base64.getDecoder().decode(dataBytes);

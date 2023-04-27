@@ -1,8 +1,5 @@
 package io.github.kylinhunter.commons.codec;
 
-import java.security.InvalidKeyException;
-import java.security.Key;
-
 import javax.crypto.Cipher;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
@@ -32,14 +29,16 @@ public class CipherManager {
      * @author BiJi'an
      * @date 2022-11-20 18:53
      */
+
     private ThreadLocal<Cipher> initCipher() {
         return ThreadLocal.withInitial(() -> {
 
             try {
                 Cipher cipher;
-
-                if (codecType == CodecType.AES) {
+                if (codecType == CodecType.AES_ECB_NOPADDING) {
                     cipher = Cipher.getInstance("AES/ECB/NoPadding");
+                } else if (codecType == CodecType.AES_GCM_NOPADDING) {
+                    cipher = Cipher.getInstance("AES/GCM/NoPadding");
                 } else if (codecType == CodecType.RSA) {
                     cipher = Cipher.getInstance("RSA");
                 } else {
@@ -53,27 +52,18 @@ public class CipherManager {
     }
 
     /**
-     * @param key key
      * @return javax.crypto.Cipher
      * @title getEnCipher
      * @description
      * @author BiJi'an
      * @date 2022-11-20 18:53
      */
-    public Cipher getEnCipher(Key key) {
+    public Cipher getEnCipher() {
 
-        try {
-            Cipher cipher = this.enCipher.get();
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            return cipher;
-        } catch (InvalidKeyException e) {
-            throw new InitException("getEnCipher error", e);
-        }
-
+        return this.enCipher.get();
     }
 
     /**
-     * @param key key
      * @return javax.crypto.Cipher
      * @title getDeCipher
      * @description
@@ -81,14 +71,8 @@ public class CipherManager {
      * @date 2022-11-20 18:53
      */
 
-    public Cipher getDeCipher(Key key) {
-        try {
-            Cipher cipher = this.deCipher.get();
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            return cipher;
-        } catch (InvalidKeyException e) {
-            throw new InitException("getDeCipher error", e);
-        }
+    public Cipher getDeCipher() {
+        return this.deCipher.get();
     }
 
     /**
@@ -97,6 +81,6 @@ public class CipherManager {
      * @date 2022-06-22 02:17
      **/
     public enum CodecType {
-        AES, RSA
+        AES_ECB_NOPADDING, AES_GCM_NOPADDING, RSA
     }
 }

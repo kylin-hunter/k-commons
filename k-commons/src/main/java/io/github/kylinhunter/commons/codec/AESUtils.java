@@ -1,9 +1,13 @@
 package io.github.kylinhunter.commons.codec;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
 
 import io.github.kylinhunter.commons.exception.embed.CryptException;
 import lombok.Getter;
@@ -15,11 +19,29 @@ import lombok.Getter;
  **/
 
 public class AESUtils {
-    private static final CipherManager.CodecType CODE_TYPE = CipherManager.CodecType.AES;
+    private static CipherManager.CodecType CODEC_TYPE = CipherManager.CodecType.AES_ECB_NOPADDING;
 
-    private static final CipherManager cipherManager = new CipherManager(CODE_TYPE);
+    private static CipherManager cipherManager = new CipherManager(CODEC_TYPE);
     @Getter
-    private static final AESKeyManager keyManager = new AESKeyManager();
+    private static AESKeyManager keyManager = new AESKeyManager(CODEC_TYPE);
+
+    private final static SecureRandom secureRandom = new SecureRandom();
+    private static final int IV_LENGTH_BYTE = 12;
+    private static final int TAG_LENGTH_BIT = 128;
+
+    /**
+     * @param codecType codecType
+     * @return void
+     * @title resetCodecType
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-22 00:20
+     */
+    public static void reInit(CipherManager.CodecType codecType) {
+        CODEC_TYPE = codecType;
+        cipherManager = new CipherManager(codecType);
+        keyManager = new AESKeyManager(codecType);
+    }
 
     /**
      * @param text text
@@ -30,7 +52,7 @@ public class AESUtils {
      * @date 2022-11-20 17:15
      */
     public static String encrypt(String text) {
-        return encrypt(text, cipherManager.getEnCipher(keyManager.getDefaultKey()));
+        return encrypt(text, cipherManager.getEnCipher(), keyManager.getDefaultKey());
     }
 
     /**
@@ -43,7 +65,7 @@ public class AESUtils {
      * @date 2022-11-20 17:15
      */
     public static String encrypt(String text, String keyStr) {
-        return encrypt(text, cipherManager.getEnCipher(keyManager.toKey(keyStr)));
+        return encrypt(text, cipherManager.getEnCipher(), keyManager.toKey(keyStr));
     }
 
     /**
@@ -55,24 +77,41 @@ public class AESUtils {
      * @author BiJi'an
      * @date 2022-11-20 17:16
      */
-    private static String encrypt(String text, Cipher cipher) {
+    private static String encrypt(String text, Cipher cipher, Key key) {
 
         try {
             byte[] textBytes = text.getBytes(StandardCharsets.UTF_8);
-            int length = textBytes.length;
-            int blockSize = cipher.getBlockSize();
+            byte[] decrptTextBytes;
+            if (CODEC_TYPE == CipherManager.CodecType.AES_GCM_NOPADDING) {
+                byte[] iv = new byte[IV_LENGTH_BYTE];
+                secureRandom.nextBytes(iv);
+                cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
 
-            if (length % blockSize != 0) {
-                length = length + (blockSize - (length % blockSize));
+                byte[] encryptBytes = cipher.doFinal(textBytes);
+
+                ByteBuffer byteBuffer = ByteBuffer.allocate(Short.BYTES + iv.length + encryptBytes.length);
+                byteBuffer.putShort((short) iv.length);
+                byteBuffer.put(iv);
+                byteBuffer.put(encryptBytes);
+
+                decrptTextBytes = byteBuffer.array();
+
+            } else {
+                cipher.init(Cipher.ENCRYPT_MODE, key);
+
+                int length = textBytes.length;
+                int blockSize = cipher.getBlockSize();
+                if (length % blockSize != 0) {
+                    length = length + (blockSize - (length % blockSize));
+                }
+                byte[] plaintext = new byte[length];
+                System.arraycopy(textBytes, 0, plaintext, 0, textBytes.length);
+                decrptTextBytes = cipher.doFinal(plaintext);
+
             }
-            byte[] plaintext = new byte[length];
-
-            System.arraycopy(textBytes, 0, plaintext, 0, textBytes.length);
-
-            byte[] decrptText = cipher.doFinal(plaintext);
-            byte[] base64Bytes = Base64.getEncoder().encode(decrptText);
-
+            byte[] base64Bytes = Base64.getEncoder().encode(decrptTextBytes);
             return new String(base64Bytes, StandardCharsets.UTF_8);
+
         } catch (Exception e) {
             throw new CryptException("encrypt error", e);
 
@@ -89,7 +128,7 @@ public class AESUtils {
      * @date 2022-11-20 17:16
      */
     public static String decrypt(String text) {
-        return decrypt(text, cipherManager.getDeCipher(keyManager.getDefaultKey()));
+        return decrypt(text, cipherManager.getDeCipher(), keyManager.getDefaultKey());
     }
 
     /**
@@ -102,7 +141,7 @@ public class AESUtils {
      * @date 2022-11-20 17:16
      */
     public static String decrypt(String text, String keyStr) {
-        return decrypt(text, cipherManager.getDeCipher(keyManager.toKey(keyStr)));
+        return decrypt(text, cipherManager.getDeCipher(), keyManager.toKey(keyStr));
     }
 
     /**
@@ -114,19 +153,31 @@ public class AESUtils {
      * @author BiJi'an
      * @date 2022-11-20 17:16
      */
-    private static String decrypt(String decryptText, Cipher cipher) {
+    private static String decrypt(String decryptText, Cipher cipher, Key key) {
 
         try {
-
             byte[] decryptTextBytes = decryptText.getBytes(StandardCharsets.UTF_8);
-
             byte[] decryptTextRaw = Base64.getDecoder().decode(decryptTextBytes);
 
-            byte[] encryptTextBytes = cipher.doFinal(decryptTextRaw);
+            if (CODEC_TYPE == CipherManager.CodecType.AES_GCM_NOPADDING) {
 
-            String result = new String(encryptTextBytes, StandardCharsets.UTF_8);
+                ByteBuffer byteBuffer = ByteBuffer.wrap(decryptTextRaw);
+                int ivLen = byteBuffer.getShort();
+                byte[] iv = new byte[ivLen];
+                byteBuffer.get(iv);
+                byte[] encrypted = new byte[byteBuffer.remaining()];
+                byteBuffer.get(encrypted);
 
-            return result.trim();
+                cipher.init(Cipher.DECRYPT_MODE, key, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
+                byte[] encryptTextBytes = cipher.doFinal(encrypted);
+                return new String(encryptTextBytes, StandardCharsets.UTF_8);
+
+            } else {
+                cipher.init(Cipher.DECRYPT_MODE, key);
+                byte[] encryptTextBytes = cipher.doFinal(decryptTextRaw);
+                return new String(encryptTextBytes, StandardCharsets.UTF_8).trim();
+            }
+
         } catch (Exception e) {
             throw new CryptException("encrypt error:" + e.getMessage(), e);
 

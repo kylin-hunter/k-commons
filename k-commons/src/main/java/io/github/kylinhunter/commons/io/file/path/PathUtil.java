@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.io.file.path;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -25,6 +26,19 @@ public class PathUtil {
     public static final LinkOption[] NOFOLLOW_LINK_OPTION_ARRAY = {LinkOption.NOFOLLOW_LINKS};
 
     public static final LinkOption[] EMPTY_LINK_OPTION_ARRAY = {};
+
+    /**
+     * @param first first
+     * @param more  more
+     * @return java.nio.file.Path
+     * @title get
+     * @description
+     * @author BiJi'an
+     * @date 2023-04-22 23:16
+     */
+    public static Path get(String first, String... more) {
+        return FileSystems.getDefault().getPath(first, more);
+    }
 
     /**
      * @param start          start

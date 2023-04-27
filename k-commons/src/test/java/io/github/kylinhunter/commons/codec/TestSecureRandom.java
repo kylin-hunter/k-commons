@@ -3,6 +3,8 @@ package io.github.kylinhunter.commons.codec;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import io.github.kylinhunter.commons.io.Charsets;
+
 public class TestSecureRandom {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
@@ -26,7 +28,7 @@ public class TestSecureRandom {
 
     private static void print(SecureRandom random, String key) {
         if (key != null) {
-            random.setSeed(key.getBytes());
+            random.setSeed(key.getBytes(Charsets.UTF_8));
         }
 
         System.out.println("random with algorithm( " + random.getAlgorithm() + " ) with key:" + key);

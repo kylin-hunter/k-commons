@@ -62,6 +62,12 @@ subprojects {
         compileOnly("org.projectlombok:lombok")
         annotationProcessor 'org.projectlombok:lombok'
 
+        compileOnly("com.google.code.findbugs:annotations:3.0.1u2")
+        compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+
+        testCompileOnly("com.google.code.findbugs:annotations:3.0.1u2")
+        testCompileOnly("com.google.code.findbugs:jsr305:3.0.2")
+
         testImplementation("org.projectlombok:lombok")
         testAnnotationProcessor 'org.projectlombok:lombok'
         testImplementation 'org.junit.jupiter:junit-jupiter'

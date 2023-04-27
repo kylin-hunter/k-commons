@@ -9,14 +9,14 @@ import io.github.kylinhunter.commons.exception.info.ErrInfo;
  **/
 public class TestExplainerSupplier extends AbstractExplainerSupplier {
 
-    public static ErrInfo errInfoInfoTest2 = new ErrInfo(-100, "errInfo2-msg");
+    public static final ErrInfo errInfoInfoTest = new ErrInfo(-100, "errInfo2-msg");
 
     @Override
     public void customize() {
 
         this.createExplain(TestException2.class)
                 .setExplainer(e -> {
-                    Explainer.ExplainResult explainResult = new Explainer.ExplainResult(errInfoInfoTest2);
+                    Explainer.ExplainResult explainResult = new Explainer.ExplainResult(errInfoInfoTest);
                     explainResult.setExtra("extra");
                     return explainResult;
                 });
