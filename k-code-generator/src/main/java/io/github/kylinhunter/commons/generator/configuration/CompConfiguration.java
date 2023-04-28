@@ -8,7 +8,6 @@ import io.github.kylinhunter.commons.generator.config.ConfigReader;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Global;
 import io.github.kylinhunter.commons.generator.config.bean.Output;
-import io.github.kylinhunter.commons.generator.exception.CodeException;
 import io.github.kylinhunter.commons.generator.template.TemplateEngine;
 import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
 import io.github.kylinhunter.commons.generator.template.velocity.VelocityTemplateEngine;
@@ -50,14 +49,8 @@ public class CompConfiguration {
             Global global = config.getGlobal();
 
             String templatePath = global.getTemplatePath();
-            File dirTemplate = ResourceHelper.getDir(templatePath, PathType.FILESYSTEM);
-            if(dirTemplate==null){
-                throw new CodeException("invalid templatePath" + templatePath);
-            }
+            File dirTemplate = ResourceHelper.getDir(templatePath, PathType.FILESYSTEM, true);
             templateConfig.setTemplatePath(dirTemplate.toPath());
-            if (dirTemplate == null || !dirTemplate.exists()) {
-                throw new CodeException("invalid templatePath" + templatePath);
-            }
 
             Output output = global.getOutput();
             String outputPath = output.getPath();

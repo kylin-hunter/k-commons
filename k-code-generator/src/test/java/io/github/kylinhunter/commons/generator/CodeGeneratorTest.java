@@ -53,7 +53,7 @@ class CodeGeneratorTest {
         compile(file);
         Class<?> clazz = ExClassLoaderUtil.loadClass(className);
         System.out.println("loadClass=>" + clazz.getName());
-        Assertions.assertEquals(clazz.getSuperclass().getName(), "java.util.ArrayList");
+        Assertions.assertEquals(clazz.getSuperclass().getName(), "io.github.kylinhunter.commons.io.file.FileUtil");
         Class<?>[] interfaces = clazz.getInterfaces();
 
         Assertions.assertEquals(interfaces[0].getName(), "java.io.Serializable");
