@@ -164,6 +164,7 @@ public class ColumnMetaReader {
             case "REMARKS":
                 columnMeta.setRemarks(ObjectValues.getString(value));
                 break;
+            default:
         }
 
     }

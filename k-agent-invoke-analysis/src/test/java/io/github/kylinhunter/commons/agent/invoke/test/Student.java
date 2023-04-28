@@ -1,8 +1,6 @@
 package io.github.kylinhunter.commons.agent.invoke.test;
 
-import java.net.URL;
 import java.security.SecureRandom;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -26,8 +24,6 @@ public class Student implements HomeWork {
 
     private SecureRandom random = new SecureRandom();
 
-
-
     @Override
     public void doHomeWork() {
 
@@ -41,9 +37,9 @@ public class Student implements HomeWork {
 
     private void slowDoing() {
         log.info("I'm " + name + ", I'm  donging homework slowly,with 100 milliseconds");
-        String         path = "org/apache/commons/io/FileUtils.class";
+        String path = "org/apache/commons/io/FileUtils.class";
 
-        URL resource = Student.class.getClassLoader().getResource(path);
+        Student.class.getClassLoader().getResource(path);
         ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
 
     }
@@ -53,6 +49,5 @@ public class Student implements HomeWork {
         ThreadHelper.sleep(10, TimeUnit.MILLISECONDS);
 
     }
-
 
 }

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
@@ -142,6 +141,7 @@ public class TableMetaReader {
             case "REMARKS":
                 tableMeta.setRemarks(ObjectValues.getString(value));
                 break;
+            default:
         }
 
     }
