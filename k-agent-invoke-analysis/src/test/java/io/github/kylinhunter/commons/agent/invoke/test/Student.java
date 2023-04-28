@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.agent.invoke.test;
 
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -23,7 +24,7 @@ public class Student implements HomeWork {
     @EqualsAndHashCode.Include
     public final String name;
 
-    private Random random = new Random();
+    private SecureRandom random = new SecureRandom();
 
 
 

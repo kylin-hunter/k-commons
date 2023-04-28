@@ -21,7 +21,8 @@ class ExClassLoaderUtilTest {
             File ext = UserDirUtils.getDir("ext");
             ExClassLoaderUtil.addClassPath(ext.toPath());
             Class<Object> objectClass = ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test");
-            ObjectCreator.create(objectClass);
+            Object o = ObjectCreator.create(objectClass);
+            Assertions.assertNotNull(o);
         });
 
     }

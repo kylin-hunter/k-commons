@@ -87,11 +87,10 @@ public class FileUtil {
      * @author BiJi'an
      * @date 2023-04-22 00:22
      */
-    public static File delete(final File file) {
+    public static void delete(final File file) {
         try {
             Objects.requireNonNull(file, "file");
             Files.delete(file.toPath());
-            return file;
         } catch (IOException e) {
             throw new KIOException("delete error", e);
         }
@@ -347,7 +346,7 @@ public class FileUtil {
         }
     }
 
-    private static File forceMkdir(final File directory) {
+    public static File forceMkdir(final File directory) {
         if ((directory != null) && (!directory.mkdirs() && !directory.isDirectory())) {
             throw new KIOException("Cannot create directory '" + directory + "'.");
         }

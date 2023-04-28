@@ -2,6 +2,8 @@ package io.github.kylinhunter.commons.classloader;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * @author BiJi'an
@@ -10,7 +12,7 @@ import java.net.URLClassLoader;
  **/
 class ExClassLoader extends URLClassLoader {
 
-    private static final ExClassLoader singletion = new ExClassLoader();
+    private static ExClassLoader singletion;
 
     public static ExClassLoader getInstance() {
         return singletion;
@@ -26,5 +28,9 @@ class ExClassLoader extends URLClassLoader {
 
     public ExClassLoader(URL[] urls) {
         super(urls);
+    }
+
+    static {
+        singletion = AccessController.doPrivileged((PrivilegedAction<ExClassLoader>) () -> new ExClassLoader());
     }
 }

@@ -1,11 +1,9 @@
 package io.github.kylinhunter.commons.generator.template.velocity;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +14,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolContext;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.generator.template.OutputProcessor;
 import io.github.kylinhunter.commons.generator.template.TemplateExecutor;
 import io.github.kylinhunter.commons.generator.template.bean.Output;
@@ -24,6 +23,8 @@ import io.github.kylinhunter.commons.generator.template.bean.TemplateInfo;
 import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
 import io.github.kylinhunter.commons.generator.template.config.TemplateConfig;
 import io.github.kylinhunter.commons.generator.template.exception.TemplateException;
+import io.github.kylinhunter.commons.io.file.FileUtil;
+import io.github.kylinhunter.commons.io.file.path.PathUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -141,61 +142,58 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
      */
     @Override
     public void output(OutputProcessor outputProcessor) {
-        try {
-            OutputConfig outputConfig = templateConfig.getOutputConfig();
 
-            VelocityEngine velocityEngine = this.velocityTemplateEngine.getVelocityEngine();
+        OutputConfig outputConfig = templateConfig.getOutputConfig();
 
-            for (Output output : outputs) {
-                final TemplateInfo templateInfo = output.getTemplateInfo();
-                String templateName = templateInfo.getName();
-                final String templateEncoding = templateInfo.getEncoding();
-                Template template;
-                if (!StringUtils.isEmpty(templateEncoding)) {
-                    template = velocityEngine.getTemplate(templateName, templateEncoding);
-                } else {
-                    template = velocityEngine.getTemplate(templateName);
+        VelocityEngine velocityEngine = this.velocityTemplateEngine.getVelocityEngine();
+
+        for (Output output : outputs) {
+            final TemplateInfo templateInfo = output.getTemplateInfo();
+            String templateName = templateInfo.getName();
+            final String templateEncoding = templateInfo.getEncoding();
+            Template template;
+            if (!StringUtils.isEmpty(templateEncoding)) {
+                template = velocityEngine.getTemplate(templateName, templateEncoding);
+            } else {
+                template = velocityEngine.getTemplate(templateName);
+            }
+            StringWriter stringWriter = new StringWriter();
+            template.merge(toolContext, stringWriter);
+            String resultText = stringWriter.toString();
+            Path outputPath = output.getOutputPath();
+            if (outputPath != null) {
+                String extension = output.getExtension();
+                if (!StringUtils.isEmpty(extension)) {
+                    outputPath = PathUtil.get(outputPath.toFile().getAbsolutePath() + "." + extension);
                 }
-                StringWriter stringWriter = new StringWriter();
-                template.merge(toolContext, stringWriter);
-                String resultText = stringWriter.toString();
-                Path outputPath = output.getOutputPath();
-                if (outputPath != null) {
-                    String extension = output.getExtension();
-                    if (!StringUtils.isEmpty(extension)) {
-                        outputPath = Paths.get(outputPath.toFile().getAbsolutePath() + "." + extension);
-                    }
-                    File toFile = outputPath.toFile();
-                    if (!toFile.getParentFile().exists()) {
-                        FileUtils.forceMkdir(toFile.getParentFile());
-                    }
-                    if (toFile.exists()) {
-                        if (!toFile.isFile()) {
-                            throw new TemplateException("not a file" + toFile.getAbsolutePath());
-                        } else {
-                            if (outputConfig.isOverride()) {
-                                log.warn("override file=>" + toFile.getAbsolutePath());
-                                writeToFile(toFile, resultText, output.getEncoding());
-
-                            } else {
-                                log.warn("skip outputOverride file=>" + toFile.getAbsolutePath());
-                            }
-                        }
+                File toFile = outputPath.toFile();
+                if (!toFile.getParentFile().exists()) {
+                    FileUtil.forceMkdir(toFile.getParentFile());
+                }
+                if (toFile.exists()) {
+                    if (!toFile.isFile()) {
+                        throw new TemplateException("not a file" + toFile.getAbsolutePath());
                     } else {
-                        writeToFile(toFile, resultText, output.getEncoding());
+                        if (outputConfig.isOverride()) {
+                            log.warn("override file=>" + toFile.getAbsolutePath());
+                            writeToFile(toFile, resultText, output.getEncoding());
+
+                        } else {
+                            log.warn("skip outputOverride file=>" + toFile.getAbsolutePath());
+                        }
                     }
-
-                }
-
-                if (outputProcessor != null) {
-                    outputProcessor.process(resultText);
+                } else {
+                    writeToFile(toFile, resultText, output.getEncoding());
                 }
 
             }
 
-        } catch (Exception e) {
-            throw new TemplateException("output error", e);
+            if (outputProcessor != null) {
+                outputProcessor.process(resultText);
+            }
+
         }
+
     }
 
     /**
@@ -208,11 +206,15 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
      * @date 2023-01-08 00:51
      */
 
-    private void writeToFile(File file, String resultText, Charset encoding) throws IOException {
-        log.info("output to file=> {}", file.getAbsolutePath());
-        OutputConfig outputConfig = templateConfig.getOutputConfig();
-        encoding = encoding == null ? outputConfig.getDefaultEncoding() : encoding;
-        FileUtils.writeStringToFile(file, resultText, encoding);
+    private void writeToFile(File file, String resultText, Charset encoding) {
+        try {
+            log.info("output to file=> {}", file.getAbsolutePath());
+            OutputConfig outputConfig = templateConfig.getOutputConfig();
+            encoding = encoding == null ? outputConfig.getDefaultEncoding() : encoding;
+            FileUtils.writeStringToFile(file, resultText, encoding);
+        } catch (Exception e) {
+            throw new KIOException("write  to file error", e);
+        }
     }
 
 }

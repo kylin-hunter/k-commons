@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
 import io.github.kylinhunter.commons.generator.template.velocity.VelocityTemplateEngine;
 import io.github.kylinhunter.commons.io.file.FileExtensions;
+import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 
 class VelocityTemplateExecutorTest {
@@ -22,13 +23,13 @@ class VelocityTemplateExecutorTest {
 
         File outpuFile1 = UserDirUtils.getFile("output/output1_result1.html");
         if (outpuFile1.exists()) {
-            outpuFile1.delete();
+            FileUtil.delete(outpuFile1);
         }
         templateExecutor.tmplate(templateInClass).outputRelativePath("output1_result1.html").build();
 
         File outpuFile2 = UserDirUtils.getTmpFile("template_output2/output2_result1.html");
         if (outpuFile2.exists()) {
-            outpuFile2.delete();
+            FileUtil.delete(outpuFile2);
         }
         templateExecutor.tmplate(templateInClass).outputToFile(outpuFile2).build();
 

@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.generator.template.velocity;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -10,6 +9,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolManager;
 
+import io.github.kylinhunter.commons.collections.ArrayUtils;
 import io.github.kylinhunter.commons.generator.template.AbstractTemplateEngine;
 import io.github.kylinhunter.commons.generator.template.TemplateExecutor;
 import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
@@ -68,13 +68,17 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         this.toolManager = new ToolManager();
         this.toolManager.configure("/io/github/kylinhunter/commons/template/velocity-tools.xml");
 
-
-        if(this.templateConfig.getOutputConfig().isAutoClean()){
+        if (this.templateConfig.getOutputConfig().isAutoClean()) {
             OutputConfig outputConfig = templateConfig.getOutputConfig();
-            for (File file : Objects.requireNonNull(outputConfig.getOutputPath().toFile().listFiles())) {
-                log.info("delete file=>" + file.getAbsolutePath());
-                FileUtils.deleteQuietly(file);
+            File outputDir = outputConfig.getOutputPath().toFile();
+            File[] files = outputDir.listFiles();
+            if (!ArrayUtils.isEmpty(files)) {
+                for (File file : files) {
+                    log.info("delete file=>" + file.getAbsolutePath());
+                    FileUtils.deleteQuietly(file);
+                }
             }
+
         }
     }
 
