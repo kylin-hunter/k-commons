@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.kylinhunter.commons.collections.ListUtils;
 
+import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

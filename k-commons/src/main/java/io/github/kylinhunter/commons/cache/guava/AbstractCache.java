@@ -194,7 +194,7 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
         }
         RemovalListener<CacheKey, V> removalListener = getRemovalListener();
         if (removalListener != null) {
-            cacheBuilder.removalListener(removalListener);
+            cacheBuilder = cacheBuilder.removalListener(removalListener);
         }
 
         return cacheBuilder.build(this);

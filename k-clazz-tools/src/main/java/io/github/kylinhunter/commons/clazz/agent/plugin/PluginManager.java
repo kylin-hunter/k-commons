@@ -15,10 +15,10 @@ import lombok.Data;
  * @description
  * @date 2023-03-11 00:50
  **/
-@Data
 public class PluginManager {
     private static Logger log;
-    public static final List<Plugin> plugins = new ArrayList<>();
+
+    private static final List<Plugin> plugins = new ArrayList<>();
 
     /**
      * @return void

@@ -15,7 +15,7 @@ import net.bytebuddy.utility.nullability.MaybeNull;
  **/
 @SuppressWarnings("NullableProblems")
 public class AgentListenr implements AgentBuilder.Listener {
-    public static Logger log = Logger.getLogger(AgentListenr.class.toString());
+    public static final Logger log = Logger.getLogger(AgentListenr.class.toString());
 
     @Override
     public void onDiscovery(String typeName, @MaybeNull ClassLoader classLoader, @MaybeNull JavaModule module,
