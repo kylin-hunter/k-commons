@@ -6,7 +6,7 @@ dependencies {
 
     api(rootProject.dependency_management['bytebuddy'])
     api(rootProject.dependency_management['byte-buddy-agent'])
-    testImplementation files(Jvm.current().toolsJar)
+//    testImplementation files(Jvm.current().toolsJar)
 }
 
 

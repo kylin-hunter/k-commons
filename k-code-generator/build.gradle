@@ -17,7 +17,7 @@ dependencies {
     implementation(rootProject.dependency_management['commons-dbutils'])
     implementation(rootProject.dependency_management['aviator'])
 
-    testImplementation files(Jvm.current().toolsJar)
+//    testImplementation files(Jvm.current().toolsJar)
 
 
 }
