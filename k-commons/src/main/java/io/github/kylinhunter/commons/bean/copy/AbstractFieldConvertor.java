@@ -11,8 +11,7 @@ import lombok.AllArgsConstructor;
  * @author BiJi'an
  * @description
  * @date 2022-01-01 19:09
- **/
-
+ */
 @AllArgsConstructor
 public abstract class AbstractFieldConvertor implements FieldConvertor {
 
@@ -35,12 +34,11 @@ public abstract class AbstractFieldConvertor implements FieldConvertor {
     } catch (Exception e) {
       throw new InternalException("read error", e);
     }
-
   }
 
   /**
    * @param target target
-   * @param value  value
+   * @param value value
    * @return void
    * @title write
    * @description
@@ -91,5 +89,4 @@ public abstract class AbstractFieldConvertor implements FieldConvertor {
    * @date 2022-11-19 01:14
    */
   public abstract void backward(Object source, Object target) throws ConvertExcetion;
-
 }
