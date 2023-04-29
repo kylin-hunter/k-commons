@@ -1,12 +1,10 @@
 package io.github.kylinhunter.commons.juc;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-
-import io.github.kylinhunter.commons.collections.MapUtils;
-
-import io.github.kylinhunter.commons.exception.embed.InitException;
 
 /**
  * @author BiJi'an

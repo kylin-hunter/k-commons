@@ -1,10 +1,9 @@
 package io.github.kylinhunter.commons.collections;
 
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 
 /**
  * @author BiJi'an

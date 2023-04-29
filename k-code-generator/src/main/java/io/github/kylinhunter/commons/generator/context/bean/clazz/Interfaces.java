@@ -1,13 +1,11 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
+import io.github.kylinhunter.commons.collections.CollectionUtils;
+import io.github.kylinhunter.commons.collections.ListUtils;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import io.github.kylinhunter.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import io.github.kylinhunter.commons.collections.ListUtils;
 
 /**
  * @author BiJi'an

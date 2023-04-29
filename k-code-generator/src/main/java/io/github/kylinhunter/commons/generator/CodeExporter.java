@@ -1,7 +1,5 @@
 package io.github.kylinhunter.commons.generator;
 
-import java.util.List;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
@@ -9,9 +7,9 @@ import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.TemplateStrategy;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.ClassInfo;
-
 import io.github.kylinhunter.commons.generator.template.TemplateEngine;
 import io.github.kylinhunter.commons.generator.template.TemplateExecutor;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.clazz.agent;
 
 import java.util.logging.Logger;
-
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;

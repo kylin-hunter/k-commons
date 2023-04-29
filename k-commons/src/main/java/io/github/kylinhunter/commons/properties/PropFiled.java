@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.properties;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import lombok.Data;
 
 /**

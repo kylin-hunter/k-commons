@@ -1,12 +1,10 @@
 package io.github.kylinhunter.commons.algorithm.bloom;
 
+import com.google.common.hash.BloomFilter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
-
-import com.google.common.hash.BloomFilter;
 
 class BloomFilterFactoryTest {
 

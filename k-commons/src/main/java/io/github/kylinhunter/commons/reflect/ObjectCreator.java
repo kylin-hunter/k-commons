@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons.reflect;
 
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
-import io.github.kylinhunter.commons.exception.embed.InitException;
 
 /**
  * @author BiJi'an

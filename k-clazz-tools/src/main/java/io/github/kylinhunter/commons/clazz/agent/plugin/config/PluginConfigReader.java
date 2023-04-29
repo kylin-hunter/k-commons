@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin.config;
 
-import java.util.Properties;
-
 import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.properties.PropertiesHelper;
+import java.util.Properties;
 
 /**
  * @author BiJi'an

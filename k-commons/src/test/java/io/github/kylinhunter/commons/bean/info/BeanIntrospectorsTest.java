@@ -1,11 +1,9 @@
 package io.github.kylinhunter.commons.bean.info;
 
+import io.github.kylinhunter.commons.properties.data.Father;
 import java.util.Map;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import io.github.kylinhunter.commons.properties.data.Father;
 
 class BeanIntrospectorsTest {
 

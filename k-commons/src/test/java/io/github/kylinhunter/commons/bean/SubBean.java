@@ -1,9 +1,7 @@
 package io.github.kylinhunter.commons.bean;
 
 import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.Setter;
 

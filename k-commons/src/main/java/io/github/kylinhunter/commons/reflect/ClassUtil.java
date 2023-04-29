@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.reflect;
 
-import java.util.Objects;
-
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
+import java.util.Objects;
 
 /**
  * @author BiJi'an

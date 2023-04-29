@@ -1,12 +1,10 @@
 package io.github.kylinhunter.commons.name;
 
-import java.util.Arrays;
-
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.strings.CharConst;
 import io.github.kylinhunter.commons.strings.StringConst;
+import java.util.Arrays;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

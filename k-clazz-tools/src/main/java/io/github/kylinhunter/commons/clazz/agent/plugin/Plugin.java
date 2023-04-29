@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin;
 
-import java.lang.instrument.Instrumentation;
-
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
+import java.lang.instrument.Instrumentation;
 
 /**
  * @author BiJi'an

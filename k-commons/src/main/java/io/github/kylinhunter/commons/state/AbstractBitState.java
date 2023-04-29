@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons.state;
 
-import java.util.StringJoiner;
-
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
+import java.util.StringJoiner;
 import lombok.Data;
 
 /**

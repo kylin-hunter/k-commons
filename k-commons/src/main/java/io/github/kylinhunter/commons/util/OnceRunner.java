@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.util;
 
-import java.util.Set;
-
 import io.github.kylinhunter.commons.collections.SetUtils;
+import java.util.Set;
 
 ;
 
@@ -49,4 +48,3 @@ public class OnceRunner {
         void run();
     }
 }
-

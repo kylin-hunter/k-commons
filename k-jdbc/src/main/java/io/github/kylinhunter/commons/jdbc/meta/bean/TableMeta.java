@@ -1,9 +1,7 @@
 package io.github.kylinhunter.commons.jdbc.meta.bean;
 
-import java.util.Map;
-
 import io.github.kylinhunter.commons.collections.MapUtils;
-
+import java.util.Map;
 import lombok.Data;
 import lombok.ToString;
 

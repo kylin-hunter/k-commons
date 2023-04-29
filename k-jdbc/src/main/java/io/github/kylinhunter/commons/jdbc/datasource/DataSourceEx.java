@@ -1,17 +1,14 @@
 package io.github.kylinhunter.commons.jdbc.datasource;
 
+import com.zaxxer.hikari.HikariDataSource;
+import io.github.kylinhunter.commons.jdbc.datasource.bean.HikariConfigEx;
 import java.io.Closeable;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
-
 import javax.sql.DataSource;
-
-import com.zaxxer.hikari.HikariDataSource;
-
-import io.github.kylinhunter.commons.jdbc.datasource.bean.HikariConfigEx;
 import lombok.Getter;
 
 /**

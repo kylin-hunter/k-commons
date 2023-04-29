@@ -1,13 +1,11 @@
 package io.github.kylinhunter.commons.reflect;
 
+import io.github.kylinhunter.commons.reflect.bean.ActualType;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import io.github.kylinhunter.commons.reflect.bean.ActualType;
 
 class GenericTypeUtilsTest {
 

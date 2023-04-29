@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.datasource.bean;
 
 import java.util.List;
-
 import lombok.Data;
 
 /**
@@ -13,4 +12,3 @@ import lombok.Data;
 public class DataSourceConfig {
     private List<DataSourceInfo> datasources;
 }
-

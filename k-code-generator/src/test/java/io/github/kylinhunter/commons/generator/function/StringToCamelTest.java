@@ -1,19 +1,15 @@
 package io.github.kylinhunter.commons.generator.function;
 
-import java.util.List;
-import java.util.Map;
-
-
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-
 import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 class StringToCamelTest {
 

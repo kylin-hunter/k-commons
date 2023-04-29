@@ -1,15 +1,14 @@
 package io.github.kylinhunter.commons.generator.template.config;
 
+import io.github.kylinhunter.commons.generator.template.exception.TemplateException;
+import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import io.github.kylinhunter.commons.generator.template.exception.TemplateException;
-import io.github.kylinhunter.commons.io.ResourceHelper;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import lombok.Data;
 
 /**

@@ -1,10 +1,8 @@
 package io.github.kylinhunter.commons.generator.config.bean;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
 import java.util.List;
 import java.util.Map;
-
-import io.github.kylinhunter.commons.collections.MapUtils;
-
 import lombok.Data;
 
 @Data

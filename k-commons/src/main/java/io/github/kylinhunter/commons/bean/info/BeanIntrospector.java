@@ -1,17 +1,15 @@
 package io.github.kylinhunter.commons.bean.info;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Collections;
 import java.util.Map;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.exception.embed.InitException;
 import lombok.Getter;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * @author BiJi'an

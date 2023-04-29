@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.clazz.agent.config;
 
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.collections.MultiValueMap;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

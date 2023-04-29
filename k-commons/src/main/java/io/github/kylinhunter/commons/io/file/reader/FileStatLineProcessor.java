@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.io.file.reader;
 
 import io.github.kylinhunter.commons.io.file.reader.FileStatLineProcessor.FileStat;
-
 import lombok.Data;
 
 /**

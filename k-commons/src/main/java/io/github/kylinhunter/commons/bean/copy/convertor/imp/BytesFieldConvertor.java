@@ -1,12 +1,11 @@
 package io.github.kylinhunter.commons.bean.copy.convertor.imp;
 
-import java.beans.PropertyDescriptor;
-
 import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertExcetion;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.serialize.ObjectBytesSerializer;
+import java.beans.PropertyDescriptor;
 
 /**
  * @author BiJi'an

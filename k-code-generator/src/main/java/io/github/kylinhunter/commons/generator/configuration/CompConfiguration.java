@@ -1,7 +1,5 @@
 package io.github.kylinhunter.commons.generator.configuration;
 
-import java.io.File;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CC;
 import io.github.kylinhunter.commons.generator.config.ConfigReader;
@@ -13,6 +11,7 @@ import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
 import io.github.kylinhunter.commons.generator.template.velocity.VelocityTemplateEngine;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper.PathType;
+import java.io.File;
 
 /**
  * @author BiJi'an

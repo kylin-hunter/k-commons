@@ -221,6 +221,8 @@ subprojects {
 
     spotless {
         java {
+//            target 'src/*/java/**/BeanCopy.java'
+
             // Use the default importOrder configuration
             importOrder()
             // optional: you can specify import groups directly
@@ -236,7 +238,7 @@ subprojects {
 //            cleanthat()          // has its own section below
 
             // Choose one of these formatters.
-            googleJavaFormat()   // has its own section below
+//            googleJavaFormat()   // has its own section below
 //            eclipse()            // has its own section below
 //            prettier()           // has its own section below
 //            clangFormat()        // has its own section below

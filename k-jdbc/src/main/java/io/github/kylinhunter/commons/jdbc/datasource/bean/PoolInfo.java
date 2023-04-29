@@ -23,4 +23,3 @@ public class PoolInfo {
     private String connectionTestQuery; // SELECT 1 FROM DUAL
 
 }
-

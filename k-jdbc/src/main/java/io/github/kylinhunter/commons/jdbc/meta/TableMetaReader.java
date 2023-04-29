@@ -1,12 +1,5 @@
 package io.github.kylinhunter.commons.jdbc.meta;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.util.List;
-import java.util.Map;
-
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.component.C;
@@ -15,6 +8,12 @@ import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.util.ObjectValues;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -147,7 +146,3 @@ public class TableMetaReader {
     }
 
 }
-
-
-
-

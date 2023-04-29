@@ -1,10 +1,8 @@
 package io.github.kylinhunter.commons.cache.guava;
 
-import java.util.concurrent.TimeUnit;
-
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.util.ThreadHelper;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Test;
 
 public class AbstractCacheTest {
 
@@ -54,4 +52,3 @@ public class AbstractCacheTest {
     }
 
 }
-

@@ -1,11 +1,9 @@
 package io.github.kylinhunter.commons.codec;
 
+import io.github.kylinhunter.commons.io.ResourceHelper;
 import java.io.File;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import io.github.kylinhunter.commons.io.ResourceHelper;
 
 class MD5UtilsTest {
 

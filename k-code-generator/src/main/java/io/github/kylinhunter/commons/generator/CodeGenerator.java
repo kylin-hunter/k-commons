@@ -1,10 +1,9 @@
 package io.github.kylinhunter.commons.generator;
 
-import java.util.List;
-
 import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.generator.context.TemplateContextBuilder;
 import io.github.kylinhunter.commons.generator.context.bean.TemplateContext;
+import java.util.List;
 
 /**
  * @author BiJi'an
@@ -27,5 +26,3 @@ public class CodeGenerator {
         codeExporter.export(templateContexts);
     }
 }
-
-

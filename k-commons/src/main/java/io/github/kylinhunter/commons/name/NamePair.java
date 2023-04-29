@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.name;
 
 import java.io.Serializable;
-
 import lombok.Data;
 
 /**

@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons.codec;
 
-import javax.crypto.Cipher;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import javax.crypto.Cipher;
 
 /**
  * @author BiJi'an

@@ -1,10 +1,8 @@
 package io.github.kylinhunter.commons.util;
 
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.collections.MapUtils;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

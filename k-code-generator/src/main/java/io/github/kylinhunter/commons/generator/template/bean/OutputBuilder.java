@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.generator.template.bean;
 
+import io.github.kylinhunter.commons.generator.template.TemplateExecutor;
+import io.github.kylinhunter.commons.generator.template.config.TemplateConfig;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-
-import io.github.kylinhunter.commons.generator.template.TemplateExecutor;
-import io.github.kylinhunter.commons.generator.template.config.TemplateConfig;
 import lombok.Data;
 
 /**

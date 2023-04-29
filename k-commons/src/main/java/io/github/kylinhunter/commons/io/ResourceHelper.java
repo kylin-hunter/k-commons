@@ -1,15 +1,14 @@
 package io.github.kylinhunter.commons.io;
 
+import io.github.kylinhunter.commons.exception.embed.KIOException;
+import io.github.kylinhunter.commons.io.file.FileUtil;
+import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Objects;
-
-import io.github.kylinhunter.commons.exception.embed.KIOException;
-import io.github.kylinhunter.commons.io.file.FileUtil;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import lombok.Data;
 
 /**

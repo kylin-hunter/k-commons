@@ -2,21 +2,6 @@ package io.github.kylinhunter.commons.properties;
 
 import static java.lang.reflect.Array.newInstance;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
-
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.bean.info.ExPropType;
@@ -32,6 +17,19 @@ import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import io.github.kylinhunter.commons.util.ObjectValues;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

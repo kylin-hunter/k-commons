@@ -1,13 +1,11 @@
 package io.github.kylinhunter.commons.jdbc.meta.parser.imp;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.mysql.cj.MysqlType;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.jdbc.meta.parser.ColumnParser;
 import io.github.kylinhunter.commons.reflect.ClassUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

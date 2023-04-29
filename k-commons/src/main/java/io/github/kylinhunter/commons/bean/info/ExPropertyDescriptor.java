@@ -1,14 +1,12 @@
 package io.github.kylinhunter.commons.bean.info;
 
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
+import io.github.kylinhunter.commons.reflect.bean.ActualType;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.List;
-
-import org.apache.commons.lang3.ClassUtils;
-
-import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
-import io.github.kylinhunter.commons.reflect.bean.ActualType;
 import lombok.Data;
+import org.apache.commons.lang3.ClassUtils;
 
 /**
  * @author BiJi'an

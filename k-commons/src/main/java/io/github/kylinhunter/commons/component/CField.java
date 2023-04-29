@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.component;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

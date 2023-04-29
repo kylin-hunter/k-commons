@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons.bean;
 
-import java.util.List;
-
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertType;
 import io.github.kylinhunter.commons.bean.copy.convertor.FieldCopy;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 

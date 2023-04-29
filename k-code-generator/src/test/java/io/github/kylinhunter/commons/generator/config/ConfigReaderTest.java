@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.generator.config;
 
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.generator.config.bean.Config;
+import org.junit.jupiter.api.Test;
 
 class ConfigReaderTest {
 

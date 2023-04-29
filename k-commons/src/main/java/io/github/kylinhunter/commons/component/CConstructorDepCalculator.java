@@ -1,5 +1,8 @@
 package io.github.kylinhunter.commons.component;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.collections.SetUtils;
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -8,10 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.collections.SetUtils;
-import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 
 ;
 
@@ -116,4 +115,3 @@ public class CConstructorDepCalculator {
 
     }
 }
-

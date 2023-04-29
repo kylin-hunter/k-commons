@@ -1,12 +1,10 @@
 package io.github.kylinhunter.commons.compiler;
 
-import java.io.File;
-import java.util.Set;
-
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import java.io.File;
+import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 class KplatCompilerTest {
 

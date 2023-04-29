@@ -1,22 +1,20 @@
 package io.github.kylinhunter.commons.generator.template.velocity;
 
-import java.io.File;
-import java.util.Map;
-import java.util.Properties;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.tools.ToolManager;
-
 import io.github.kylinhunter.commons.collections.ArrayUtils;
 import io.github.kylinhunter.commons.generator.template.AbstractTemplateEngine;
 import io.github.kylinhunter.commons.generator.template.TemplateExecutor;
 import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
 import io.github.kylinhunter.commons.generator.template.constant.VelocityConst;
+import java.io.File;
+import java.util.Map;
+import java.util.Properties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.ToolManager;
 
 /**
  * @author BiJi'an

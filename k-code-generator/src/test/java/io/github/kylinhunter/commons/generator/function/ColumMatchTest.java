@@ -1,12 +1,9 @@
 package io.github.kylinhunter.commons.generator.function;
 
-import java.util.Map;
-
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.collections.MapUtils;
-
 import io.github.kylinhunter.commons.component.CF;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 class ColumMatchTest {
 

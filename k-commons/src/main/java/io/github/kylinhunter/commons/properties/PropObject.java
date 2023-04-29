@@ -1,14 +1,13 @@
 package io.github.kylinhunter.commons.properties;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import io.github.kylinhunter.commons.bean.info.BeanIntrospector;
 import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.bean.info.ExPropertyDescriptor;
 import io.github.kylinhunter.commons.collections.ListUtils;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.Data;
 
 /**

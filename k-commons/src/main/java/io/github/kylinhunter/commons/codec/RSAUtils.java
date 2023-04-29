@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.codec;
 
+import io.github.kylinhunter.commons.exception.embed.CryptException;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -7,10 +8,7 @@ import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
-
 import javax.crypto.Cipher;
-
-import io.github.kylinhunter.commons.exception.embed.CryptException;
 import lombok.Getter;
 
 /**

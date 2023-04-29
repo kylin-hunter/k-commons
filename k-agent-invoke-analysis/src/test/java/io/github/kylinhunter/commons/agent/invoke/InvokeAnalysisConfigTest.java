@@ -1,15 +1,13 @@
 package io.github.kylinhunter.commons.agent.invoke;
 
+import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.PluginConfigReader;
+import io.github.kylinhunter.commons.io.ResourceHelper;
 import java.io.File;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-
-import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
-import io.github.kylinhunter.commons.clazz.agent.plugin.config.PluginConfigReader;
-import io.github.kylinhunter.commons.io.ResourceHelper;
 
 class InvokeAnalysisConfigTest {
 

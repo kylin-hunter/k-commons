@@ -1,12 +1,11 @@
 package io.github.kylinhunter.commons.serialize;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.github.kylinhunter.commons.exception.embed.InternalException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.github.kylinhunter.commons.exception.embed.InternalException;
 
 /**
  * @author BiJi'an

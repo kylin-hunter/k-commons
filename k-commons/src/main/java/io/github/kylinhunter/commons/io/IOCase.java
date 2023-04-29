@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.io;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import lombok.Getter;
 
 /**

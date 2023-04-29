@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.component;
 
 import java.lang.reflect.Constructor;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -3,12 +3,10 @@ package io.github.kylinhunter.commons.cmd;
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
-
-import org.apache.commons.codec.Charsets;
-import org.apache.commons.io.IOUtils;
-
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.Charsets;
+import org.apache.commons.io.IOUtils;
 
 /**
  * @author BiJi'an

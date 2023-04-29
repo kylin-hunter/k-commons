@@ -1,17 +1,5 @@
 package io.github.kylinhunter.commons.bean.copy;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.reflections.ReflectionUtils;
-
 import io.github.kylinhunter.commons.bean.BeanCopyUtils;
 import io.github.kylinhunter.commons.bean.copy.convertor.ConvertType;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
@@ -22,7 +10,17 @@ import io.github.kylinhunter.commons.bean.info.BeanIntrospectors;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Data;
+import org.reflections.ReflectionUtils;
 
 /**
  * @author BiJi'an

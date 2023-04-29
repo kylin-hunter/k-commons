@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin.config.bean;
 
-import java.util.List;
-
 import io.github.kylinhunter.commons.collections.ListUtils;
+import java.util.List;
 import lombok.Data;
 
 /**

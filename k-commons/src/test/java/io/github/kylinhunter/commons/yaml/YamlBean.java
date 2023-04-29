@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.yaml;
 
 import java.util.List;
-
 import lombok.Data;
 
 /**

@@ -1,15 +1,13 @@
 package io.github.kylinhunter.commons.properties;
 
-import java.io.File;
-import java.util.Properties;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.properties.data.Grandfather;
 import io.github.kylinhunter.commons.properties.data.TestDataHelper;
+import java.io.File;
+import java.util.Properties;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class PropertiesHelperTest {
 

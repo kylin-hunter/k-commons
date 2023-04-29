@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.agent.invoke.test;
 
+import io.github.kylinhunter.commons.clazz.agent.plugin.PluginManager;
+import io.github.kylinhunter.commons.util.ThreadHelper;
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-
-import io.github.kylinhunter.commons.clazz.agent.plugin.PluginManager;
-import io.github.kylinhunter.commons.util.ThreadHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

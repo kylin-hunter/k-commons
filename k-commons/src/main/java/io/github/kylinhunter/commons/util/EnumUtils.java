@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.util;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.embed.ParamException;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.exception.embed.ParamException;
 
 /**
  * @author BiJi'an

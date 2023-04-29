@@ -1,13 +1,12 @@
 package io.github.kylinhunter.commons.jdbc.meta;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -73,7 +72,3 @@ public class DatabaseMetaReader {
     }
 
 }
-
-
-
-

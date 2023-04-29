@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.properties.data;
 
 import java.util.StringJoiner;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

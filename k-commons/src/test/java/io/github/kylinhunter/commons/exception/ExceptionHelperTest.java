@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.exception;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.exception.explain.TestException1;
 import io.github.kylinhunter.commons.exception.explain.TestException2;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class ExceptionHelperTest {
     @Test

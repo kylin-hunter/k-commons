@@ -1,10 +1,8 @@
 package io.github.kylinhunter.commons.cmd;
 
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.juc.ThreadPoolExecutorFactory;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 class CmdExecutorTest {
 

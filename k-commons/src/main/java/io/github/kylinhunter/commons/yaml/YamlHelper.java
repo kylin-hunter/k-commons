@@ -1,15 +1,13 @@
 package io.github.kylinhunter.commons.yaml;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
-import org.yaml.snakeyaml.Yaml;
-
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.io.IOHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.name.NameRule;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * @author BiJi'an
@@ -140,5 +138,3 @@ public class YamlHelper {
     }
 
 }
-
-

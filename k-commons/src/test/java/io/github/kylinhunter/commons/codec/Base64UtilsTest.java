@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.codec;
 
 import java.nio.charset.StandardCharsets;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

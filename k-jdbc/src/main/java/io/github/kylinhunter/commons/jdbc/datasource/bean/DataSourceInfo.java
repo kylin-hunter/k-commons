@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.datasource.bean;
 
 import java.util.Map;
-
 import lombok.Data;
 
 /**

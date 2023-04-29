@@ -1,16 +1,14 @@
 package io.github.kylinhunter.commons.xml;
 
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-
-import io.github.kylinhunter.commons.exception.embed.GeneralException;
 
 /**
  * @author BiJi'an

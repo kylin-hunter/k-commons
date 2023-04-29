@@ -1,16 +1,14 @@
 package io.github.kylinhunter.commons.generator.template;
 
-import java.io.File;
-import java.time.LocalDateTime;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
 import io.github.kylinhunter.commons.generator.template.velocity.VelocityTemplateEngine;
 import io.github.kylinhunter.commons.io.file.FileExtensions;
 import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import java.io.File;
+import java.time.LocalDateTime;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class VelocityTemplateExecutorTest {
 

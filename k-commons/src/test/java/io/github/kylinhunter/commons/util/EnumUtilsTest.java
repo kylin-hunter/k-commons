@@ -3,12 +3,11 @@ package io.github.kylinhunter.commons.util;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class EnumUtilsTest {
 

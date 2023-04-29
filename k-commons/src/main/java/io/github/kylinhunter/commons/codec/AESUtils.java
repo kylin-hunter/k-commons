@@ -1,15 +1,13 @@
 package io.github.kylinhunter.commons.codec;
 
+import io.github.kylinhunter.commons.exception.embed.CryptException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.SecureRandom;
 import java.util.Base64;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
-
-import io.github.kylinhunter.commons.exception.embed.CryptException;
 import lombok.Getter;
 
 /**

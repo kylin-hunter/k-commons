@@ -1,16 +1,13 @@
 package io.github.kylinhunter.commons.bean;
 
-import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.collections.ListUtils;
-
 import io.github.kylinhunter.commons.json.JsonUtils;
 import io.github.kylinhunter.commons.serialize.ObjectBytesSerializer;
 import io.github.kylinhunter.commons.xml.JAXBHelper;
 import io.github.kylinhunter.commons.yaml.YamlHelper;
+import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class BeanCopyUtilsTest {
 

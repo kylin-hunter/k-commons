@@ -1,15 +1,13 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin.config;
 
+import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
+import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
+import io.github.kylinhunter.commons.io.ResourceHelper;
 import java.io.File;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-
-import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
-import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
-import io.github.kylinhunter.commons.io.ResourceHelper;
 
 class PluginConfigReaderTest {
 

@@ -1,9 +1,7 @@
 package io.github.kylinhunter.commons.exception.explain;
 
-import java.util.List;
-
 import io.github.kylinhunter.commons.collections.ListUtils;
-
+import java.util.List;
 import lombok.Getter;
 
 /**

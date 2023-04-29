@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.agent.invoke;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
-
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;

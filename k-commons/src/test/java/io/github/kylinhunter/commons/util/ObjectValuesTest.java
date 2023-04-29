@@ -2,9 +2,8 @@ package io.github.kylinhunter.commons.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.date.DateUtils;
+import org.junit.jupiter.api.Test;
 
 class ObjectValuesTest {
 

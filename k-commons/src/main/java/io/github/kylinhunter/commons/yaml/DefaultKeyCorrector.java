@@ -1,10 +1,9 @@
 package io.github.kylinhunter.commons.yaml;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.name.NameUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 

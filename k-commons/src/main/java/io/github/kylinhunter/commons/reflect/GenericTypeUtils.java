@@ -1,10 +1,9 @@
 package io.github.kylinhunter.commons.reflect;
 
+import io.github.kylinhunter.commons.reflect.bean.ActualType;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-
-import io.github.kylinhunter.commons.reflect.bean.ActualType;
 
 /**
  * @author BiJi'an

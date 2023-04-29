@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.codec;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
 import io.github.kylinhunter.commons.cache.guava.AbstractCache;
 import io.github.kylinhunter.commons.cache.guava.CacheConfig;
 import io.github.kylinhunter.commons.cache.guava.CacheKey;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @author BiJi'an

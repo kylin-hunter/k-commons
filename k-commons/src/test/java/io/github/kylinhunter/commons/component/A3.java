@@ -1,8 +1,6 @@
 package io.github.kylinhunter.commons.component;
 
 import java.util.List;
-
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -1,11 +1,5 @@
 package io.github.kylinhunter.commons.generator;
 
-import java.io.File;
-import java.time.LocalTime;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.classloader.ExClassLoaderUtil;
 import io.github.kylinhunter.commons.compiler.KplatCompiler;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
@@ -14,6 +8,10 @@ import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.File;
+import java.time.LocalTime;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class CodeGeneratorTest {
     File sourceDir = ResourceHelper.getDir("$user.dir$/src_generator");

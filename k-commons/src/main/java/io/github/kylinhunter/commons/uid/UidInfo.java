@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.uid;
 
-import java.util.StringJoiner;
-
 import io.github.kylinhunter.commons.date.DateUtils;
+import java.util.StringJoiner;
 import lombok.Data;
 
 /**

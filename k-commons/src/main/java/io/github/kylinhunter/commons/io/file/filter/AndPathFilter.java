@@ -1,12 +1,11 @@
 package io.github.kylinhunter.commons.io.file.filter;
 
+import io.github.kylinhunter.commons.collections.ListUtils;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Objects;
-
-import io.github.kylinhunter.commons.collections.ListUtils;
 
 public class AndPathFilter extends AbstractPathFilter {
     private final List<PathFilter> fileFilters;

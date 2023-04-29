@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.log.jul;
 
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
+import io.github.kylinhunter.commons.io.ResourceHelper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.LogManager;
-
-import io.github.kylinhunter.commons.exception.embed.GeneralException;
-import io.github.kylinhunter.commons.io.ResourceHelper;
 
 /**
  * @author BiJi'an

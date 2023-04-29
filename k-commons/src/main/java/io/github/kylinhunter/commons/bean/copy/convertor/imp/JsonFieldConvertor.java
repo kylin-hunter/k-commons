@@ -1,17 +1,15 @@
 package io.github.kylinhunter.commons.bean.copy.convertor.imp;
 
+import com.fasterxml.jackson.databind.JavaType;
+import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
+import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
+import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.json.JsonUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.JavaType;
-
-import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
-import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
-import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.json.JsonUtils;
 
 /**
  * @author BiJi'an

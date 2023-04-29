@@ -1,11 +1,6 @@
 package io.github.kylinhunter.commons.generator.context;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.collections.ListUtils;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
@@ -23,8 +18,10 @@ import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

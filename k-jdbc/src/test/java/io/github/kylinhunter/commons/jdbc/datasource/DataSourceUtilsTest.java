@@ -2,9 +2,7 @@ package io.github.kylinhunter.commons.jdbc.datasource;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import javax.sql.DataSource;
-
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.junit.jupiter.api.Assertions;

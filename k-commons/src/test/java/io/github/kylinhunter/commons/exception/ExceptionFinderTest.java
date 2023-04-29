@@ -2,11 +2,10 @@ package io.github.kylinhunter.commons.exception;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
-
 import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.common.KException;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
+import org.junit.jupiter.api.Test;
 
 class ExceptionFinderTest {
 

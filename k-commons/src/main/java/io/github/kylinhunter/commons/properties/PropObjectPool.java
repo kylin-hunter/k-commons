@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.properties;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.exception.embed.GeneralException;
 
 /**
  * @author BiJi'an

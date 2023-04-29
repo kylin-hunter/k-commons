@@ -1,7 +1,5 @@
 package io.github.kylinhunter.commons.generator.config;
 
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Modules;
@@ -11,6 +9,7 @@ import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.yaml.YamlHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

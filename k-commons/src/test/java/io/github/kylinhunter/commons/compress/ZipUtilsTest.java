@@ -1,22 +1,20 @@
 package io.github.kylinhunter.commons.compress;
 
+import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.io.file.FileUtil;
+import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.reader.FileReaderUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
-import io.github.kylinhunter.commons.io.ResourceHelper;
-import io.github.kylinhunter.commons.io.file.FileUtil;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
-import io.github.kylinhunter.commons.io.file.reader.FileReaderUtils;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ZipUtilsTest {

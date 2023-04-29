@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.name;
 
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.exception.embed.ParamException;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.bean.info;
 
-import java.util.Map;
-
 import io.github.kylinhunter.commons.collections.MapUtils;
+import java.util.Map;
 
 /**
  * @author BiJi'an

@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.generator.template.bean;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-
 import lombok.Data;
 
 /**

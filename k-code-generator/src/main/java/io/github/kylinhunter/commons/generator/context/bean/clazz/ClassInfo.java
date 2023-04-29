@@ -1,11 +1,8 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
-import java.util.List;
-
 import io.github.kylinhunter.commons.collections.CollectionUtils;
-
 import io.github.kylinhunter.commons.collections.ListUtils;
-
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

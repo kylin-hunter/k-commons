@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.agent.invoke.test.bean;
 
 import java.util.UUID;
-
 import lombok.Data;
 
 /**

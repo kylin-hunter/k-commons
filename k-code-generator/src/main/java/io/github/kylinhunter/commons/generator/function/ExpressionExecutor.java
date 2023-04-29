@@ -1,18 +1,15 @@
 package io.github.kylinhunter.commons.generator.function;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-
-
 import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.Expression;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CAfter;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
 import io.github.kylinhunter.commons.io.IOHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 /**
  * @author BiJi'an

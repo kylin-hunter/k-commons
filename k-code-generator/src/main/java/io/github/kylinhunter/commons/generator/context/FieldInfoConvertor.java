@@ -1,12 +1,6 @@
 package io.github.kylinhunter.commons.generator.context;
 
-import java.util.Map;
-
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.collections.MapUtils;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Database;
@@ -16,6 +10,9 @@ import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.name.SnakeToCamelUtils;
 import io.github.kylinhunter.commons.util.ObjectValues;
+import java.util.Map;
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -87,4 +84,3 @@ public class FieldInfoConvertor {
 
     }
 }
-

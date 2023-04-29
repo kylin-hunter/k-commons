@@ -1,16 +1,14 @@
 package io.github.kylinhunter.commons.io;
 
+import io.github.kylinhunter.commons.exception.common.KRuntimeException;
+import io.github.kylinhunter.commons.io.ResourceHelper.PathType;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import io.github.kylinhunter.commons.exception.common.KRuntimeException;
-import io.github.kylinhunter.commons.io.ResourceHelper.PathType;
 
 class ResourceHelperTest {
 

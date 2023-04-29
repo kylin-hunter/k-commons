@@ -1,13 +1,11 @@
 package io.github.kylinhunter.commons.properties;
 
-import java.util.StringJoiner;
-
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.name.NameUtils;
+import java.util.StringJoiner;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

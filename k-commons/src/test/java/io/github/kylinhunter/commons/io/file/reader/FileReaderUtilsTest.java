@@ -2,12 +2,10 @@ package io.github.kylinhunter.commons.io.file.reader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.github.kylinhunter.commons.io.ResourceHelper;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.junit.jupiter.api.Test;
-
-import io.github.kylinhunter.commons.io.ResourceHelper;
 
 class FileReaderUtilsTest {
 

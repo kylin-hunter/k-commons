@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin.config.bean;
 
 import java.io.File;
-
 import lombok.Data;
 
 /**

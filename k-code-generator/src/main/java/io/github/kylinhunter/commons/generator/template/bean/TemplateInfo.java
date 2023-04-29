@@ -1,11 +1,10 @@
 package io.github.kylinhunter.commons.generator.template.bean;
 
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.strings.StringConst;
 import io.github.kylinhunter.commons.util.FilenameUtils;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

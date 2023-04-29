@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons;
 
-import java.util.List;
-
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
+import java.util.List;
 
 class AgentTest {
 

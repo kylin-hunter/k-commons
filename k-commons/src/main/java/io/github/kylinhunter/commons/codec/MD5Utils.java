@@ -1,15 +1,13 @@
 package io.github.kylinhunter.commons.codec;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.github.kylinhunter.commons.exception.embed.CryptException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.Md5Crypt;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.github.kylinhunter.commons.exception.embed.CryptException;
 
 /**
  * @author BiJi'an

@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons.codec;
 
+import io.github.kylinhunter.commons.io.Charsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
-import io.github.kylinhunter.commons.io.Charsets;
 
 public class TestSecureRandom {
 

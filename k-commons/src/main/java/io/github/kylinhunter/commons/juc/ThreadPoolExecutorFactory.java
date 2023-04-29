@@ -1,13 +1,11 @@
 package io.github.kylinhunter.commons.juc;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import io.github.kylinhunter.commons.collections.MapUtils;
-
-import io.github.kylinhunter.commons.exception.embed.InitException;
 
 /**
  * @author BiJi'an

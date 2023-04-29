@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
+import lombok.Data;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import lombok.Data;
 
 /**
  * @author BiJi'an

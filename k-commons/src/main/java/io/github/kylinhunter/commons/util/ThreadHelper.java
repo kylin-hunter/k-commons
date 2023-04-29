@@ -1,8 +1,7 @@
 package io.github.kylinhunter.commons.util;
 
-import java.util.concurrent.TimeUnit;
-
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @description:

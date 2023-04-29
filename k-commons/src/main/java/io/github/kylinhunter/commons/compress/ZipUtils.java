@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.compress;
 
+import io.github.kylinhunter.commons.io.file.FileUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,15 +11,12 @@ import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
-
 import org.apache.commons.compress.archivers.zip.Zip64Mode;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.IOUtils;
-
-import io.github.kylinhunter.commons.io.file.FileUtil;
 
 /**
  * @author BiJi'an

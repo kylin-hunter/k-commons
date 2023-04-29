@@ -1,9 +1,8 @@
 package io.github.kylinhunter.commons.generator.template;
 
-import java.util.Map;
-
 import io.github.kylinhunter.commons.generator.template.config.ConfigCustomize;
 import io.github.kylinhunter.commons.generator.template.config.TemplateConfig;
+import java.util.Map;
 
 /**
  * @author BiJi'an

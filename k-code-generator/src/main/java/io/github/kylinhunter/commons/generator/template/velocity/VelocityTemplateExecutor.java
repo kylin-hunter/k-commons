@@ -1,18 +1,5 @@
 package io.github.kylinhunter.commons.generator.template.velocity;
 
-import java.io.File;
-import java.io.StringWriter;
-import java.nio.charset.Charset;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.tools.ToolContext;
-
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.generator.template.OutputProcessor;
@@ -25,8 +12,19 @@ import io.github.kylinhunter.commons.generator.template.config.TemplateConfig;
 import io.github.kylinhunter.commons.generator.template.exception.TemplateException;
 import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.path.PathUtil;
+import java.io.File;
+import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.ToolContext;
 
 /**
  * @author BiJi'an

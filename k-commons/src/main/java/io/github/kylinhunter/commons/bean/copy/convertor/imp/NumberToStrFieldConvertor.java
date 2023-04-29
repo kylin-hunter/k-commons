@@ -1,15 +1,13 @@
 package io.github.kylinhunter.commons.bean.copy.convertor.imp;
 
-import java.beans.PropertyDescriptor;
-import java.text.DecimalFormat;
-import java.util.Set;
-
-import org.apache.commons.lang3.math.NumberUtils;
-
 import io.github.kylinhunter.commons.bean.copy.AbstractFieldConvertor;
 import io.github.kylinhunter.commons.bean.copy.convertor.Direction;
 import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import java.beans.PropertyDescriptor;
+import java.text.DecimalFormat;
+import java.util.Set;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * @author BiJi'an

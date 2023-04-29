@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.io.file;
 
+import io.github.kylinhunter.commons.io.file.path.PathUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -10,11 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import io.github.kylinhunter.commons.io.file.path.PathUtil;
 
 class JavaIOFileTest {
 

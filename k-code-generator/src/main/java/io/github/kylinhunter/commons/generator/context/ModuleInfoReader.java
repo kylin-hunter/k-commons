@@ -1,10 +1,6 @@
 package io.github.kylinhunter.commons.generator.context;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import io.github.kylinhunter.commons.collections.CollectionUtils;
-
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
@@ -18,6 +14,8 @@ import io.github.kylinhunter.commons.jdbc.meta.ColumnMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.TableMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 /**

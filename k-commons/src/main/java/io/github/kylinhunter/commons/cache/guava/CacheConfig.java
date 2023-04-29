@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.cache.guava;
 
 import java.util.concurrent.TimeUnit;
-
 import lombok.Data;
 
 /**

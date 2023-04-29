@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.codec;
 
 import javax.crypto.SecretKey;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

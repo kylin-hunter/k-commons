@@ -1,15 +1,12 @@
 package io.github.kylinhunter.commons.component;
 
+import io.github.kylinhunter.commons.collections.SetUtils;
 import java.lang.annotation.Annotation;
 import java.util.Set;
-
+import lombok.Data;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
-
-import io.github.kylinhunter.commons.collections.SetUtils;;
-
-import lombok.Data;
 
 /**
  * @author BiJi'an

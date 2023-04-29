@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.branch;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
-
 import lombok.ToString;
 
 /**

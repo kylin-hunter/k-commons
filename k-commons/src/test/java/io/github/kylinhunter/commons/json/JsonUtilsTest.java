@@ -1,22 +1,19 @@
 package io.github.kylinhunter.commons.json;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.github.kylinhunter.commons.collections.ListUtils;
-import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mockit.Mock;
 import mockit.MockUp;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class JsonUtilsTest {
     private final TestBean testBean = new TestBean("keyValue", "snakeValue");

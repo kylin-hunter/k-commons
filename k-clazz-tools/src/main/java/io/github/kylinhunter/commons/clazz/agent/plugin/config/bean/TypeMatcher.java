@@ -1,12 +1,11 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin.config.bean;
 
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import lombok.Data;
 import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

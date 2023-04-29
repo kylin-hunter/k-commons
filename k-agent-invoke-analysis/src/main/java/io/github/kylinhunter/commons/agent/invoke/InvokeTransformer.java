@@ -1,21 +1,19 @@
 package io.github.kylinhunter.commons.agent.invoke;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.ProtectionDomain;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.clazz.agent.plugin.AbstractAgentTransformer;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.DebugConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.util.ThreadHelper;
+import java.io.File;
+import java.io.IOException;
+import java.security.ProtectionDomain;
+import java.util.concurrent.TimeUnit;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.utility.JavaModule;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an

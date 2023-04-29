@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.util;
 
 import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 
 /**

@@ -1,13 +1,11 @@
 package io.github.kylinhunter.commons.generator.config.bean;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import io.github.kylinhunter.commons.strings.CharsetConst;
+import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @Setter

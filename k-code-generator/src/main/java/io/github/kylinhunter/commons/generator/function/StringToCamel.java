@@ -1,14 +1,12 @@
 package io.github.kylinhunter.commons.generator.function;
 
-import java.util.Map;
-
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.googlecode.aviator.runtime.type.AviatorString;
-
 import io.github.kylinhunter.commons.name.CamelFormat;
 import io.github.kylinhunter.commons.name.SnakeToCamelUtils;
+import java.util.Map;
 
 /**
  * @author BiJi'an
