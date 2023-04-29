@@ -9,9 +9,8 @@ import lombok.ToString;
  * @author BiJi'an
  * @description
  * @date 2023-03-19 16:34
- **/
+ */
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class InvokeAnalysisConfig extends PluginConfig {
-}
+public class InvokeAnalysisConfig extends PluginConfig {}
