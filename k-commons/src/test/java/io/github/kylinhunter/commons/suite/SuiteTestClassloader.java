@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.suite;
 
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;
-import org.junit.platform.suite.api.SuiteDisplayName;
 
 /**
  * @author BiJi'an

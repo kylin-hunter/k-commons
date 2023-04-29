@@ -3,7 +3,6 @@ package io.github.kylinhunter.commons.name;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.kylinhunter.commons.component.CF;
 
 class SnakeToCamelUtilsTest {
 

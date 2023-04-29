@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
 import io.github.kylinhunter.commons.log.jul.JULManager;
-import lombok.Data;
 
 /**
  * @author BiJi'an
