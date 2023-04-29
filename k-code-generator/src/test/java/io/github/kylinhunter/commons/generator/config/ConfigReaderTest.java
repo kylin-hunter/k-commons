@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 class ConfigReaderTest {
 
-    @Test
-    void load() {
-        ConfigReader configReader = new ConfigReader();
-        Config config = configReader.load();
-        System.out.println(config);
-    }
+  @Test
+  void load() {
+    ConfigReader configReader = new ConfigReader();
+    Config config = configReader.load();
+    System.out.println(config);
+  }
 }

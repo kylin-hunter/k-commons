@@ -17,50 +17,48 @@ import java.io.File;
  * @author BiJi'an
  * @description
  * @date 2023-02-04 20:27
- **/
+ */
 @CC
 public class CompConfiguration {
 
-    /**
-     * @return io.github.kylinhunter.commons.generator.config.bean.Config
-     * @title config
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-16 23:51
-     */
-    @C
-    public Config config() {
-        return new ConfigReader().load();
-    }
+  /**
+   * @return io.github.kylinhunter.commons.generator.config.bean.Config
+   * @title config
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-16 23:51
+   */
+  @C
+  public Config config() {
+    return new ConfigReader().load();
+  }
 
-    /**
-     * @param config config
-     * @return io.github.kylinhunter.commons.template.TemplateExecutor
-     * @title templateExecutor
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-16 23:51
-     */
-    @C
-    public TemplateEngine templateEngine(Config config) {
-        TemplateEngine templateEngine = new VelocityTemplateEngine();
-        templateEngine.customize(templateConfig -> {
-            Global global = config.getGlobal();
+  /**
+   * @param config config
+   * @return io.github.kylinhunter.commons.template.TemplateExecutor
+   * @title templateExecutor
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-16 23:51
+   */
+  @C
+  public TemplateEngine templateEngine(Config config) {
+    TemplateEngine templateEngine = new VelocityTemplateEngine();
+    templateEngine.customize(
+        templateConfig -> {
+          Global global = config.getGlobal();
 
-            String templatePath = global.getTemplatePath();
-            File dirTemplate = ResourceHelper.getDir(templatePath, PathType.FILESYSTEM, true);
-            templateConfig.setTemplatePath(dirTemplate.toPath());
+          String templatePath = global.getTemplatePath();
+          File dirTemplate = ResourceHelper.getDir(templatePath, PathType.FILESYSTEM, true);
+          templateConfig.setTemplatePath(dirTemplate.toPath());
 
-            Output output = global.getOutput();
-            String outputPath = output.getPath();
-            OutputConfig outputConfig = templateConfig.getOutputConfig();
-            outputConfig.setAutoCreate(output.isAutoCreate());
-            outputConfig.setAutoClean(output.isAutoClean());
-            outputConfig.setOutputPath(outputPath);
-
+          Output output = global.getOutput();
+          String outputPath = output.getPath();
+          OutputConfig outputConfig = templateConfig.getOutputConfig();
+          outputConfig.setAutoCreate(output.isAutoCreate());
+          outputConfig.setAutoClean(output.isAutoClean());
+          outputConfig.setOutputPath(outputPath);
         });
-        return templateEngine;
-
-    }
-
+    return templateEngine;
+  }
 }

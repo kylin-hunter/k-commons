@@ -7,8 +7,7 @@ import org.junit.platform.suite.api.Suite;
  * @author BiJi'an
  * @description
  * @date 2022-05-13 22:41
- **/
+ */
 @Suite
 @SelectPackages("io.github.kylinhunter.commons.bean")
-public class SuiteTestBean {
-}
+public class SuiteTestBean {}

@@ -10,20 +10,20 @@ import org.junit.jupiter.api.Test;
 
 class DataSourceUtilsTest {
 
-    @Test
-    void test() throws SQLException {
-        DataSource defaultDataSource = DataSourceUtils.getDefaultDataSource();
+  @Test
+  void test() throws SQLException {
+    DataSource defaultDataSource = DataSourceUtils.getDefaultDataSource();
 
-        QueryRunner runner = new QueryRunner(defaultDataSource);
+    QueryRunner runner = new QueryRunner(defaultDataSource);
 
-        // 2.执行查询
-        List<Object[]> objs = runner.query(" desc test_user", new ArrayListHandler());
-        for (Object[] os : objs) {        // object[]中保存了object对象
-            for (Object o : os) {
-                System.out.print(o + "\t");
-            }
-            System.out.println();
-        }
-        Assertions.assertTrue(objs.size() > 0);
+    // 2.执行查询
+    List<Object[]> objs = runner.query(" desc test_user", new ArrayListHandler());
+    for (Object[] os : objs) { // object[]中保存了object对象
+      for (Object o : os) {
+        System.out.print(o + "\t");
+      }
+      System.out.println();
     }
+    Assertions.assertTrue(objs.size() > 0);
+  }
 }

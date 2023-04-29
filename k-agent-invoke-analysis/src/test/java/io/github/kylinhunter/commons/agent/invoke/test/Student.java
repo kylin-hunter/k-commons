@@ -12,41 +12,36 @@ import lombok.EqualsAndHashCode;
  * @author BiJi'an
  * @description
  * @date 2023-03-11 14:50
- **/
+ */
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Student implements HomeWork {
-    private static Logger log = Logger.getLogger(PluginManager.class.toString());
+  private static Logger log = Logger.getLogger(PluginManager.class.toString());
 
-    @EqualsAndHashCode.Include
-    public final String name;
+  @EqualsAndHashCode.Include public final String name;
 
-    private SecureRandom random = new SecureRandom();
+  private SecureRandom random = new SecureRandom();
 
-    @Override
-    public void doHomeWork() {
+  @Override
+  public void doHomeWork() {
 
-        if (random.nextBoolean()) {
-            this.fastDoing();
-        } else {
-            this.slowDoing();
-        }
-
+    if (random.nextBoolean()) {
+      this.fastDoing();
+    } else {
+      this.slowDoing();
     }
+  }
 
-    private void slowDoing() {
-        log.info("I'm " + name + ", I'm  donging homework slowly,with 100 milliseconds");
-        String path = "org/apache/commons/io/FileUtils.class";
+  private void slowDoing() {
+    log.info("I'm " + name + ", I'm  donging homework slowly,with 100 milliseconds");
+    String path = "org/apache/commons/io/FileUtils.class";
 
-        Student.class.getClassLoader().getResource(path);
-        ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
+    Student.class.getClassLoader().getResource(path);
+    ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
+  }
 
-    }
-
-    private void fastDoing() {
-        log.info("I'm " + name + ", I'm  donging homework fast,with 10 milliseconds");
-        ThreadHelper.sleep(10, TimeUnit.MILLISECONDS);
-
-    }
-
+  private void fastDoing() {
+    log.info("I'm " + name + ", I'm  donging homework fast,with 10 milliseconds");
+    ThreadHelper.sleep(10, TimeUnit.MILLISECONDS);
+  }
 }

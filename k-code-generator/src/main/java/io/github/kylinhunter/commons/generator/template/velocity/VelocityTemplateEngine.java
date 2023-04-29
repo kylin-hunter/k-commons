@@ -20,82 +20,80 @@ import org.apache.velocity.tools.ToolManager;
  * @author BiJi'an
  * @description
  * @date 2023-01-05 16:15
- **/
-
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Slf4j
 public class VelocityTemplateEngine extends AbstractTemplateEngine {
-    private VelocityEngine velocityEngine;
-    private ToolManager toolManager;
+  private VelocityEngine velocityEngine;
+  private ToolManager toolManager;
 
-    public VelocityTemplateEngine() {
-        reInit();
-    }
+  public VelocityTemplateEngine() {
+    reInit();
+  }
 
-    /**
-     * @return void
-     * @title reInit
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-03 01:27
-     */
-    protected void reInit() {
-        Properties properties = new Properties();
-        properties.setProperty(Velocity.RESOURCE_LOADERS, "class,file");
-        properties.setProperty(Velocity.INPUT_ENCODING, Velocity.ENCODING_DEFAULT);
+  /**
+   * @return void
+   * @title reInit
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-03 01:27
+   */
+  protected void reInit() {
+    Properties properties = new Properties();
+    properties.setProperty(Velocity.RESOURCE_LOADERS, "class,file");
+    properties.setProperty(Velocity.INPUT_ENCODING, Velocity.ENCODING_DEFAULT);
 
-        // resource.loader.class
-        properties.setProperty(VelocityConst.KEY_RESOURCE_LOADER_CLASS_CLASS,
-                VelocityConst.VALUE_RESOURCE_LOADER_CLASS_CLASS);
+    // resource.loader.class
+    properties.setProperty(
+        VelocityConst.KEY_RESOURCE_LOADER_CLASS_CLASS,
+        VelocityConst.VALUE_RESOURCE_LOADER_CLASS_CLASS);
 
-        properties.setProperty(VelocityConst.KEY_RESOURCE_LOADER_FILE_CLASS,
-                VelocityConst.VALUE_RESOURCE_LOADER_FILE_CLASS);
+    properties.setProperty(
+        VelocityConst.KEY_RESOURCE_LOADER_FILE_CLASS,
+        VelocityConst.VALUE_RESOURCE_LOADER_FILE_CLASS);
 
-        // resource.loader.file
-        String templatePath = templateConfig.getTemplatePath().toFile().getAbsolutePath();
-        log.info("resource.loader.file.path=>" + templatePath);
-        properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, templatePath);
+    // resource.loader.file
+    String templatePath = templateConfig.getTemplatePath().toFile().getAbsolutePath();
+    log.info("resource.loader.file.path=>" + templatePath);
+    properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, templatePath);
 
-        properties.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, "true");
-        properties.setProperty("resource.loader.file.modification_check_interval", "60");
+    properties.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, "true");
+    properties.setProperty("resource.loader.file.modification_check_interval", "60");
 
-        this.velocityEngine = new VelocityEngine();
-        this.velocityEngine.init(properties);
+    this.velocityEngine = new VelocityEngine();
+    this.velocityEngine.init(properties);
 
-        this.toolManager = new ToolManager();
-        this.toolManager.configure("/io/github/kylinhunter/commons/template/velocity-tools.xml");
+    this.toolManager = new ToolManager();
+    this.toolManager.configure("/io/github/kylinhunter/commons/template/velocity-tools.xml");
 
-        if (this.templateConfig.getOutputConfig().isAutoClean()) {
-            OutputConfig outputConfig = templateConfig.getOutputConfig();
-            File outputDir = outputConfig.getOutputPath().toFile();
-            File[] files = outputDir.listFiles();
-            if (!ArrayUtils.isEmpty(files)) {
-                for (File file : files) {
-                    log.info("delete file=>" + file.getAbsolutePath());
-                    FileUtils.deleteQuietly(file);
-                }
-            }
-
+    if (this.templateConfig.getOutputConfig().isAutoClean()) {
+      OutputConfig outputConfig = templateConfig.getOutputConfig();
+      File outputDir = outputConfig.getOutputPath().toFile();
+      File[] files = outputDir.listFiles();
+      if (!ArrayUtils.isEmpty(files)) {
+        for (File file : files) {
+          log.info("delete file=>" + file.getAbsolutePath());
+          FileUtils.deleteQuietly(file);
         }
+      }
     }
+  }
 
-    /**
-     * @return io.github.kylinhunter.commons.templateInfo.context.TemplateExecutor
-     * @title createContext
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-05 22:14
-     */
-    @Override
-    public TemplateExecutor createTemplateExecutor() {
-        return new VelocityTemplateExecutor(this);
-    }
+  /**
+   * @return io.github.kylinhunter.commons.templateInfo.context.TemplateExecutor
+   * @title createContext
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-05 22:14
+   */
+  @Override
+  public TemplateExecutor createTemplateExecutor() {
+    return new VelocityTemplateExecutor(this);
+  }
 
-    @Override
-    public TemplateExecutor createTemplateExecutor(Map<String, Object> context) {
-        return new VelocityTemplateExecutor(this, context);
-
-    }
-
+  @Override
+  public TemplateExecutor createTemplateExecutor(Map<String, Object> context) {
+    return new VelocityTemplateExecutor(this, context);
+  }
 }

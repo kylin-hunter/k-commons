@@ -6,11 +6,10 @@ import lombok.Data;
  * @author BiJi'an
  * @description
  * @date 2023-03-19 16:36
- **/
+ */
 @Data
 public class PointCut {
 
-    private TypeMatcher type;
-    private TypeMatcher method;
-
+  private TypeMatcher type;
+  private TypeMatcher method;
 }

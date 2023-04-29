@@ -12,82 +12,76 @@ import lombok.RequiredArgsConstructor;
  * @author BiJi'an
  * @description
  * @date 2022-10-25 23:17
- **/
-
+ */
 @RequiredArgsConstructor
 class MethodCompManager {
-    private CompManager compManager;
-    protected CMethodManager methodManager;
+  private CompManager compManager;
+  protected CMethodManager methodManager;
 
-    public MethodCompManager(CompManager compManager) {
-        this.compManager = compManager;
-        this.methodManager = new CMethodManager(compManager);
+  public MethodCompManager(CompManager compManager) {
+    this.compManager = compManager;
+    this.methodManager = new CMethodManager(compManager);
+  }
+
+  /**
+   * @return void
+   * @title calComponents
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-20 00:27
+   */
+  public void calculate() {
+    methodManager.calculate();
+
+    List<CMethod> methods = methodManager.getCmethods();
+    for (CMethod method : methods) {
+      calculate(method);
     }
+    compManager.check(methodManager.getCompClasses());
+  }
 
-    /**
-     * @return void
-     * @title calComponents
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-20 00:27
-     */
-    public void calculate() {
-        methodManager.calculate();
+  /**
+   * @param cmethod cmethod
+   * @return void
+   * @title calComponent
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-21 00:37
+   */
+  public void calculate(CMethod cmethod) {
+    Method method = cmethod.getMethod();
+    Object object = cmethod.getCompObject();
 
-        List<CMethod> methods = methodManager.getCmethods();
-        for (CMethod method : methods) {
-            calculate(method);
-        }
-        compManager.check(methodManager.getCompClasses());
+    int parameterCount = method.getParameterCount();
+    Class<?> compClazz = method.getReturnType();
+    if (parameterCount <= 0) {
+      this.compManager.register(compClazz, cmethod, ObjectCreator.create(object, method));
+    } else {
+      Class<?>[] parameterTypes = method.getParameterTypes();
+      Type[] genericParameterTypes = method.getGenericParameterTypes();
 
-    }
-
-    /**
-     * @param cmethod cmethod
-     * @return void
-     * @title calComponent
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-21 00:37
-     */
-    public void calculate(CMethod cmethod) {
-        Method method = cmethod.getMethod();
-        Object object = cmethod.getCompObject();
-
-        int parameterCount = method.getParameterCount();
-        Class<?> compClazz = method.getReturnType();
-        if (parameterCount <= 0) {
-            this.compManager.
-                    register(compClazz, cmethod, ObjectCreator.create(object, method));
+      Object[] parameterObj = new Object[parameterCount];
+      for (int i = 0; i < parameterCount; i++) {
+        Class<?> curParametorClass = parameterTypes[i];
+        Object obj = compManager.get(curParametorClass, false);
+        if (obj != null) {
+          parameterObj[i] = obj;
         } else {
-            Class<?>[] parameterTypes = method.getParameterTypes();
-            Type[] genericParameterTypes = method.getGenericParameterTypes();
-
-            Object[] parameterObj = new Object[parameterCount];
-            for (int i = 0; i < parameterCount; i++) {
-                Class<?> curParametorClass = parameterTypes[i];
-                Object obj = compManager.get(curParametorClass, false);
-                if (obj != null) {
-                    parameterObj[i] = obj;
-                } else {
-                    if (List.class.isAssignableFrom(curParametorClass)) {
-                        Type type = genericParameterTypes[i];
-                        Class<?> argClass = GenericTypeUtils.getActualTypeArgument(type, 0);
-                        List<?> comps = compManager.getAll(argClass, false);
-                        if (comps.size() > 0) {
-                            parameterObj[i] = comps;
-                        }
-                    }
-                }
-                if (parameterObj[i] == null) {
-                    throw new InitException("no component:" + compClazz.getName());
-                }
-
+          if (List.class.isAssignableFrom(curParametorClass)) {
+            Type type = genericParameterTypes[i];
+            Class<?> argClass = GenericTypeUtils.getActualTypeArgument(type, 0);
+            List<?> comps = compManager.getAll(argClass, false);
+            if (comps.size() > 0) {
+              parameterObj[i] = comps;
             }
-            this.compManager
-                    .register(compClazz, cmethod, ObjectCreator.create(object, method, parameterObj));
-
+          }
         }
+        if (parameterObj[i] == null) {
+          throw new InitException("no component:" + compClazz.getName());
+        }
+      }
+      this.compManager.register(
+          compClazz, cmethod, ObjectCreator.create(object, method, parameterObj));
     }
-
+  }
 }

@@ -6,9 +6,9 @@ import io.github.kylinhunter.commons.exception.info.ErrInfo;
  * @author BiJi'an
  * @description
  * @date 2022/1/1
- **/
+ */
 public interface KThrowable {
-    ErrInfo getErrInfo();
+  ErrInfo getErrInfo();
 
-    Object getExtra();
+  Object getExtra();
 }

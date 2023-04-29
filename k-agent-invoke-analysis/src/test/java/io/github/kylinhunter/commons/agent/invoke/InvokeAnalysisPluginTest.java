@@ -7,35 +7,36 @@ import io.github.kylinhunter.commons.agent.invoke.test.Teacher;
 
 class InvokeAnalysisPluginTest {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Campus campus = new Campus("campus1");
-        Course math = campus.addClassRoom(new Course("math"));
+    Campus campus = new Campus("campus1");
+    Course math = campus.addClassRoom(new Course("math"));
 
-        Teacher teacher1 = math.addTeacher(new Teacher("teacher1"));
-        math.addTeacher(new Teacher("teacher2"));
+    Teacher teacher1 = math.addTeacher(new Teacher("teacher1"));
+    math.addTeacher(new Teacher("teacher2"));
 
-        final Student student1 = math.addStudent(new Student("student1"));
+    final Student student1 = math.addStudent(new Student("student1"));
 
-        math.addStudent(new Student("student2"));
+    math.addStudent(new Student("student2"));
 
-        Course chinese = campus.addClassRoom(new Course("chinese"));
-        chinese.addTeacher(teacher1);
+    Course chinese = campus.addClassRoom(new Course("chinese"));
+    chinese.addTeacher(teacher1);
 
-        chinese.addStudent(new Student("student3"));
-        chinese.addStudent(student1);
+    chinese.addStudent(new Student("student3"));
+    chinese.addStudent(student1);
 
-        campus.d1oHomeWork1();
+    campus.d1oHomeWork1();
 
-        InvokeTraceManager.getInstance().getTraces().forEach((k, v) -> {
-            System.out.println("trace id=>" + k);
-            v.forEach(t -> {
-                System.out.println(t);
-
+    InvokeTraceManager.getInstance()
+        .getTraces()
+        .forEach(
+            (k, v) -> {
+              System.out.println("trace id=>" + k);
+              v.forEach(
+                  t -> {
+                    System.out.println(t);
+                  });
+              System.out.println("===trace end with time ===");
             });
-            System.out.println("===trace end with time ===");
-
-        });
-
-    }
+  }
 }

@@ -10,18 +10,21 @@ import org.junit.jupiter.api.Test;
 
 class ExClassLoaderUtilTest {
 
-    @Test
-    void loadClass() {
-        OnceRunner.run(ExClassLoaderUtilTest.class, () -> {
-            Assertions.assertThrows(GeneralException.class,
-                    () -> ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test1"));
+  @Test
+  void loadClass() {
+    OnceRunner.run(
+        ExClassLoaderUtilTest.class,
+        () -> {
+          Assertions.assertThrows(
+              GeneralException.class,
+              () -> ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test1"));
 
-            File ext = UserDirUtils.getDir("ext");
-            ExClassLoaderUtil.addClassPath(ext.toPath());
-            Class<Object> objectClass = ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test");
-            Object o = ObjectCreator.create(objectClass);
-            Assertions.assertNotNull(o);
+          File ext = UserDirUtils.getDir("ext");
+          ExClassLoaderUtil.addClassPath(ext.toPath());
+          Class<Object> objectClass =
+              ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test");
+          Object o = ObjectCreator.create(objectClass);
+          Assertions.assertNotNull(o);
         });
-
-    }
+  }
 }

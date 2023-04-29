@@ -8,21 +8,20 @@ import lombok.Data;
 
 @Data
 public class Table {
-    private String name;
-    private List<String> skipColumns = ListUtils.newArrayList();
-    private Map<String, String> columnTypes = MapUtils.newHashMap();
+  private String name;
+  private List<String> skipColumns = ListUtils.newArrayList();
+  private Map<String, String> columnTypes = MapUtils.newHashMap();
 
-    /**
-     * @param column column
-     * @return java.lang.String
-     * @title getColumnType
-     * @description
-     * @author BiJi'an
-     * @date 2023-02-26 19:16
-     */
-    public String getColumnType(String column) {
+  /**
+   * @param column column
+   * @return java.lang.String
+   * @title getColumnType
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-26 19:16
+   */
+  public String getColumnType(String column) {
 
-        return columnTypes.get(column);
-
-    }
+    return columnTypes.get(column);
+  }
 }

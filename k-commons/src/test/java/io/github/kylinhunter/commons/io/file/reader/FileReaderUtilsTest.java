@@ -9,18 +9,16 @@ import org.junit.jupiter.api.Test;
 
 class FileReaderUtilsTest {
 
-    @Test
-    void process() {
-        String path = "classpath:/test/file/test1.txt";
-        File distFile = ResourceHelper.getFile(path);
-        AtomicInteger lines = new AtomicInteger(0);
-        FileReaderUtils.process(distFile, "UTF-8", (line -> lines.incrementAndGet()));
-        assertEquals(2, lines.get());
+  @Test
+  void process() {
+    String path = "classpath:/test/file/test1.txt";
+    File distFile = ResourceHelper.getFile(path);
+    AtomicInteger lines = new AtomicInteger(0);
+    FileReaderUtils.process(distFile, "UTF-8", (line -> lines.incrementAndGet()));
+    assertEquals(2, lines.get());
 
-        FileStatLineProcessor fileStatLinesProcessor = new FileStatLineProcessor();
-        FileReaderUtils.process(distFile, "UTF-8", fileStatLinesProcessor);
-        assertEquals(2, fileStatLinesProcessor.getResult().getLineNum());
-
-    }
-
+    FileStatLineProcessor fileStatLinesProcessor = new FileStatLineProcessor();
+    FileReaderUtils.process(distFile, "UTF-8", fileStatLinesProcessor);
+    assertEquals(2, fileStatLinesProcessor.getResult().getLineNum());
+  }
 }

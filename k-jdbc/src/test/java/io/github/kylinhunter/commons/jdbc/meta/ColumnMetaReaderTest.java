@@ -8,18 +8,16 @@ import org.junit.jupiter.api.Test;
 
 class ColumnMetaReaderTest {
 
-    @Test
-    void test() {
-        ColumnMetaReader columnMetaReader = CF.get(ColumnMetaReader.class);
+  @Test
+  void test() {
+    ColumnMetaReader columnMetaReader = CF.get(ColumnMetaReader.class);
 
-        List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData("", "test_user");
-        Assertions.assertTrue(!columnMetas.isEmpty());
-        for (ColumnMeta columnMeta : columnMetas) {
-            System.out.println(columnMeta);
-            Assertions.assertNotNull(columnMeta.getJavaClass());
-            System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
-        }
-
-
+    List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData("", "test_user");
+    Assertions.assertTrue(!columnMetas.isEmpty());
+    for (ColumnMeta columnMeta : columnMetas) {
+      System.out.println(columnMeta);
+      Assertions.assertNotNull(columnMeta.getJavaClass());
+      System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
     }
+  }
 }

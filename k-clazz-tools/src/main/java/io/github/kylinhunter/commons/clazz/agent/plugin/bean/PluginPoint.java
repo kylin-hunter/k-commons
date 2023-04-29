@@ -9,9 +9,9 @@ import net.bytebuddy.matcher.ElementMatcher;
  * @author BiJi'an
  * @description
  * @date 2023-03-11 00:47
- **/
+ */
 @Data
 public class PluginPoint {
-    ElementMatcher<TypeDescription> typeMatcher;
-    ElementMatcher<MethodDescription> methodMatcher;
+  ElementMatcher<TypeDescription> typeMatcher;
+  ElementMatcher<MethodDescription> methodMatcher;
 }

@@ -12,23 +12,21 @@ import java.security.spec.X509EncodedKeySpec;
  * @author BiJi'an
  * @description
  * @date 2022-11-27 02:22
- **/
+ */
 public class RSAPublicKeyCache extends AbstractCache<RSAPublicKey> {
 
-    @Override
-    public RSAPublicKey load(CacheKey cacheKey) {
-        try {
-            String key = cacheKey.getString(0);
-            KeyFactory keyFactory = KeyFactory.getInstance(RSAKeyManager.ALGORITHM_RSA);
-            X509EncodedKeySpec spec = new X509EncodedKeySpec(Base64Utils.decode(key));
-            return (RSAPublicKey) keyFactory.generatePublic(spec);
-        } catch (Exception e) {
-            throw new CryptException("restorePublicKey error", e);
-        }
+  @Override
+  public RSAPublicKey load(CacheKey cacheKey) {
+    try {
+      String key = cacheKey.getString(0);
+      KeyFactory keyFactory = KeyFactory.getInstance(RSAKeyManager.ALGORITHM_RSA);
+      X509EncodedKeySpec spec = new X509EncodedKeySpec(Base64Utils.decode(key));
+      return (RSAPublicKey) keyFactory.generatePublic(spec);
+    } catch (Exception e) {
+      throw new CryptException("restorePublicKey error", e);
     }
+  }
 
-    @Override
-    protected void custom(CacheConfig cacheConfig) {
-
-    }
+  @Override
+  protected void custom(CacheConfig cacheConfig) {}
 }

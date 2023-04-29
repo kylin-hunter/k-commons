@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 
 class DatabaseMetaReaderTest {
 
-    @Test
-    void test() {
-        DatabaseMetaReader databaseMetaReader = CF.get(DatabaseMetaReader.class);
-        DatabaseMeta databaseMeta = databaseMetaReader.getDatabaseMetaData();
-        System.out.println(databaseMeta);
-        Assertions.assertEquals(DbType.MYSQL, databaseMeta.getDbType());
-    }
+  @Test
+  void test() {
+    DatabaseMetaReader databaseMetaReader = CF.get(DatabaseMetaReader.class);
+    DatabaseMeta databaseMeta = databaseMetaReader.getDatabaseMetaData();
+    System.out.println(databaseMeta);
+    Assertions.assertEquals(DbType.MYSQL, databaseMeta.getDbType());
+  }
 }

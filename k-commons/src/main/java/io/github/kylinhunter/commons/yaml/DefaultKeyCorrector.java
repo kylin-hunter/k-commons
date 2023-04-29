@@ -11,35 +11,34 @@ import lombok.Setter;
  * @author BiJi'an
  * @description
  * @date 2023-02-08 15:20
- **/
+ */
 @Setter
 @RequiredArgsConstructor
 public class DefaultKeyCorrector implements KeyCorrector {
-    private static final Pattern PATTERN_PROP_NAME = Pattern.compile("^(\\s*-*\\s*)(\\w+-*\\w+)\\s*:");
+  private static final Pattern PATTERN_PROP_NAME =
+      Pattern.compile("^(\\s*-*\\s*)(\\w+-*\\w+)\\s*:");
 
-    @Override
-    public String correct(String text, NameRule nameRule) {
-        String[] lines = text.split("(\\r?\\n)+");
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String line : lines) {
-            stringBuilder.append(correntLine(line, nameRule)).append("\n");
-        }
-        return stringBuilder.toString();
-
+  @Override
+  public String correct(String text, NameRule nameRule) {
+    String[] lines = text.split("(\\r?\\n)+");
+    StringBuilder stringBuilder = new StringBuilder();
+    for (String line : lines) {
+      stringBuilder.append(correntLine(line, nameRule)).append("\n");
     }
+    return stringBuilder.toString();
+  }
 
-    private String correntLine(String line, NameRule nameRule) {
-        if (nameRule != null) {
-            Matcher matcher = PATTERN_PROP_NAME.matcher(line);
-            if (matcher.find()) {
-                if (matcher.groupCount() > 1) {
-                    String group1 = matcher.group(1);
-                    String group2 = matcher.group(2);
-                    return matcher.replaceAll(group1 + NameUtils.convert(group2, nameRule) + ":");
-                }
-            }
+  private String correntLine(String line, NameRule nameRule) {
+    if (nameRule != null) {
+      Matcher matcher = PATTERN_PROP_NAME.matcher(line);
+      if (matcher.find()) {
+        if (matcher.groupCount() > 1) {
+          String group1 = matcher.group(1);
+          String group2 = matcher.group(2);
+          return matcher.replaceAll(group1 + NameUtils.convert(group2, nameRule) + ":");
         }
-        return line;
+      }
     }
-
+    return line;
+  }
 }

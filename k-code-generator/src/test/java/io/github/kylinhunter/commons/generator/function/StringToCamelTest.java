@@ -13,33 +13,32 @@ import org.junit.jupiter.api.Test;
 
 class StringToCamelTest {
 
-    @Test
-    void execute() {
-        ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
+  @Test
+  void execute() {
+    ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
 
-        ModuleInfo moduleInfo = new ModuleInfo();
-        moduleInfo.setName("hello_the_word");
-        TableInfo tableInfo = new TableInfo();
-        TableMeta tableMeta=new TableMeta();
-        tableMeta.setName("tableName");
-        tableInfo.setTableMeta(tableMeta);
+    ModuleInfo moduleInfo = new ModuleInfo();
+    moduleInfo.setName("hello_the_word");
+    TableInfo tableInfo = new TableInfo();
+    TableMeta tableMeta = new TableMeta();
+    tableMeta.setName("tableName");
+    tableInfo.setTableMeta(tableMeta);
 
-        List<ColumnMeta> columns = ListUtils.newArrayList();
-        ColumnMeta column = new ColumnMeta();
-        column.setColumnName("columnName");
-        column.setJavaClass(List.class);
-        columns.add(column);
-        tableInfo.setColumnMetas(columns);
+    List<ColumnMeta> columns = ListUtils.newArrayList();
+    ColumnMeta column = new ColumnMeta();
+    column.setColumnName("columnName");
+    column.setJavaClass(List.class);
+    columns.add(column);
+    tableInfo.setColumnMetas(columns);
 
-        moduleInfo.setTableInfo(tableInfo);
-        Map<String, Object> env = MapUtils.newHashMap();
-        env.put("module", moduleInfo);
+    moduleInfo.setTableInfo(tableInfo);
+    Map<String, Object> env = MapUtils.newHashMap();
+    env.put("module", moduleInfo);
 
-        Object execute = expressionExecutor.execute("k.str_camel(module.name,'lower')", env);
-        System.out.println(execute);
+    Object execute = expressionExecutor.execute("k.str_camel(module.name,'lower')", env);
+    System.out.println(execute);
 
-        execute = expressionExecutor.execute("k.str_camel(module.name,'upper')", env);
-        System.out.println(execute);
-
-    }
+    execute = expressionExecutor.execute("k.str_camel(module.name,'upper')", env);
+    System.out.println(execute);
+  }
 }

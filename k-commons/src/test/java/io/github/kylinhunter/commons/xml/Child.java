@@ -9,14 +9,13 @@ import lombok.NoArgsConstructor;
  * @author BiJi'an
  * @description
  * @date 2022-12-16 15:29
- **/
+ */
 @Data
 @XmlRootElement
 @AllArgsConstructor
 @NoArgsConstructor
 public class Child {
 
-    private int value1;
-    private int value2;
-
+  private int value1;
+  private int value2;
 }

@@ -9,11 +9,11 @@ import lombok.Setter;
  * @author BiJi'an
  * @description
  * @date 2022-05-21 17:46
- **/
+ */
 @Getter
 @Setter
 @XmlRootElement
 public class SubBean implements Serializable {
-    private int id;
-    private String text;
+  private int id;
+  private String text;
 }

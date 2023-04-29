@@ -12,23 +12,21 @@ import java.security.spec.PKCS8EncodedKeySpec;
  * @author BiJi'an
  * @description
  * @date 2022-11-27 02:22
- **/
-public class RSAPrivateKeyCache extends AbstractCache< RSAPrivateKey> {
+ */
+public class RSAPrivateKeyCache extends AbstractCache<RSAPrivateKey> {
 
-    @Override
-    public RSAPrivateKey load(CacheKey cacheKey) {
-        try {
-            String key= cacheKey.getString(0);
-            KeyFactory keyFactory = KeyFactory.getInstance(RSAKeyManager.ALGORITHM_RSA);
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64Utils.decode(key));
-            return (RSAPrivateKey) keyFactory.generatePrivate(spec);
-        } catch (Exception e) {
-            throw new CryptException("restorePrivateKey error", e);
-        }
+  @Override
+  public RSAPrivateKey load(CacheKey cacheKey) {
+    try {
+      String key = cacheKey.getString(0);
+      KeyFactory keyFactory = KeyFactory.getInstance(RSAKeyManager.ALGORITHM_RSA);
+      PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64Utils.decode(key));
+      return (RSAPrivateKey) keyFactory.generatePrivate(spec);
+    } catch (Exception e) {
+      throw new CryptException("restorePrivateKey error", e);
     }
+  }
 
-    @Override
-    protected void custom(CacheConfig cacheConfig) {
-
-    }
+  @Override
+  protected void custom(CacheConfig cacheConfig) {}
 }

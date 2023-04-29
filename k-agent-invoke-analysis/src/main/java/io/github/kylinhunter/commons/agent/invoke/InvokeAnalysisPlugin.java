@@ -12,21 +12,19 @@ import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig
  * @author BiJi'an
  * @description
  * @date 2023-03-11 00:48
- **/
-
+ */
 public class InvokeAnalysisPlugin extends AbstractPlugin {
-    public InvokeAnalysisPlugin() {
-        super("invoke-analysis");
-    }
+  public InvokeAnalysisPlugin() {
+    super("invoke-analysis");
+  }
 
-    @Override
-    public Class<? extends PluginConfig> configDefinition() {
-        return InvokeAnalysisConfig.class;
-    }
+  @Override
+  public Class<? extends PluginConfig> configDefinition() {
+    return InvokeAnalysisConfig.class;
+  }
 
-    @Override
-    public Class<? extends AgentTransformer> transformerDefinition() {
-        return InvokeTransformer.class;
-    }
-
+  @Override
+  public Class<? extends AgentTransformer> transformerDefinition() {
+    return InvokeTransformer.class;
+  }
 }

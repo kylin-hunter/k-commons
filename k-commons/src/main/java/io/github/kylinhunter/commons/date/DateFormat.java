@@ -14,45 +14,47 @@ import lombok.Setter;
 @Setter
 public class DateFormat {
 
-    private String pattern;
-    private DateTimeFormatter dateTimeFormatter;
+  private String pattern;
+  private DateTimeFormatter dateTimeFormatter;
 
-    private boolean parseByLocalDate;
+  private boolean parseByLocalDate;
 
-    DateFormat(String pattern) {
-        this.pattern = pattern;
+  DateFormat(String pattern) {
+    this.pattern = pattern;
 
-        if (pattern.equals(DatePatterns.BARE_DATE_MILLIS)) {
-            this.dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern(DatePatterns.BARE_DATE_TIME)
-                    .appendValue(ChronoField.MILLI_OF_SECOND, 3).toFormatter();
-        } else {
-            this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
-
-        }
-        this.parseByLocalDate = pattern.equals(DatePatterns.DATE) || pattern.equals(DatePatterns.SLASH_DATE) || pattern
-                .equals(DatePatterns.BARE_DATE);
-
+    if (pattern.equals(DatePatterns.BARE_DATE_MILLIS)) {
+      this.dateTimeFormatter =
+          new DateTimeFormatterBuilder()
+              .appendPattern(DatePatterns.BARE_DATE_TIME)
+              .appendValue(ChronoField.MILLI_OF_SECOND, 3)
+              .toFormatter();
+    } else {
+      this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
     }
+    this.parseByLocalDate =
+        pattern.equals(DatePatterns.DATE)
+            || pattern.equals(DatePatterns.SLASH_DATE)
+            || pattern.equals(DatePatterns.BARE_DATE);
+  }
 
-    public String format(TemporalAccessor temporal) {
-        try {
-            return dateTimeFormatter.format(temporal);
-        } catch (Exception e) {
-            throw new ParamException("format error:" + temporal, e);
-        }
+  public String format(TemporalAccessor temporal) {
+    try {
+      return dateTimeFormatter.format(temporal);
+    } catch (Exception e) {
+      throw new ParamException("format error:" + temporal, e);
     }
+  }
 
-    public LocalDateTime parse(CharSequence text) {
-        try {
-            if (parseByLocalDate) {
-                return LocalDate.parse(text, this.dateTimeFormatter).atStartOfDay();
-            } else {
-                return LocalDateTime.parse(text, this.dateTimeFormatter);
-            }
+  public LocalDateTime parse(CharSequence text) {
+    try {
+      if (parseByLocalDate) {
+        return LocalDate.parse(text, this.dateTimeFormatter).atStartOfDay();
+      } else {
+        return LocalDateTime.parse(text, this.dateTimeFormatter);
+      }
 
-        } catch (Exception e) {
-            throw new ParamException("parse error:" + text, e);
-
-        }
+    } catch (Exception e) {
+      throw new ParamException("parse error:" + text, e);
     }
+  }
 }

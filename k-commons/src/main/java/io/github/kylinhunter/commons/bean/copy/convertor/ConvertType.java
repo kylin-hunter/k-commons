@@ -10,12 +10,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ConvertType {
-    JSON(JsonFieldConvertor.class),
-    BYTES(BytesFieldConvertor.class),
-    XML(XmlFieldConvertor.class),
-    YAML(YamlFieldConvertor.class),
-    NUM_STR(NumberToStrFieldConvertor.class);
-    @Getter
-    private final Class<? extends FieldConvertor> clazz;
-
+  JSON(JsonFieldConvertor.class),
+  BYTES(BytesFieldConvertor.class),
+  XML(XmlFieldConvertor.class),
+  YAML(YamlFieldConvertor.class),
+  NUM_STR(NumberToStrFieldConvertor.class);
+  @Getter private final Class<? extends FieldConvertor> clazz;
 }

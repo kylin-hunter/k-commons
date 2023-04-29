@@ -19,39 +19,37 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ZipUtilsTest {
 
-    @Test
-    @Order(1)
-    public void testZip() throws IOException {
+  @Test
+  @Order(1)
+  public void testZip() throws IOException {
 
-        File dir = ResourceHelper.getDirInClassPath("test/file");
-        File[] files = FileUtil.listFiles(dir, null, true).toArray(new File[0]);
-        List<File> fileList = Arrays.stream(files).collect(Collectors.toList());
-        File file = UserDirUtils.getFile("/tmp/test_unzip/testzip.zip", false);
-        if (file.exists()) {
-            FileUtil.delete(file);
-        }
-        ZipUtils.zip(fileList, dir, file);
-
-        Assertions.assertTrue(file.length() > 0);
-
+    File dir = ResourceHelper.getDirInClassPath("test/file");
+    File[] files = FileUtil.listFiles(dir, null, true).toArray(new File[0]);
+    List<File> fileList = Arrays.stream(files).collect(Collectors.toList());
+    File file = UserDirUtils.getFile("/tmp/test_unzip/testzip.zip", false);
+    if (file.exists()) {
+      FileUtil.delete(file);
     }
+    ZipUtils.zip(fileList, dir, file);
 
-    @Test
-    @Order(2)
-    public void testUnZip() throws IOException {
-        File file = UserDirUtils.getFile("/tmp/test_unzip/testzip.zip", false);
-        File dir1 = UserDirUtils.getDir("/tmp/test_unzip/testzip1", true);
-        FileUtil.forceDelete(dir1);
-        ZipUtils.unzip(file, dir1);
-        Collection<File> files1 = FileUtil.listFiles(dir1, null, true);
+    Assertions.assertTrue(file.length() > 0);
+  }
 
-        File dir2 = UserDirUtils.getDir("/tmp/test_unzip/testzip2", true);
-        FileUtil.forceDelete(dir2);
-        ZipUtils.unzip(FileReaderUtils.readFileToByteArray(file), dir2);
-        Collection<File> files2 = FileUtil.listFiles(dir2, null, true);
+  @Test
+  @Order(2)
+  public void testUnZip() throws IOException {
+    File file = UserDirUtils.getFile("/tmp/test_unzip/testzip.zip", false);
+    File dir1 = UserDirUtils.getDir("/tmp/test_unzip/testzip1", true);
+    FileUtil.forceDelete(dir1);
+    ZipUtils.unzip(file, dir1);
+    Collection<File> files1 = FileUtil.listFiles(dir1, null, true);
 
-        Assertions.assertEquals(4, files1.size());
-        Assertions.assertEquals(4, files2.size());
+    File dir2 = UserDirUtils.getDir("/tmp/test_unzip/testzip2", true);
+    FileUtil.forceDelete(dir2);
+    ZipUtils.unzip(FileReaderUtils.readFileToByteArray(file), dir2);
+    Collection<File> files2 = FileUtil.listFiles(dir2, null, true);
 
-    }
+    Assertions.assertEquals(4, files1.size());
+    Assertions.assertEquals(4, files2.size());
+  }
 }

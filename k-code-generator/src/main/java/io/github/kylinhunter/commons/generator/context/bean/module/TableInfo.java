@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
  * @author BiJi'an
  * @description
  * @date 2023-03-19 22:27
- **/
+ */
 @Data
 @NoArgsConstructor
 public class TableInfo {
-    private Table table;
-    private TableMeta tableMeta;
-    private List<ColumnMeta> columnMetas;
+  private Table table;
+  private TableMeta tableMeta;
+  private List<ColumnMeta> columnMetas;
 
-    public TableInfo(Table table) {
-        this.table = table;
-    }
+  public TableInfo(Table table) {
+    this.table = table;
+  }
 }

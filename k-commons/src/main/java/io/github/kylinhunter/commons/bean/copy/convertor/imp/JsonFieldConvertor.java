@@ -15,50 +15,50 @@ import java.util.List;
  * @author BiJi'an
  * @description
  * @date 2022-01-01 19:09
- **/
+ */
 public class JsonFieldConvertor extends AbstractFieldConvertor {
 
-    private JavaType targetType;
+  private JavaType targetType;
 
-    public JsonFieldConvertor(Direction direction, PropertyDescriptor sourcePD, PropertyDescriptor targetPD) {
-        super(direction, sourcePD, targetPD);
-        Class<?> propertyType = direction == Direction.FORWARD ? targetPD.getPropertyType() : sourcePD.getPropertyType();
-        if (propertyType != String.class) {
-            throw new InitException(" not a String type");
-        }
-
-        if (direction == Direction.BACKEND) {
-
-            Method readMethod = targetPD.getReadMethod();
-            if (List.class.isAssignableFrom(readMethod.getReturnType())) {
-                Type targetReturnType = readMethod.getGenericReturnType();
-                if (targetReturnType instanceof ParameterizedType) {
-                    ParameterizedType type = (ParameterizedType) targetReturnType;
-                    Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
-                    targetType = JsonUtils.constructCollectionType(List.class, clazz);
-                }
-
-            }
-        }
-
+  public JsonFieldConvertor(
+      Direction direction, PropertyDescriptor sourcePD, PropertyDescriptor targetPD) {
+    super(direction, sourcePD, targetPD);
+    Class<?> propertyType =
+        direction == Direction.FORWARD ? targetPD.getPropertyType() : sourcePD.getPropertyType();
+    if (propertyType != String.class) {
+      throw new InitException(" not a String type");
     }
 
-    @Override
-    public void forword(Object source, Object target) {
-        Object sourceValue = this.read(source);
-        String targetValue = JsonUtils.writeToString(sourceValue);
-        this.write(target, targetValue);
-    }
+    if (direction == Direction.BACKEND) {
 
-    @Override
-    public void backward(Object source, Object target) {
-        Object sourceValue = this.read(source);
-        Object targetValue;
-        if (targetType != null) {
-            targetValue = JsonUtils.readValue(String.valueOf(sourceValue), targetType);
-        } else {
-            targetValue = JsonUtils.readToObject(String.valueOf(sourceValue), targetPD.getPropertyType());
+      Method readMethod = targetPD.getReadMethod();
+      if (List.class.isAssignableFrom(readMethod.getReturnType())) {
+        Type targetReturnType = readMethod.getGenericReturnType();
+        if (targetReturnType instanceof ParameterizedType) {
+          ParameterizedType type = (ParameterizedType) targetReturnType;
+          Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
+          targetType = JsonUtils.constructCollectionType(List.class, clazz);
         }
-        this.write(target, targetValue);
+      }
     }
+  }
+
+  @Override
+  public void forword(Object source, Object target) {
+    Object sourceValue = this.read(source);
+    String targetValue = JsonUtils.writeToString(sourceValue);
+    this.write(target, targetValue);
+  }
+
+  @Override
+  public void backward(Object source, Object target) {
+    Object sourceValue = this.read(source);
+    Object targetValue;
+    if (targetType != null) {
+      targetValue = JsonUtils.readValue(String.valueOf(sourceValue), targetType);
+    } else {
+      targetValue = JsonUtils.readToObject(String.valueOf(sourceValue), targetPD.getPropertyType());
+    }
+    this.write(target, targetValue);
+  }
 }

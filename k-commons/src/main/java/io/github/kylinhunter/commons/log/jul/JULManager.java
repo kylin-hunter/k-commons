@@ -10,29 +10,29 @@ import java.util.logging.LogManager;
  * @author BiJi'an
  * @description
  * @date 2023-04-22 16:41
- **/
+ */
 public class JULManager {
-    private static final String CONFIG_FILE = "k-jul-logging.properties";
+  private static final String CONFIG_FILE = "k-jul-logging.properties";
 
-    /**
-     * @return
-     * @title init
-     * @description
-     * @author BiJi'an
-     * @date 2023-04-22 16:41
-     */
-    public static void init() {
-        try {
-            InputStream inputStream = ResourceHelper.getInputStreamInClassPath(CONFIG_FILE);
-            if (inputStream != null) {
-                LogManager logManager = LogManager.getLogManager();
-                logManager.readConfiguration(inputStream);
-            } else {
-                System.err.println("no config file  be found :" + CONFIG_FILE);
-            }
+  /**
+   * @return
+   * @title init
+   * @description
+   * @author BiJi'an
+   * @date 2023-04-22 16:41
+   */
+  public static void init() {
+    try {
+      InputStream inputStream = ResourceHelper.getInputStreamInClassPath(CONFIG_FILE);
+      if (inputStream != null) {
+        LogManager logManager = LogManager.getLogManager();
+        logManager.readConfiguration(inputStream);
+      } else {
+        System.err.println("no config file  be found :" + CONFIG_FILE);
+      }
 
-        } catch (IOException e) {
-            throw new GeneralException(" jul init error", e);
-        }
+    } catch (IOException e) {
+      throw new GeneralException(" jul init error", e);
     }
+  }
 }

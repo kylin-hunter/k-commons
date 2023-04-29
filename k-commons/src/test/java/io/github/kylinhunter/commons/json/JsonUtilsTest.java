@@ -16,103 +16,106 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class JsonUtilsTest {
-    private final TestBean testBean = new TestBean("keyValue", "snakeValue");
+  private final TestBean testBean = new TestBean("keyValue", "snakeValue");
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    private static class TestBean {
-        private String key;
-        private String snakeTest;
-    }
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  private static class TestBean {
+    private String key;
+    private String snakeTest;
+  }
 
-    @Test
-    public void testReadToObject() {
+  @Test
+  public void testReadToObject() {
 
-        String text = "{\"key\":\"keyValue\",\"snake_test\":\"snake_yes\",\"snakeTest\":\"snake_no\"}";
-        Assertions.assertEquals("keyValue", JsonUtils.readToObject(text, Map.class).get("key"));
+    String text = "{\"key\":\"keyValue\",\"snake_test\":\"snake_yes\",\"snakeTest\":\"snake_no\"}";
+    Assertions.assertEquals("keyValue", JsonUtils.readToObject(text, Map.class).get("key"));
 
-        TestBean testBean = JsonUtils.readToObject(text, TestBean.class);
-        Assertions.assertEquals("snake_no", testBean.getSnakeTest());
+    TestBean testBean = JsonUtils.readToObject(text, TestBean.class);
+    Assertions.assertEquals("snake_no", testBean.getSnakeTest());
 
-        testBean = JsonUtils.readToObject(text, TestBean.class, JsonOptions.FAIL_SNAKE);
-        Assertions.assertNotNull(testBean);
-        Assertions.assertEquals("snake_yes", testBean.getSnakeTest());
+    testBean = JsonUtils.readToObject(text, TestBean.class, JsonOptions.FAIL_SNAKE);
+    Assertions.assertNotNull(testBean);
+    Assertions.assertEquals("snake_yes", testBean.getSnakeTest());
 
-        testBean = JsonUtils.readToObject(text.getBytes(StandardCharsets.UTF_8), TestBean.class);
-        Assertions.assertNotNull(testBean);
-        Assertions.assertEquals("snake_no", testBean.getSnakeTest());
+    testBean = JsonUtils.readToObject(text.getBytes(StandardCharsets.UTF_8), TestBean.class);
+    Assertions.assertNotNull(testBean);
+    Assertions.assertEquals("snake_no", testBean.getSnakeTest());
 
-        testBean =
-                JsonUtils.readToObject(text.getBytes(StandardCharsets.UTF_8), TestBean.class, JsonOptions.FAIL_SNAKE);
-        Assertions.assertNotNull(testBean);
-        Assertions.assertEquals("snake_yes", testBean.getSnakeTest());
+    testBean =
+        JsonUtils.readToObject(
+            text.getBytes(StandardCharsets.UTF_8), TestBean.class, JsonOptions.FAIL_SNAKE);
+    Assertions.assertNotNull(testBean);
+    Assertions.assertEquals("snake_yes", testBean.getSnakeTest());
 
-        Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.readToObject("{", Map.class));
+    Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.readToObject("{", Map.class));
 
-        Map<?, ?> map = JsonUtils.readToObject(text.getBytes(StandardCharsets.UTF_8), Map.class);
-        Assertions.assertEquals("keyValue", map.get("key"));
-        Assertions.assertThrows(KRuntimeException.class,
-                () -> JsonUtils.readToObject("{".getBytes(StandardCharsets.UTF_8), Map.class));
+    Map<?, ?> map = JsonUtils.readToObject(text.getBytes(StandardCharsets.UTF_8), Map.class);
+    Assertions.assertEquals("keyValue", map.get("key"));
+    Assertions.assertThrows(
+        KRuntimeException.class,
+        () -> JsonUtils.readToObject("{".getBytes(StandardCharsets.UTF_8), Map.class));
+  }
 
-    }
+  @Test
+  public void testWriteToString() throws KRuntimeException {
+    String text = JsonUtils.writeToString(testBean);
+    Assertions.assertEquals("snakeValue", JsonUtils.readToObject(text, Map.class).get("snakeTest"));
+    text = JsonUtils.writeToString(testBean, JsonOptions.FAIL_SNAKE);
+    Assertions.assertEquals(
+        "snakeValue", JsonUtils.readToObject(text, Map.class).get("snake_test"));
 
-    @Test
-    public void testWriteToString() throws KRuntimeException {
-        String text = JsonUtils.writeToString(testBean);
-        Assertions.assertEquals("snakeValue", JsonUtils.readToObject(text, Map.class).get("snakeTest"));
-        text = JsonUtils.writeToString(testBean, JsonOptions.FAIL_SNAKE);
-        Assertions.assertEquals("snakeValue", JsonUtils.readToObject(text, Map.class).get("snake_test"));
+    new MockUp<ObjectMapper>(ObjectMapper.class) {
+      @Mock
+      public String writeValueAsString(Object value) {
+        throw new RuntimeException("mock writeValueAsString error");
+      }
+    };
+    Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.writeToString(testBean));
 
-        new MockUp<ObjectMapper>(ObjectMapper.class) {
-            @Mock
-            public String writeValueAsString(Object value) {
-                throw new RuntimeException("mock writeValueAsString error");
-            }
-        };
-        Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.writeToString(testBean));
+    Assertions.assertEquals("", JsonUtils.writeToString(testBean, JsonOptions.NO_FAIL));
+  }
 
-        Assertions.assertEquals("", JsonUtils.writeToString(testBean, JsonOptions.NO_FAIL));
-    }
+  @Test
+  public void testWriteToBytes() {
+    Assertions.assertTrue(JsonUtils.wirteToBytes(testBean).length > 0);
 
-    @Test
-    public void testWriteToBytes() {
-        Assertions.assertTrue(JsonUtils.wirteToBytes(testBean).length > 0);
+    new MockUp<ObjectMapper>(ObjectMapper.class) {
+      @Mock
+      public byte[] writeValueAsBytes(Object value) {
+        throw new RuntimeException("mock writeValueAsBytes error");
+      }
+    };
 
-        new MockUp<ObjectMapper>(ObjectMapper.class) {
-            @Mock
-            public byte[] writeValueAsBytes(Object value) {
-                throw new RuntimeException("mock writeValueAsBytes error");
-            }
-        };
+    Assertions.assertThrows(
+        KRuntimeException.class, () -> JsonUtils.wirteToBytes(testBean, JsonOptions.DEFAULT));
 
-        Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.wirteToBytes(testBean, JsonOptions.DEFAULT));
+    Assertions.assertEquals(0, JsonUtils.wirteToBytes(testBean, JsonOptions.NO_FAIL).length);
+  }
 
-        Assertions.assertEquals(0, JsonUtils.wirteToBytes(testBean, JsonOptions.NO_FAIL).length);
+  @Test
+  public void testReadToMap() throws KRuntimeException {
+    String text = JsonUtils.writeToString(testBean);
+    Assertions.assertEquals("keyValue", JsonUtils.readToMap(text).get("key"));
+  }
 
-    }
+  @Test
+  public void testReadToListObject() {
 
-    @Test
-    public void testReadToMap() throws KRuntimeException {
-        String text = JsonUtils.writeToString(testBean);
-        Assertions.assertEquals("keyValue", JsonUtils.readToMap(text).get("key"));
-    }
+    String text1 = JsonUtils.writeToString(ListUtils.newArrayList(testBean, testBean));
+    Assertions.assertEquals(
+        "keyValue", JsonUtils.readToListObject(text1, Map.class).get(0).get("key"));
+    Assertions.assertEquals(
+        "keyValue", JsonUtils.readToListObject(text1, Map.class).get(1).get("key"));
 
-    @Test
-    public void testReadToListObject() {
+    String text2 = JsonUtils.writeToString(ListUtils.newArrayList(testBean, testBean));
+    System.out.println("text:" + text2);
+    List<TestBean> testBeans = JsonUtils.readToListObject(text2, TestBean.class);
+    System.out.println("testBeans:" + testBeans);
 
-        String text1 = JsonUtils.writeToString(ListUtils.newArrayList(testBean, testBean));
-        Assertions.assertEquals("keyValue", JsonUtils.readToListObject(text1, Map.class).get(0).get("key"));
-        Assertions.assertEquals("keyValue", JsonUtils.readToListObject(text1, Map.class).get(1).get("key"));
-
-        String text2 = JsonUtils.writeToString(ListUtils.newArrayList(testBean, testBean));
-        System.out.println("text:" + text2);
-        List<TestBean> testBeans = JsonUtils.readToListObject(text2, TestBean.class);
-        System.out.println("testBeans:" + testBeans);
-
-        Assertions.assertEquals("keyValue", testBeans.get(0).getKey());
-        Assertions.assertEquals("keyValue", testBeans.get(1).getKey());
-    }
-
+    Assertions.assertEquals("keyValue", testBeans.get(0).getKey());
+    Assertions.assertEquals("keyValue", testBeans.get(1).getKey());
+  }
 }

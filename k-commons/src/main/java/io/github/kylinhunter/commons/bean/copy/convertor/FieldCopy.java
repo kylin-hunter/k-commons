@@ -10,13 +10,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FieldCopy {
-    /**
-     * @return io.github.kylinhunter.commons.bean.copy.convertor.ConvertType
-     * @title value
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-19 01:05
-     */
-    ConvertType value();
-
+  /**
+   * @return io.github.kylinhunter.commons.bean.copy.convertor.ConvertType
+   * @title value
+   * @description
+   * @author BiJi'an
+   * @date 2022-11-19 01:05
+   */
+  ConvertType value();
 }

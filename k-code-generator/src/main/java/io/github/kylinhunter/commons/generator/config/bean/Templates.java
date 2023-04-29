@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class Templates {
-    private Strategy strategy;
-    private Map<String, Object> context = MapUtils.newHashMap();
-    private List<Template> list;
+  private Strategy strategy;
+  private Map<String, Object> context = MapUtils.newHashMap();
+  private List<Template> list;
 }

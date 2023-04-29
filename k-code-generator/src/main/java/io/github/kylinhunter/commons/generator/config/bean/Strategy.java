@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Strategy {
-    protected String templateEncoding;
-    protected String outputEncoding;
+  protected String templateEncoding;
+  protected String outputEncoding;
 }

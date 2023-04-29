@@ -7,20 +7,19 @@ import org.junit.jupiter.api.Test;
 
 class ColumMatchTest {
 
-    @Test
-    void execute() {
-        ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
+  @Test
+  void execute() {
+    ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
 
-        Map<String, Object> env = MapUtils.newHashMap();
-        env.put("name", "test");
-        env.put("size", 10);
-        env.put("precision", 11);
+    Map<String, Object> env = MapUtils.newHashMap();
+    env.put("name", "test");
+    env.put("size", 10);
+    env.put("precision", 11);
 
-        Object execute = expressionExecutor.execute("(name=='test' && size>0 && precision>10)", env);
-        System.out.println(execute);
+    Object execute = expressionExecutor.execute("(name=='test' && size>0 && precision>10)", env);
+    System.out.println(execute);
 
-        execute = expressionExecutor.execute("(name=='test' && size>0 && precision>11)", env);
-        System.out.println(execute);
-
-    }
+    execute = expressionExecutor.execute("(name=='test' && size>0 && precision>11)", env);
+    System.out.println(execute);
+  }
 }

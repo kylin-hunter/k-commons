@@ -7,7 +7,5 @@ import java.util.function.Supplier;
  * @author BiJi'an
  * @description
  * @date 2022-06-07 23:49
- **/
-public interface ExplainerSupplier extends Supplier<List<Explainer>> {
-
-}
+ */
+public interface ExplainerSupplier extends Supplier<List<Explainer>> {}

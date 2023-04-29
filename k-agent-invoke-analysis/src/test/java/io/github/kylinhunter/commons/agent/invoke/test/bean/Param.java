@@ -7,10 +7,10 @@ import lombok.Data;
  * @author BiJi'an
  * @description
  * @date 2023-03-11 16:28
- **/
+ */
 @Data
 @AllArgsConstructor
 public class Param {
-    private String param1;
-    private String param2;
+  private String param1;
+  private String param2;
 }

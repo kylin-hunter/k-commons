@@ -11,17 +11,15 @@ import lombok.Getter;
  * @author BiJi'an
  * @description
  * @date 2023/1/18
- **/
+ */
 public enum ColumnParserType implements CT<ColumnParser> {
-    MYSQL(ColumnParserMysql.class),
-    ORACLE(ColumnParserOracle.class),
-    SQL_SERVER(ColumnParserSqlServer.class);
+  MYSQL(ColumnParserMysql.class),
+  ORACLE(ColumnParserOracle.class),
+  SQL_SERVER(ColumnParserSqlServer.class);
 
-    @Getter
-    private final Class<? extends ColumnParser> clazz;
+  @Getter private final Class<? extends ColumnParser> clazz;
 
-    ColumnParserType(Class<? extends ColumnParser> clazz) {
-        this.clazz = clazz;
-    }
-
+  ColumnParserType(Class<? extends ColumnParser> clazz) {
+    this.clazz = clazz;
+  }
 }

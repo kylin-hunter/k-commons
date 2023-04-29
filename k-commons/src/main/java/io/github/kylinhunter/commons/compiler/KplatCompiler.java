@@ -21,81 +21,79 @@ import org.apache.commons.io.IOUtils;
  * @author BiJi'an
  * @description
  * @date 2022-06-14 00:28
- **/
+ */
 @Getter
 @Setter
 public class KplatCompiler {
 
-    private List<File> sources = ListUtils.newArrayList();
+  private List<File> sources = ListUtils.newArrayList();
 
-    private File output;
+  private File output;
 
-    public void addSource(File file) {
-        this.sources.add(file);
+  public void addSource(File file) {
+    this.sources.add(file);
+  }
+
+  /**
+   * @param sourceFiles sourceFiles
+   * @return void
+   * @title addSources
+   * @description
+   * @author BiJi'an
+   * @date 2022-11-21 00:48
+   */
+  public void addSources(Collection<File> sourceFiles) {
+    this.sources.addAll(sourceFiles);
+  }
+
+  /**
+   * @return void
+   * @title compile
+   * @description
+   * @author BiJi'an
+   * @date 2022-11-21 00:48
+   */
+  public boolean compile() {
+    StandardJavaFileManager fileManager = null;
+    try {
+
+      JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+
+      fileManager = javaCompiler.getStandardFileManager(null, null, null);
+      Iterable<? extends JavaFileObject> fileObjects =
+          fileManager.getJavaFileObjects(sources.toArray(new File[0]));
+      List<String> options = Arrays.asList("-d", output.getAbsolutePath());
+      JavaCompiler.CompilationTask cTask =
+          javaCompiler.getTask(null, fileManager, null, options, null, fileObjects);
+      return cTask.call();
+
+    } finally {
+      IOUtils.closeQuietly(fileManager);
     }
+  }
 
-    /**
-     * @param sourceFiles sourceFiles
-     * @return void
-     * @title addSources
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-21 00:48
-     */
-    public void addSources(Collection<File> sourceFiles) {
-        this.sources.addAll(sourceFiles);
+  /**
+   * @param prefix prefix
+   * @param paths paths
+   * @return void
+   * @title findClassPath
+   * @description
+   * @author BiJi'an
+   * @date 2022-11-21 00:48
+   */
+  public static void findClassPath(String prefix, Set<String> paths) throws IOException {
+    ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+    Enumeration<URL> resources = systemClassLoader.getResources(prefix);
+    while (resources.hasMoreElements()) {
+      URL url = resources.nextElement();
+      if (url.getProtocol().equals("jar")) {
+        String file = url.getFile();
+        int index = file.indexOf(".jar");
+        paths.add(file.substring(0, index) + ".jar");
+      } else {
+        String file = url.getFile();
+        paths.add(file.substring(0, file.length() - prefix.length() - 1));
+      }
     }
-
-    /**
-     * @return void
-     * @title compile
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-21 00:48
-     */
-    public boolean compile() {
-        StandardJavaFileManager fileManager = null;
-        try {
-
-            JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-
-            fileManager = javaCompiler.getStandardFileManager(null, null, null);
-            Iterable<? extends JavaFileObject> fileObjects =
-                    fileManager.getJavaFileObjects(sources.toArray(new File[0]));
-            List<String> options = Arrays.asList("-d", output.getAbsolutePath());
-            JavaCompiler.CompilationTask cTask =
-                    javaCompiler.getTask(null, fileManager, null, options, null, fileObjects);
-            return cTask.call();
-
-        } finally {
-            IOUtils.closeQuietly(fileManager);
-        }
-
-    }
-
-    /**
-     * @param prefix prefix
-     * @param paths  paths
-     * @return void
-     * @title findClassPath
-     * @description
-     * @author BiJi'an
-     * @date 2022-11-21 00:48
-     */
-    public static void findClassPath(String prefix, Set<String> paths) throws IOException {
-        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-        Enumeration<URL> resources = systemClassLoader.getResources(prefix);
-        while (resources.hasMoreElements()) {
-            URL url = resources.nextElement();
-            if (url.getProtocol().equals("jar")) {
-                String file = url.getFile();
-                int index = file.indexOf(".jar");
-                paths.add(file.substring(0, index) + ".jar");
-            } else {
-                String file = url.getFile();
-                paths.add(file.substring(0, file.length() - prefix.length() - 1));
-            }
-        }
-
-    }
+  }
 }

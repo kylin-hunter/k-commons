@@ -6,13 +6,12 @@ import lombok.Data;
 
 @Data
 public abstract class AbstractAgentTransformer implements AgentTransformer {
-    protected PluginPoint pluginPoint;
-    protected PluginConfig pluginConfig;
+  protected PluginPoint pluginPoint;
+  protected PluginConfig pluginConfig;
 
-    @Override
-    public void init(PluginConfig pluginConfig, PluginPoint pluginPoint) {
-        this.pluginConfig = pluginConfig;
-        this.pluginPoint = pluginPoint;
-    }
-
+  @Override
+  public void init(PluginConfig pluginConfig, PluginPoint pluginPoint) {
+    this.pluginConfig = pluginConfig;
+    this.pluginPoint = pluginPoint;
+  }
 }

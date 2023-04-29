@@ -9,14 +9,13 @@ import lombok.ToString;
  * @author BiJi'an
  * @description
  * @date 2023-01-10 11:11
- **/
+ */
 @Data
 @ToString(exclude = "rawMetadatas")
 public class TableMeta {
-    private Map<String, Object> rawMetadatas = MapUtils.newHashMap();
+  private Map<String, Object> rawMetadatas = MapUtils.newHashMap();
 
-    private String name;
+  private String name;
 
-    private String remarks;
-
+  private String remarks;
 }

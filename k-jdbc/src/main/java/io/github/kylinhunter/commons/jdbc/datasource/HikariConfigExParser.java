@@ -18,72 +18,70 @@ import org.apache.commons.lang3.StringUtils;
  * @author BiJi'an
  * @description
  * @date 2023-01-08 16:12
- **/
+ */
 @Getter
 @Slf4j
 public class HikariConfigExParser {
-    private static final String DEFAULT_PATH = "k-db-config.yaml";
+  private static final String DEFAULT_PATH = "k-db-config.yaml";
 
-    /**
-     * @param path path
-     * @return com.zaxxer.hikari.HikariConfig
-     * @title buildConfig
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-17 22:27
-     */
-    public List<HikariConfigEx> load(String path) {
-        path = StringUtils.defaultString(path, DEFAULT_PATH);
-        DataSourceConfig DataSourceConfig = YamlHelper.loadFromPath(DataSourceConfig.class, path, NameRule.CAMEL_LOW);
-        List<DataSourceInfo> dataSourceInfos = DataSourceConfig.getDatasources();
+  /**
+   * @param path path
+   * @return com.zaxxer.hikari.HikariConfig
+   * @title buildConfig
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-17 22:27
+   */
+  public List<HikariConfigEx> load(String path) {
+    path = StringUtils.defaultString(path, DEFAULT_PATH);
+    DataSourceConfig DataSourceConfig =
+        YamlHelper.loadFromPath(DataSourceConfig.class, path, NameRule.CAMEL_LOW);
+    List<DataSourceInfo> dataSourceInfos = DataSourceConfig.getDatasources();
 
-        List<HikariConfigEx> hikariConfigExs = ListUtils.newArrayList();
+    List<HikariConfigEx> hikariConfigExs = ListUtils.newArrayList();
 
-        for (int i = 0; i < dataSourceInfos.size(); i++) {
+    for (int i = 0; i < dataSourceInfos.size(); i++) {
 
-            DataSourceInfo datasourceInfo = dataSourceInfos.get(i);
-            PoolInfo poolInfo = datasourceInfo.getPool();
-            Map<String, String> dataSourceProperties = datasourceInfo.getDataSourceProperties();
+      DataSourceInfo datasourceInfo = dataSourceInfos.get(i);
+      PoolInfo poolInfo = datasourceInfo.getPool();
+      Map<String, String> dataSourceProperties = datasourceInfo.getDataSourceProperties();
 
-            HikariConfigEx hikariConfigEx = new HikariConfigEx(i, datasourceInfo.getName());
-            hikariConfigEx.setDriverClassName(datasourceInfo.getDriverClassName());
-            hikariConfigEx.setJdbcUrl(datasourceInfo.getJdbcUrl());
-            hikariConfigEx.setUsername(datasourceInfo.getUsername());
-            hikariConfigEx.setPassword(datasourceInfo.getPassword());
+      HikariConfigEx hikariConfigEx = new HikariConfigEx(i, datasourceInfo.getName());
+      hikariConfigEx.setDriverClassName(datasourceInfo.getDriverClassName());
+      hikariConfigEx.setJdbcUrl(datasourceInfo.getJdbcUrl());
+      hikariConfigEx.setUsername(datasourceInfo.getUsername());
+      hikariConfigEx.setPassword(datasourceInfo.getPassword());
 
-            int idleTimeout = poolInfo.getIdleTimeout();
-            if (idleTimeout > 0) {
-                hikariConfigEx.setIdleTimeout(idleTimeout);
-            }
+      int idleTimeout = poolInfo.getIdleTimeout();
+      if (idleTimeout > 0) {
+        hikariConfigEx.setIdleTimeout(idleTimeout);
+      }
 
-            int minimumIdle = poolInfo.getMinimumIdle();
-            if (minimumIdle > 0) {
-                hikariConfigEx.setMinimumIdle(minimumIdle);
-            }
+      int minimumIdle = poolInfo.getMinimumIdle();
+      if (minimumIdle > 0) {
+        hikariConfigEx.setMinimumIdle(minimumIdle);
+      }
 
-            int maximumPoolSize = poolInfo.getMaximumPoolSize();
-            if (maximumPoolSize > 0) {
-                hikariConfigEx.setMaximumPoolSize(maximumPoolSize);
+      int maximumPoolSize = poolInfo.getMaximumPoolSize();
+      if (maximumPoolSize > 0) {
+        hikariConfigEx.setMaximumPoolSize(maximumPoolSize);
+      }
+      int connectionTimeout = poolInfo.getConnectionTimeout();
+      if (connectionTimeout > 0) {
+        hikariConfigEx.setConnectionTimeout(connectionTimeout);
+      }
 
-            }
-            int connectionTimeout = poolInfo.getConnectionTimeout();
-            if (connectionTimeout > 0) {
-                hikariConfigEx.setConnectionTimeout(connectionTimeout);
-            }
+      if (!MapUtils.isEmpty(dataSourceProperties)) {
+        dataSourceProperties.forEach(hikariConfigEx::addDataSourceProperty);
+      }
 
-            if (!MapUtils.isEmpty(dataSourceProperties)) {
-                dataSourceProperties.forEach(hikariConfigEx::addDataSourceProperty);
-            }
-
-            if (datasourceInfo.isPrimary()) {
-                hikariConfigExs.add(0, hikariConfigEx);
-            } else {
-                hikariConfigExs.add(hikariConfigEx);
-            }
-
-        }
-
-        return hikariConfigExs;
+      if (datasourceInfo.isPrimary()) {
+        hikariConfigExs.add(0, hikariConfigEx);
+      } else {
+        hikariConfigExs.add(hikariConfigEx);
+      }
     }
 
+    return hikariConfigExs;
+  }
 }

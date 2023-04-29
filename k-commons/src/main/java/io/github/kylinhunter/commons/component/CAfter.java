@@ -8,12 +8,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author BiJi'an
- * @description abbreviations  for component
+ * @description abbreviations for component
  * @date 2022/11/8
- **/
+ */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CAfter {
-
-}
+public @interface CAfter {}

@@ -14,21 +14,19 @@ import lombok.RequiredArgsConstructor;
  * @author BiJi'an
  * @description
  * @date 2023-01-19 00:44
- **/
+ */
 @C
 @RequiredArgsConstructor
 public class DatabaseMetaCache extends AbstractCache<DatabaseMeta> {
-    private final DatabaseMetaReader databaseMetaReader;
+  private final DatabaseMetaReader databaseMetaReader;
 
-    @Override
-    public DatabaseMeta load(CacheKey cacheKey) {
-        int datasourceNo = cacheKey.getInt(0);
-        DataSourceEx dataSourceEx = DataSourceUtils.getByNo(datasourceNo);
-        return databaseMetaReader.getDatabaseMetaData(dataSourceEx);
-    }
+  @Override
+  public DatabaseMeta load(CacheKey cacheKey) {
+    int datasourceNo = cacheKey.getInt(0);
+    DataSourceEx dataSourceEx = DataSourceUtils.getByNo(datasourceNo);
+    return databaseMetaReader.getDatabaseMetaData(dataSourceEx);
+  }
 
-    @Override
-    protected void custom(CacheConfig cacheConfig) {
-
-    }
+  @Override
+  protected void custom(CacheConfig cacheConfig) {}
 }

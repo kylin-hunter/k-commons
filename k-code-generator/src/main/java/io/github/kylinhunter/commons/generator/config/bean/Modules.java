@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class Modules {
-    protected Database database;
-    protected List<Module> list;
-
+  protected Database database;
+  protected List<Module> list;
 }

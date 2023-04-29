@@ -7,14 +7,14 @@ import lombok.Data;
  * @author BiJi'an
  * @description
  * @date 2023-03-04 02:03
- **/
+ */
 @Data
 public class CmdResult {
-    private int exitValue;
-    private List<String> stdOuts;
-    private List<String> stdErrs;
+  private int exitValue;
+  private List<String> stdOuts;
+  private List<String> stdErrs;
 
-    public boolean isSuccess() {
-        return exitValue == 0;
-    }
+  public boolean isSuccess() {
+    return exitValue == 0;
+  }
 }

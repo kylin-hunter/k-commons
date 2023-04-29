@@ -11,24 +11,24 @@ import net.bytebuddy.implementation.bind.annotation.SuperCall;
  * @author BiJi'an
  * @description
  * @date 2023-03-11 10:36
- **/
+ */
 public class InvokeMethodDelegation {
 
-    private static InvokeTraceManager invokeTraceManager = InvokeTraceManager.getInstance();
+  private static InvokeTraceManager invokeTraceManager = InvokeTraceManager.getInstance();
 
-    @RuntimeType
-    public static Object intercept(@Origin Method method, @AllArguments Object[] arguments,
-                                   @SuperCall Callable<?> callable) throws Exception {
-        Thread thread = Thread.currentThread();
-        InvokeTrace invokeTrace = new InvokeTrace(thread.getId(), thread.getStackTrace(), method);
+  @RuntimeType
+  public static Object intercept(
+      @Origin Method method, @AllArguments Object[] arguments, @SuperCall Callable<?> callable)
+      throws Exception {
+    Thread thread = Thread.currentThread();
+    InvokeTrace invokeTrace = new InvokeTrace(thread.getId(), thread.getStackTrace(), method);
 
-        try {
-            return callable.call();
-        } finally {
+    try {
+      return callable.call();
+    } finally {
 
-            invokeTrace.end();
-            invokeTraceManager.addTrace(invokeTrace);
-
-        }
+      invokeTrace.end();
+      invokeTraceManager.addTrace(invokeTrace);
     }
+  }
 }

@@ -8,15 +8,15 @@ import lombok.Data;
  * @author BiJi'an
  * @description
  * @date 2023-03-11 14:50
- **/
+ */
 @Data
-public class Teacher  {
-    public final String name;
-    private List<Student> students = ListUtils.newArrayList();
+public class Teacher {
+  public final String name;
+  private List<Student> students = ListUtils.newArrayList();
 
-    public Student addStudent(Student student) {
-        this.students.add(student);
+  public Student addStudent(Student student) {
+    this.students.add(student);
 
-        return student;
-    }
+    return student;
+  }
 }

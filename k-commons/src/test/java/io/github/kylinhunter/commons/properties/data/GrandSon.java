@@ -10,14 +10,12 @@ import lombok.ToString;
  * @author BiJi'an
  * @description
  * @date 2023-03-19 01:31
- **/
+ */
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class GrandSon extends People {
-    @EqualsAndHashCode.Include
-    private String name;
-
+  @EqualsAndHashCode.Include private String name;
 }

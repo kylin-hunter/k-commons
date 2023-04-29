@@ -8,15 +8,14 @@ import org.junit.jupiter.api.Test;
 
 class TableMetaReaderTest {
 
-    @Test
-    void test() {
-        TableMetaReader tableMetaReader = CF.get(TableMetaReader.class);
+  @Test
+  void test() {
+    TableMetaReader tableMetaReader = CF.get(TableMetaReader.class);
 
-        List<TableMeta> tableMetas = tableMetaReader.getTableMetaDatas("", "test_user");
-        Assertions.assertTrue(!tableMetas.isEmpty());
-        for (TableMeta tableMeta : tableMetas) {
-            System.out.println(tableMeta);
-        }
-
+    List<TableMeta> tableMetas = tableMetaReader.getTableMetaDatas("", "test_user");
+    Assertions.assertTrue(!tableMetas.isEmpty());
+    for (TableMeta tableMeta : tableMetas) {
+      System.out.println(tableMeta);
     }
+  }
 }

@@ -8,51 +8,53 @@ import org.junit.jupiter.api.Test;
 
 class BloomFilterFactoryTest {
 
-    @SuppressWarnings("UnstableApiUsage")
-    @Test
-    void createInteger() {
-        int cap = 100000;
-        BloomFilter<Integer> bloomFilter = BloomFilterFactory.createInteger(cap, 0.001);
-        System.out.println("###################################################");
-        int mightContainNumber0 = 0;
+  @SuppressWarnings("UnstableApiUsage")
+  @Test
+  void createInteger() {
+    int cap = 100000;
+    BloomFilter<Integer> bloomFilter = BloomFilterFactory.createInteger(cap, 0.001);
+    System.out.println("###################################################");
+    int mightContainNumber0 = 0;
 
-        List<Integer> list = new ArrayList<>(cap);
-        for (int i = 0; i < cap; i++) {
+    List<Integer> list = new ArrayList<>(cap);
+    for (int i = 0; i < cap; i++) {
 
-            if (bloomFilter.mightContain(i)) {
-                mightContainNumber0++;
-            }
+      if (bloomFilter.mightContain(i)) {
+        mightContainNumber0++;
+      }
 
-            bloomFilter.put(i);
-            list.add(i);
-        }
-        int mightContainNumber1 = 0;
-        NumberFormat percentFormat = NumberFormat.getPercentInstance();
-        percentFormat.setMaximumFractionDigits(2);
-
-        for (Integer key : list) {
-            if (bloomFilter.mightContain(key)) {
-                mightContainNumber1++;
-            }
-        }
-
-        int mightContainNumber2 = 0;
-        for (int i = 0; i < cap; i++) {
-            if (bloomFilter.mightContain(i + cap)) {
-                mightContainNumber2++;
-            }
-        }
-        System.out.println("cap：" + cap);
-
-        System.out.println("conflict num：" + mightContainNumber0);
-        System.out.println("conflict rate：" + percentFormat.format((float) mightContainNumber0 / cap));
-
-        System.out.println("correct num：" + mightContainNumber1);
-        System.out.println("correct recognition rate：" + percentFormat.format((float) mightContainNumber1 / cap));
-
-        System.out.println("error num：" + mightContainNumber2);
-        System.out.println("error recognition rate：" + percentFormat.format((float) mightContainNumber2 / cap));
-
-        System.out.println("###################################################");
+      bloomFilter.put(i);
+      list.add(i);
     }
+    int mightContainNumber1 = 0;
+    NumberFormat percentFormat = NumberFormat.getPercentInstance();
+    percentFormat.setMaximumFractionDigits(2);
+
+    for (Integer key : list) {
+      if (bloomFilter.mightContain(key)) {
+        mightContainNumber1++;
+      }
+    }
+
+    int mightContainNumber2 = 0;
+    for (int i = 0; i < cap; i++) {
+      if (bloomFilter.mightContain(i + cap)) {
+        mightContainNumber2++;
+      }
+    }
+    System.out.println("cap：" + cap);
+
+    System.out.println("conflict num：" + mightContainNumber0);
+    System.out.println("conflict rate：" + percentFormat.format((float) mightContainNumber0 / cap));
+
+    System.out.println("correct num：" + mightContainNumber1);
+    System.out.println(
+        "correct recognition rate：" + percentFormat.format((float) mightContainNumber1 / cap));
+
+    System.out.println("error num：" + mightContainNumber2);
+    System.out.println(
+        "error recognition rate：" + percentFormat.format((float) mightContainNumber2 / cap));
+
+    System.out.println("###################################################");
+  }
 }
