@@ -21,11 +21,12 @@ buildscript {
 plugins {
     id "com.github.spotbugs" version "5.0.14"
     id("com.diffplug.spotless") version "6.18.0"
+
+    id 'jacoco'
 }
 allprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
-    apply plugin: 'com.github.spotbugs'
     apply from: "$rootProject.rootDir/script/gradle-script/k-gradle-allprojects.gradle"
 
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -52,7 +53,9 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.bmuschko.docker-remote-api'
     apply plugin: 'signing'
+    apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.diffplug.spotless'
+    apply plugin: 'jacoco'
     apply from: "$rootProject.rootDir/script/gradle-script/k-gradle-subprojects.gradle"
 
     group 'io.github.kylin-hunter'
@@ -114,6 +117,47 @@ subprojects {
         testLogging {
             outputs.upToDateWhen { true }
             showStandardStreams = true
+        }
+        finalizedBy jacocoTestReport // report is always generated after tests run
+    }
+
+    jacoco {
+        toolVersion = "0.8.10"
+//        reportsDirectory = layout.buildDirectory.dir('kylin-reports')
+    }
+    jacocoTestReport {
+
+        dependsOn test // tests are required to run before generating the report
+        reports {
+            xml.required = false
+            csv.required = true
+//            html.outputLocation = layout.buildDirectory.dir('kylin-html-reports')
+        }
+    }
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+
+                limit {
+                    counter = 'INSTRUCTION'
+                    minimum = 0.6
+                }
+                limit {
+                    counter = 'BRANCH'
+                    minimum = 0.4
+                }
+            }
+
+            rule {
+                enabled = false
+                element = 'CLASS'
+                includes = ['io.github.kylinhunter.*']
+                limit {
+                    counter = 'BRANCH'
+//                    value = 'TOTALCOUNT'
+                    minimum = 0.3
+                }
+            }
         }
     }
 
@@ -218,7 +262,6 @@ subprojects {
     }
 
 
-
     spotless {
         java {
 //            target 'src/*/java/**/AbstractFieldConvertor.java'
@@ -249,13 +292,14 @@ subprojects {
         }
     }
 
+
 }
 
 wrapper {
-    gradleVersion = '6.9'
+    gradleVersion = '7.6'
     archiveBase = 'GRADLE_USER_HOME'
     archivePath = 'wrapper/dists'
     distributionBase = 'GRADLE_USER_HOME"'
     distributionPath = 'wrapper/dists'
-    distributionUrl = 'https://services.gradle.org/distributions/gradle-6.9-bin.zip'
+    distributionUrl = 'https://services.gradle.org/distributions/gradle-7.6-bin.zip'
 }

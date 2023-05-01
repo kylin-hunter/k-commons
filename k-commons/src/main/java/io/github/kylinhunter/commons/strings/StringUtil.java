@@ -25,13 +25,13 @@ public class StringUtil {
    * @param str str
    * @param defaultStr defaultStr
    * @return T
-   * @title defaultIfBlank
+   * @title defaultIfEmpty
    * @description
    * @author BiJi'an
    * @date 2023-04-22 11:17
    */
-  public static <T extends CharSequence> T defaultIfBlank(final T str, final T defaultStr) {
-    return isBlank(str) ? defaultStr : str;
+  public static <T extends CharSequence> T defaultIfEmpty(final T str, final T defaultStr) {
+    return isEmpty(str) ? defaultStr : str;
   }
 
   /**
@@ -56,6 +56,19 @@ public class StringUtil {
   }
 
   /**
+   * @param str str
+   * @param defaultStr defaultStr
+   * @return T
+   * @title defaultIfBlank
+   * @description
+   * @author BiJi'an
+   * @date 2023-04-22 11:17
+   */
+  public static <T extends CharSequence> T defaultIfBlank(final T str, final T defaultStr) {
+    return isBlank(str) ? defaultStr : str;
+  }
+
+  /**
    * @param cs cs
    * @return int
    * @title length
@@ -67,18 +80,7 @@ public class StringUtil {
     return cs == null ? 0 : cs.length();
   }
 
-  /**
-   * @param str str
-   * @param defaultStr defaultStr
-   * @return T
-   * @title defaultIfEmpty
-   * @description
-   * @author BiJi'an
-   * @date 2023-04-22 11:17
-   */
-  public static <T extends CharSequence> T defaultIfEmpty(final T str, final T defaultStr) {
-    return isEmpty(str) ? defaultStr : str;
-  }
+
 
   /**
    * @param str str
