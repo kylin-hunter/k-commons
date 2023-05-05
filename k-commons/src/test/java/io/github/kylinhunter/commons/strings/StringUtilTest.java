@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-
 class StringUtilTest {
 
   @Test
@@ -20,7 +19,5 @@ class StringUtilTest {
 
     assertEquals("a", StringUtil.defaultString(null, "a"));
     assertEquals("", StringUtil.defaultString(null));
-
-
   }
 }

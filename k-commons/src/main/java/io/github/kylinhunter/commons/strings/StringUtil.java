@@ -6,6 +6,7 @@ package io.github.kylinhunter.commons.strings;
  * @date 2023-04-22 11:11
  */
 public class StringUtil {
+
   public static final String EMPTY = "";
   public static final String[] EMPTY_STRING_ARRAY = {};
 
@@ -79,8 +80,6 @@ public class StringUtil {
   public static int length(final CharSequence cs) {
     return cs == null ? 0 : cs.length();
   }
-
-
 
   /**
    * @param str str
