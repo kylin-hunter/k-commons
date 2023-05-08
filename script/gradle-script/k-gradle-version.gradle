@@ -11,7 +11,8 @@ ext {
             "spring-boot-gradle-plugin": "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     ]
     dependency_management = [
-
+            'findbugs-annotations'            : 'com.google.code.findbugs:annotations:3.0.1u2',
+            'jsr305'                          : 'com.google.code.findbugs:jsr305:3.0.2',
             'byte-buddy-agent'                : 'net.bytebuddy:byte-buddy-agent:1.14.0',
             'bytebuddy'                       : 'net.bytebuddy:byte-buddy:1.14.0',
             'aviator'                         : 'com.googlecode.aviator:aviator:5.3.3',

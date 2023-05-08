@@ -21,7 +21,6 @@ buildscript {
 plugins {
     id "com.github.spotbugs" version "5.0.14"
     id("com.diffplug.spotless") version "6.18.0"
-
     id 'jacoco'
 }
 allprojects {
@@ -43,6 +42,7 @@ allprojects {
     }
 
     tasks.withType(Javadoc) {
+//      Avoiding Javadoc checks
         options.addStringOption('Xdoclint:none', '-quiet')
     }
 }
@@ -67,11 +67,12 @@ subprojects {
         compileOnly("org.projectlombok:lombok")
         annotationProcessor 'org.projectlombok:lombok'
 
-        compileOnly("com.google.code.findbugs:annotations:3.0.1u2")
-        compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+        compileOnly(dependency_management['findbugs-annotations'])
+        compileOnly(dependency_management['jsr305'])
 
-        testCompileOnly("com.google.code.findbugs:annotations:3.0.1u2")
-        testCompileOnly("com.google.code.findbugs:jsr305:3.0.2")
+
+        testCompileOnly(dependency_management['findbugs-annotations'])
+        testCompileOnly(dependency_management['jsr305'])
 
         testImplementation("org.projectlombok:lombok")
         testAnnotationProcessor 'org.projectlombok:lombok'
@@ -80,8 +81,7 @@ subprojects {
         testImplementation 'org.mockito:mockito-core'
         testImplementation 'org.mockito:mockito-inline'
 
-
-        testImplementation(rootProject.dependency_management['jmockit'])
+        testImplementation(dependency_management['jmockit'])
 
     }
 
@@ -93,7 +93,6 @@ subprojects {
     java {
         withSourcesJar()
         withJavadocJar()
-
     }
 
     javadoc {
@@ -110,7 +109,6 @@ subprojects {
     }
     classes.finalizedBy(kylinTaskChangeActiveProfile)
 
-
     test {
         exclude 'io/github/kylinhunter/**/Suite**'
         useJUnitPlatform()
@@ -126,11 +124,10 @@ subprojects {
 //        reportsDirectory = layout.buildDirectory.dir('kylin-reports')
     }
     jacocoTestReport {
-
         dependsOn test
         reports {
-            xml.required = false
-            csv.required = true
+            xml.required = true
+            csv.required = false
 //            html.outputLocation = layout.buildDirectory.dir('kylin-html-reports')
         }
     }
@@ -149,7 +146,7 @@ subprojects {
             }
 
             rule {
-                enabled = false
+                enabled = true
                 element = 'CLASS'
                 includes = ['io.github.kylinhunter.*']
                 limit {
@@ -261,7 +258,7 @@ subprojects {
         }
     }
 
-
+// https://github.com/diffplug/spotless/tree/main/plugin-gradle
     spotless {
         java {
 //            target 'src/*/java/**/AbstractFieldConvertor.java'
