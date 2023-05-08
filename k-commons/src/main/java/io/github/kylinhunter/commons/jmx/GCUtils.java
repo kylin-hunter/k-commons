@@ -33,7 +33,4 @@ public class GCUtils {
     }
   }
 
-  public static void main(String[] args) {
-    GCUtils.printGCInfo();
-  }
 }

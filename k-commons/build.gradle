@@ -43,6 +43,7 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
+                    "io/github/kylinhunter/commons/**/exception/embed/**",
                     "io/github/kylinhunter/commons/**/KConst.class",
             ])
         }))

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class FileUtilTest {
+
   static String base_dir = "file-util-test";
   static File baseDir = UserDirUtils.getTmpDir(base_dir);
   static File dir1;
@@ -29,7 +30,8 @@ class FileUtilTest {
   }
 
   @AfterAll
-  static void afterAll() {}
+  static void afterAll() {
+  }
 
   @Test
   void getFile() throws IOException {
@@ -59,7 +61,7 @@ class FileUtilTest {
   }
 
   @Test
-  void cleanDirectoryQuietly() throws IOException {
+  void cleanDirectoryQuietly() {
     Assertions.assertTrue(FileUtil.isEmptyDirectory(dir1));
     File file1 =
         UserDirUtils.getTmpFile(
@@ -79,5 +81,27 @@ class FileUtilTest {
     Assertions.assertFalse(FileUtil.isEmptyDirectory(dir1));
     FileUtil.cleanDirectoryQuietly(dir1);
     Assertions.assertTrue(FileUtil.isEmptyDirectory(dir1));
+
+  }
+
+  @Test
+  void listFiles() {
+
+    File file = FileUtil.getFile(dir3, true, true, "test1.txt");
+    System.out.println(file.getAbsolutePath());
+    file = FileUtil.getFile(dir3, true, true, "test2.jpg");
+    System.out.println(file.getAbsolutePath());
+
+    file = FileUtil.getFile(dir3, true, true, "test3.doc");
+
+    file = FileUtil.getFile(dir3, true, true, "child", "test3.doc");
+    System.out.println(file.getAbsolutePath());
+    Assertions.assertEquals(3, FileUtil.listFiles(dir3, null, false).size());
+    Assertions.assertEquals(4, FileUtil.listFiles(dir3, null, true).size());
+
+    System.out.println(file.getAbsolutePath());
+    Assertions.assertEquals(3, FileUtil.listFiles(dir3, new String[]{"doc", "txt"}, true).size());
+
+
   }
 }

@@ -132,6 +132,7 @@ subprojects {
         }
     }
     jacocoTestCoverageVerification {
+        dependsOn jacocoTestReport
         violationRules {
             rule {
 

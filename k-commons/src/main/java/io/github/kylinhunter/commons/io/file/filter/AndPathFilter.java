@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class AndPathFilter extends AbstractPathFilter {
+
   private final List<PathFilter> fileFilters;
 
   public AndPathFilter(List<PathFilter> fileFilters) {
@@ -22,7 +23,7 @@ public class AndPathFilter extends AbstractPathFilter {
 
   public void addPathFilter(final PathFilter... fileFilters) {
     for (final PathFilter fileFilter : Objects.requireNonNull(fileFilters, "fileFilters")) {
-      addPathFilter(fileFilter);
+      this.fileFilters.add(fileFilter);
     }
   }
 

@@ -58,8 +58,5 @@ public class MemoryUtils {
     System.out.println(info);
   }
 
-  public static void main(String[] args) {
-    MemoryUtils.printHeapMemory();
-    MemoryUtils.printNonHeapMemory();
-  }
+
 }
