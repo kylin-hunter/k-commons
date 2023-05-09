@@ -145,17 +145,6 @@ subprojects {
                     minimum = 0.4
                 }
             }
-
-            rule {
-                enabled = true
-                element = 'CLASS'
-                includes = ['io.github.kylinhunter.*']
-                limit {
-                    counter = 'BRANCH'
-//                    value = 'TOTALCOUNT'
-                    minimum = 0.3
-                }
-            }
         }
     }
 

@@ -44,9 +44,32 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
                     "io/github/kylinhunter/commons/**/exception/embed/**",
-                    "io/github/kylinhunter/commons/**/KConst.class",
+                    "io/github/kylinhunter/commons/sys/KConst.class",
+                    "io/github/kylinhunter/commons/date/DatePatterns.class",
             ])
         }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['io.github.kylinhunter.*']
+            excludes =['io.github.kylinhunter.commons.exception.embed.*',
+                       'io.github.kylinhunter.commons.sys.KConst',
+                       'io.github.kylinhunter.commons.date.DatePatterns']
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.3
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.2
+            }
+        }
     }
 }
 

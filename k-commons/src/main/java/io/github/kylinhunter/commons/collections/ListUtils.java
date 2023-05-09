@@ -24,6 +24,7 @@ public class ListUtils {
     return new ArrayList<>();
   }
 
+  @SuppressWarnings("unchecked")
   public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
     ExceptionChecker.checkNonnegative(initialArraySize, "initialArraySize");
     return new ArrayList(initialArraySize);
