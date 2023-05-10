@@ -1,8 +1,9 @@
 package io.github.kylinhunter.commons.collections;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import lombok.NoArgsConstructor;
 
 /**
@@ -13,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MultiValueMap<K, V> {
 
-  private final Map<K, List<V>> map = new HashMap<>();
-  private boolean removeduplicates;
+  private final Map<K, Collection<V>> map = new HashMap<>();
+  private boolean removeduplicates = true;
 
   public MultiValueMap(boolean removeduplicates) {
     this.removeduplicates = removeduplicates;
@@ -35,12 +36,13 @@ public class MultiValueMap<K, V> {
           key,
           (k, v) -> {
             if (v == null) {
-              v = ListUtils.newArrayList();
-            }
-            if (removeduplicates) {
-              if (!v.contains(value)) {
-                v.add(value);
+              if (removeduplicates) {
+                v = SetUtils.newHashSet();
+              } else {
+                v = ListUtils.newArrayList();
               }
+              v.add(value);
+
             } else {
               v.add(value);
             }
@@ -57,7 +59,7 @@ public class MultiValueMap<K, V> {
    * @author BiJi'an
    * @date 2023-03-19 11:04
    */
-  public List<V> getValues(K key) {
+  public Collection<V> getValues(K key) {
     return map.get(key);
   }
 
@@ -70,9 +72,9 @@ public class MultiValueMap<K, V> {
    * @date 2023-03-19 11:04
    */
   public V getValue(K key) {
-    List<V> values = this.getValues(key);
+    Collection<V> values = this.getValues(key);
     if (!CollectionUtils.isEmpty(values)) {
-      return values.get(0);
+      return values.iterator().next();
     }
     return null;
   }
@@ -85,15 +87,39 @@ public class MultiValueMap<K, V> {
    * @author BiJi'an
    * @date 2023-05-09 17:22
    */
-  public List<V> remove(K key) {
+  public Collection<V> remove(K key) {
     return this.map.remove(key);
   }
 
+  /**
+   * @param key key
+   * @param v   v
+   * @return boolean
+   * @throws
+   * @title remove
+   * @description
+   * @author BiJi'an
+   * @date 2023-05-11 00:08
+   */
   public boolean remove(K key, V v) {
-    List<V> values = this.getValues(key);
+    Collection<V> values = this.getValues(key);
     if (!CollectionUtils.isEmpty(values)) {
       return values.remove(v);
     }
     return false;
+  }
+
+  /**
+   * @param key             key
+   * @param mappingFunction mappingFunction
+   * @return java.util.Collection<V>
+   * @throws
+   * @title computeIfAbsent
+   * @description
+   * @author BiJi'an
+   * @date 2023-05-11 00:08
+   */
+  public Collection<V> computeIfAbsent(K key, Function<K, Collection<V>> mappingFunction) {
+    return map.computeIfAbsent(key, mappingFunction);
   }
 }
