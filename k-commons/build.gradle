@@ -35,8 +35,8 @@ test {
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     println jvmArgs
     jacoco {
-        includes=[]
-        excludes =[]
+        includes = []
+        excludes = []
     }
 }
 jacocoTestReport {
@@ -58,9 +58,10 @@ jacocoTestCoverageVerification {
             enabled = true
             element = 'CLASS'
             includes = ['io.github.kylinhunter.*']
-            excludes =['io.github.kylinhunter.commons.exception.embed.*',
-                       'io.github.kylinhunter.commons.sys.KConst',
-                       'io.github.kylinhunter.commons.date.DatePatterns']
+            excludes = ['io.github.kylinhunter.commons.exception.embed.*',
+                        'io.github.kylinhunter.commons.exception.common.*',
+                        'io.github.kylinhunter.commons.sys.KConst',
+                        'io.github.kylinhunter.commons.date.DatePatterns']
             limit {
                 counter = 'INSTRUCTION'
                 minimum = 0.3

@@ -2,14 +2,16 @@ package io.github.kylinhunter.commons.uid;
 
 import io.github.kylinhunter.commons.date.DateUtils;
 import java.util.StringJoiner;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022-12-13 12:41
  */
-@Data
+@RequiredArgsConstructor
+@Getter
 public class UidInfo {
   private final long sequence;
   private final long type;
@@ -17,7 +19,7 @@ public class UidInfo {
   private final long datacenterId;
   private final long timestamp;
 
-  @Override
+
   public String toString() {
     return new StringJoiner(", ", UidInfo.class.getSimpleName() + "[", "]")
         .add("sequence=" + sequence)

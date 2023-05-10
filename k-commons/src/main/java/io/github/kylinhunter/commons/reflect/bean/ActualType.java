@@ -20,6 +20,7 @@ public class ActualType {
    * @author BiJi'an
    * @date 2023-02-11 20:50
    */
+  @SuppressWarnings("unchecked")
   public <T> Class<T> getType(int index) {
     if (types != null && index >= 0 && index < types.length) {
       return (Class<T>) types[index];

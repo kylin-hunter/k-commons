@@ -2,6 +2,8 @@ package io.github.kylinhunter.commons.juc;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -12,7 +14,10 @@ import java.util.concurrent.ScheduledExecutorService;
  * @date 2023-03-04 01:32
  */
 public class ScheduledExecutorFactory {
+
   private static final Map<String, ScheduledExecutorService> pools = MapUtils.newHashMap();
+  private static final int PROCESSORS = Runtime.getRuntime().availableProcessors();
+  private static int DEFAULT_CORE_POOL_SIZE = PROCESSORS;
 
   /**
    * @param corePoolSize corePoolSize
@@ -27,7 +32,7 @@ public class ScheduledExecutorFactory {
   }
 
   /**
-   * @param corePoolSize
+   * @param corePoolSize corePoolSize
    * @return java.util.concurrent.ThreadPoolExecutor
    * @title create
    * @description
@@ -48,12 +53,31 @@ public class ScheduledExecutorFactory {
    * @date 2023-03-04 01:44
    */
   public static ScheduledExecutorService get(String name) {
+    return get(name, false);
+  }
+
+  /**
+   * @param name            name
+   * @param createIfNoExist createIfNoExist
+   * @return java.util.concurrent.ScheduledExecutorService
+   * @title get
+   * @description
+   * @author BiJi'an
+   * @date 2023-05-10 15:33
+   */
+  public static ScheduledExecutorService get(String name, boolean createIfNoExist) {
     ScheduledExecutorService scheduledExecutorService = pools.get(name);
     if (scheduledExecutorService == null) {
-      throw new InitException("no thread pool:" + name);
+      if (createIfNoExist) {
+        scheduledExecutorService = register(name, DEFAULT_CORE_POOL_SIZE);
+      } else {
+        throw new InitException("no thread pool:" + name);
+      }
     }
+
     return scheduledExecutorService;
   }
+
 
   /**
    * @param name name
@@ -63,10 +87,11 @@ public class ScheduledExecutorFactory {
    * @author BiJi'an
    * @date 2023-03-11 19:53
    */
-  public static void shutdownNow(String name) {
+  public static List<Runnable> shutdownNow(String name) {
     ScheduledExecutorService threadPoolExecutor = get(name);
     if (threadPoolExecutor != null) {
-      threadPoolExecutor.shutdownNow();
+      return threadPoolExecutor.shutdownNow();
     }
+    return Collections.emptyList();
   }
 }

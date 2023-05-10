@@ -64,8 +64,8 @@ subprojects {
 
 
     dependencies {
-        compileOnly("org.projectlombok:lombok")
-        annotationProcessor 'org.projectlombok:lombok'
+        compileOnly(dependency_management['lombok'])
+        annotationProcessor(dependency_management['lombok'])
 
         compileOnly(dependency_management['findbugs-annotations'])
         compileOnly(dependency_management['jsr305'])
@@ -74,8 +74,8 @@ subprojects {
         testCompileOnly(dependency_management['findbugs-annotations'])
         testCompileOnly(dependency_management['jsr305'])
 
-        testImplementation("org.projectlombok:lombok")
-        testAnnotationProcessor 'org.projectlombok:lombok'
+        testImplementation(dependency_management['lombok'])
+        testAnnotationProcessor(dependency_management['lombok'])
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testImplementation 'org.junit.platform:junit-platform-suite'
         testImplementation 'org.mockito:mockito-core'

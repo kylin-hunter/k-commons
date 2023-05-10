@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class JsonOption {
+
   private final boolean throwIfFailed;
   private final boolean snake;
 }

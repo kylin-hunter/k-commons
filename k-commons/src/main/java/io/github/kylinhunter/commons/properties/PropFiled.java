@@ -11,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class PropFiled implements Comparable<PropFiled> {
+
   private String objecId;
   private String name;
   private String fullName;
