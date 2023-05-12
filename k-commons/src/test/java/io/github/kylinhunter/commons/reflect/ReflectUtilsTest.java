@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.reflect;
 
 import io.github.kylinhunter.commons.reflect.test.ReflectBeanChild;
+import io.github.kylinhunter.commons.reflect.test.TestClass;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Set;
@@ -10,7 +11,21 @@ import org.junit.jupiter.api.Test;
 class ReflectUtilsTest {
 
   @Test
-  void test() {
+  void invoke() throws NoSuchMethodException {
+    TestClass testClass = new TestClass(1, 2);
+    ReflectUtils.invoke(testClass, testClass.getClass().getMethod("setA", int.class), 11);
+    int a = ReflectUtils.invoke(testClass, testClass.getClass().getMethod("getA"));
+    Assertions.assertEquals(11, a);
+
+    Assertions.assertThrows(
+        RuntimeException.class,
+        () -> {
+          ReflectUtils.invoke(testClass, testClass.getClass().getMethod("setA", int.class), "1");
+        });
+  }
+
+  @Test
+  void tesMethods() {
 
     System.out.println("#### get1");
     Set<Method> result12 = ReflectUtils.getMethods(ReflectBeanChild.class);

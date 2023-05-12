@@ -1,11 +1,13 @@
 package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class UserDirUtilsTest {
+
   private static final String SEP = File.separator;
   private static final String TEST_DIR = "tmp" + SEP + "user-dir-test";
   private static final File BASE_DIR = new File(System.getProperty("user.dir"), TEST_DIR);
@@ -18,6 +20,11 @@ class UserDirUtilsTest {
   static void beforeAll() {
     FileUtil.cleanDirectoryQuietly(BASE_DIR);
     System.out.println("clean:" + BASE_DIR.getAbsolutePath());
+  }
+
+  @AfterAll
+  static void afterAll() {
+    UserDirUtils.deleteQuietly(BASE_DIR);
   }
 
   @Test

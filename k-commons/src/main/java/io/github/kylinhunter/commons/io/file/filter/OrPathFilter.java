@@ -22,7 +22,7 @@ public class OrPathFilter extends AbstractPathFilter {
 
   public void addPathFilter(final PathFilter... fileFilters) {
     for (final PathFilter fileFilter : Objects.requireNonNull(fileFilters, "fileFilters")) {
-      addPathFilter(fileFilter);
+      this.fileFilters.add(fileFilter);
     }
   }
 

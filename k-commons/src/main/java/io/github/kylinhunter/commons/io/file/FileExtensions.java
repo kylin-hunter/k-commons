@@ -1,10 +1,13 @@
 package io.github.kylinhunter.commons.io.file;
 
+import io.github.kylinhunter.commons.sys.KGenerated;
+
 /**
  * @author BiJi'an
  * @description
  * @date 2022/1/1
  */
+@KGenerated
 public class FileExtensions {
   public static final String JAVA = "java";
   public static final String DOT_JAVA = ".java";
