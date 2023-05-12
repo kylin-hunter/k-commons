@@ -1,5 +1,8 @@
-package io.github.kylinhunter.commons.reflect;
+package io.github.kylinhunter.commons.reflect.test.generic;
 
+import io.github.kylinhunter.commons.reflect.test.generic.I1;
+import io.github.kylinhunter.commons.reflect.test.generic.I2;
+import io.github.kylinhunter.commons.reflect.test.generic.S;
 import java.util.List;
 import java.util.Map;
 

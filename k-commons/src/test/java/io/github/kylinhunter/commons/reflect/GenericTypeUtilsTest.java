@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.reflect;
 
 import io.github.kylinhunter.commons.reflect.bean.ActualType;
+import io.github.kylinhunter.commons.reflect.test.generic.TestClassForGeneric;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;

@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.reflect;
 
+import io.github.kylinhunter.commons.reflect.test.TestClass;
 import org.junit.jupiter.api.Test;
 
 class ObjectCreatorTest {

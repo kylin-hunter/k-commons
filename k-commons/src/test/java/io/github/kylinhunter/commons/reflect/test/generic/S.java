@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.reflect;
+package io.github.kylinhunter.commons.reflect.test.generic;
 
 /**
  * @author BiJi'an

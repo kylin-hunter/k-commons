@@ -1,20 +1,21 @@
 package io.github.kylinhunter.commons.reflect;
 
+import io.github.kylinhunter.commons.collections.ArrayUtils;
+import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.collections.SetUtils;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-05-10 23:08
  */
-public class SuperClassUtils {
+public class SuperClazzes {
 
-  private static final Map<Class<?>, Set<Class<?>>> CACHE_GET = MapUtils.newHashMap();
 
   private static final Map<Class<?>, Set<Class<?>>> CACHE_GET_ALL = MapUtils.newHashMap();
 
@@ -26,13 +27,9 @@ public class SuperClassUtils {
    * @author BiJi'an
    * @date 2023-05-11 00:14
    */
-  public static Collection<Class<?>> get(Class<?> clazz) {
-    return CACHE_GET.computeIfAbsent(clazz, (c) -> {
-      Class<?> superclass = c.getSuperclass();
-      return superclass != null && !superclass.equals(Object.class) ? Collections
-          .singleton(superclass) : Collections.emptySet();
-    });
-
+  public static Class<?> get(Class<?> clazz) {
+    Class<?> superclass = clazz.getSuperclass();
+    return superclass != null && !superclass.equals(Object.class) ? superclass : null;
   }
 
   /**
@@ -43,15 +40,20 @@ public class SuperClassUtils {
    * @author BiJi'an
    * @date 2023-05-11 00:14
    */
-  public static Collection<Class<?>> getAll(Class<?> clazz) {
-    return CACHE_GET_ALL.computeIfAbsent(clazz, (c) -> {
-      Set<Class<?>> result = SetUtils.newHashSet();
+  @SafeVarargs
+  public static Set<Class<?>> getAll(Class<?> clazz, Predicate<Class<?>>... predicates) {
+    Set<Class<?>> result = CACHE_GET_ALL.computeIfAbsent(clazz, (c) -> {
+      Set<Class<?>> tmpResult = SetUtils.newHashSet();
       Class<?> superclass = c.getSuperclass();
       while (superclass != null && !superclass.equals(Object.class)) {
-        result.add(superclass);
+        tmpResult.add(superclass);
         superclass = superclass.getSuperclass();
       }
-      return result;
+      return tmpResult;
     });
+    if (!CollectionUtils.isEmpty(result) && !ArrayUtils.isEmpty(predicates)) {
+      return CollectionUtils.andFilter(result, LinkedHashSet::new, predicates);
+    }
+    return result;
   }
 }

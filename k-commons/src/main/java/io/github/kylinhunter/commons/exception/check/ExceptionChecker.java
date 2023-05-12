@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.exception.check;
 
+import io.github.kylinhunter.commons.collections.ArrayUtils;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import java.util.Collection;
@@ -20,7 +21,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param reference reference
+   * @param reference    reference
    * @param errorMessage errorMessage
    * @return T
    * @title checkNotNull
@@ -36,7 +37,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param collection collection
+   * @param collection   collection
    * @param errorMessage errorMessage
    * @return void
    * @throws
@@ -52,7 +53,34 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param name name
+   * @param array array
+   * @return void
+   * @title checkNotEmpty
+   * @description
+   * @author BiJi'an
+   * @date 2023-05-12 16:07
+   */
+  public static void checkNotEmpty(final Object[] array) {
+    checkNotEmpty(array, "array can't be  empty");
+  }
+
+  /**
+   * @param array        array
+   * @param errorMessage errorMessage
+   * @return void
+   * @title checkNotEmpty
+   * @description
+   * @author BiJi'an
+   * @date 2023-05-12 16:07
+   */
+  public static void checkNotEmpty(final Object[] array, String errorMessage) {
+    if (ArrayUtils.isEmpty(array)) {
+      throw new ParamException(errorMessage);
+    }
+  }
+
+  /**
+   * @param name         name
    * @param errorMessage errorMessage
    * @return void
    * @title checkNotEmpty
@@ -67,7 +95,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param expression expression
+   * @param expression   expression
    * @param errorMessage errorMessage
    * @return void
    * @title checkArgument
