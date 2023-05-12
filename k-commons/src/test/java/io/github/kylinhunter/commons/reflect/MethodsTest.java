@@ -37,7 +37,10 @@ class MethodsTest {
     Assertions.assertEquals(result21.size(), result22.size());
 
     System.out.println("####getAll2");
-    Set<Method> result23 = Methods.getAll(ReflectBeanChild.class, e -> !e.getName().equals("getC1"),
+    Set<Method> result23 =
+        Methods.getAll(
+            ReflectBeanChild.class,
+            e -> !e.getName().equals("getC1"),
             e -> !e.getName().equals("getC2"));
     result23.forEach(System.out::println);
 

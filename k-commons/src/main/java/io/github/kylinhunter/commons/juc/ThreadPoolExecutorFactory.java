@@ -22,11 +22,10 @@ public class ThreadPoolExecutorFactory {
   private static int DEFAULT_MAXIMUM_POOL_SIZE = PROCESSORS * 2;
   private static int DEFAULT_CAPACITY = Integer.MAX_VALUE;
 
-
   /**
-   * @param corePoolSize    corePoolSize
+   * @param corePoolSize corePoolSize
    * @param maximumPoolSize maximumPoolSize
-   * @param capacity        capacity
+   * @param capacity capacity
    * @return java.util.concurrent.ThreadPoolExecutor
    * @title a
    * @description
@@ -39,9 +38,9 @@ public class ThreadPoolExecutorFactory {
   }
 
   /**
-   * @param corePoolSize    corePoolSize
+   * @param corePoolSize corePoolSize
    * @param maximumPoolSize maximumPoolSize
-   * @param capacity        capacity
+   * @param capacity capacity
    * @return java.util.concurrent.ThreadPoolExecutor
    * @title create
    * @description
@@ -70,8 +69,8 @@ public class ThreadPoolExecutorFactory {
     ThreadPoolExecutor threadPoolExecutor = pools.get(name);
     if (threadPoolExecutor == null) {
       if (createIfNoExist) {
-        threadPoolExecutor = register(name, DEFAULT_CORE_POOL_SIZE, DEFAULT_MAXIMUM_POOL_SIZE,
-            DEFAULT_CAPACITY);
+        threadPoolExecutor =
+            register(name, DEFAULT_CORE_POOL_SIZE, DEFAULT_MAXIMUM_POOL_SIZE, DEFAULT_CAPACITY);
       } else {
         throw new InitException("no thread pool:" + name);
       }

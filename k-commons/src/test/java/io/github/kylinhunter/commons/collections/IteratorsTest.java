@@ -14,5 +14,4 @@ class IteratorsTest {
     Iterators.addAll(list1, list2.iterator());
     Assertions.assertEquals(6, list1.size());
   }
-
 }

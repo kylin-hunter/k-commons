@@ -43,8 +43,6 @@ class MultiValueMapTest {
     remove = map.remove(key);
 
     Assertions.assertNull(remove);
-
-
   }
 
   @Test
@@ -78,7 +76,5 @@ class MultiValueMapTest {
     remove = map.remove(key);
 
     Assertions.assertNull(remove);
-
   }
-
 }

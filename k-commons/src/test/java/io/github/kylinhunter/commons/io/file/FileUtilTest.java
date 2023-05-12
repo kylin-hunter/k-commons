@@ -30,8 +30,7 @@ class FileUtilTest {
   }
 
   @AfterAll
-  static void afterAll() {
-  }
+  static void afterAll() {}
 
   @Test
   void getFile() throws IOException {
@@ -81,7 +80,6 @@ class FileUtilTest {
     Assertions.assertFalse(FileUtil.isEmptyDirectory(dir1));
     FileUtil.cleanDirectoryQuietly(dir1);
     Assertions.assertTrue(FileUtil.isEmptyDirectory(dir1));
-
   }
 
   @Test
@@ -100,8 +98,6 @@ class FileUtilTest {
     Assertions.assertEquals(4, FileUtil.listFiles(dir3, null, true).size());
 
     System.out.println(file.getAbsolutePath());
-    Assertions.assertEquals(3, FileUtil.listFiles(dir3, new String[]{"doc", "txt"}, true).size());
-
-
+    Assertions.assertEquals(3, FileUtil.listFiles(dir3, new String[] {"doc", "txt"}, true).size());
   }
 }

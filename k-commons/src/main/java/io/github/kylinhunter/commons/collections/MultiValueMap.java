@@ -22,7 +22,7 @@ public class MultiValueMap<K, V> {
   }
 
   /**
-   * @param key   key
+   * @param key key
    * @param value value
    * @return void
    * @title add
@@ -93,7 +93,7 @@ public class MultiValueMap<K, V> {
 
   /**
    * @param key key
-   * @param v   v
+   * @param v v
    * @return boolean
    * @throws
    * @title remove
@@ -110,7 +110,7 @@ public class MultiValueMap<K, V> {
   }
 
   /**
-   * @param key             key
+   * @param key key
    * @param mappingFunction mappingFunction
    * @return java.util.Collection<V>
    * @throws

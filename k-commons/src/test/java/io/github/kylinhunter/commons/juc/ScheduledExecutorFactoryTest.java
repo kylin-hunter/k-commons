@@ -11,16 +11,15 @@ class ScheduledExecutorFactoryTest {
   void test() {
     ScheduledExecutorFactory.register("a", 1);
 
-    Assertions.assertThrows(RuntimeException.class, () -> {
-      ScheduledExecutorFactory.get("a1");
-    });
+    Assertions.assertThrows(
+        RuntimeException.class,
+        () -> {
+          ScheduledExecutorFactory.get("a1");
+        });
 
     ScheduledExecutorService service = ScheduledExecutorFactory.get("a");
     Assertions.assertNotNull(service);
     List<Runnable> runnables = ScheduledExecutorFactory.shutdownNow("a");
     Assertions.assertTrue(runnables.isEmpty());
-
-
   }
-
 }

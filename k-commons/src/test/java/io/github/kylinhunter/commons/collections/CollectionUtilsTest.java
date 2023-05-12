@@ -34,34 +34,37 @@ class CollectionUtilsTest {
     list.add("1");
     list.add("2");
     list.add("3");
-    List<String> list1 = CollectionUtils
-        .andFilter(list, (Supplier<List<String>>) ArrayList::new, e -> e.equals("1"));
+    List<String> list1 =
+        CollectionUtils.andFilter(
+            list, (Supplier<List<String>>) ArrayList::new, e -> e.equals("1"));
     System.out.println("=====");
     list1.forEach(System.out::println);
     Assertions.assertEquals(1, list1.size());
 
-    List<String> list2 = CollectionUtils
-        .andFilter(list, (Supplier<List<String>>) ArrayList::new, e -> e.equals("1"),
-            e -> e.equals("2"));
+    List<String> list2 =
+        CollectionUtils.andFilter(
+            list, (Supplier<List<String>>) ArrayList::new, e -> e.equals("1"), e -> e.equals("2"));
     System.out.println("=====");
     list2.forEach(System.out::println);
 
     Assertions.assertEquals(0, list2.size());
 
-    List<String> list3 = CollectionUtils
-        .orFilter(list.stream(), (Supplier<List<String>>) ArrayList::new, e -> e.equals("1"));
+    List<String> list3 =
+        CollectionUtils.orFilter(
+            list.stream(), (Supplier<List<String>>) ArrayList::new, e -> e.equals("1"));
     Assertions.assertEquals(1, list3.size());
     System.out.println("=====");
     list3.forEach(System.out::println);
 
-    List<String> list4 = CollectionUtils
-        .orFilter(list.stream(), (Supplier<List<String>>) ArrayList::new, e -> e.equals("1"),
+    List<String> list4 =
+        CollectionUtils.orFilter(
+            list.stream(),
+            (Supplier<List<String>>) ArrayList::new,
+            e -> e.equals("1"),
             e -> e.equals("2"));
     System.out.println("=====");
     list4.forEach(System.out::println);
 
     Assertions.assertEquals(2, list4.size());
   }
-
-
 }

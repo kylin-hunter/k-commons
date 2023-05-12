@@ -19,7 +19,6 @@ public class UidInfo {
   private final long datacenterId;
   private final long timestamp;
 
-
   public String toString() {
     return new StringJoiner(", ", UidInfo.class.getSimpleName() + "[", "]")
         .add("sequence=" + sequence)

@@ -8,13 +8,11 @@ import lombok.Getter;
  * @date 2023-05-10 19:36
  */
 @Getter
-public class ReflectBeanGrandFather implements  ReflectInterface4{
+public class ReflectBeanGrandFather implements ReflectInterface4 {
 
   private int gf1;
   private int gf2;
 
   @Override
-  public void interface4() {
-
-  }
+  public void interface4() {}
 }

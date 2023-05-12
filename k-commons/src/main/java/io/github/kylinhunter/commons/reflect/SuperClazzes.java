@@ -16,7 +16,6 @@ import java.util.function.Predicate;
  */
 public class SuperClazzes {
 
-
   private static final Map<Class<?>, Set<Class<?>>> CACHE_GET_ALL = MapUtils.newHashMap();
 
   /**
@@ -42,15 +41,18 @@ public class SuperClazzes {
    */
   @SafeVarargs
   public static Set<Class<?>> getAll(Class<?> clazz, Predicate<Class<?>>... predicates) {
-    Set<Class<?>> result = CACHE_GET_ALL.computeIfAbsent(clazz, (c) -> {
-      Set<Class<?>> tmpResult = SetUtils.newHashSet();
-      Class<?> superclass = c.getSuperclass();
-      while (superclass != null && !superclass.equals(Object.class)) {
-        tmpResult.add(superclass);
-        superclass = superclass.getSuperclass();
-      }
-      return tmpResult;
-    });
+    Set<Class<?>> result =
+        CACHE_GET_ALL.computeIfAbsent(
+            clazz,
+            (c) -> {
+              Set<Class<?>> tmpResult = SetUtils.newHashSet();
+              Class<?> superclass = c.getSuperclass();
+              while (superclass != null && !superclass.equals(Object.class)) {
+                tmpResult.add(superclass);
+                superclass = superclass.getSuperclass();
+              }
+              return tmpResult;
+            });
     if (!CollectionUtils.isEmpty(result) && !ArrayUtils.isEmpty(predicates)) {
       return CollectionUtils.andFilter(result, LinkedHashSet::new, predicates);
     }

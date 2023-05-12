@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class StreamUtils {
 
   /**
-   * @param stream     stream
+   * @param stream stream
    * @param predicates predicates
    * @return java.util.stream.Stream<T>
    * @title filter
@@ -27,9 +27,8 @@ public class StreamUtils {
     return stream.filter(Arrays.stream(predicates).reduce(t -> true, Predicate::and));
   }
 
-
   /**
-   * @param stream     stream
+   * @param stream stream
    * @param predicates predicates
    * @return java.util.stream.Stream<T>
    * @title orFilter
@@ -42,6 +41,4 @@ public class StreamUtils {
     ExceptionChecker.checkNotEmpty(predicates);
     return stream.filter(Arrays.stream(predicates).reduce(t -> false, Predicate::or));
   }
-
-
 }

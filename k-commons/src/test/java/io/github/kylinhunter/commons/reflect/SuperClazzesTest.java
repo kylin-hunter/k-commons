@@ -14,9 +14,10 @@ class SuperClazzesTest {
   void test() {
 
     System.out.println("#### getSuperTypes1");
-    Collection<Class<?>> result11 = ReflectionUtils.getSuperTypes(ReflectBeanChild.class).stream()
-        .filter(e -> !e.isInterface()).collect(
-            Collectors.toSet());
+    Collection<Class<?>> result11 =
+        ReflectionUtils.getSuperTypes(ReflectBeanChild.class).stream()
+            .filter(e -> !e.isInterface())
+            .collect(Collectors.toSet());
     result11.forEach(System.out::println);
 
     System.out.println("#### get");
@@ -26,10 +27,10 @@ class SuperClazzesTest {
     Assertions.assertNotNull(result12);
 
     System.out.println("####getAllSuperTypes1");
-    Collection<Class<?>> result21 = ReflectionUtils.getAllSuperTypes(ReflectBeanChild.class)
-        .stream()
-        .filter(e -> !e.isInterface()).collect(
-            Collectors.toSet());
+    Collection<Class<?>> result21 =
+        ReflectionUtils.getAllSuperTypes(ReflectBeanChild.class).stream()
+            .filter(e -> !e.isInterface())
+            .collect(Collectors.toSet());
     result21.forEach(System.out::println);
 
     System.out.println("####getAll");
@@ -39,23 +40,23 @@ class SuperClazzesTest {
     Assertions.assertEquals(result21.size(), result22.size());
 
     System.out.println("####getAllSuperTypes2");
-    Collection<Class<?>> result31 = ReflectionUtils.getAllSuperTypes(ReflectBeanChild.class)
-        .stream()
-        .filter(e -> !e.isInterface())
-        .filter(e -> !e.getSimpleName().equals("ReflectBeanGrandFather"))
-        .filter(e -> !e.getSimpleName().equals("ReflectBeanFather")).collect(Collectors.toSet());
+    Collection<Class<?>> result31 =
+        ReflectionUtils.getAllSuperTypes(ReflectBeanChild.class).stream()
+            .filter(e -> !e.isInterface())
+            .filter(e -> !e.getSimpleName().equals("ReflectBeanGrandFather"))
+            .filter(e -> !e.getSimpleName().equals("ReflectBeanFather"))
+            .collect(Collectors.toSet());
     result31.forEach(System.out::println);
 
     System.out.println("####getAll");
-    Collection<Class<?>> result32 = SuperClazzes
-        .getAll(ReflectBeanChild.class, e -> !e.getSimpleName().equals("ReflectBeanGrandFather"),
+    Collection<Class<?>> result32 =
+        SuperClazzes.getAll(
+            ReflectBeanChild.class,
+            e -> !e.getSimpleName().equals("ReflectBeanGrandFather"),
             e -> !e.getSimpleName().equals("ReflectBeanFather"));
     result32.forEach(System.out::println);
 
     Assertions.assertEquals(result31.size(), result32.size());
     Assertions.assertEquals(0, result32.size());
-
   }
-
-
 }

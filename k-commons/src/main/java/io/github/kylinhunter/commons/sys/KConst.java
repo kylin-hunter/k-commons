@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.sys;
 
-
 /**
  * @author BiJi'an
  * @description

@@ -57,6 +57,4 @@ public class MemoryUtils {
             nonheadMemory.getUsed() * 100 / nonheadMemory.getCommitted() + "%");
     System.out.println(info);
   }
-
-
 }

@@ -11,16 +11,16 @@ class ThreadPoolExecutorFactoryTest {
   void test() {
     ThreadPoolExecutorFactory.register("a", 1, 2, 1);
 
-    Assertions.assertThrows(RuntimeException.class, () -> {
-      ThreadPoolExecutorFactory.get("a1");
-    });
+    Assertions.assertThrows(
+        RuntimeException.class,
+        () -> {
+          ThreadPoolExecutorFactory.get("a1");
+        });
 
     ThreadPoolExecutor service = ThreadPoolExecutorFactory.get("a");
     Assertions.assertNotNull(service);
 
     List<Runnable> runnables = ThreadPoolExecutorFactory.shutdownNow("a");
     Assertions.assertTrue(runnables.isEmpty());
-
-
   }
 }

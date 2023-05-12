@@ -18,7 +18,8 @@ class ReflectUtilsTest {
     Assertions.assertTrue(result12.size() > 0);
 
     System.out.println("#### get + predicate ");
-    Set<Method> result13 = ReflectUtils.getMethods(ReflectBeanChild.class, e -> e.getName().equals("getF1"));
+    Set<Method> result13 =
+        ReflectUtils.getMethods(ReflectBeanChild.class, e -> e.getName().equals("getF1"));
     result13.forEach(System.out::println);
 
     Assertions.assertEquals(1, result13.size());
@@ -30,12 +31,14 @@ class ReflectUtilsTest {
     Assertions.assertTrue(result22.size() > 0);
 
     System.out.println("####getAll + predicate ");
-    Set<Method> result23 = ReflectUtils.getAllMethods(ReflectBeanChild.class, e -> !e.getName().equals("getC1"),
-        e -> !e.getName().equals("getC2"));
+    Set<Method> result23 =
+        ReflectUtils.getAllMethods(
+            ReflectBeanChild.class,
+            e -> !e.getName().equals("getC1"),
+            e -> !e.getName().equals("getC2"));
     result23.forEach(System.out::println);
 
     Assertions.assertTrue(result23.size() > 0);
-
   }
 
   @Test
@@ -49,9 +52,11 @@ class ReflectUtilsTest {
     result22.forEach(System.out::println);
     Assertions.assertEquals(2, result22.size());
 
-    Collection<Class<?>> result32 = ReflectUtils.getAllSuperClasses(ReflectBeanChild.class,
-        e -> !e.getSimpleName().equals("ReflectBeanGrandFather"),
-        e -> !e.getSimpleName().equals("ReflectBeanFather"));
+    Collection<Class<?>> result32 =
+        ReflectUtils.getAllSuperClasses(
+            ReflectBeanChild.class,
+            e -> !e.getSimpleName().equals("ReflectBeanGrandFather"),
+            e -> !e.getSimpleName().equals("ReflectBeanFather"));
     result32.forEach(System.out::println);
 
     Assertions.assertEquals(0, result32.size());
@@ -66,8 +71,9 @@ class ReflectUtilsTest {
     Assertions.assertEquals(2, result12.size());
 
     System.out.println("#### get2");
-    Collection<Class<?>> result13 = ReflectUtils
-        .getInterfaces(ReflectBeanChild.class, e -> e.getSimpleName().equals("ReflectInterface3"));
+    Collection<Class<?>> result13 =
+        ReflectUtils.getInterfaces(
+            ReflectBeanChild.class, e -> e.getSimpleName().equals("ReflectInterface3"));
     result13.forEach(System.out::println);
     Assertions.assertEquals(1, result13.size());
 
@@ -77,9 +83,11 @@ class ReflectUtilsTest {
     Assertions.assertEquals(4, result22.size());
 
     System.out.println("####getAll2");
-    Collection<Class<?>> result23 = ReflectUtils.getAllInterfaces(ReflectBeanChild.class,
-        e -> !e.getSimpleName().equals("ReflectInterface1"),
-        e -> !e.getSimpleName().equals("ReflectInterface2"));
+    Collection<Class<?>> result23 =
+        ReflectUtils.getAllInterfaces(
+            ReflectBeanChild.class,
+            e -> !e.getSimpleName().equals("ReflectInterface1"),
+            e -> !e.getSimpleName().equals("ReflectInterface2"));
     result23.forEach(System.out::println);
     Assertions.assertEquals(2, result23.size());
   }

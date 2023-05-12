@@ -57,7 +57,7 @@ public class ScheduledExecutorFactory {
   }
 
   /**
-   * @param name            name
+   * @param name name
    * @param createIfNoExist createIfNoExist
    * @return java.util.concurrent.ScheduledExecutorService
    * @title get
@@ -77,7 +77,6 @@ public class ScheduledExecutorFactory {
 
     return scheduledExecutorService;
   }
-
 
   /**
    * @param name name

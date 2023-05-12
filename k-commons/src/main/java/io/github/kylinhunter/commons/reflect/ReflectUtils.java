@@ -15,8 +15,8 @@ public class ReflectUtils {
 
   /**
    * @param method method
-   * @param obj    obj
-   * @param args   args
+   * @param obj obj
+   * @param args args
    * @return java.lang.Object
    * @title invoke
    * @description
@@ -34,7 +34,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param obj   obj
+   * @param obj obj
    * @param field field
    * @param value value
    * @return T
@@ -51,7 +51,6 @@ public class ReflectUtils {
       throw new InitException("invoke error", e);
     }
   }
-
 
   /**
    * @param clazz clazz
@@ -74,13 +73,13 @@ public class ReflectUtils {
    * @date 2023-05-11 00:14
    */
   @SafeVarargs
-  public static Set<Class<?>> getAllSuperClasses(Class<?> clazz,
-      Predicate<Class<?>>... predicates) {
+  public static Set<Class<?>> getAllSuperClasses(
+      Class<?> clazz, Predicate<Class<?>>... predicates) {
     return SuperClazzes.getAll(clazz, predicates);
   }
 
   /**
-   * @param clazz      clazz
+   * @param clazz clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.Class < ?>>
    * @title getInterfaces
@@ -94,7 +93,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz      clazz
+   * @param clazz clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.Class < ?>>
    * @title getAllInterfaces
@@ -108,7 +107,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz      clazz
+   * @param clazz clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Method>
    * @title get
@@ -122,7 +121,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz      clazz
+   * @param clazz clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Method>
    * @title getAll
@@ -133,6 +132,5 @@ public class ReflectUtils {
   @SafeVarargs
   public static Set<Method> getAllMethods(Class<?> clazz, Predicate<Method>... predicates) {
     return Methods.getAll(clazz, predicates);
-
   }
 }

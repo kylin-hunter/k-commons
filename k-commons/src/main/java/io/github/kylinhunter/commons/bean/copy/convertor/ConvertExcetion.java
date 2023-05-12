@@ -8,7 +8,6 @@ import io.github.kylinhunter.commons.sys.KGenerated;
  * @description
  * @date 2022-12-10 00:05
  */
-
 @KGenerated
 public class ConvertExcetion extends BizException {
 

@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -11,12 +10,11 @@ class ArrayUtilsTest {
   @Test
   void isEmpty() {
 
-    Object[] arr = new Object[]{1, 2};
+    Object[] arr = new Object[] {1, 2};
 
     assertFalse(ArrayUtils.isEmpty(arr));
     assertTrue(ArrayUtils.isEmpty(null));
-    String []arr2=new String[]{"1","2"};
+    String[] arr2 = new String[] {"1", "2"};
     assertFalse(ArrayUtils.isEmpty(arr2));
-
   }
 }

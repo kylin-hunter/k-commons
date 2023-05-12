@@ -32,5 +32,4 @@ public class GCUtils {
       System.out.println(info);
     }
   }
-
 }

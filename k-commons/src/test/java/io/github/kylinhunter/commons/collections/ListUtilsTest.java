@@ -22,6 +22,5 @@ class ListUtilsTest {
 
     list = ListUtils.newArrayListWithCapacity(3);
     assertEquals(0, list.size());
-
   }
 }

@@ -58,7 +58,6 @@ class BloomFilterFactoryTest {
     System.out.println("###################################################");
   }
 
-
   @Test
   void createString() {
     int cap = 100000;

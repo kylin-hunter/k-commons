@@ -51,35 +51,34 @@ public class CollectionUtils {
     return c == null || c.isEmpty();
   }
 
-
   /**
-   * @param c                 c
+   * @param c c
    * @param collectionFactory collectionFactory
-   * @param predicates        predicates
+   * @param predicates predicates
    * @return java.util.Set<T>
    * @title andFilter
    * @description
    * @author BiJi'an
    * @date 2023-05-12 16:20
    */
-  public static <T, C extends Collection<T>> C andFilter(final Collection<T> c,
-      Supplier<C> collectionFactory, Predicate<T>... predicates) {
+  public static <T, C extends Collection<T>> C andFilter(
+      final Collection<T> c, Supplier<C> collectionFactory, Predicate<T>... predicates) {
     return StreamUtils.andFilter(c.stream(), predicates)
         .collect(Collectors.toCollection(collectionFactory));
   }
 
   /**
-   * @param stream            stream
+   * @param stream stream
    * @param collectionFactory collectionFactory
-   * @param predicates        predicates
+   * @param predicates predicates
    * @return C
    * @title orFilter
    * @description
    * @author BiJi'an
    * @date 2023-05-12 16:24
    */
-  public static <T, C extends Collection<T>> C orFilter(final Stream<T> stream,
-      Supplier<C> collectionFactory, Predicate<T>... predicates) {
+  public static <T, C extends Collection<T>> C orFilter(
+      final Stream<T> stream, Supplier<C> collectionFactory, Predicate<T>... predicates) {
     return StreamUtils.orFilter(stream, predicates)
         .collect(Collectors.toCollection(collectionFactory));
   }

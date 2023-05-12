@@ -21,7 +21,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param reference    reference
+   * @param reference reference
    * @param errorMessage errorMessage
    * @return T
    * @title checkNotNull
@@ -37,7 +37,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param collection   collection
+   * @param collection collection
    * @param errorMessage errorMessage
    * @return void
    * @throws
@@ -65,7 +65,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param array        array
+   * @param array array
    * @param errorMessage errorMessage
    * @return void
    * @title checkNotEmpty
@@ -80,7 +80,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param name         name
+   * @param name name
    * @param errorMessage errorMessage
    * @return void
    * @title checkNotEmpty
@@ -95,7 +95,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param expression   expression
+   * @param expression expression
    * @param errorMessage errorMessage
    * @return void
    * @title checkArgument
