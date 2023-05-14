@@ -12,7 +12,8 @@ import java.util.logging.LogManager;
  * @date 2023-04-22 16:41
  */
 public class JULManager {
-  private static final String CONFIG_FILE = "k-jul-logging.properties";
+
+  private static String CONFIG_FILE = "k-jul-logging.properties";
 
   /**
    * @return
@@ -21,18 +22,32 @@ public class JULManager {
    * @author BiJi'an
    * @date 2023-04-22 16:41
    */
-  public static void init() {
+  public static boolean init() {
     try {
       InputStream inputStream = ResourceHelper.getInputStreamInClassPath(CONFIG_FILE);
       if (inputStream != null) {
         LogManager logManager = LogManager.getLogManager();
         logManager.readConfiguration(inputStream);
+        return true;
       } else {
         System.err.println("no config file  be found :" + CONFIG_FILE);
+        return false;
       }
 
     } catch (IOException e) {
       throw new GeneralException(" jul init error", e);
     }
+  }
+
+  /**
+   * @param configFile configFile
+   * @return void
+   * @title reset
+   * @description
+   * @author BiJi'an
+   * @date 2023-05-15 01:15
+   */
+  public static void setConfigFile(String configFile) {
+    CONFIG_FILE = configFile;
   }
 }

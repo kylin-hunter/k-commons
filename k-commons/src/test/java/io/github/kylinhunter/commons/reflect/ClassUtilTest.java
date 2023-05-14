@@ -9,5 +9,10 @@ class ClassUtilTest {
   void loadClass() {
     Class<Object> objectClass = ClassUtil.loadClass("io.github.kylinhunter.commons.sys.KConst");
     Assertions.assertNotNull(objectClass);
+    Assertions.assertThrows(
+        RuntimeException.class,
+        () -> {
+          ClassUtil.loadClass("a.a");
+        });
   }
 }

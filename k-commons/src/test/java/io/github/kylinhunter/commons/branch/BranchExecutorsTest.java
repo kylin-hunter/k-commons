@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BranchExecutorsTest {
+
   @Test
   void use() {
 
@@ -12,7 +13,7 @@ class BranchExecutorsTest {
 
     keys.forEach(
         key -> {
-          BranchExecutor<String, Integer> branchExecutor = BranchExecutors.use(key);
+          BranchExecutor<String, Integer> branchExecutor = BranchExecutors.use(key, Integer.class);
           Integer result =
               branchExecutor
                   .test(branchExecutor.predicate(s -> s.equals("1")).then(f -> 11))

@@ -9,6 +9,7 @@ import io.github.kylinhunter.commons.name.NameRule;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class YamlHelperTest {
@@ -16,6 +17,12 @@ class YamlHelperTest {
   @Test
   void test() throws IOException {
     String path = "io/github/kylinhunter/commons/yaml/yaml.yaml";
+
+    Assertions.assertThrows(
+        RuntimeException.class,
+        () -> {
+          YamlHelper.loadFromPath(YamlBean.class, "xxxx");
+        });
 
     try (InputStream inputStream = ResourceHelper.getInputStreamInClassPath(path)) {
 

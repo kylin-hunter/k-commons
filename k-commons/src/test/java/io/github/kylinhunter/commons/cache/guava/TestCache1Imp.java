@@ -16,6 +16,8 @@ class TestCache1Imp extends AbstractCache<Long> {
   public Long load(CacheKey cacheKey) {
     Object[] params = cacheKey.getParams();
     if (params.length == 2) {
+      System.out.println(cacheKey.getInt(0));
+      System.out.println(cacheKey.getString(1));
       return l++;
     }
     return 0L;

@@ -9,7 +9,9 @@ import java.util.concurrent.TimeUnit;
  * @create: 2021/8/19
  */
 public class ThreadHelper {
+
   public static void sleep(int count, TimeUnit timeUnit) {
+
     try {
       timeUnit.sleep(count);
     } catch (InterruptedException e) {
