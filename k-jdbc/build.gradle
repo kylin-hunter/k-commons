@@ -1,5 +1,6 @@
 dependencies {
     api project(":k-commons")
+    api project(":k-clazz-tools")
     implementation("ch.qos.logback:logback-classic")
     api(rootProject.dependency_management['HikariCP'])
     implementation(rootProject.dependency_management['mysql-connector-java'])
@@ -21,6 +22,37 @@ jar {
 test {
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     println jvmArgs
+}
+
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "io/github/kylinhunter/commons/jdbc/exception/**"
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['io.github.kylinhunter.*']
+            excludes = ['io.github.kylinhunter.commons.jdbc.exception.*']
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.5
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.3
+            }
+        }
+    }
 }
 
 

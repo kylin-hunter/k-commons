@@ -24,7 +24,7 @@ class JavaIOFileTest {
     ln -s ./test_dir1 ./test_dir1_soft_link
      */
 
-    File dir = UserDirUtils.getDir("src/test/resources/test/java-io-test", false);
+    File dir = UserDirUtils.getDir(false, "src/test/resources/test/java-io-test");
     Path basePath = PathUtil.get(dir.getPath());
     if (Files.exists(basePath)) {
 
@@ -74,6 +74,7 @@ class JavaIOFileTest {
 }
 
 class TmpFilevisitor extends SimpleFileVisitor<Path> {
+
   @Override
   public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
     System.out.println("preVisitDirectory" + dir);

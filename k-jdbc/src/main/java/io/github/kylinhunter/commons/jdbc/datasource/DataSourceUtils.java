@@ -1,13 +1,19 @@
 package io.github.kylinhunter.commons.jdbc.datasource;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.HikariConfigEx;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.modifier.Visibility;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.implementation.FieldAccessor;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -16,8 +22,10 @@ import org.apache.commons.io.IOUtils;
  * @date 2023-01-10 00:34
  */
 public class DataSourceUtils {
+
   private static final HikariConfigExParser hikariConfigExParser = new HikariConfigExParser();
-  @Getter private static DataSourceEx defaultDataSource;
+  @Getter
+  private static DataSourceEx defaultDataSource;
   private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = MapUtils.newHashMap();
   private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = MapUtils.newHashMap();
 
@@ -41,16 +49,29 @@ public class DataSourceUtils {
     }
     for (int i = 0; i < dataSources.size(); i++) {
       HikariConfigEx hikariConfigEx = dataSources.get(i);
+      int no = hikariConfigEx.getNo();
+      String name = hikariConfigEx.getName();
       HikariDataSource hikariDataSource = new HikariDataSource(hikariConfigEx);
+      Class<? extends DataSourceEx> clazz = DSCreator.create(HikariDataSource.class);
 
-      DataSourceEx dataSourceEx = new DataSourceEx(hikariConfigEx, hikariDataSource);
+      DataSourceEx dataSourceEx = ObjectCreator
+          .create(clazz, new Class[]{HikariConfig.class}, new Object[]{hikariConfigEx});
       if (defaultDataSource == null) {
         defaultDataSource = dataSourceEx;
       }
-      ID_DATA_SOURCES.put(i, dataSourceEx);
-      NAME_DATA_SOURCES.put(hikariConfigEx.getName(), dataSourceEx);
+      ID_DATA_SOURCES.put(no, dataSourceEx);
+      NAME_DATA_SOURCES.put(name, dataSourceEx);
     }
   }
+
+  DynamicType.Unloaded<?> dynamicType = new ByteBuddy()
+
+      .subclass(HikariDataSource.class)
+      .defineField("no", int.class, Visibility.PRIVATE)
+      .defineField("name", String.class, Visibility.PRIVATE)
+      .implement(DSNameAccessor.class, DSNoAccessor.class)
+      .intercept(FieldAccessor.ofBeanProperty())
+      .make();
 
   /**
    * @return void
@@ -88,4 +109,5 @@ public class DataSourceUtils {
   public static DataSourceEx getByName(String name) {
     return NAME_DATA_SOURCES.get(name);
   }
+
 }

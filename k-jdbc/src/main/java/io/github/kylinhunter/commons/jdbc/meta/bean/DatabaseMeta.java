@@ -11,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class DatabaseMeta {
+
   private String url;
   private String productName;
   private String version;
@@ -22,7 +23,7 @@ public class DatabaseMeta {
     this.dbType = calDbType(url);
   }
 
-  private DbType calDbType(String jdbcUrl) {
+  public DbType calDbType(String jdbcUrl) {
 
     ExceptionChecker.checkNotEmpty(jdbcUrl, "jdbcUrl can't be  empty");
     String lowerCaseJdbcUrl = jdbcUrl.toLowerCase();

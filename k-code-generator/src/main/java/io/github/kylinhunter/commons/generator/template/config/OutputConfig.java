@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 public class OutputConfig {
 
-  private Path outputPath = UserDirUtils.getDir("output", true).toPath();
+  private Path outputPath = UserDirUtils.getDir(true, "output").toPath();
   private boolean autoClean = false;
   private boolean autoCreate = true;
   private boolean override = true;

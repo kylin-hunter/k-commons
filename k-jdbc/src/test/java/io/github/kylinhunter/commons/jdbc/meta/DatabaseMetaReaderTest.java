@@ -10,6 +10,7 @@ class DatabaseMetaReaderTest {
 
   @Test
   void test() {
+
     DatabaseMetaReader databaseMetaReader = CF.get(DatabaseMetaReader.class);
     DatabaseMeta databaseMeta = databaseMetaReader.getDatabaseMetaData();
     System.out.println(databaseMeta);

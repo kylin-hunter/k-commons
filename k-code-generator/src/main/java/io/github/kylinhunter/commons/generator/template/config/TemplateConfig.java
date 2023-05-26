@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class TemplateConfig {
 
-  private Path templatePath = UserDirUtils.getDir("templates", true).toPath();
+  private Path templatePath = UserDirUtils.getDir(true, "templates").toPath();
   private OutputConfig outputConfig = new OutputConfig();
 
   /**

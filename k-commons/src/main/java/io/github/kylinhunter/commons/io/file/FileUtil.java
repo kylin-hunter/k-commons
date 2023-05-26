@@ -242,8 +242,8 @@ public class FileUtil {
    * @author BiJi'an
    * @date 2023-04-22 00:59
    */
-  public static File getDir(File dir, boolean createParent, final String... names) {
-    return getFileOrDir(dir, createParent, false, false, names);
+  public static File getDir(File dir, boolean create, final String... names) {
+    return getFileOrDir(dir, create, false, false, names);
   }
 
   /**

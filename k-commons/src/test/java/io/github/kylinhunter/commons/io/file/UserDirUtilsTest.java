@@ -29,7 +29,7 @@ class UserDirUtilsTest {
 
   @Test
   void testGetFile() {
-    File file1 = UserDirUtils.getFile(TEST_DIR + SEP + DIR1 + SEP + "file1.txt", false);
+    File file1 = UserDirUtils.getFile(false, TEST_DIR + SEP + DIR1 + SEP + "file1.txt");
     System.out.println("file1:" + file1.getAbsolutePath());
     Assertions.assertFalse(file1.getParentFile().exists());
     Assertions.assertFalse(file1.exists());
@@ -39,7 +39,7 @@ class UserDirUtilsTest {
     Assertions.assertTrue(file2.getParentFile().exists());
     Assertions.assertFalse(file2.exists());
 
-    File file3 = UserDirUtils.getFile(TEST_DIR + SEP + DIR1 + SEP + "file3.txt", true, true);
+    File file3 = UserDirUtils.getFile(true, true, TEST_DIR + SEP + DIR1 + SEP + "file3.txt");
     System.out.println("file3:" + file3.getAbsolutePath());
     Assertions.assertTrue(file3.getParentFile().exists());
     Assertions.assertTrue(file3.exists());
@@ -47,7 +47,7 @@ class UserDirUtilsTest {
 
   @Test
   void testGetDir() {
-    File dir2 = UserDirUtils.getDir(TEST_DIR + SEP + DIR2, false);
+    File dir2 = UserDirUtils.getDir(false, TEST_DIR + SEP + DIR2);
     System.out.println("dir2:" + dir2.getAbsolutePath());
     Assertions.assertFalse(dir2.exists());
 
