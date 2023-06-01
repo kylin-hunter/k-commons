@@ -4,8 +4,11 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Module {
   @EqualsAndHashCode.Include private String name;

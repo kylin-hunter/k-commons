@@ -4,6 +4,8 @@ import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.strings.StringConst;
 import io.github.kylinhunter.commons.util.FilenameUtils;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -11,7 +13,8 @@ import org.apache.commons.lang3.StringUtils;
  * @description
  * @date 2023-01-08 22:22
  */
-@Data
+@Getter
+@Setter
 public class TemplateInfo {
   private String name;
   private String encoding;

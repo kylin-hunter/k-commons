@@ -1,6 +1,8 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,7 +11,8 @@ import org.apache.commons.lang3.StringUtils;
  * @description
  * @date 2023-02-19 17:17
  */
-@Data
+@Getter
+@Setter
 public class SuperClass {
   private String className;
 

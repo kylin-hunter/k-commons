@@ -1,22 +1,22 @@
 package io.github.kylinhunter.commons.generator.template.config;
 
-import io.github.kylinhunter.commons.generator.template.exception.TemplateException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.path.PathUtil;
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-06 01:40
  */
-@Data
+@Getter
+@Setter
 public class OutputConfig {
 
   private Path outputPath = UserDirUtils.getDir(true, "output").toPath();
@@ -34,22 +34,8 @@ public class OutputConfig {
    * @date 2023-01-08 23:08
    */
   public void setOutputPath(Path outputPath) {
-    if (Files.exists(outputPath)) {
-      if (!Files.isDirectory(outputPath)) {
-        throw new TemplateException("invalid outputPath " + outputPath);
-      }
-    } else {
-      if (autoCreate) {
-        try {
-          Files.createDirectories(outputPath);
-        } catch (IOException e) {
-          throw new TemplateException("create outputPath error " + outputPath, e);
-        }
-      }
-      if (!Files.exists(outputPath)) {
-        throw new TemplateException(" outputPath no exist " + outputPath);
-      }
-    }
+
+    PathUtil.checkDir(outputPath, autoCreate);
     this.outputPath = outputPath;
   }
 

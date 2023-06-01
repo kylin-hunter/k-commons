@@ -13,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileAttribute;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -21,14 +23,71 @@ import java.util.stream.Stream;
  * @date 2023-04-22 14:39
  */
 public class PathUtil {
+
   @SuppressFBWarnings("MS_PKGPROTECT")
   public static final LinkOption[] NOFOLLOW_LINK_OPTION_ARRAY = {LinkOption.NOFOLLOW_LINKS};
 
   public static final LinkOption[] EMPTY_LINK_OPTION_ARRAY = {};
 
+
+  /**
+   * @param path path
+   * @return void
+   * @title checkDir
+   * @description
+   * @author BiJi'an
+   * @date 2023-06-01 16:55
+   */
+  public static void checkDir(Path path) {
+    checkDir(path, false);
+    ;
+  }
+
+  /**
+   * @param path   path
+   * @param create create
+   * @return void
+   * @title checkDir
+   * @description
+   * @author BiJi'an
+   * @date 2023-06-01 16:55
+   */
+  public static void checkDir(Path path, boolean create) {
+    Objects.requireNonNull(path);
+    if (!Files.exists(path)) {
+      if (create) {
+        createDirectories(path);
+      } else {
+        throw new KIOException(" no exist " + path);
+      }
+    } else {
+      if (!Files.isDirectory(path)) {
+        throw new KIOException(" not a dir " + path);
+      }
+    }
+  }
+
+  /**
+   * @param path  path
+   * @param attrs attrs
+   * @return java.nio.file.Path
+   * @title createDirectories
+   * @description
+   * @author BiJi'an
+   * @date 2023-06-01 16:14
+   */
+  public static Path createDirectories(Path path, FileAttribute<?>... attrs) throws KIOException {
+    Objects.requireNonNull(path);
+    try {
+      return Files.createDirectories(path, attrs);
+    } catch (IOException e) {
+      throw new KIOException("createDirectories error", e);
+    }
+  }
+
   /**
    * @param first first
-   * @param more more
+   * @param more  more
    * @return java.nio.file.Path
    * @title get
    * @description
@@ -40,11 +99,11 @@ public class PathUtil {
   }
 
   /**
-   * @param start start
-   * @param pathFilter pathFilter
-   * @param maxDepth maxDepth
+   * @param start          start
+   * @param pathFilter     pathFilter
+   * @param maxDepth       maxDepth
    * @param readAttributes readAttributes
-   * @param options options
+   * @param options        options
    * @return java.util.stream.Stream<java.nio.file.Path>
    * @title walk
    * @description
@@ -85,7 +144,7 @@ public class PathUtil {
   }
 
   /**
-   * @param path path
+   * @param path        path
    * @param linkOptions linkOptions
    * @return void
    * @title delete
@@ -102,7 +161,7 @@ public class PathUtil {
   }
 
   /**
-   * @param file file
+   * @param file        file
    * @param linkOptions linkOptions
    * @return boolean
    * @title deleteFile
@@ -122,7 +181,7 @@ public class PathUtil {
   }
 
   /**
-   * @param directory directory
+   * @param directory   directory
    * @param linkOptions linkOptions
    * @return void
    * @title deleteDirectory
@@ -135,7 +194,7 @@ public class PathUtil {
   }
 
   /**
-   * @param visitor visitor
+   * @param visitor   visitor
    * @param directory directory
    * @return T
    * @title visitFileTree

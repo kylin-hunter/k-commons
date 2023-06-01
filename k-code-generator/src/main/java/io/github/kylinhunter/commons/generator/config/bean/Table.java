@@ -5,8 +5,11 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 import java.util.List;
 import java.util.Map;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class Table {
   private String name;
   private List<String> skipColumns = ListUtils.newArrayList();

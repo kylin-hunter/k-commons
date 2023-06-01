@@ -2,8 +2,7 @@ package io.github.kylinhunter.commons.jdbc.bytebuddy.test;
 
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
-import io.github.kylinhunter.commons.jdbc.datasource.DSNameAccessor;
-import io.github.kylinhunter.commons.jdbc.datasource.DSNoAccessor;
+import io.github.kylinhunter.commons.jdbc.datasource.DSAccessor;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -29,7 +28,7 @@ public class Test {
         .subclass(HikariDataSource.class)
         .defineField("dsNo", int.class, Visibility.PRIVATE)
         .defineField("dsName", String.class, Visibility.PRIVATE)
-        .implement(DSNameAccessor.class, DSNoAccessor.class)
+        .implement(DSAccessor.class)
         .intercept(FieldAccessor.ofBeanProperty())
         .make();
 

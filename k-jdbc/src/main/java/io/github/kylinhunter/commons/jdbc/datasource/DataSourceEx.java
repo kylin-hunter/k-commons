@@ -8,6 +8,6 @@ import javax.sql.DataSource;
  * @description
  * @date 2023-01-18 00:39
  */
-public interface DataSourceEx extends DataSource, Closeable,DSNameAccessor,DSNoAccessor {
+public interface DataSourceEx extends DataSource, Closeable, DSAccessor {
 
 }

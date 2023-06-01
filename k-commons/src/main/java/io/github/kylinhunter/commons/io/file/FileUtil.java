@@ -234,7 +234,7 @@ public class FileUtil {
 
   /**
    * @param dir dir
-   * @param createParent createParent
+   * @param create create
    * @param names names
    * @return java.io.File
    * @title getFile

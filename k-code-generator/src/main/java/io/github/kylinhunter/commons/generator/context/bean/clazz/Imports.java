@@ -4,6 +4,8 @@ import io.github.kylinhunter.commons.collections.ListUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -11,7 +13,8 @@ import org.apache.commons.lang3.StringUtils;
  * @description
  * @date 2023-02-19 17:17
  */
-@Data
+@Getter
+@Setter
 public class Imports {
   private final List<String> imports = ListUtils.newArrayList();
 

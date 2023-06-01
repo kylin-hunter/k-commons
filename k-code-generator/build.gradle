@@ -41,6 +41,42 @@ test {
     println jvmArgs
 }
 
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "io/github/kylinhunter/commons/generator/exception/**",
+                    "io/github/kylinhunter/commons/generator/*/exception/**",
+                    "com/kylinhunter/**"
+
+
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['io.github.kylinhunter.*']
+            excludes = ['io.github.kylinhunter.commons.generator.exception.*',
+                        'io.github.kylinhunter.commons.generator.*.exception.*']
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.5
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.3
+            }
+        }
+    }
+}
+
+
 
 
 

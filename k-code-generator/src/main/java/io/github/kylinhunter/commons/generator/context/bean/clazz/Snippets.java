@@ -6,6 +6,8 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 import java.util.List;
 import java.util.Map;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -13,7 +15,8 @@ import org.apache.commons.lang3.StringUtils;
  * @description
  * @date 2023-02-19 17:17
  */
-@Data
+@Getter
+@Setter
 public class Snippets {
   private Map<String, List<String>> snippets = MapUtils.newHashMap();
 

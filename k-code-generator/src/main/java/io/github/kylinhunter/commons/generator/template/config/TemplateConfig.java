@@ -5,13 +5,16 @@ import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-06 01:40
  */
-@Data
+@Getter
+@Setter
 public class TemplateConfig {
 
   private Path templatePath = UserDirUtils.getDir(true, "templates").toPath();

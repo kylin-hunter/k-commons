@@ -5,15 +5,18 @@ import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.util.List;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-03-19 22:27
  */
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 public class TableInfo {
   private Table table;
   private TableMeta tableMeta;

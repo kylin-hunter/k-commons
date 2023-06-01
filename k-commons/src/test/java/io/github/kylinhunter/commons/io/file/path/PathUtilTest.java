@@ -6,6 +6,7 @@ import io.github.kylinhunter.commons.io.file.filter.SuffixPathFilter;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,13 +22,29 @@ class PathUtilTest {
 
   @BeforeAll
   static void beforeAll() {
+
     FileUtil.cleanDirectoryQuietly(baseDir);
     dir1 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir1");
     dir2 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir2");
     dir3 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir3");
+
     System.out.println(dir1.getAbsolutePath());
     System.out.println(dir2.getAbsolutePath());
     System.out.println(dir3.getAbsolutePath());
+
+
+  }
+
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  @Test
+  void createDirectories() {
+    Path dir3Path = dir3.toPath();
+    Assertions.assertTrue(Files.exists(dir3Path));
+    dir3.delete();
+    Assertions.assertFalse(Files.exists(dir3Path));
+    PathUtil.createDirectories(dir3Path);
+    Assertions.assertTrue(Files.exists(dir3Path));
+
   }
 
   @Test
@@ -51,8 +68,21 @@ class PathUtilTest {
             Integer.MAX_VALUE,
             false);
     walk.forEach(
-        path -> {
-          System.out.println(path);
-        });
+        System.out::println);
+  }
+
+  @Test
+  void checkDir() {
+
+    Path path1 = Paths.get(dir2.getAbsolutePath());
+    PathUtil.checkDir(path1);
+    Assertions.assertTrue(Files.exists(path1));
+
+    Path path2 = Paths.get(dir2.getAbsolutePath(), "111");
+    Assertions.assertThrows(RuntimeException.class, () -> PathUtil.checkDir(path2, false));
+    Assertions.assertFalse(Files.exists(path2));
+
+    PathUtil.checkDir(path2, true);
+    Assertions.assertTrue(Files.exists(path2));
   }
 }

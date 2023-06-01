@@ -1,13 +1,16 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-02-19 19:52
  */
-@Data
+@Getter
+@Setter
 public class FieldInfo {
   private String name;
   private String columnName;
