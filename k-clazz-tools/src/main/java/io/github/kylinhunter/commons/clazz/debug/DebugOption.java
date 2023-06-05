@@ -10,7 +10,6 @@ import lombok.Setter;
  * @description
  * @date 2023-05-27 00:22
  */
-
 @Getter
 @Setter
 public class DebugOption {

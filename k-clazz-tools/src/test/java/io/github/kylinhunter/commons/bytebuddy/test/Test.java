@@ -18,17 +18,18 @@ public class Test {
   public static void main(String[] args) throws IOException {
 
     File tmpDir = UserDirUtils.getTmpDir("bytebuddy-test");
-    DynamicType.Unloaded<?> dynamicType = new ByteBuddy()
-        .with(new NamingStrategy.AbstractBase() {
-          @Override
-          protected String name(TypeDescription superClass) {
-            return "i.love.ByteBuddy." + superClass.getSimpleName();
-          }
-        })
-        .subclass(Object.class)
-        .make();
+    DynamicType.Unloaded<?> dynamicType =
+        new ByteBuddy()
+            .with(
+                new NamingStrategy.AbstractBase() {
+                  @Override
+                  protected String name(TypeDescription superClass) {
+                    return "i.love.ByteBuddy." + superClass.getSimpleName();
+                  }
+                })
+            .subclass(Object.class)
+            .make();
 
     dynamicType.saveIn(tmpDir);
   }
-
 }

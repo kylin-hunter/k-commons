@@ -24,18 +24,17 @@ public class Test {
       throws IOException, IllegalAccessException, InstantiationException, SQLException {
 
     File tmpDir = UserDirUtils.getTmpDir("bytebuddy-test");
-    DynamicType.Unloaded<?> dynamicType = new ByteBuddy()
-        .subclass(HikariDataSource.class)
-        .defineField("dsNo", int.class, Visibility.PRIVATE)
-        .defineField("dsName", String.class, Visibility.PRIVATE)
-        .implement(DSAccessor.class)
-        .intercept(FieldAccessor.ofBeanProperty())
-        .make();
+    DynamicType.Unloaded<?> dynamicType =
+        new ByteBuddy()
+            .subclass(HikariDataSource.class)
+            .defineField("dsNo", int.class, Visibility.PRIVATE)
+            .defineField("dsName", String.class, Visibility.PRIVATE)
+            .implement(DSAccessor.class)
+            .intercept(FieldAccessor.ofBeanProperty())
+            .make();
 
     dynamicType.saveIn(tmpDir);
-    Class<?> loaded = dynamicType.load(Test.class.getClassLoader(), Default.WRAPPER)
-        .getLoaded();
+    Class<?> loaded = dynamicType.load(Test.class.getClassLoader(), Default.WRAPPER).getLoaded();
     DataSource o = (DataSource) loaded.newInstance();
   }
-
 }

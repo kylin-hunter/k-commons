@@ -3,7 +3,6 @@ package io.github.kylinhunter.commons.generator.template.bean;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.strings.StringConst;
 import io.github.kylinhunter.commons.util.FilenameUtils;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;

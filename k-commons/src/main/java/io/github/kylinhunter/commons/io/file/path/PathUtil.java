@@ -29,7 +29,6 @@ public class PathUtil {
 
   public static final LinkOption[] EMPTY_LINK_OPTION_ARRAY = {};
 
-
   /**
    * @param path path
    * @return void
@@ -44,7 +43,7 @@ public class PathUtil {
   }
 
   /**
-   * @param path   path
+   * @param path path
    * @param create create
    * @return void
    * @title checkDir
@@ -68,7 +67,7 @@ public class PathUtil {
   }
 
   /**
-   * @param path  path
+   * @param path path
    * @param attrs attrs
    * @return java.nio.file.Path
    * @title createDirectories
@@ -87,7 +86,7 @@ public class PathUtil {
 
   /**
    * @param first first
-   * @param more  more
+   * @param more more
    * @return java.nio.file.Path
    * @title get
    * @description
@@ -99,11 +98,11 @@ public class PathUtil {
   }
 
   /**
-   * @param start          start
-   * @param pathFilter     pathFilter
-   * @param maxDepth       maxDepth
+   * @param start start
+   * @param pathFilter pathFilter
+   * @param maxDepth maxDepth
    * @param readAttributes readAttributes
-   * @param options        options
+   * @param options options
    * @return java.util.stream.Stream<java.nio.file.Path>
    * @title walk
    * @description
@@ -144,7 +143,7 @@ public class PathUtil {
   }
 
   /**
-   * @param path        path
+   * @param path path
    * @param linkOptions linkOptions
    * @return void
    * @title delete
@@ -161,7 +160,7 @@ public class PathUtil {
   }
 
   /**
-   * @param file        file
+   * @param file file
    * @param linkOptions linkOptions
    * @return boolean
    * @title deleteFile
@@ -181,7 +180,7 @@ public class PathUtil {
   }
 
   /**
-   * @param directory   directory
+   * @param directory directory
    * @param linkOptions linkOptions
    * @return void
    * @title deleteDirectory
@@ -194,7 +193,7 @@ public class PathUtil {
   }
 
   /**
-   * @param visitor   visitor
+   * @param visitor visitor
    * @param directory directory
    * @return T
    * @title visitFileTree

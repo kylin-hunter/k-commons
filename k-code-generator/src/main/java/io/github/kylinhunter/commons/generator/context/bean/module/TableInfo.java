@@ -4,7 +4,6 @@ import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.util.List;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

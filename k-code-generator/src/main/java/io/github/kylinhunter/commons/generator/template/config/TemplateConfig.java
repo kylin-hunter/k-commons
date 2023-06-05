@@ -4,7 +4,6 @@ import io.github.kylinhunter.commons.generator.template.exception.TemplateExcept
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

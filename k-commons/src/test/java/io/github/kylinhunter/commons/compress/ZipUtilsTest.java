@@ -26,7 +26,7 @@ class ZipUtilsTest {
     File dir = ResourceHelper.getDirInClassPath("test/file");
     File[] files = FileUtil.listFiles(dir, null, true).toArray(new File[0]);
     List<File> fileList = Arrays.stream(files).collect(Collectors.toList());
-    File file = UserDirUtils.getFile(false,"/tmp/test_unzip/testzip.zip");
+    File file = UserDirUtils.getFile(false, "/tmp/test_unzip/testzip.zip");
     if (file.exists()) {
       FileUtil.delete(file);
     }
@@ -38,13 +38,13 @@ class ZipUtilsTest {
   @Test
   @Order(2)
   public void testUnZip() throws IOException {
-    File file = UserDirUtils.getFile( false,"/tmp/test_unzip/testzip.zip");
-    File dir1 = UserDirUtils.getDir(true,"/tmp/test_unzip/testzip1");
+    File file = UserDirUtils.getFile(false, "/tmp/test_unzip/testzip.zip");
+    File dir1 = UserDirUtils.getDir(true, "/tmp/test_unzip/testzip1");
     FileUtil.forceDelete(dir1);
     ZipUtils.unzip(file, dir1);
     Collection<File> files1 = FileUtil.listFiles(dir1, null, true);
 
-    File dir2 = UserDirUtils.getDir(true,"/tmp/test_unzip/testzip2");
+    File dir2 = UserDirUtils.getDir(true, "/tmp/test_unzip/testzip2");
     FileUtil.forceDelete(dir2);
     ZipUtils.unzip(FileReaderUtils.readFileToByteArray(file), dir2);
     Collection<File> files2 = FileUtil.listFiles(dir2, null, true);

@@ -34,7 +34,6 @@ public class UserDirUtils {
    */
   public static File getDir(String... child) {
     return FileUtil.getDir(USER_DIR, true, child);
-
   }
 
   /**
@@ -79,7 +78,6 @@ public class UserDirUtils {
    */
   public static File getTmpDir() {
     return FileUtil.getDir(USER_DIR_TMP, true);
-
   }
 
   public static File getTmpDir(String... child) {
@@ -87,7 +85,7 @@ public class UserDirUtils {
   }
 
   /**
-   * @param child  the children file
+   * @param child the children file
    * @param create whether to create file or dir
    * @return java.io.File
    * @title getUserDirTmp
@@ -101,7 +99,6 @@ public class UserDirUtils {
 
   public static File getTmpFile(String child) {
     return FileUtil.getFile(USER_DIR_TMP, true, false, child);
-
   }
 
   /**
@@ -129,7 +126,6 @@ public class UserDirUtils {
    */
   public static File getDirConfig() {
     return FileUtil.getDir(USER_DIR_TMP, true);
-
   }
 
   /**

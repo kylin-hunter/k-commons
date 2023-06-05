@@ -8,8 +8,6 @@ import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +19,14 @@ import lombok.RequiredArgsConstructor;
  */
 @C
 @RequiredArgsConstructor
-public class DatabaseMetaCacheImp extends AbstractCache<Optional<DatabaseMeta>> implements
-    DatabaseMetaCache {
+public class DatabaseMetaCacheImp extends AbstractCache<Optional<DatabaseMeta>>
+    implements DatabaseMetaCache {
 
   private final DatabaseMetaReader databaseMetaReader;
 
   @Override
   @Nonnull
   public Optional<DatabaseMeta> load(CacheKey cacheKey) {
-
 
     int datasourceNo = cacheKey.getInt(0);
     DataSourceEx dataSourceEx = DataSourceUtils.getByNo(datasourceNo);
@@ -41,8 +38,7 @@ public class DatabaseMetaCacheImp extends AbstractCache<Optional<DatabaseMeta>> 
   }
 
   @Override
-  protected void custom(CacheConfig cacheConfig) {
-  }
+  protected void custom(CacheConfig cacheConfig) {}
 
   /**
    * @param no no

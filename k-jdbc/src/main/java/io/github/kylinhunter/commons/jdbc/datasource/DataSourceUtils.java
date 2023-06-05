@@ -20,8 +20,7 @@ import org.apache.commons.io.IOUtils;
 public class DataSourceUtils {
 
   private static final HikariConfigExParser hikariConfigExParser = new HikariConfigExParser();
-  @Getter
-  private static DataSourceEx defaultDataSource;
+  @Getter private static DataSourceEx defaultDataSource;
   private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = MapUtils.newHashMap();
   private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = MapUtils.newHashMap();
 
@@ -48,8 +47,9 @@ public class DataSourceUtils {
       String name = hikariConfigEx.getName();
       Class<? extends DataSourceEx> clazz = DSCreator.create(HikariDataSource.class);
 
-      DataSourceEx dataSourceEx = ObjectCreator
-          .create(clazz, new Class[]{HikariConfig.class}, new Object[]{hikariConfigEx});
+      DataSourceEx dataSourceEx =
+          ObjectCreator.create(
+              clazz, new Class[] {HikariConfig.class}, new Object[] {hikariConfigEx});
       if (defaultDataSource == null) {
         defaultDataSource = dataSourceEx;
       }
@@ -94,5 +94,4 @@ public class DataSourceUtils {
   public static DataSourceEx getByName(String name) {
     return NAME_DATA_SOURCES.get(name);
   }
-
 }

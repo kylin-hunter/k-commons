@@ -29,7 +29,6 @@ public class DSCreator {
     return create(clazz, null);
   }
 
-
   /**
    * @param clazz clazz
    * @return java.lang.Class<? extends T>
@@ -39,21 +38,22 @@ public class DSCreator {
    * @date 2023-05-27 00:15
    */
   @SuppressWarnings("unchecked")
-  public static <T extends DataSource> Class<? extends DataSourceEx> create(Class<T> clazz,
-      DebugOption debugOption) {
-    DynamicType.Unloaded<T> dynamicType = new ByteBuddy()
-        .subclass(clazz)
-        .implement(DataSourceEx.class)
-        .defineField("dsNo", int.class, Visibility.PRIVATE)
-        .defineField("dsName", String.class, Visibility.PRIVATE)
-        .implement(DSAccessor.class)
-        .intercept(FieldAccessor.ofBeanProperty())
-        .make();
+  public static <T extends DataSource> Class<? extends DataSourceEx> create(
+      Class<T> clazz, DebugOption debugOption) {
+    DynamicType.Unloaded<T> dynamicType =
+        new ByteBuddy()
+            .subclass(clazz)
+            .implement(DataSourceEx.class)
+            .defineField("dsNo", int.class, Visibility.PRIVATE)
+            .defineField("dsName", String.class, Visibility.PRIVATE)
+            .implement(DSAccessor.class)
+            .intercept(FieldAccessor.ofBeanProperty())
+            .make();
     processDebug(dynamicType, debugOption);
-    return (Class<? extends DataSourceEx>) dynamicType
-        .load(DSCreator.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
-        .getLoaded();
-
+    return (Class<? extends DataSourceEx>)
+        dynamicType
+            .load(DSCreator.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
+            .getLoaded();
   }
 
   /**

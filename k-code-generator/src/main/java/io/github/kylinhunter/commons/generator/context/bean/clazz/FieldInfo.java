@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

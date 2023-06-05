@@ -10,7 +10,8 @@ class DatabaseMetaTest {
   void calDbType() {
     DatabaseMeta databaseMeta = new DatabaseMeta();
 
-    String jdbcUrl = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+    String jdbcUrl =
+        "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
     DbType dbType = databaseMeta.calDbType(jdbcUrl);
     Assertions.assertEquals(DbType.MYSQL, dbType);
 
@@ -19,7 +20,7 @@ class DatabaseMetaTest {
     Assertions.assertEquals(DbType.ORACLE, dbType);
 
     jdbcUrl = "jdbc:sqlserver://localhost:1433; DatabaseName=test";
-    dbType =  databaseMeta.calDbType(jdbcUrl);
+    dbType = databaseMeta.calDbType(jdbcUrl);
 
     Assertions.assertEquals(DbType.SQL_SERVER, dbType);
   }

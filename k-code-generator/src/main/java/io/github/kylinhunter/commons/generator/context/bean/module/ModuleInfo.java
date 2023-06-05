@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.generator.context.bean.module;
 
 import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,6 @@ import lombok.Setter;
  * @description
  * @date 2023-02-12 00:57
  */
-
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter

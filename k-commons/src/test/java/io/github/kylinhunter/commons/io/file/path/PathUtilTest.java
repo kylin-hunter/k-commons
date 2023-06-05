@@ -31,8 +31,6 @@ class PathUtilTest {
     System.out.println(dir1.getAbsolutePath());
     System.out.println(dir2.getAbsolutePath());
     System.out.println(dir3.getAbsolutePath());
-
-
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -44,7 +42,6 @@ class PathUtilTest {
     Assertions.assertFalse(Files.exists(dir3Path));
     PathUtil.createDirectories(dir3Path);
     Assertions.assertTrue(Files.exists(dir3Path));
-
   }
 
   @Test
@@ -67,8 +64,7 @@ class PathUtilTest {
             new SuffixPathFilter("txt1").or(new SuffixPathFilter("txt2")),
             Integer.MAX_VALUE,
             false);
-    walk.forEach(
-        System.out::println);
+    walk.forEach(System.out::println);
   }
 
   @Test

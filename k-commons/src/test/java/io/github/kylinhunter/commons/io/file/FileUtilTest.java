@@ -30,8 +30,7 @@ class FileUtilTest {
   }
 
   @AfterAll
-  static void afterAll() {
-  }
+  static void afterAll() {}
 
   @Test
   void getFile() throws IOException {
@@ -64,16 +63,16 @@ class FileUtilTest {
   void cleanDirectoryQuietly() {
     Assertions.assertTrue(FileUtil.isEmptyDirectory(dir1));
     File file1 =
-        UserDirUtils.getTmpFile(true, true,
-            base_dir + "/dir1/test1/" + UUID.randomUUID().toString());
+        UserDirUtils.getTmpFile(
+            true, true, base_dir + "/dir1/test1/" + UUID.randomUUID().toString());
     System.out.println(file1.getAbsolutePath());
     File file2 =
-        UserDirUtils.getTmpFile(true, true,
-            base_dir + "/dir1/test2/" + UUID.randomUUID().toString());
+        UserDirUtils.getTmpFile(
+            true, true, base_dir + "/dir1/test2/" + UUID.randomUUID().toString());
     System.out.println(file2.getAbsolutePath());
     File file3 =
-        UserDirUtils.getTmpFile(true, true,
-            base_dir + "/dir1/test2/" + UUID.randomUUID().toString());
+        UserDirUtils.getTmpFile(
+            true, true, base_dir + "/dir1/test2/" + UUID.randomUUID().toString());
     System.out.println(file3.getAbsolutePath());
     Collection<File> files = FileUtil.listFiles(dir1, null, true);
     files.forEach(System.out::println);
@@ -99,6 +98,6 @@ class FileUtilTest {
     Assertions.assertEquals(4, FileUtil.listFiles(dir3, null, true).size());
 
     System.out.println(file.getAbsolutePath());
-    Assertions.assertEquals(3, FileUtil.listFiles(dir3, new String[]{"doc", "txt"}, true).size());
+    Assertions.assertEquals(3, FileUtil.listFiles(dir3, new String[] {"doc", "txt"}, true).size());
   }
 }

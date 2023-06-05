@@ -10,8 +10,8 @@ class DSCreatorTest {
 
   @Test
   void create() {
-    Class<? extends DataSourceEx> clazz = DSCreator
-        .create(HikariDataSource.class, DebugOption.INSTANCE);
+    Class<? extends DataSourceEx> clazz =
+        DSCreator.create(HikariDataSource.class, DebugOption.INSTANCE);
     DataSourceEx dataSourceEx = ObjectCreator.create(clazz);
 
     dataSourceEx.setDsName("aaa");

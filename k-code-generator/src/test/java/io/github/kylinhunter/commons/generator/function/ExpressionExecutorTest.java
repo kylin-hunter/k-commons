@@ -42,11 +42,8 @@ class ExpressionExecutorTest {
     int result2 = expressionExecutor.executeByFile(path, env, int.class);
     Assertions.assertEquals(4, result2);
     System.out.println("result2=>" + result2);
-
-
   }
 
   @Test
-  void executeFile() {
-  }
+  void executeFile() {}
 }

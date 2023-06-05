@@ -2,15 +2,22 @@ package io.github.kylinhunter.commons.generator.function;
 
 import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.Expression;
+import com.sun.jndi.toolkit.url.Uri;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CAfter;
+import io.github.kylinhunter.commons.exception.embed.biz.BizException;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
 import io.github.kylinhunter.commons.io.IOHelper;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.util.ObjectValues;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import lombok.Lombok;
+import lombok.SneakyThrows;
 
 /**
  * @author BiJi'an
@@ -64,13 +71,17 @@ public class ExpressionExecutor {
    * @date 2023-02-19 18:50
    */
   @SuppressWarnings("unchecked")
+  @SneakyThrows(MalformedURLException.class)
   public <T> T execute(final String expression, final Map<String, Object> env) {
-    try {
-      return (T) AviatorEvaluator.execute(expression, env, true);
-    } catch (Exception e) {
-      throw new CodeException("execute error:" + expression, e);
-    }
+
+    new Uri(UserDirUtils.get().getAbsolutePath());
+
+    return (T) AviatorEvaluator.execute(expression, env, true);
+
   }
+
+  /**
+
 
   /**
    * @param expression expression
@@ -102,14 +113,14 @@ public class ExpressionExecutor {
   }
 
   /**
+   * @param path path
+   * @param env  env
+   * @param type type
+   * @return T
    * @title executeFromFile
    * @description
    * @author BiJi'an
-   * @param path path
-   * @param env env
-   * @param type type
    * @date 2023-06-01 20:53
-   * @return T
    */
   public <T> T executeByFile(final String path, final Map<String, Object> env, Class<T> type) {
     return ObjectValues.get(executeByFile(path, env), type);
