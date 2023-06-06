@@ -71,10 +71,8 @@ public class ExpressionExecutor {
    * @date 2023-02-19 18:50
    */
   @SuppressWarnings("unchecked")
-  @SneakyThrows(MalformedURLException.class)
   public <T> T execute(final String expression, final Map<String, Object> env) {
 
-    new Uri(UserDirUtils.get().getAbsolutePath());
 
     return (T) AviatorEvaluator.execute(expression, env, true);
 
