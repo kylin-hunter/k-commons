@@ -1,13 +1,32 @@
-CREATE TABLE IF NOT EXISTS `test_kylin_user`
+CREATE TABLE IF NOT EXISTS `test_role`
 (
-    `id`     bigint(20)     NOT NULL COMMENT '主键id' AUTO_INCREMENT,
-    `name`   varchar(64)    NOT NULL DEFAULT '' COMMENT '姓名',
-    `birth`  datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '生日',
-    `age`    int            NOT NULL DEFAULT 0 COMMENT '年龄',
-    `height` float(9, 3)   NOT NULL DEFAULT 0 COMMENT '身高',
-    `weight` double(20, 2)  NOT NULL DEFAULT 0 COMMENT '体重',
-    `money`  decimal(20, 2) NOT NULL DEFAULT 0 COMMENT '存款',
+    `id`   bigint(20)  NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
+    `name` varchar(64) NOT NULL DEFAULT '' COMMENT 'role name',
     PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin;
+    ) comment =' the roles';
+
+CREATE TABLE IF NOT EXISTS `test_user`
+(
+    `id`                  bigint(20)     NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
+    `name`                varchar(64)    NOT NULL DEFAULT '' COMMENT 'user name ',
+    `birth`               datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'birthday',
+    `leave_company_time`  timestamp      NOT NULL COMMENT 'the time leave company',
+    `join_company_date`   date           NOT NULL COMMENT 'what time to join the company',
+    `work_time_work_time` time           NOT NULL COMMENT 'what time to work ervery moring',
+    `work_hours`          int            NOT NULL DEFAULT 0 COMMENT 'how many hours to work everyday',
+    `age`                 smallint       NOT NULL DEFAULT 0 COMMENT 'age',
+    `height`              float(9, 2)    NOT NULL DEFAULT 0 COMMENT 'height',
+    `weight`              double(19, 2)  NOT NULL DEFAULT 0 COMMENT 'weight',
+    `money_income`        decimal(20, 2) NOT NULL DEFAULT 0 COMMENT 'all money income',
+    `money_spend`         decimal(19, 0) NOT NULL DEFAULT 0 COMMENT 'the money spent',
+    `address`             varchar(512)   NOT NULL DEFAULT 0 COMMENT 'address',
+    `delete_flag`         tinyint(1)     NOT NULL DEFAULT 0 COMMENT 'is deleted',
+    `sex`                 tinyint(2)     NOT NULL DEFAULT 0 COMMENT '0 unkown 1 male 2 female',
+    `role_id`             bigint(20)     NOT NULL DEFAULT 0 COMMENT '角色 ID',
+    `extend_1`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段1',
+    `extend_2`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段2',
+    `extend_3`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
+    PRIMARY KEY (`id`),
+    constraint test_user_role_fk
+    foreign key (role_id) references test_role (id)
+    ) comment ='the user'
