@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.kylinhunter.commons.lang.strings.CharsetConst;
+import io.github.kylinhunter.commons.io.Charsets;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +21,6 @@ public class TemplateStrategy extends Strategy {
 
     /**
      * @param strategy globalStrategy
-     * @return void
      * @title merge
      * @description
      * @author BiJi'an
@@ -33,11 +32,11 @@ public class TemplateStrategy extends Strategy {
         }
         if (StringUtils.isEmpty(this.templateEncoding)) {
             this.templateEncoding =
-                    StringUtils.defaultIfBlank(strategy.templateEncoding, CharsetConst.UTF_8);
+                    StringUtils.defaultIfBlank(strategy.templateEncoding, Charsets.UTF_8_VALUE);
         }
 
         if (StringUtils.isEmpty(this.outputEncoding)) {
-            this.outputEncoding = StringUtils.defaultIfBlank(strategy.outputEncoding, CharsetConst.UTF_8);
+            this.outputEncoding = StringUtils.defaultIfBlank(strategy.outputEncoding, Charsets.UTF_8_VALUE);
         }
     }
 }
