@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.util;
 
 import java.util.regex.Pattern;
 
-import io.github.kylinhunter.commons.strings.StringUtil;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 
 /**
  * @author BiJi'an

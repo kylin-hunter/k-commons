@@ -5,7 +5,7 @@ import java.util.function.Function;
 import io.github.kylinhunter.commons.exception.common.KThrowable;
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
-import io.github.kylinhunter.commons.strings.StringUtil;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

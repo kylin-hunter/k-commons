@@ -11,7 +11,7 @@ import org.reflections.scanners.Scanners;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.strings.StringUtil;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.sys.KConst;
 
 /**

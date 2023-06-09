@@ -2,9 +2,9 @@ package io.github.kylinhunter.commons.name;
 
 import java.util.Arrays;
 
-import io.github.kylinhunter.commons.strings.CharConst;
-import io.github.kylinhunter.commons.strings.StringConst;
-import io.github.kylinhunter.commons.strings.StringUtil;
+import io.github.kylinhunter.commons.lang.strings.CharConst;
+import io.github.kylinhunter.commons.lang.strings.StringConst;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.Data;
 
 /**

@@ -4,7 +4,7 @@ import io.github.kylinhunter.commons.exception.common.KThrowable;
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
 import io.github.kylinhunter.commons.exception.info.ErrInfoManager;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
-import io.github.kylinhunter.commons.strings.StringUtil;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 
 /**
  * @author BiJi'an

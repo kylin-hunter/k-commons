@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.name;
 
-import io.github.kylinhunter.commons.strings.StringUtil;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.Data;
 
 /**

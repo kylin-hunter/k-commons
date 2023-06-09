@@ -5,7 +5,7 @@ import java.util.Collection;
 import io.github.kylinhunter.commons.collections.ArrayUtils;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
-import io.github.kylinhunter.commons.strings.StringUtil;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 
 /**
  * @author BiJi'an

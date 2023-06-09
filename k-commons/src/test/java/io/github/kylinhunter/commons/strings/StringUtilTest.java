@@ -5,19 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
+
 class StringUtilTest {
 
-  @Test
-  void test() {
+    @Test
+    void test() {
 
-    assertTrue(StringUtil.isEmpty(""));
-    assertTrue(StringUtil.isBlank(" "));
-    assertEquals("a", StringUtil.defaultIfBlank(" ", "a"));
+        assertTrue(StringUtil.isEmpty(""));
+        assertTrue(StringUtil.isBlank(" "));
+        assertEquals("a", StringUtil.defaultIfBlank(" ", "a"));
 
-    assertEquals("a", StringUtil.defaultIfBlank("", "a"));
-    assertEquals(3, StringUtil.length("123"));
+        assertEquals("a", StringUtil.defaultIfBlank("", "a"));
+        assertEquals(3, StringUtil.length("123"));
 
-    assertEquals("a", StringUtil.defaultString(null, "a"));
-    assertEquals("", StringUtil.defaultString(null));
-  }
+        assertEquals("a", StringUtil.defaultString(null, "a"));
+        assertEquals("", StringUtil.defaultString(null));
+    }
 }
