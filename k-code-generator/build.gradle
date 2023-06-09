@@ -1,7 +1,5 @@
-import org.gradle.internal.jvm.Jvm
-
 dependencies {
-    api project(":k-commons")
+    api project(":k-utils")
     api project(":k-jdbc")
     implementation("ch.qos.logback:logback-classic")
     api(rootProject.dependency_management['velocity-engine-core'])

@@ -1,5 +1,5 @@
 dependencies {
-    api project(":k-commons")
+    api project(":k-utils")
     api project(":k-clazz-tools")
     implementation("ch.qos.logback:logback-classic")
     api(rootProject.dependency_management['HikariCP'])

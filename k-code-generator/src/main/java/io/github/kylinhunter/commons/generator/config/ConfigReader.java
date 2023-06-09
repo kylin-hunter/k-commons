@@ -6,9 +6,9 @@ import io.github.kylinhunter.commons.generator.config.bean.Modules;
 import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.Templates;
 import io.github.kylinhunter.commons.name.NameRule;
-import io.github.kylinhunter.commons.yaml.YamlHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import o.github.kylinhunter.commons.utils.yaml.YamlHelper;
 import org.apache.commons.lang3.StringUtils;
 
 /**
