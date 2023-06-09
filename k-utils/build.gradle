@@ -1,29 +1,9 @@
 dependencies {
     api project(":k-commons")
-    api(rootProject.dependency_management['reflections'])
-    api(rootProject.dependency_management['commons-io'])
-    api(rootProject.dependency_management['commons-lang3'])
-    api(rootProject.dependency_management['guava'])
     implementation("ch.qos.logback:logback-classic")
-
-
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
-    implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
-
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-
-
+    
     implementation(rootProject.dependency_management['commons-codec'])
     implementation(rootProject.dependency_management['commons-compress'])
-
-    implementation(rootProject.dependency_management['dom4j']) {
-        exclude module: "pull-parser"
-    }
-    implementation('org.yaml:snakeyaml')
-
-
-//    testImplementation files(Jvm.current().toolsJar)
 
 
 }

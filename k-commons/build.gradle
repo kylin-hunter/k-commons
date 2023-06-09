@@ -14,9 +14,6 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 
-    implementation(rootProject.dependency_management['commons-codec'])
-    implementation(rootProject.dependency_management['commons-compress'])
-
     implementation(rootProject.dependency_management['dom4j']) {
         exclude module: "pull-parser"
     }

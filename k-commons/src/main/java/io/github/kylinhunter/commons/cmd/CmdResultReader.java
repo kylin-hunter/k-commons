@@ -3,10 +3,12 @@ package io.github.kylinhunter.commons.cmd;
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import org.apache.commons.io.IOUtils;
+
+import io.github.kylinhunter.commons.io.Charsets;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.Charsets;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author BiJi'an
@@ -17,27 +19,27 @@ import org.apache.commons.io.IOUtils;
 @AllArgsConstructor
 public class CmdResultReader implements Callable<List<String>> {
 
-  private final Process process;
-  private final ResultType type;
-  private String charset;
+    private final Process process;
+    private final ResultType type;
+    private String charset;
 
-  @Override
-  public List<String> call() throws Exception {
+    @Override
+    public List<String> call() throws Exception {
 
-    if (type == ResultType.STD_OUT) {
-      try (InputStream stream = process.getInputStream()) {
+        if (type == ResultType.STD_OUT) {
+            try (InputStream stream = process.getInputStream()) {
 
-        return IOUtils.readLines(stream, Charsets.toCharset(charset));
-      }
-    } else {
-      try (InputStream stream = process.getErrorStream()) {
-        return IOUtils.readLines(stream, Charsets.toCharset(charset));
-      }
+                return IOUtils.readLines(stream, Charsets.toCharset(charset));
+            }
+        } else {
+            try (InputStream stream = process.getErrorStream()) {
+                return IOUtils.readLines(stream, Charsets.toCharset(charset));
+            }
+        }
     }
-  }
 
-  enum ResultType {
-    STD_OUT, // the  standard ouput stream
-    STD_ERR // the standard err stream
-  }
+    enum ResultType {
+        STD_OUT, // the  standard ouput stream
+        STD_ERR // the standard err stream
+    }
 }
