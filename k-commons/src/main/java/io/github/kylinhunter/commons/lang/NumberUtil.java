@@ -73,7 +73,6 @@ public class NumberUtil {
     /**
      * @param str str
      * @return double
-     * @throws
      * @title toDouble
      * @description toDouble
      * @author BiJi'an
@@ -87,7 +86,6 @@ public class NumberUtil {
      * @param str          str
      * @param defaultValue defaultValue
      * @return double
-     * @throws
      * @title toDouble
      * @description toDouble
      * @author BiJi'an
@@ -107,7 +105,6 @@ public class NumberUtil {
     /**
      * @param str str
      * @return int
-     * @throws
      * @title toInt
      * @description toInt
      * @author BiJi'an
@@ -121,7 +118,6 @@ public class NumberUtil {
      * @param str          str
      * @param defaultValue defaultValue
      * @return int
-     * @throws
      * @title toInt
      * @description toInt
      * @author BiJi'an
@@ -141,7 +137,6 @@ public class NumberUtil {
     /**
      * @param str str
      * @return long
-     * @throws
      * @title toLong
      * @description toLong
      * @author BiJi'an
@@ -155,7 +150,6 @@ public class NumberUtil {
      * @param str          str
      * @param defaultValue defaultValue
      * @return long
-     * @throws
      * @title toLong
      * @description toLong
      * @author BiJi'an

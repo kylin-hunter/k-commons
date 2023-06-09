@@ -26,6 +26,7 @@ public class BooleanUtil {
      * @author BiJi'an
      * @date 2023-06-10 00:52
      */
+    @SuppressWarnings("StringEquality")
     public static Boolean toBooleanObject(final String str) {
         // Previously used equalsIgnoreCase, which was fast for interned 'true'.
         // Non interned 'true' matched 15 times slower.
