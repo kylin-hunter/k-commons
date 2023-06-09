@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.util;
+package io.github.kylinhunter.commons.lang;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

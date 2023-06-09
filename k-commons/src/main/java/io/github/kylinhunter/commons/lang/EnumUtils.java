@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.util;
+package io.github.kylinhunter.commons.lang;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
