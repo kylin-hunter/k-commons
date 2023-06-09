@@ -1,16 +1,18 @@
 package io.github.kylinhunter.commons.exception.info;
 
-import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.sys.KConst;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
+
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
+
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.strings.StringUtil;
+import io.github.kylinhunter.commons.sys.KConst;
 
 /**
  * @author BiJi'an
@@ -18,78 +20,76 @@ import org.reflections.scanners.Scanners;
  * @date 2022/01/01
  */
 public class ErrInfoManager {
-  private static final Map<Integer, ErrInfo> ERR_INFOS = MapUtils.newLinkedHashMap();
+    private static final Map<Integer, ErrInfo> ERR_INFOS = MapUtils.newLinkedHashMap();
 
-  static {
-    init(KConst.K_BASE_PACKAGE);
-  }
-
-  /**
-   * @param pkgs pkgs
-   * @return void
-   * @title init
-   * @description
-   * @author BiJi'an
-   * @date 2022-11-24 01:30
-   */
-  @SuppressWarnings("unchecked")
-  public static void init(String... pkgs) {
-    for (String pkg : pkgs) {
-      Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
-      Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ErrInfoAware.class);
-      for (Class<?> clazz : classes) {
-        Set<Field> allFields = ReflectionUtils.getAllFields(clazz);
-        allFields.forEach(
-            field -> {
-              int modifiers = field.getModifiers();
-              if (field.getType() == ErrInfo.class && Modifier.isStatic(modifiers)) {
-                try {
-                  ErrInfo errInfo = (ErrInfo) field.get(null);
-                  if (StringUtils.isEmpty(errInfo.getDefaultMsg())) {
-                    errInfo.setDefaultMsg(field.getName());
-                  }
-                  if (ERR_INFOS.containsKey(errInfo.getCode())) {
-                    throw new InitException(" error code is used:" + errInfo.getCode());
-                  } else {
-                    ERR_INFOS.put(errInfo.getCode(), errInfo);
-                  }
-
-                } catch (Exception ex) {
-                  throw new InitException("init ErrInfoManager error", ex);
-                }
-              }
-            });
-      }
+    static {
+        init(KConst.K_BASE_PACKAGE);
     }
-  }
 
-  /**
-   * @param code code
-   * @return java.lang.String
-   * @title getDefaultMsg
-   * @description
-   * @author BiJi'an
-   * @date 2022-11-24 01:30
-   */
-  public static String getDefaultMsg(int code) {
-    return ERR_INFOS.getOrDefault(code, ErrInfos.UNKNOWN).getDefaultMsg();
-  }
+    /**
+     * @param pkgs pkgs
+     * @title init
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-24 01:30
+     */
+    @SuppressWarnings("unchecked")
+    public static void init(String... pkgs) {
+        for (String pkg : pkgs) {
+            Reflections reflections = new Reflections(pkg, Scanners.TypesAnnotated);
+            Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ErrInfoAware.class);
+            for (Class<?> clazz : classes) {
+                Set<Field> allFields = ReflectionUtils.getAllFields(clazz);
+                allFields.forEach(
+                        field -> {
+                            int modifiers = field.getModifiers();
+                            if (field.getType() == ErrInfo.class && Modifier.isStatic(modifiers)) {
+                                try {
+                                    ErrInfo errInfo = (ErrInfo) field.get(null);
+                                    if (StringUtil.isEmpty(errInfo.getDefaultMsg())) {
+                                        errInfo.setDefaultMsg(field.getName());
+                                    }
+                                    if (ERR_INFOS.containsKey(errInfo.getCode())) {
+                                        throw new InitException(" error code is used:" + errInfo.getCode());
+                                    } else {
+                                        ERR_INFOS.put(errInfo.getCode(), errInfo);
+                                    }
 
-  /**
-   * @return void
-   * @title println
-   * @description
-   * @author BiJi'an
-   * @date 2022-11-24 01:30
-   */
-  public static void println() {
-    System.out.println("print errInfo code\n ");
-    ERR_INFOS.forEach(
-        (errCode, defaultMsg) ->
-            System.out.println("erroCode=" + errCode + ",defaultMsg=" + defaultMsg));
-  }
+                                } catch (Exception ex) {
+                                    throw new InitException("init ErrInfoManager error", ex);
+                                }
+                            }
+                        });
+            }
+        }
+    }
 
-  public static void main(String[] args) {
-    ErrInfoManager.println();
-  }
+    /**
+     * @param code code
+     * @return java.lang.String
+     * @title getDefaultMsg
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-24 01:30
+     */
+    public static String getDefaultMsg(int code) {
+        return ERR_INFOS.getOrDefault(code, ErrInfos.UNKNOWN).getDefaultMsg();
+    }
+
+    /**
+     * @title println
+     * @description
+     * @author BiJi'an
+     * @date 2022-11-24 01:30
+     */
+    public static void println() {
+        System.out.println("print errInfo code\n ");
+        ERR_INFOS.forEach(
+                (errCode, defaultMsg) ->
+                        System.out.println("erroCode=" + errCode + ",defaultMsg=" + defaultMsg));
+    }
+
+    public static void main(String[] args) {
+        ErrInfoManager.println();
+    }
 }
