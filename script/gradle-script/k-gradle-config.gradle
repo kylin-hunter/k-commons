@@ -1,11 +1,12 @@
 ext {
     profile = "local"
     KYLIN_VERIONS = [
-            "k-commons": '1.0.13',
-            "k-jdbc": '1.0.2',
-            "k-clazz-tools": '1.0.1',
+            "k-commons"              : '1.0.13',
+            "k-utils"                : '1.0.1',
+            "k-jdbc"                 : '1.0.2',
+            "k-clazz-tools"          : '1.0.1',
             "k-agent-invoke-analysis": '1.0.1',
-            "k-code-generator": '1.0.3'
+            "k-code-generator"       : '1.0.3'
 
     ]
     KYLIN_IMAGE_REPO = "私服地址"

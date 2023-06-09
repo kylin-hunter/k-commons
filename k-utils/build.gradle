@@ -1,5 +1,5 @@
 dependencies {
-
+    api project(":k-commons")
     api(rootProject.dependency_management['reflections'])
     api(rootProject.dependency_management['commons-io'])
     api(rootProject.dependency_management['commons-lang3'])
@@ -77,6 +77,3 @@ jacocoTestCoverageVerification {
         }
     }
 }
-
-
-
