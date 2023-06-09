@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.io.file.path;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.io.file.filter.SuffixPathFilter;
@@ -35,6 +36,7 @@ class PathUtilTest {
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
   @Test
+  @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
   void createDirectories() {
     Path dir3Path = dir3.toPath();
     Assertions.assertTrue(Files.exists(dir3Path));

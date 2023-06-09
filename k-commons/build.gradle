@@ -6,23 +6,6 @@ dependencies {
     api(rootProject.dependency_management['guava'])
     implementation("ch.qos.logback:logback-classic")
 
-
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
-    implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
-
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-
-
-    implementation(rootProject.dependency_management['dom4j']) {
-        exclude module: "pull-parser"
-    }
-    implementation('org.yaml:snakeyaml')
-
-
-//    testImplementation files(Jvm.current().toolsJar)
-
-
 }
 
 jar.enabled = true
