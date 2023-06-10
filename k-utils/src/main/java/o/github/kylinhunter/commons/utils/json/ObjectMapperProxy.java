@@ -12,11 +12,11 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.github.kylinhunter.commons.date.DatePatterns;
 import io.github.kylinhunter.commons.exception.embed.FormatException;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -185,7 +185,7 @@ public class ObjectMapperProxy {
         throw new FormatException("text readValue error", e);
       }
     }
-    return StringUtils.EMPTY;
+    return StringUtil.EMPTY;
   }
 
   /**

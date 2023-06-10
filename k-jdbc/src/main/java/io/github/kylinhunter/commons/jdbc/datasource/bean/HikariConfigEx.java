@@ -1,9 +1,9 @@
 package io.github.kylinhunter.commons.jdbc.datasource.bean;
 
 import com.zaxxer.hikari.HikariConfig;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -18,7 +18,7 @@ public class HikariConfigEx extends HikariConfig {
 
   public HikariConfigEx(int no, String name) {
     this.no = no;
-    if (!StringUtils.isEmpty(name)) {
+    if (!StringUtil.isEmpty(name)) {
       this.name = name;
     } else {
       this.name = "datasource-" + no;

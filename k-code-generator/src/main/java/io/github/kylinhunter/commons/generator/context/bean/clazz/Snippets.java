@@ -3,11 +3,11 @@ package io.github.kylinhunter.commons.generator.context.bean.clazz;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -44,7 +44,7 @@ public class Snippets {
     if (!CollectionUtils.isEmpty(tmpSnippets)) {
       return String.join(separator, tmpSnippets);
     }
-    return StringUtils.EMPTY;
+    return StringUtil.EMPTY;
   }
 
   /**
@@ -57,7 +57,7 @@ public class Snippets {
    */
   public void add(String name, String snippet) {
 
-    if (!StringUtils.isBlank(name) && !StringUtils.isBlank(snippet)) {
+    if (!StringUtil.isBlank(name) && !StringUtil.isBlank(snippet)) {
       this.snippets.compute(
           name,
           (k, v) -> {

@@ -1,9 +1,9 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -29,7 +29,7 @@ public class SuperClass {
    * @date 2023-02-19 23:43
    */
   public String toString(String prefix) {
-    if (!StringUtils.isEmpty(className)) {
+    if (!StringUtil.isEmpty(className)) {
       return prefix + className;
 
     } else {
@@ -38,7 +38,7 @@ public class SuperClass {
   }
 
   public void setClassName(String fullClassName) {
-    if (!StringUtils.isEmpty(fullClassName)) {
+    if (!StringUtil.isEmpty(fullClassName)) {
       this.className = ClassUtils.getShortClassName(fullClassName);
     }
   }

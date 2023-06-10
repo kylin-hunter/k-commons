@@ -12,6 +12,7 @@ import io.github.kylinhunter.commons.generator.template.config.TemplateConfig;
 import io.github.kylinhunter.commons.generator.template.exception.TemplateException;
 import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.path.PathUtil;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.io.File;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
@@ -21,7 +22,6 @@ import java.util.Map;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolContext;
@@ -149,7 +149,7 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
       String templateName = templateInfo.getName();
       final String templateEncoding = templateInfo.getEncoding();
       Template template;
-      if (!StringUtils.isEmpty(templateEncoding)) {
+      if (!StringUtil.isEmpty(templateEncoding)) {
         template = velocityEngine.getTemplate(templateName, templateEncoding);
       } else {
         template = velocityEngine.getTemplate(templateName);
@@ -160,7 +160,7 @@ public class VelocityTemplateExecutor implements TemplateExecutor {
       Path outputPath = output.getOutputPath();
       if (outputPath != null) {
         String extension = output.getExtension();
-        if (!StringUtils.isEmpty(extension)) {
+        if (!StringUtil.isEmpty(extension)) {
           outputPath = PathUtil.get(outputPath.toFile().getAbsolutePath() + "." + extension);
         }
         File toFile = outputPath.toFile();

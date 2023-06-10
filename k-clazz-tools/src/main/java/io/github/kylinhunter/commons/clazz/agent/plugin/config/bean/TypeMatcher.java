@@ -1,11 +1,11 @@
 package io.github.kylinhunter.commons.clazz.agent.plugin.config.bean;
 
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.Data;
 import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -22,13 +22,13 @@ public class TypeMatcher {
     boolean empty = true;
     String nameStartsWith = this.getNameStartsWith();
     ElementMatcher.Junction<S> elementMatcherJunction = null;
-    if (!StringUtils.isEmpty(nameStartsWith)) {
+    if (!StringUtil.isEmpty(nameStartsWith)) {
       empty = false;
       elementMatcherJunction = ElementMatchers.nameStartsWith(nameStartsWith);
     }
 
     String nameContains = this.getNameContains();
-    if (!StringUtils.isEmpty(nameContains)) {
+    if (!StringUtil.isEmpty(nameContains)) {
       empty = false;
       if (elementMatcherJunction == null) {
         elementMatcherJunction = ElementMatchers.nameContains(nameContains);
@@ -39,7 +39,7 @@ public class TypeMatcher {
     }
 
     String nameRegex = this.getNameRegex();
-    if (!StringUtils.isEmpty(nameRegex)) {
+    if (!StringUtil.isEmpty(nameRegex)) {
       empty = false;
       if (elementMatcherJunction == null) {
         elementMatcherJunction = ElementMatchers.nameMatches(nameContains);

@@ -9,6 +9,7 @@ import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
@@ -29,7 +30,6 @@ import o.github.kylinhunter.commons.utils.bean.info.BeanIntrospector;
 import o.github.kylinhunter.commons.utils.bean.info.BeanIntrospectors;
 import o.github.kylinhunter.commons.utils.bean.info.ExPropType;
 import o.github.kylinhunter.commons.utils.bean.info.ExPropertyDescriptor;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -406,7 +406,7 @@ public class PropertiesHelper {
     if (!exPd.isCanReadWrite()) {
       return;
     }
-    if (!StringUtils.isEmpty(parent)) {
+    if (!StringUtil.isEmpty(parent)) {
       parent += ".";
     }
 
@@ -425,7 +425,7 @@ public class PropertiesHelper {
       properties.put(propName, String.valueOf(result));
 
     } else if (returnType == String.class) {
-      if (!StringUtils.isEmpty((String) result)) {
+      if (!StringUtil.isEmpty((String) result)) {
         properties.put(propName, result);
       }
     } else if (type == ExPropType.LIST) {

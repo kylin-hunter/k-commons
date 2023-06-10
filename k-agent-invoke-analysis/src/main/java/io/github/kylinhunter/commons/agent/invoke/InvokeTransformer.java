@@ -4,6 +4,7 @@ import io.github.kylinhunter.commons.clazz.agent.plugin.AbstractAgentTransformer
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.DebugConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.util.ThreadHelper;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.utility.JavaModule;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -47,7 +47,7 @@ public class InvokeTransformer extends AbstractAgentTransformer {
       DebugConfig debug = pluginConfig.getDebug();
       if (debug != null && debug.isEnabled()) {
         String classSaveDir = debug.getClassSaveDir();
-        if (!StringUtils.isEmpty(classSaveDir)) {
+        if (!StringUtil.isEmpty(classSaveDir)) {
           File dir = ResourceHelper.getDir(classSaveDir, ResourceHelper.PathType.FILESYSTEM, true);
           builder.make().saveIn(dir);
         }

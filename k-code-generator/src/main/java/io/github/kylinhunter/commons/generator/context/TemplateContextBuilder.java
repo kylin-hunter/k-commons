@@ -18,10 +18,10 @@ import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -173,6 +173,6 @@ public class TemplateContextBuilder {
     ModuleInfo moduleInfo = templateContext.getModuleInfo();
     ClassInfo classInfo = templateContext.getClassInfo();
     TableMeta tableMeta = moduleInfo.getTableInfo().getTableMeta();
-    classInfo.setComment(StringUtils.defaultString(tableMeta.getRemarks(), tableMeta.getName()));
+    classInfo.setComment(StringUtil.defaultString(tableMeta.getRemarks(), tableMeta.getName()));
   }
 }

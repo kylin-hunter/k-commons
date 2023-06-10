@@ -8,11 +8,11 @@ import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.FieldInfo;
 import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.name.SnakeToCamelUtils;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import java.util.Map;
 import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -63,12 +63,12 @@ public class FieldInfoConvertor {
    */
   private String convertFieldType(ColumnMeta columnMeta, Table table, Database database) {
     String fieldType = table.getColumnType(columnMeta.getColumnName());
-    if (!StringUtils.isEmpty(fieldType)) {
+    if (!StringUtil.isEmpty(fieldType)) {
       return fieldType;
     }
 
     fieldType = database.getSqlType(columnMeta.getTypeName().toLowerCase());
-    if (!StringUtils.isEmpty(fieldType)) {
+    if (!StringUtil.isEmpty(fieldType)) {
       return fieldType;
     }
     Map<String, String> sqlTypes = database.getSqlTypes();

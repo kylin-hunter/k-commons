@@ -11,6 +11,7 @@ import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.file.FileUtil;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.io.File;
 import java.lang.instrument.Instrumentation;
@@ -21,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -52,7 +52,7 @@ public abstract class AbstractPlugin implements Plugin {
     DebugConfig debug = this.config.getDebug();
     if (debug.isEnabled()) {
       String classSaveDir = debug.getClassSaveDir();
-      if (!StringUtils.isEmpty(classSaveDir)) {
+      if (!StringUtil.isEmpty(classSaveDir)) {
         File dir = ResourceHelper.getDir(classSaveDir, ResourceHelper.PathType.FILESYSTEM, true);
         debug.setFileClassSaveDir(dir);
         if (debug.isClassSaveDirAutoClean()) {

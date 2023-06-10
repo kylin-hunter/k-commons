@@ -1,11 +1,11 @@
 package io.github.kylinhunter.commons.generator.config.bean;
 
 import io.github.kylinhunter.commons.io.Charsets;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @Setter
@@ -28,14 +28,14 @@ public class TemplateStrategy extends Strategy {
     if (strategy == null) {
       return;
     }
-    if (StringUtils.isEmpty(this.templateEncoding)) {
+    if (StringUtil.isEmpty(this.templateEncoding)) {
       this.templateEncoding =
-          StringUtils.defaultIfBlank(strategy.templateEncoding, Charsets.UTF_8_VALUE);
+          StringUtil.defaultIfBlank(strategy.templateEncoding, Charsets.UTF_8_VALUE);
     }
 
-    if (StringUtils.isEmpty(this.outputEncoding)) {
+    if (StringUtil.isEmpty(this.outputEncoding)) {
       this.outputEncoding =
-          StringUtils.defaultIfBlank(strategy.outputEncoding, Charsets.UTF_8_VALUE);
+          StringUtil.defaultIfBlank(strategy.outputEncoding, Charsets.UTF_8_VALUE);
     }
   }
 }

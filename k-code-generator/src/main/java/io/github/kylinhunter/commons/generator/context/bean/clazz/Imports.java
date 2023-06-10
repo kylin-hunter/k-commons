@@ -1,11 +1,11 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -57,7 +57,7 @@ public class Imports {
    * @date 2023-02-19 17:24
    */
   public void add(String fullClassName) {
-    if (!StringUtils.isEmpty(fullClassName)) {
+    if (!StringUtil.isEmpty(fullClassName)) {
       if (!fullClassName.startsWith("java.lang")) {
         if (!imports.contains(fullClassName)) {
           this.imports.add(fullClassName);
