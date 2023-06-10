@@ -2,12 +2,12 @@ package o.github.kylinhunter.commons.utils.bean.copy.convertor.imp;
 
 import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.lang.NumberUtil;
 import java.beans.PropertyDescriptor;
 import java.text.DecimalFormat;
 import java.util.Set;
 import o.github.kylinhunter.commons.utils.bean.copy.AbstractFieldConvertor;
 import o.github.kylinhunter.commons.utils.bean.copy.convertor.Direction;
-import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * @author BiJi'an
@@ -70,13 +70,13 @@ public class NumberToStrFieldConvertor extends AbstractFieldConvertor {
     String sourceValue = this.read(source);
     if (sourceValue != null) {
       if (propertyType == int.class || propertyType == Integer.class) {
-        this.write(target, NumberUtils.toInt(sourceValue));
+        this.write(target, NumberUtil.toInt(sourceValue));
       } else if (propertyType == long.class || propertyType == Long.class) {
-        this.write(target, NumberUtils.toLong(sourceValue));
+        this.write(target, NumberUtil.toLong(sourceValue));
       } else if (propertyType == float.class || propertyType == Float.class) {
-        this.write(target, NumberUtils.toFloat(sourceValue));
+        this.write(target, NumberUtil.toFloat(sourceValue));
       } else if (propertyType == double.class || propertyType == Double.class) {
-        this.write(target, NumberUtils.toDouble(sourceValue));
+        this.write(target, NumberUtil.toDouble(sourceValue));
       }
     }
   }
