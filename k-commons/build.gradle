@@ -1,9 +1,10 @@
 dependencies {
     api(rootProject.dependency_management['reflections'])
     api(rootProject.dependency_management['commons-io'])
-    api(rootProject.dependency_management['commons-lang3'])
     api(rootProject.dependency_management['guava'])
     implementation("ch.qos.logback:logback-classic")
+    
+    testImplementation(rootProject.dependency_management['commons-lang3'])
 }
 
 jar.enabled = true

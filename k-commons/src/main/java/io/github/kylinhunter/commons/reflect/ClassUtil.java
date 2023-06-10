@@ -1,11 +1,11 @@
 package io.github.kylinhunter.commons.reflect;
 
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -92,8 +92,8 @@ public class ClassUtil {
    * @return java.lang.String
    */
   public static String getShortClassName(String className) {
-    if (StringUtils.isEmpty(className)) {
-      return StringUtils.EMPTY;
+    if (StringUtil.isEmpty(className)) {
+      return StringUtil.EMPTY;
     }
 
     final StringBuilder arrayPrefix = new StringBuilder();
@@ -133,7 +133,7 @@ public class ClassUtil {
    */
   public static String getShortClassName(final Class<?> cls) {
     if (cls == null) {
-      return StringUtils.EMPTY;
+      return StringUtil.EMPTY;
     }
     return getShortClassName(cls.getName());
   }
@@ -147,7 +147,7 @@ public class ClassUtil {
    */
   public static String getPackageName(final Class<?> cls) {
     if (cls == null) {
-      return StringUtils.EMPTY;
+      return StringUtil.EMPTY;
     }
     return getPackageName(cls.getName());
   }
@@ -160,8 +160,8 @@ public class ClassUtil {
    * @return java.lang.String
    */
   public static String getPackageName(String className) {
-    if (StringUtils.isEmpty(className)) {
-      return StringUtils.EMPTY;
+    if (StringUtil.isEmpty(className)) {
+      return StringUtil.EMPTY;
     }
 
     // Strip array encoding
@@ -175,7 +175,7 @@ public class ClassUtil {
 
     final int i = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);
     if (i == -1) {
-      return StringUtils.EMPTY;
+      return StringUtil.EMPTY;
     }
     return className.substring(0, i);
   }
