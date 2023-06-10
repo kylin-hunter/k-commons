@@ -1,5 +1,8 @@
 package io.github.kylinhunter.commons.lang.strings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author BiJi'an
  * @description
@@ -176,5 +179,62 @@ public class StringUtil {
     }
 
     return str.substring(start, end);
+  }
+  /**
+   * @title split
+   * @description split
+   * @author BiJi'an
+   * @param str str
+   * @param separatorChar separatorChar
+   * @date 2023-06-11 00:16
+   * @return java.lang.String[]
+   */
+  public static String[] split(final String str, final char separatorChar) {
+    return splitWorker(str, separatorChar, false);
+  }
+  /**
+   * @title splitWorker
+   * @description splitWorker
+   * @author BiJi'an
+   * @param str str
+   * @param separatorChar separatorChar
+   * @param preserveAllTokens preserveAllTokens
+   * @date 2023-06-11 00:16
+   * @return java.lang.String[]
+   */
+  private static String[] splitWorker(
+      final String str, final char separatorChar, final boolean preserveAllTokens) {
+    // Performance tuned for 2.0 (JDK1.4)
+
+    if (str == null) {
+      return null;
+    }
+    final int len = str.length();
+    if (len == 0) {
+      return EMPTY_STRING_ARRAY;
+    }
+    final List<String> list = new ArrayList<>();
+    int i = 0;
+    int start = 0;
+    boolean match = false;
+    boolean lastMatch = false;
+    while (i < len) {
+      if (str.charAt(i) == separatorChar) {
+        if (match || preserveAllTokens) {
+          list.add(str.substring(start, i));
+          match = false;
+          lastMatch = true;
+        }
+        start = ++i;
+        continue;
+      }
+      lastMatch = false;
+      match = true;
+      i++;
+    }
+    if (match || preserveAllTokens && lastMatch) {
+      list.add(str.substring(start, i));
+    }
+    return list.toArray(EMPTY_STRING_ARRAY);
   }
 }

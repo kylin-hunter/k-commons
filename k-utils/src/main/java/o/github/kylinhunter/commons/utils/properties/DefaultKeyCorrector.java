@@ -1,11 +1,11 @@
 package o.github.kylinhunter.commons.utils.properties;
 
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.name.NameUtils;
 import java.util.StringJoiner;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author BiJi'an
@@ -20,7 +20,7 @@ public class DefaultKeyCorrector implements KeyCorrector {
   public Object correct(Object key, NameRule nameRule) {
     if (key instanceof String) {
       String newKey = (String) key;
-      String[] keyPath = StringUtils.split(newKey, ".");
+      String[] keyPath = StringUtil.split(newKey, '.');
       if (keyPath.length <= 1) {
         newKey = NameUtils.convert(newKey, nameRule);
       } else {

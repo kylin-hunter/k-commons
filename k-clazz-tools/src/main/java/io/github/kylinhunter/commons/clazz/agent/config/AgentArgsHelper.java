@@ -1,7 +1,7 @@
 package io.github.kylinhunter.commons.clazz.agent.config;
 
 import io.github.kylinhunter.commons.collections.MultiValueMap;
-import org.apache.commons.lang3.StringUtils;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 
 /**
  * @author BiJi'an
@@ -14,7 +14,6 @@ public class AgentArgsHelper {
 
   /**
    * @param agentArgs agentArgs
-   * @return void
    * @title init
    * @description
    * @author BiJi'an
@@ -22,10 +21,10 @@ public class AgentArgsHelper {
    */
   public static void init(String agentArgs) {
 
-    String[] propGroups = StringUtils.split(agentArgs, ';');
-    if (propGroups != null && propGroups.length > 0) {
+    String[] propGroups = StringUtil.split(agentArgs, ';');
+    if (propGroups != null) {
       for (String propGroup : propGroups) {
-        String[] propPairs = StringUtils.split(propGroup, '=');
+        String[] propPairs = StringUtil.split(propGroup, '=');
         if (propPairs != null && propPairs.length == 2) {
           AGENT_ARGS.add(propPairs[0], propPairs[1]);
         }
