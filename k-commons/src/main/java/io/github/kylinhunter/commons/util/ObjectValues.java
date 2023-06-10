@@ -4,11 +4,11 @@ import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
 import io.github.kylinhunter.commons.lang.BooleanUtil;
 import io.github.kylinhunter.commons.lang.NumberUtil;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.lang3.ClassUtils;
 
 /**
  * @author BiJi'an
@@ -141,7 +141,7 @@ public class ObjectValues {
       if (clazz.isAssignableFrom(objClazz)) {
         return (T) obj;
       } else {
-        if (ClassUtils.isPrimitiveOrWrapper(clazz)) {
+        if (ClassUtil.isPrimitiveOrWrapper(clazz)) {
           if (clazz == int.class || clazz == Integer.class) {
             return (T) (Integer) NumberUtil.toInt(String.valueOf(obj));
           } else if (clazz == long.class || clazz == Long.class) {

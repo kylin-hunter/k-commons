@@ -7,7 +7,6 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.List;
 import lombok.Data;
-import org.apache.commons.lang3.ClassUtils;
 
 /**
  * @author BiJi'an
@@ -27,7 +26,7 @@ public class ExPropertyDescriptor {
 
     Class<?> propertyType = pd.getPropertyType();
 
-    if (ClassUtils.isPrimitiveOrWrapper(propertyType)) {
+    if (ClassUtil.isPrimitiveOrWrapper(propertyType)) {
       this.exPropType = ExPropType.PRIMITIVE_OR_WRAPPER;
     } else if (propertyType == String.class) {
       this.exPropType = ExPropType.STRING;

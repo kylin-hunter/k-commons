@@ -40,6 +40,32 @@ public class ClassUtil {
     reverseAbbreviationMap = Collections.unmodifiableMap(r);
   }
 
+  private static final Map<Class<?>, Class<?>> primitiveWrapperMap = new HashMap<>();
+
+  static {
+    primitiveWrapperMap.put(Boolean.TYPE, Boolean.class);
+    primitiveWrapperMap.put(Byte.TYPE, Byte.class);
+    primitiveWrapperMap.put(Character.TYPE, Character.class);
+    primitiveWrapperMap.put(Short.TYPE, Short.class);
+    primitiveWrapperMap.put(Integer.TYPE, Integer.class);
+    primitiveWrapperMap.put(Long.TYPE, Long.class);
+    primitiveWrapperMap.put(Double.TYPE, Double.class);
+    primitiveWrapperMap.put(Float.TYPE, Float.class);
+    primitiveWrapperMap.put(Void.TYPE, Void.TYPE);
+  }
+
+  private static final Map<Class<?>, Class<?>> wrapperPrimitiveMap = new HashMap<>();
+
+  static {
+    for (final Map.Entry<Class<?>, Class<?>> entry : primitiveWrapperMap.entrySet()) {
+      final Class<?> primitiveClass = entry.getKey();
+      final Class<?> wrapperClass = entry.getValue();
+      if (!primitiveClass.equals(wrapperClass)) {
+        wrapperPrimitiveMap.put(wrapperClass, primitiveClass);
+      }
+    }
+  }
+
   /**
    * @title loadClass
    * @description loadClass
@@ -152,5 +178,30 @@ public class ClassUtil {
       return StringUtils.EMPTY;
     }
     return className.substring(0, i);
+  }
+  /**
+   * @title isPrimitiveOrWrapper
+   * @description isPrimitiveOrWrapper
+   * @author BiJi'an
+   * @param type type
+   * @date 2023-06-11 01:50
+   * @return boolean
+   */
+  public static boolean isPrimitiveOrWrapper(final Class<?> type) {
+    if (type == null) {
+      return false;
+    }
+    return type.isPrimitive() || isPrimitiveWrapper(type);
+  }
+  /**
+   * @title isPrimitiveWrapper
+   * @description isPrimitiveWrapper
+   * @author BiJi'an
+   * @param type type
+   * @date 2023-06-11 01:50
+   * @return boolean
+   */
+  public static boolean isPrimitiveWrapper(final Class<?> type) {
+    return wrapperPrimitiveMap.containsKey(type);
   }
 }
