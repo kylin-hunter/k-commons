@@ -1,5 +1,6 @@
 package o.github.kylinhunter.commons.utils.bean.info;
 
+import io.github.kylinhunter.commons.collections.ArrayUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import java.beans.BeanInfo;
@@ -9,7 +10,6 @@ import java.beans.PropertyDescriptor;
 import java.util.Collections;
 import java.util.Map;
 import lombok.Getter;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * @author BiJi'an
@@ -65,7 +65,6 @@ public class BeanIntrospector {
   /**
    * @param name name
    * @param propertyDescriptor propertyDescriptor
-   * @return void
    * @title put
    * @description
    * @author BiJi'an

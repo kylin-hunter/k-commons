@@ -1,5 +1,6 @@
 package o.github.kylinhunter.commons.utils.bean.info;
 
+import io.github.kylinhunter.commons.reflect.ClassUtil;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import io.github.kylinhunter.commons.reflect.bean.ActualType;
 import java.beans.PropertyDescriptor;
@@ -40,7 +41,7 @@ public class ExPropertyDescriptor {
         this.genericActualClazzes = actualType.getTypes();
       }
     } else {
-      String packageName = ClassUtils.getPackageName(propertyType);
+      String packageName = ClassUtil.getPackageName(propertyType);
       if (!packageName.startsWith("java.") && !packageName.startsWith("com.sun")) {
         this.exPropType = ExPropType.NON_JDK_TYPE;
       }

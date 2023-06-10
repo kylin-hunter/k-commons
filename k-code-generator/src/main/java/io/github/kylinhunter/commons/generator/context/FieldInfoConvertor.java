@@ -10,9 +10,9 @@ import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.name.SnakeToCamelUtils;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import java.util.Map;
-import org.apache.commons.lang3.ClassUtils;
 
 /**
  * @author BiJi'an
@@ -37,7 +37,7 @@ public class FieldInfoConvertor {
 
     String fieldType = convertFieldType(columnMeta, table, database);
     FieldInfo fieldInfo = new FieldInfo();
-    fieldInfo.setType(ClassUtils.getShortClassName(fieldType));
+    fieldInfo.setType(ClassUtil.getShortClassName(fieldType));
     fieldInfo.setFullType(fieldType);
     fieldInfo.setName(SnakeToCamelUtils.convert(columnMeta.getColumnName()));
     fieldInfo.setColumnName(columnMeta.getColumnName());

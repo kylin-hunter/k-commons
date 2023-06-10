@@ -1,9 +1,9 @@
 package io.github.kylinhunter.commons.generator.context.bean.clazz;
 
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.ClassUtils;
 
 /**
  * @author BiJi'an
@@ -39,7 +39,7 @@ public class SuperClass {
 
   public void setClassName(String fullClassName) {
     if (!StringUtil.isEmpty(fullClassName)) {
-      this.className = ClassUtils.getShortClassName(fullClassName);
+      this.className = ClassUtil.getShortClassName(fullClassName);
     }
   }
 }

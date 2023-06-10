@@ -3,9 +3,9 @@ package io.github.kylinhunter.commons.generator.context.bean.clazz;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.ClassUtils;
 
 /**
  * @author BiJi'an
@@ -38,7 +38,6 @@ public class Interfaces {
 
   /**
    * @param fullClassName className
-   * @return void
    * @title add
    * @description
    * @author BiJi'an
@@ -47,7 +46,7 @@ public class Interfaces {
   public void add(String fullClassName) {
     if (!StringUtil.isEmpty(fullClassName)) {
       this.fullClassNames.add(fullClassName);
-      this.shortClassNames.add(ClassUtils.getShortClassName(fullClassName));
+      this.shortClassNames.add(ClassUtil.getShortClassName(fullClassName));
     }
   }
 }
