@@ -79,4 +79,23 @@ class NameUtilsTest {
     Assertions.assertEquals("helloWord", namePair.getCamel());
     Assertions.assertEquals("HELLO-WORD", namePair.getSnake());
   }
+
+  @Test
+  void convert() {
+    Assertions.assertEquals("HelloWord", NameUtils.convert("helloWord", NameRule.CAMEL_UPPER));
+    Assertions.assertEquals("helloWord", NameUtils.convert("helloWord", NameRule.CAMEL_LOW));
+
+    Assertions.assertEquals("HelloWord", NameUtils.convert("hello-Word", NameRule.CAMEL_UPPER));
+    Assertions.assertEquals("helloWord", NameUtils.convert("hello-Word", NameRule.CAMEL_LOW));
+
+    Assertions.assertEquals(
+        "hello_word", NameUtils.convert("helloWord", NameRule.SNAKE_LOW_UNDERSCORE));
+    Assertions.assertEquals(
+        "HELLO_WORD", NameUtils.convert("helloWord", NameRule.SNAKE_UPPER_UNDERSCORE));
+
+    Assertions.assertEquals(
+        "hello-word", NameUtils.convert("helloWord", NameRule.SNAKE_LOW_HYPHEN));
+    Assertions.assertEquals(
+        "HELLO-WORD", NameUtils.convert("helloWord", NameRule.SNAKE_UPPER_HYPHEN));
+  }
 }

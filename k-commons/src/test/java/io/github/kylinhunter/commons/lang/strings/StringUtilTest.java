@@ -20,4 +20,10 @@ class StringUtilTest {
     assertEquals("a", StringUtil.defaultString(null, "a"));
     assertEquals("", StringUtil.defaultString(null));
   }
+
+  @Test
+  void split() {
+    String str = "a.b.c.d.";
+    assertEquals(4, StringUtil.split(str, '.').length);
+  }
 }
