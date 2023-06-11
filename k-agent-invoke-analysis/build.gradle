@@ -9,7 +9,7 @@ dependencies {
 
 
 jar.enabled = true
-bootJar.enabled(false)
+//bootJar.enabled(false)
 
 def jarMainlass = "io.github.kylinhunter.commons.clazz.Main"
 def jarPremainClass = "io.github.kylinhunter.commons.clazz.agent.PreMain"

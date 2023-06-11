@@ -1,6 +1,6 @@
 dependencies {
     api project(":k-commons")
-    implementation("ch.qos.logback:logback-classic")
+    implementation("ch.qos.logback:logback-classic:1.4.7")
 
     implementation(rootProject.dependency_management['commons-codec'])
     implementation(rootProject.dependency_management['commons-compress'])
@@ -10,18 +10,18 @@ dependencies {
     implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
 
 //    json
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4")
 
 // yaml
-    implementation('org.yaml:snakeyaml')
+    implementation('org.yaml:snakeyaml:1.29')
 
 
 }
 
 jar.enabled = true
-bootJar.enabled(false)
-bootJarMainClassName.enabled(false)
+//bootJar.enabled(false)
+//bootJarMainClassName.enabled(false)
 
 jar {
     exclude("logback.xml")

@@ -18,7 +18,7 @@ dependencies {
 
 
 jar.enabled = true
-bootJar.enabled(false)
+//bootJar.enabled(false)
 
 jar {
     exclude("logback.xml")

@@ -49,7 +49,7 @@ allprojects {
 
 subprojects {
 
-    apply plugin: 'org.springframework.boot'
+//    apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.bmuschko.docker-remote-api'
     apply plugin: 'signing'
@@ -76,10 +76,10 @@ subprojects {
 
         testImplementation(dependency_management['lombok'])
         testAnnotationProcessor(dependency_management['lombok'])
-        testImplementation 'org.junit.jupiter:junit-jupiter'
-        testImplementation 'org.junit.platform:junit-platform-suite'
-        testImplementation 'org.mockito:mockito-core'
-        testImplementation 'org.mockito:mockito-inline'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+        testImplementation 'org.junit.platform:junit-platform-suite:1.8.2'
+        testImplementation 'org.mockito:mockito-core:4.0.0'
+        testImplementation 'org.mockito:mockito-inline:4.0.0'
 
         testImplementation(dependency_management['jmockit'])
 

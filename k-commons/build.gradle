@@ -2,14 +2,14 @@ dependencies {
     api(rootProject.dependency_management['reflections'])
     api(rootProject.dependency_management['commons-io'])
     api(rootProject.dependency_management['guava'])
-    implementation("ch.qos.logback:logback-classic")
-    
+    implementation("ch.qos.logback:logback-classic:1.4.7")
+
     testImplementation(rootProject.dependency_management['commons-lang3'])
 }
 
 jar.enabled = true
-bootJar.enabled(false)
-bootJarMainClassName.enabled(false)
+//bootJar.enabled(false)
+//bootJarMainClassName.enabled(false)
 
 jar {
     exclude("logback.xml")
