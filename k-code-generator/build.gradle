@@ -1,7 +1,7 @@
 dependencies {
     api project(":k-utils")
     api project(":k-jdbc")
-    implementation("ch.qos.logback:logback-classic:1.4.7")
+    implementation(rootProject.dependency_management['logback-classic'])
     api(rootProject.dependency_management['velocity-engine-core'])
     api(rootProject.dependency_management['velocity-tools-generic'])
     api(rootProject.dependency_management['springfox-swagger2'])

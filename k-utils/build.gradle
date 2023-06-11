@@ -1,6 +1,6 @@
 dependencies {
     api project(":k-commons")
-    implementation("ch.qos.logback:logback-classic:1.4.7")
+    implementation(rootProject.dependency_management['logback-classic'])
 
     implementation(rootProject.dependency_management['commons-codec'])
     implementation(rootProject.dependency_management['commons-compress'])
