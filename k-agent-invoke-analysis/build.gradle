@@ -1,7 +1,5 @@
-import org.gradle.internal.jvm.Jvm
-
 dependencies {
-    api(project(":k-clazz-tools"))
+    api(project(":k-clazz"))
     api(rootProject.dependency_management['commons-io'])
 
     api(rootProject.dependency_management['bytebuddy'])
