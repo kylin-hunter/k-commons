@@ -23,5 +23,11 @@ class FilenameUtilTest {
 
     fileName = "a.tar1.z";
     assertEquals("z", FilenameUtils.getExtension(fileName));
+
+    fileName = "";
+    assertEquals("", FilenameUtils.getExtension(fileName));
+
+    fileName = null;
+    assertEquals("", FilenameUtils.getExtension(fileName));
   }
 }

@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.io;
 
+import io.github.kylinhunter.commons.io.file.FilenameUtils;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public enum IOCase implements Serializable {
 
   INSENSITIVE("Insensitive", false),
 
-  SYSTEM("System", !IOHelper.isSystemWindows());
+  SYSTEM("System", !FilenameUtils.isSystemWindows());
 
   private final String name;
 
@@ -59,7 +60,7 @@ public enum IOCase implements Serializable {
   }
 
   /**
-   * @param str str
+   * @param str   str
    * @param start start
    * @return boolean
    * @title checkStartsWith
@@ -91,9 +92,9 @@ public enum IOCase implements Serializable {
   }
 
   /**
-   * @param str str
+   * @param str           str
    * @param strStartIndex strStartIndex
-   * @param search search
+   * @param search        search
    * @return int
    * @title checkIndexOf
    * @description
@@ -113,9 +114,9 @@ public enum IOCase implements Serializable {
   }
 
   /**
-   * @param str str
+   * @param str           str
    * @param strStartIndex strStartIndex
-   * @param search search
+   * @param search        search
    * @return boolean
    * @title checkRegionMatches
    * @description
