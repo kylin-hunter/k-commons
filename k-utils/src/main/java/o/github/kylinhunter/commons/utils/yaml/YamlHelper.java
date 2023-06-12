@@ -2,7 +2,7 @@ package o.github.kylinhunter.commons.utils.yaml;
 
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
-import io.github.kylinhunter.commons.io.IOHelper;
+import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.name.NameRule;
 import java.io.InputStream;
@@ -15,6 +15,7 @@ import org.yaml.snakeyaml.Yaml;
  * @date 2022-11-01 22:01
  */
 public class YamlHelper {
+
   private static KeyCorrector defaultKeyCorrector = new DefaultKeyCorrector();
 
   /**
@@ -31,7 +32,7 @@ public class YamlHelper {
 
   /**
    * @param clazz clazz
-   * @param path path
+   * @param path  path
    * @return T
    * @title loadFromClassPath
    * @description
@@ -44,7 +45,7 @@ public class YamlHelper {
 
   /**
    * @param clazz clazz
-   * @param path path
+   * @param path  path
    * @return T
    * @title loadFromClassPath
    * @description
@@ -57,7 +58,7 @@ public class YamlHelper {
         throw new ParamException(" inputStream is null ,invalid path: " + path);
       }
 
-      String text = IOHelper.toString(inputStream, StandardCharsets.UTF_8);
+      String text = IOUtil.toString(inputStream, StandardCharsets.UTF_8);
 
       return loadFromText(clazz, text, nameRule);
 
@@ -70,7 +71,7 @@ public class YamlHelper {
 
   /**
    * @param clazz clazz
-   * @param text text
+   * @param text  text
    * @return T
    * @title loadFromText
    * @description
@@ -83,7 +84,7 @@ public class YamlHelper {
 
   /**
    * @param clazz clazz
-   * @param text text
+   * @param text  text
    * @return T
    * @title loadFromText
    * @description
@@ -114,7 +115,7 @@ public class YamlHelper {
   }
 
   /**
-   * @param obj obj
+   * @param obj      obj
    * @param nameRule nameRule
    * @return java.lang.String
    * @title dumpAsMap

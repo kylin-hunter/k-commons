@@ -1,12 +1,7 @@
 package io.github.kylinhunter.commons.io;
 
 import io.github.kylinhunter.commons.exception.embed.KIOException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.Charset;
 
 /**
  * @author BiJi'an
@@ -31,68 +26,5 @@ public class IOHelper {
     }
   }
 
-  /**
-   * @param input input
-   * @return java.lang.String
-   * @title toString
-   * @description
-   * @author BiJi'an
-   * @date 2023-03-04 01:15
-   */
-  public static String toString(InputStream input) {
-    return toString(input, Charset.defaultCharset());
-  }
 
-  /**
-   * @param input input
-   * @param charsetName charsetName
-   * @return java.lang.String
-   * @title toString
-   * @description
-   * @author BiJi'an
-   * @date 2023-02-12 01:08
-   */
-  public static String toString(InputStream input, String charsetName) {
-    return toString(input, Charsets.toCharset(charsetName));
-  }
-
-  /**
-   * @param input input
-   * @param charsetName charsetName
-   * @return java.lang.String
-   * @title toString
-   * @description
-   * @author BiJi'an
-   * @date 2023-02-26 10:35
-   */
-  public static String toString(InputStream input, Charset charsetName) {
-
-    try {
-      if (input == null) {
-        throw new KIOException("InputStream can't be null");
-      }
-      return IOUtil.toString(input, charsetName);
-    } catch (IOException e) {
-      throw new KIOException("toString error", e);
-    }
-  }
-
-  /**
-   * @param file file
-   * @return java.io.FileInputStream
-   * @title newFileInputStream
-   * @description
-   * @author BiJi'an
-   * @date 2023-03-19 00:16
-   */
-  public static FileInputStream getFileInputStream(File file) {
-    try {
-      if (file != null && file.exists() && file.isFile()) {
-        return new FileInputStream(file);
-      }
-    } catch (Exception e) {
-      // ignore
-    }
-    return null;
-  }
 }

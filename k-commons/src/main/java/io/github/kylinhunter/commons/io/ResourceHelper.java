@@ -17,6 +17,7 @@ import lombok.Data;
  * @date 2022/1/1
  */
 public class ResourceHelper {
+
   /**
    * @param path path
    * @return java.io.InputStream
@@ -30,7 +31,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path     path
    * @param required required
    * @return java.io.InputStream
    * @title getInputStream
@@ -43,7 +44,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.io.InputStream
    * @title getInputStream
@@ -63,6 +64,7 @@ public class ResourceHelper {
    * @author BiJi'an
    * @date 2022-01-01 02:11
    */
+  @SuppressWarnings("resource")
   public static InputStream getInputStream(String path, PathType priorityType, boolean required) {
 
     try {
@@ -72,17 +74,17 @@ public class ResourceHelper {
       if (pathType == PathType.CLASSPATH) {
         inputStream = ResourceHelper.getInputStreamInClassPath(pathInfo.getPath());
       } else if (pathType == PathType.FILESYSTEM) {
-        inputStream = IOHelper.getFileInputStream(pathInfo.getFile());
+        inputStream = FileUtil.openInputStream(pathInfo.getFile());
       } else {
         if (priorityType == PathType.FILESYSTEM) {
-          inputStream = IOHelper.getFileInputStream(FileUtil.getFile(path));
+          inputStream = FileUtil.openInputStream(FileUtil.getFile(path));
           if (inputStream == null) {
             inputStream = ResourceHelper.getInputStreamInClassPath(path);
           }
         } else {
           inputStream = ResourceHelper.getInputStreamInClassPath(path);
           if (inputStream == null) {
-            inputStream = IOHelper.getFileInputStream(FileUtil.getFile(path));
+            inputStream = FileUtil.openInputStream(FileUtil.getFile(path));
           }
         }
       }
@@ -127,7 +129,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path     path
    * @param required required
    * @return java.io.File
    * @title getFile
@@ -140,7 +142,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getFile
@@ -153,9 +155,9 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
-   * @param required required
+   * @param required     required
    * @return java.io.File
    * @title getFile
    * @description
@@ -191,7 +193,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getDir
@@ -204,7 +206,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getDir
@@ -300,7 +302,7 @@ public class ResourceHelper {
 
   /**
    * @param classPath classPath
-   * @param required required
+   * @param required  required
    * @return java.io.File
    * @title getDirInClassPath
    * @description
@@ -313,8 +315,8 @@ public class ResourceHelper {
 
   /**
    * @param classPath classPath
-   * @param isFile isFile
-   * @param required required
+   * @param isFile    isFile
+   * @param required  required
    * @return java.io.File
    * @title _getFileInClassPath
    * @description
@@ -382,7 +384,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.lang.String
    * @title getText
@@ -395,7 +397,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path    path
    * @param charset charset
    * @return java.lang.String
    * @title getText
@@ -408,9 +410,9 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
-   * @param charset charset
+   * @param charset      charset
    * @return java.lang.String
    * @title getText
    * @description
@@ -419,7 +421,7 @@ public class ResourceHelper {
    */
   public static String getText(String path, PathType priorityType, Charset charset) {
     try (InputStream inputStream = getInputStream(path, priorityType, true)) {
-      return IOHelper.toString(inputStream, charset);
+      return IOUtil.toString(inputStream, charset);
     } catch (IOException e) {
       throw new KIOException("get text error", e);
     }
@@ -432,6 +434,7 @@ public class ResourceHelper {
    */
   @Data
   private static class PathInfo {
+
     public static final String USER_DIR_TAG = "$user.dir$";
     public static final String PROTOCOL_FILE = "file:";
     public static final String CLASSPATH_TAG = "classpath:";

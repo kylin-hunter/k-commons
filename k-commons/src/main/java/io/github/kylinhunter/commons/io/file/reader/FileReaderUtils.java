@@ -1,17 +1,15 @@
 package io.github.kylinhunter.commons.io.file.reader;
 
-import io.github.kylinhunter.commons.exception.ExCatcher;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
 import io.github.kylinhunter.commons.io.IOUtil;
+import io.github.kylinhunter.commons.io.file.FileUtil;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.util.Objects;
 
 /**
  * @author BiJi'an
@@ -21,8 +19,8 @@ import java.util.Objects;
 public class FileReaderUtils {
 
   /**
-   * @param file a file
-   * @param encoding the encoding of the file
+   * @param file      a file
+   * @param encoding  the encoding of the file
    * @param processor a processor to process the file
    * @title process
    * @description
@@ -39,8 +37,8 @@ public class FileReaderUtils {
   }
 
   /**
-   * @param input the input stream
-   * @param encoding the encoding
+   * @param input     the input stream
+   * @param encoding  the encoding
    * @param processor the processor
    * @title process
    * @description
@@ -50,7 +48,7 @@ public class FileReaderUtils {
   public static void process(InputStream input, String encoding, LineProcessor processor) {
 
     try (InputStreamReader streamReader =
-            new InputStreamReader(input, Charsets.toCharset(encoding));
+        new InputStreamReader(input, Charsets.toCharset(encoding));
         BufferedReader bufferReader = new BufferedReader(streamReader)) {
       String line = bufferReader.readLine();
       while (line != null) {
@@ -63,8 +61,8 @@ public class FileReaderUtils {
   }
 
   /**
-   * @param file a file
-   * @param encoding the encoding of the file
+   * @param file      a file
+   * @param encoding  the encoding of the file
    * @param processor a processor to process the file
    * @title process
    * @description
@@ -91,7 +89,7 @@ public class FileReaderUtils {
    * @date 2023-04-22 00:32
    */
   public static byte[] readFileToByteArray(final File file) {
-    try (InputStream inputStream = openInputStream(file)) {
+    try (InputStream inputStream = FileUtil.openInputStream(file)) {
       final long fileLength = file.length();
       // file.length() may return 0 for system-dependent entities, treat 0 as unknown length - see
       // IO-453
@@ -103,19 +101,5 @@ public class FileReaderUtils {
     }
   }
 
-  /**
-   * @param file file
-   * @return java.io.FileInputStream
-   * @title openInputStream
-   * @description
-   * @author BiJi'an
-   * @date 2023-04-22 00:32
-   */
-  public static FileInputStream openInputStream(final File file) {
-    return ExCatcher.run(
-        () -> {
-          Objects.requireNonNull(file, "file");
-          return new FileInputStream(file);
-        });
-  }
+
 }

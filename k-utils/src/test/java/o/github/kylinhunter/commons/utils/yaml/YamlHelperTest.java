@@ -3,7 +3,7 @@ package o.github.kylinhunter.commons.utils.yaml;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.kylinhunter.commons.io.IOHelper;
+import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.name.NameRule;
 import java.io.IOException;
@@ -26,7 +26,7 @@ class YamlHelperTest {
 
     try (InputStream inputStream = ResourceHelper.getInputStreamInClassPath(path)) {
 
-      String yamlText = IOHelper.toString(inputStream, StandardCharsets.UTF_8);
+      String yamlText = IOUtil.toString(inputStream, StandardCharsets.UTF_8);
       System.out.println("file string=> \n" + yamlText);
 
       YamlBean yamlBeanFromPath = YamlHelper.loadFromPath(YamlBean.class, path, NameRule.CAMEL_LOW);

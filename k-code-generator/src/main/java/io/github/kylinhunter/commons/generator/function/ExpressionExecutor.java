@@ -5,7 +5,7 @@ import com.googlecode.aviator.Expression;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CAfter;
 import io.github.kylinhunter.commons.exception.ExCatcher;
-import io.github.kylinhunter.commons.io.IOHelper;
+import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import java.io.InputStream;
@@ -35,7 +35,7 @@ public class ExpressionExecutor {
 
   /**
    * @param expression expression
-   * @param type type
+   * @param type       type
    * @return T
    * @title execute
    * @description
@@ -48,7 +48,7 @@ public class ExpressionExecutor {
 
   /**
    * @param expression expression
-   * @param env env
+   * @param env        env
    * @return T
    * @title execute
    * @description
@@ -63,8 +63,8 @@ public class ExpressionExecutor {
 
   /**
    * @param expression expression
-   * @param env env
-   * @param type type
+   * @param env        env
+   * @param type       type
    * @return T
    * @title execute
    * @description
@@ -82,7 +82,7 @@ public class ExpressionExecutor {
     return ExCatcher.run(
         () -> {
           try (InputStream inputStream = ResourceHelper.getInputStream(path)) {
-            String text = IOHelper.toString(inputStream, StandardCharsets.UTF_8);
+            String text = IOUtil.toString(inputStream, StandardCharsets.UTF_8);
             Expression expression = AviatorEvaluator.getInstance().compile(path, text, true);
             return (T) expression.execute(env);
           }
@@ -91,7 +91,7 @@ public class ExpressionExecutor {
 
   /**
    * @param path path
-   * @param env env
+   * @param env  env
    * @param type type
    * @return T
    * @title executeFromFile
