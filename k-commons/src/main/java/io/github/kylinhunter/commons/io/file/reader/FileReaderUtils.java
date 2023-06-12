@@ -3,14 +3,15 @@ package io.github.kylinhunter.commons.io.file.reader;
 import io.github.kylinhunter.commons.exception.ExCatcher;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
+import io.github.kylinhunter.commons.io.IOUtil;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.Objects;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author BiJi'an
@@ -30,7 +31,7 @@ public class FileReaderUtils {
    */
   public static void process(File file, String encoding, LineProcessor processor) {
 
-    try (InputStream input = new FileInputStream(file)) {
+    try (InputStream input = Files.newInputStream(file.toPath())) {
       process(input, encoding, processor);
     } catch (Exception e) {
       throw new KIOException("process error", e);
@@ -73,7 +74,7 @@ public class FileReaderUtils {
   @SuppressWarnings("UnusedReturnValue")
   public static <T> T process(File file, String encoding, DefaultLineProcessor<T> processor) {
 
-    try (InputStream input = new FileInputStream(file)) {
+    try (InputStream input = Files.newInputStream(file.toPath())) {
       process(input, encoding, processor);
       return processor.getResult();
     } catch (Exception e) {
@@ -95,8 +96,8 @@ public class FileReaderUtils {
       // file.length() may return 0 for system-dependent entities, treat 0 as unknown length - see
       // IO-453
       return fileLength > 0
-          ? IOUtils.toByteArray(inputStream, fileLength)
-          : IOUtils.toByteArray(inputStream);
+          ? IOUtil.toByteArray(inputStream, fileLength)
+          : IOUtil.toByteArray(inputStream);
     } catch (IOException e) {
       throw new KIOException("readFileToByteArray error", e);
     }

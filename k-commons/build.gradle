@@ -3,7 +3,7 @@ dependencies {
     api(rootProject.dependency_management['guava'])
     implementation(rootProject.dependency_management['logback-classic'])
 
-    api(rootProject.dependency_management['commons-io'])
+    testImplementation(rootProject.dependency_management['commons-io'])
 
     testImplementation(rootProject.dependency_management['commons-lang3'])
 }

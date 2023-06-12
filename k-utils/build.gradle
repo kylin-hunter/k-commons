@@ -1,7 +1,8 @@
 dependencies {
     api project(":k-commons")
     implementation(rootProject.dependency_management['logback-classic'])
-
+// commons
+    implementation(rootProject.dependency_management['commons-io'])
     implementation(rootProject.dependency_management['commons-codec'])
     implementation(rootProject.dependency_management['commons-compress'])
 
