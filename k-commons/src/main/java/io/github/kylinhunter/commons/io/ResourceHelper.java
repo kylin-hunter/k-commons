@@ -31,7 +31,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path     path
+   * @param path path
    * @param required required
    * @return java.io.InputStream
    * @title getInputStream
@@ -44,7 +44,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path         path
+   * @param path path
    * @param priorityType priorityType
    * @return java.io.InputStream
    * @title getInputStream
@@ -129,7 +129,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path     path
+   * @param path path
    * @param required required
    * @return java.io.File
    * @title getFile
@@ -142,7 +142,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path         path
+   * @param path path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getFile
@@ -155,9 +155,9 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path         path
+   * @param path path
    * @param priorityType priorityType
-   * @param required     required
+   * @param required required
    * @return java.io.File
    * @title getFile
    * @description
@@ -193,7 +193,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path         path
+   * @param path path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getDir
@@ -206,7 +206,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path         path
+   * @param path path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getDir
@@ -302,7 +302,7 @@ public class ResourceHelper {
 
   /**
    * @param classPath classPath
-   * @param required  required
+   * @param required required
    * @return java.io.File
    * @title getDirInClassPath
    * @description
@@ -315,8 +315,8 @@ public class ResourceHelper {
 
   /**
    * @param classPath classPath
-   * @param isFile    isFile
-   * @param required  required
+   * @param isFile isFile
+   * @param required required
    * @return java.io.File
    * @title _getFileInClassPath
    * @description
@@ -384,7 +384,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path         path
+   * @param path path
    * @param priorityType priorityType
    * @return java.lang.String
    * @title getText
@@ -397,7 +397,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path    path
+   * @param path path
    * @param charset charset
    * @return java.lang.String
    * @title getText
@@ -410,9 +410,9 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path         path
+   * @param path path
    * @param priorityType priorityType
-   * @param charset      charset
+   * @param charset charset
    * @return java.lang.String
    * @title getText
    * @description

@@ -25,6 +25,4 @@ public class IOHelper {
       throw new KIOException("invalid uri:" + uri);
     }
   }
-
-
 }
