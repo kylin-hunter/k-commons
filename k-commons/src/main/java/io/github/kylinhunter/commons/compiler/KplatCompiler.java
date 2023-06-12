@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.compiler;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,7 +16,6 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author BiJi'an
@@ -54,12 +54,11 @@ public class KplatCompiler {
    * @date 2022-11-21 00:48
    */
   public boolean compile() {
-    StandardJavaFileManager fileManager = null;
-    try {
+    JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 
-      JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+    try (StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null,
+        null)) {
 
-      fileManager = javaCompiler.getStandardFileManager(null, null, null);
       Iterable<? extends JavaFileObject> fileObjects =
           fileManager.getJavaFileObjects(sources.toArray(new File[0]));
       List<String> options = Arrays.asList("-d", output.getAbsolutePath());
@@ -67,14 +66,14 @@ public class KplatCompiler {
           javaCompiler.getTask(null, fileManager, null, options, null, fileObjects);
       return cTask.call();
 
-    } finally {
-      IOUtils.closeQuietly(fileManager);
+    } catch (IOException e) {
+      throw new KIOException("compile error", e);
     }
   }
 
   /**
    * @param prefix prefix
-   * @param paths paths
+   * @param paths  paths
    * @return void
    * @title findClassPath
    * @description

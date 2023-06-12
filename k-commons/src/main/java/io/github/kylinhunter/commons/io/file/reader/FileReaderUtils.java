@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.io.file.reader;
 
 import io.github.kylinhunter.commons.exception.ExCatcher;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
+import io.github.kylinhunter.commons.io.Charsets;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -20,8 +20,8 @@ import org.apache.commons.io.IOUtils;
 public class FileReaderUtils {
 
   /**
-   * @param file a file
-   * @param encoding the encoding of the file
+   * @param file      a file
+   * @param encoding  the encoding of the file
    * @param processor a processor to process the file
    * @title process
    * @description
@@ -38,8 +38,8 @@ public class FileReaderUtils {
   }
 
   /**
-   * @param input the input stream
-   * @param encoding the encoding
+   * @param input     the input stream
+   * @param encoding  the encoding
    * @param processor the processor
    * @title process
    * @description
@@ -49,7 +49,7 @@ public class FileReaderUtils {
   public static void process(InputStream input, String encoding, LineProcessor processor) {
 
     try (InputStreamReader streamReader =
-            new InputStreamReader(input, Charsets.toCharset(encoding));
+        new InputStreamReader(input, Charsets.toCharset(encoding));
         BufferedReader bufferReader = new BufferedReader(streamReader)) {
       String line = bufferReader.readLine();
       while (line != null) {
@@ -62,8 +62,8 @@ public class FileReaderUtils {
   }
 
   /**
-   * @param file a file
-   * @param encoding the encoding of the file
+   * @param file      a file
+   * @param encoding  the encoding of the file
    * @param processor a processor to process the file
    * @title process
    * @description

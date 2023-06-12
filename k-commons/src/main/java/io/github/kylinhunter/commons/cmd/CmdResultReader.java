@@ -1,12 +1,12 @@
 package io.github.kylinhunter.commons.cmd;
 
 import io.github.kylinhunter.commons.io.Charsets;
+import io.github.kylinhunter.commons.io.IOUtil;
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author BiJi'an
@@ -27,11 +27,11 @@ public class CmdResultReader implements Callable<List<String>> {
     if (type == ResultType.STD_OUT) {
       try (InputStream stream = process.getInputStream()) {
 
-        return IOUtils.readLines(stream, Charsets.toCharset(charset));
+        return IOUtil.readLines(stream, Charsets.toCharset(charset));
       }
     } else {
       try (InputStream stream = process.getErrorStream()) {
-        return IOUtils.readLines(stream, Charsets.toCharset(charset));
+        return IOUtil.readLines(stream, Charsets.toCharset(charset));
       }
     }
   }

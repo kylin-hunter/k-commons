@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
 import java.nio.charset.Charset;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -18,10 +17,14 @@ import org.apache.commons.io.IOUtils;
  */
 public class IOHelper implements Serializable {
 
-  /** The Windows separator character. */
+  /**
+   * The Windows separator character.
+   */
   private static final char WINDOWS_SEPARATOR = '\\';
 
-  /** The system separator character. */
+  /**
+   * The system separator character.
+   */
   private static final char SYSTEM_SEPARATOR = File.separatorChar;
 
   /**
@@ -64,7 +67,7 @@ public class IOHelper implements Serializable {
   }
 
   /**
-   * @param input input
+   * @param input       input
    * @param charsetName charsetName
    * @return java.lang.String
    * @title toString
@@ -77,7 +80,7 @@ public class IOHelper implements Serializable {
   }
 
   /**
-   * @param input input
+   * @param input       input
    * @param charsetName charsetName
    * @return java.lang.String
    * @title toString
