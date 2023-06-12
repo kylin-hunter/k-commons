@@ -60,7 +60,7 @@ public enum IOCase implements Serializable {
   }
 
   /**
-   * @param str   str
+   * @param str str
    * @param start start
    * @return boolean
    * @title checkStartsWith
@@ -92,9 +92,9 @@ public enum IOCase implements Serializable {
   }
 
   /**
-   * @param str           str
+   * @param str str
    * @param strStartIndex strStartIndex
-   * @param search        search
+   * @param search search
    * @return int
    * @title checkIndexOf
    * @description
@@ -114,9 +114,9 @@ public enum IOCase implements Serializable {
   }
 
   /**
-   * @param str           str
+   * @param str str
    * @param strStartIndex strStartIndex
-   * @param search        search
+   * @param search search
    * @return boolean
    * @title checkRegionMatches
    * @description

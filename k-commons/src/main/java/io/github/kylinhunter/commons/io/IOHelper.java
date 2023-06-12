@@ -44,7 +44,7 @@ public class IOHelper {
   }
 
   /**
-   * @param input       input
+   * @param input input
    * @param charsetName charsetName
    * @return java.lang.String
    * @title toString
@@ -57,7 +57,7 @@ public class IOHelper {
   }
 
   /**
-   * @param input       input
+   * @param input input
    * @param charsetName charsetName
    * @return java.lang.String
    * @title toString

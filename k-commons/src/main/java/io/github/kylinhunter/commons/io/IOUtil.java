@@ -25,9 +25,8 @@ public class IOUtil {
   public static final int DEFAULT_BUFFER_SIZE = 8192;
   public static final byte[] EMPTY_BYTE_ARRAY = {};
 
-
-  private static final ThreadLocal<char[]> SKIP_CHAR_BUFFER = ThreadLocal.withInitial(
-      IOUtil::charArray);
+  private static final ThreadLocal<char[]> SKIP_CHAR_BUFFER =
+      ThreadLocal.withInitial(IOUtil::charArray);
 
   private static char[] charArray() {
     return charArray(DEFAULT_BUFFER_SIZE);
@@ -69,7 +68,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input   input
+   * @param input input
    * @param charset charset
    * @return java.util.List<java.lang.String>
    * @title readLines
@@ -114,7 +113,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input   input
+   * @param input input
    * @param charset charset
    * @return java.lang.String
    * @title toString
@@ -130,8 +129,8 @@ public class IOUtil {
   }
 
   /**
-   * @param input        input
-   * @param writer       writer
+   * @param input input
+   * @param writer writer
    * @param inputCharset inputCharset
    * @title copy
    * @description copy
@@ -208,7 +207,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size  size
+   * @param size size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -226,7 +225,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size  size
+   * @param size size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -274,7 +273,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream  inputStream
+   * @param inputStream inputStream
    * @param outputStream outputStream
    * @return int
    * @title copy
@@ -292,7 +291,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream  inputStream
+   * @param inputStream inputStream
    * @param outputStream outputStream
    * @return long
    * @title copyLarge
@@ -300,40 +299,39 @@ public class IOUtil {
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-
   public static long copyLarge(final InputStream inputStream, final OutputStream outputStream)
       throws IOException {
     return copy(inputStream, outputStream, DEFAULT_BUFFER_SIZE);
   }
 
   /**
-   * @param inputStream  inputStream
+   * @param inputStream inputStream
    * @param outputStream outputStream
-   * @param bufferSize   bufferSize
+   * @param bufferSize bufferSize
    * @return long
    * @title copy
    * @description copy
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-  public static long copy(final InputStream inputStream, final OutputStream outputStream,
-      final int bufferSize)
+  public static long copy(
+      final InputStream inputStream, final OutputStream outputStream, final int bufferSize)
       throws IOException {
     return copyLarge(inputStream, outputStream, IOUtil.byteArray(bufferSize));
   }
 
   /**
-   * @param inputStream  inputStream
+   * @param inputStream inputStream
    * @param outputStream outputStream
-   * @param buffer       buffer
+   * @param buffer buffer
    * @return long
    * @title copyLarge
    * @description copyLarge
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-  public static long copyLarge(final InputStream inputStream, final OutputStream outputStream,
-      final byte[] buffer)
+  public static long copyLarge(
+      final InputStream inputStream, final OutputStream outputStream, final byte[] buffer)
       throws IOException {
     Objects.requireNonNull(inputStream, "inputStream");
     Objects.requireNonNull(outputStream, "outputStream");
@@ -345,5 +343,4 @@ public class IOUtil {
     }
     return count;
   }
-
 }

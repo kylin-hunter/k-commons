@@ -30,7 +30,7 @@ public class FilenameUtils {
       OTHER_SEPARATOR = WINDOWS_SEPARATOR;
     }
   }
-  
+
   private static final Map<String, String> ACTUAL_EXTENSIONS = MapUtils.newHashMap();
 
   static {

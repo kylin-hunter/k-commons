@@ -29,6 +29,5 @@ class FileReaderUtilsTest {
 
     Assertions.assertTrue(bytes2.length > 0);
     Assertions.assertArrayEquals(bytes1, bytes2);
-
   }
 }

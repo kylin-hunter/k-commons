@@ -21,8 +21,8 @@ import java.util.Objects;
 public class FileReaderUtils {
 
   /**
-   * @param file      a file
-   * @param encoding  the encoding of the file
+   * @param file a file
+   * @param encoding the encoding of the file
    * @param processor a processor to process the file
    * @title process
    * @description
@@ -39,8 +39,8 @@ public class FileReaderUtils {
   }
 
   /**
-   * @param input     the input stream
-   * @param encoding  the encoding
+   * @param input the input stream
+   * @param encoding the encoding
    * @param processor the processor
    * @title process
    * @description
@@ -50,7 +50,7 @@ public class FileReaderUtils {
   public static void process(InputStream input, String encoding, LineProcessor processor) {
 
     try (InputStreamReader streamReader =
-        new InputStreamReader(input, Charsets.toCharset(encoding));
+            new InputStreamReader(input, Charsets.toCharset(encoding));
         BufferedReader bufferReader = new BufferedReader(streamReader)) {
       String line = bufferReader.readLine();
       while (line != null) {
@@ -63,8 +63,8 @@ public class FileReaderUtils {
   }
 
   /**
-   * @param file      a file
-   * @param encoding  the encoding of the file
+   * @param file a file
+   * @param encoding the encoding of the file
    * @param processor a processor to process the file
    * @title process
    * @description

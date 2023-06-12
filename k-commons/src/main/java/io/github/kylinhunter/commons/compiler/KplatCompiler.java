@@ -56,8 +56,8 @@ public class KplatCompiler {
   public boolean compile() {
     JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 
-    try (StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null,
-        null)) {
+    try (StandardJavaFileManager fileManager =
+        javaCompiler.getStandardFileManager(null, null, null)) {
 
       Iterable<? extends JavaFileObject> fileObjects =
           fileManager.getJavaFileObjects(sources.toArray(new File[0]));
@@ -73,7 +73,7 @@ public class KplatCompiler {
 
   /**
    * @param prefix prefix
-   * @param paths  paths
+   * @param paths paths
    * @return void
    * @title findClassPath
    * @description
