@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author BiJi'an
@@ -72,7 +71,7 @@ public class IOHelper {
       if (input == null) {
         throw new KIOException("InputStream can't be null");
       }
-      return IOUtils.toString(input, charsetName);
+      return IOUtil.toString(input, charsetName);
     } catch (IOException e) {
       throw new KIOException("toString error", e);
     }
