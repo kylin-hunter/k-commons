@@ -1,16 +1,13 @@
 dependencies {
     api project(":k-utils")
-    api(rootProject.dependency_management['commons-io'])
-
     api project(":k-clazz")
-    implementation(rootProject.dependency_management['logback-classic'])
-    api(rootProject.dependency_management['HikariCP'])
-    implementation(rootProject.dependency_management['mysql-connector-java'])
-    implementation(rootProject.dependency_management['ojdbc8'])
-    implementation(rootProject.dependency_management['commons-dbutils'])
+    api("commons-io:commons-io")
+    api("com.zaxxer:HikariCP")
+    implementation("commons-dbutils:commons-dbutils")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("mysql:mysql-connector-java")
+    implementation("com.oracle.database.jdbc:ojdbc8")
     implementation fileTree(dir: 'lib', includes: ['*.jar'])
-
-
 }
 
 

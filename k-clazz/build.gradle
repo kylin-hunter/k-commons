@@ -11,9 +11,8 @@ dependencies {
         exclude group: 'org.dom4j', module: 'dom4j'
         exclude group: 'org.yaml', module: 'snakeyaml'
     }
-    api(rootProject.dependency_management['bytebuddy'])
-    api(rootProject.dependency_management['byte-buddy-agent'])
-//    testImplementation files(Jvm.current().toolsJar)
+    api("net.bytebuddy:byte-buddy")
+    api("net.bytebuddy:byte-buddy-agent")
 }
 
 

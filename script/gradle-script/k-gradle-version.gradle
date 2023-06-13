@@ -11,6 +11,11 @@ ext {
             "spring-boot-gradle-plugin": "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     ]
     dependency_management = [
+            'snakeyaml'                       : 'org.yaml:snakeyaml:1.29',
+            'jackson-databind'                : 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2',
+            'jackson-datatype-jsr310'         : 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4',
+            'jakarta.xml.bind-api'            : 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3',
+            'jaxb-impl'                       : 'com.sun.xml.bind:jaxb-impl:2.3.3',
             'logback-classic'                 : 'ch.qos.logback:logback-classic:1.4.7',
             'lombok'                          : 'org.projectlombok:lombok:1.18.26',
             'findbugs-annotations'            : 'com.google.code.findbugs:annotations:3.0.1u2',
@@ -44,12 +49,11 @@ ext {
             'velocity-engine-core'            : 'org.apache.velocity:velocity-engine-core:2.3',
             'velocity-tools-generic'          : 'org.apache.velocity.tools:velocity-tools-generic:3.1',
             'mysql-connector-java'            : 'mysql:mysql-connector-java:8.0.31',
-            'mysql5-connector-java'           : 'mysql:mysql-connector-java:5.1.49',
+//            'mysql-connector-java'           : 'mysql:mysql-connector-java:5.1.49',
             'jmockit'                         : 'org.jmockit:jmockit:1.49',
             'java-jwt'                        : 'com.auth0:java-jwt:3.10.3',
             'pinyin4j'                        : 'com.belerweb:pinyin4j:2.5.1',
             'mybatis-typehandlers-jsr310'     : 'org.mybatis:mybatis-typehandlers-jsr310:1.0.2',
-            'jsr305'                          : 'com.google.code.findbugs:jsr305:3.0.2',
             'expiringmap'                     : 'net.jodah:expiringmap:0.5.9',
             "pdfbox-app"                      : 'org.apache.pdfbox:pdfbox-app:2.0.21',
             'fontbox'                         : 'org.apache.pdfbox:fontbox:2.0.1',

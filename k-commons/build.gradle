@@ -1,11 +1,9 @@
 dependencies {
-    api(rootProject.dependency_management['reflections'])
-    api(rootProject.dependency_management['guava'])
-    implementation(rootProject.dependency_management['logback-classic'])
-
-    testImplementation(rootProject.dependency_management['commons-io'])
-
-    testImplementation(rootProject.dependency_management['commons-lang3'])
+    api("org.reflections:reflections")
+    api("com.google.guava:guava")
+    implementation("ch.qos.logback:logback-classic")
+    testImplementation("commons-io:commons-io")
+    testImplementation("org.apache.commons:commons-lang3")
 }
 
 jar {

@@ -63,19 +63,27 @@ subprojects {
     kylinLoadSecretProperties()
 
 
+    dependencyManagement {
+        dependencies {
+            for (depJar in rootProject.ext.dependency_management) {
+                dependency depJar.value
+            }
+        }
+    }
+
     dependencies {
-        compileOnly(dependency_management['lombok'])
-        annotationProcessor(dependency_management['lombok'])
+        compileOnly("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
 
-        compileOnly(dependency_management['findbugs-annotations'])
-        compileOnly(dependency_management['jsr305'])
+        compileOnly("com.google.code.findbugs:annotations")
+        compileOnly("com.google.code.findbugs:jsr305")
+
+        testCompileOnly("com.google.code.findbugs:annotations")
+        testCompileOnly("com.google.code.findbugs:jsr305")
 
 
-        testCompileOnly(dependency_management['findbugs-annotations'])
-        testCompileOnly(dependency_management['jsr305'])
-
-        testImplementation(dependency_management['lombok'])
-        testAnnotationProcessor(dependency_management['lombok'])
+        testImplementation("org.projectlombok:lombok")
+        testAnnotationProcessor("org.projectlombok:lombok")
         testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
         testImplementation 'org.junit.platform:junit-platform-suite:1.8.2'
         testImplementation 'org.mockito:mockito-core:4.0.0'

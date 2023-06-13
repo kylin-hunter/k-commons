@@ -1,21 +1,21 @@
 dependencies {
     api project(":k-commons")
-    implementation(rootProject.dependency_management['logback-classic'])
+    implementation("ch.qos.logback:logback-classic")
 // commons
-    implementation(rootProject.dependency_management['commons-io'])
-    implementation(rootProject.dependency_management['commons-codec'])
-    implementation(rootProject.dependency_management['commons-compress'])
+    implementation("commons-io:commons-io")
+    implementation("commons-codec:commons-codec")
+    implementation("org.apache.commons:commons-compress")
 
 //   xml
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
-    implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
+    implementation 'com.sun.xml.bind:jaxb-impl'
 
 //    json
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 // yaml
-    implementation('org.yaml:snakeyaml:1.29')
+    implementation('org.yaml:snakeyaml')
 
 
 }

@@ -1,21 +1,16 @@
 dependencies {
-    api project(":k-utils")
-    api project(":k-jdbc")
-    implementation(rootProject.dependency_management['logback-classic'])
-    api(rootProject.dependency_management['velocity-engine-core'])
-    api(rootProject.dependency_management['velocity-tools-generic'])
-    api(rootProject.dependency_management['springfox-swagger2'])
+    implementation project(":k-utils")
+    implementation project(":k-jdbc")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("org.apache.velocity:velocity-engine-core")
+    implementation("org.apache.velocity.tools:velocity-tools-generic")
+    implementation("io.springfox:springfox-swagger2")
 
-
-    implementation(rootProject.dependency_management['velocity-engine-core'])
-    implementation(rootProject.dependency_management['velocity-tools-generic'])
-
-    implementation(rootProject.dependency_management['mysql-connector-java'])
-    implementation(rootProject.dependency_management['ojdbc8'])
-    implementation(rootProject.dependency_management['commons-dbutils'])
-    implementation(rootProject.dependency_management['aviator'])
-
-//    testImplementation files(Jvm.current().toolsJar)
+    // jdbc
+    implementation("mysql:mysql-connector-java")
+    implementation("com.oracle.database.jdbc:ojdbc8")
+    implementation fileTree(dir: 'lib', includes: ['*.jar'])
+    implementation("com.googlecode.aviator:aviator")
 
 
 }
