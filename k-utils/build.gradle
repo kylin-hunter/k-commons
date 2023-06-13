@@ -1,6 +1,7 @@
 dependencies {
     api project(":k-commons")
     implementation("ch.qos.logback:logback-classic")
+    implementation("org.codehaus.janino:janino")
 // commons
     implementation("commons-io:commons-io")
     implementation("commons-codec:commons-codec")

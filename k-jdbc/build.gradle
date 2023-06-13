@@ -3,8 +3,12 @@ dependencies {
     api project(":k-clazz")
     api("commons-io:commons-io")
     api("com.zaxxer:HikariCP")
-    implementation("commons-dbutils:commons-dbutils")
+    api("commons-dbutils:commons-dbutils")
+
     implementation("ch.qos.logback:logback-classic")
+    implementation("org.codehaus.janino:janino")
+
+
     implementation("mysql:mysql-connector-java")
     implementation("com.oracle.database.jdbc:ojdbc8")
     implementation fileTree(dir: 'lib', includes: ['*.jar'])
