@@ -13,14 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.name;
-
-/**
- * @author BiJi'an
- * @description
- * @date 2023-02-06 14:52
- */
-public enum CamelFormat {
-  LOWER,
-  UPPER
-}

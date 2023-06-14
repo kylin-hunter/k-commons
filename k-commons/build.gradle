@@ -1,9 +1,11 @@
 dependencies {
     api("org.reflections:reflections")
     api("com.google.guava:guava")
+
+    implementation("org.slf4j:slf4j-api")
     implementation("ch.qos.logback:logback-classic")
     implementation("org.codehaus.janino:janino")
-
+    
     testImplementation("commons-io:commons-io")
     testImplementation("org.apache.commons:commons-lang3")
 }

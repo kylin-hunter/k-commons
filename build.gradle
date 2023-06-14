@@ -49,7 +49,7 @@ allprojects {
 
 subprojects {
 
-//    apply plugin: 'org.springframework.boot'
+//  apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.bmuschko.docker-remote-api'
     apply plugin: 'signing'
@@ -61,7 +61,6 @@ subprojects {
     group 'io.github.kylin-hunter'
     version "${KYLIN_VERIONS[project.name]}"
     kylinLoadSecretProperties()
-
 
     dependencyManagement {
         dependencies {
@@ -84,13 +83,11 @@ subprojects {
 
         testImplementation("org.projectlombok:lombok")
         testAnnotationProcessor("org.projectlombok:lombok")
-        testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-        testImplementation 'org.junit.platform:junit-platform-suite:1.8.2'
-        testImplementation 'org.mockito:mockito-core:4.0.0'
-        testImplementation 'org.mockito:mockito-inline:4.0.0'
-
-        testImplementation(dependency_management['jmockit'])
-
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testImplementation 'org.junit.platform:junit-platform-suite'
+        testImplementation 'org.mockito:mockito-core'
+        testImplementation 'org.mockito:mockito-inline'
+        testImplementation 'org.jmockit:jmockit'
     }
 
     jar {
@@ -127,16 +124,15 @@ subprojects {
         finalizedBy jacocoTestReport // report is always generated after tests run
     }
 
+//  https://docs.gradle.org/7.4.2/userguide/jacoco_plugin.html#sec:outgoing_variants
     jacoco {
         toolVersion = "0.8.10"
-//        reportsDirectory = layout.buildDirectory.dir('kylin-reports')
     }
     jacocoTestReport {
         dependsOn test
         reports {
             xml.required = true
             csv.required = false
-//            html.outputLocation = layout.buildDirectory.dir('kylin-html-reports')
         }
     }
     jacocoTestCoverageVerification {
@@ -216,24 +212,20 @@ subprojects {
         sign publishing.publications.mavenJava
     }
 
-//https://github.com/spotbugs/spotbugs-gradle-plugin
+//    the most important  bug descriptions: https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html
+//    https://github.com/spotbugs/spotbugs-gradle-plugin
+//    https://spotbugs.github.io/
+//    https://spotbugs.readthedocs.io/en/latest/detectors.html?highlight=FindSqlInjection#findsqlinjection
     spotbugs {
         ignoreFailures = false
         showStackTraces = true
         showProgress = true
         effort = 'max'  // -effort[:min|less|default|more|max]:
         reportLevel = 'medium' // low medium high
-//        visitors = ['FindSqlInjection', 'SwitchFallthrough']
-//        omitVisitors = ['MutableStaticFields','FindReturnRef']
-//        reportsDir = file("$buildDir/spotbugs")
-//        includeFilter = file("include.xml")
         excludeFilter = file("../auto-test/spotbugs/exclude.xml")
-//        baselineFile = file("baseline.xml")
         onlyAnalyze = ['io.github.kylinhunter.-']
         maxHeapSize = '1g'
         extraArgs = ['-nested:false']
-//        This option enables or disables scanning of nested jar and zip files found in the list of files and directories to be analyzed.
-//        jvmArgs = ['-Duser.language=zh']
     }
 
     // Example to configure HTML report
@@ -259,31 +251,11 @@ subprojects {
 // https://github.com/diffplug/spotless/tree/main/plugin-gradle
     spotless {
         java {
-//            target 'src/*/java/**/AbstractFieldConvertor.java'
-
-            // Use the default importOrder configuration
-            importOrder()
-            // optional: you can specify import groups directly
-            // note: you can use an empty string for all the imports you didn't specify explicitly, '|' to join group without blank line, and '\\#` prefix for static imports
-//            importOrder('java|javax', 'com.acme', '', '\\#com.acme', '\\#')
-            // optional: instead of specifying import groups directly you can specify a config file
-            // export config file: https://github.com/diffplug/spotless/blob/main/ECLIPSE_SCREENSHOTS.md#creating-spotlessimportorder
-//            importOrderFile('eclipse-import-order.txt') // import order file as exported from eclipse
-
-            removeUnusedImports()
-
-            // Cleanthat will refactor your code, but it may break your style: apply it before your formatter
-//            cleanthat()          // has its own section below
-
-            // Choose one of these formatters.
-            googleJavaFormat()   // has its own section below
-//            eclipse()            // has its own section below
-//            prettier()           // has its own section below
-//            clangFormat()        // has its own section below
-
-//            formatAnnotations()  // fixes formatting of type annotations, see below
-
-//            licenseHeader '/* (C) $YEAR */' // or licenseHeaderFile
+//            target 'src/*/java/**/CamelFormat.java'
+//            importOrder()
+//            removeUnusedImports()
+            googleJavaFormat()
+            licenseHeaderFile "$rootProject.rootDir/spotless.license-java"
         }
     }
 
