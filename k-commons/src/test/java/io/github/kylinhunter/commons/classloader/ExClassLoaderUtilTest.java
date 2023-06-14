@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.classloader;
 
-import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.util.OnceRunner;
@@ -16,7 +15,7 @@ class ExClassLoaderUtilTest {
         ExClassLoaderUtilTest.class,
         () -> {
           Assertions.assertThrows(
-              GeneralException.class,
+              ClassNotFoundException.class,
               () -> ExClassLoaderUtil.loadClass("io.github.kylinhunter.commons.Test1"));
 
           File ext = UserDirUtils.getDir("ext");

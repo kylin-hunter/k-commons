@@ -19,8 +19,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
-import io.github.kylinhunter.commons.exception.embed.biz.BizException;
-import java.util.concurrent.ExecutionException;
+import lombok.SneakyThrows;
 
 /**
  * @author BiJi'an
@@ -37,7 +36,6 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
 
   /**
    * @param key key
-   * @return void
    * @title invalidate
    * @description
    * @author BiJi'an
@@ -49,7 +47,6 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
 
   /**
    * @param keys keys
-   * @return void
    * @title invalidate
    * @description
    * @author BiJi'an
@@ -61,7 +58,6 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
 
   /**
    * @param key key
-   * @return void
    * @title invalidate
    * @description
    * @author BiJi'an
@@ -74,7 +70,6 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
   /**
    * @param k k
    * @param v v
-   * @return void
    * @title put
    * @description
    * @author BiJi'an
@@ -100,8 +95,7 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
 
   /**
    * @param keys keys
-   * @param v v
-   * @return void
+   * @param v    v
    * @title put
    * @description
    * @author BiJi'an
@@ -114,8 +108,7 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
 
   /**
    * @param key key
-   * @param v v
-   * @return void
+   * @param v   v
    * @title put
    * @description
    * @author BiJi'an
@@ -134,12 +127,9 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
    * @author BiJi'an
    * @date 2022-11-27 14:39
    */
+  @SneakyThrows
   private V get(CacheKey k) {
-    try {
-      return this.cache.get(k);
-    } catch (ExecutionException e) {
-      throw new BizException("get cache error", e);
-    }
+    return this.cache.get(k);
   }
 
   /**
@@ -182,8 +172,8 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
   protected abstract void custom(CacheConfig cacheConfig);
 
   /**
-   * @return
-   *     com.google.common.cache.LoadingCache<io.github.kylinhunter.commons.cache.guava.CacheKey, V>
+   * @return com.google.common.cache.LoadingCache<io.github.kylinhunter.commons.cache.guava.CacheKey,
+      * V>
    * @title buildCache
    * @description
    * @author BiJi'an
@@ -212,9 +202,8 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
   }
 
   /**
-   * @return
-   *     com.google.common.cache.RemovalListener<io.github.kylinhunter.commons.cache.guava.CacheKey,
-   *     V>
+   * @return com.google.common.cache.RemovalListener<io.github.kylinhunter.commons.cache.guava.CacheKey,
+      * V>
    * @title getRemovalListener
    * @description
    * @author BiJi'an

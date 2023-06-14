@@ -16,7 +16,6 @@
 package io.github.kylinhunter.commons.cache.guava;
 
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
-import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,7 +28,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CacheKey {
-  @EqualsAndHashCode.Include private String key;
+
+  @EqualsAndHashCode.Include
+  private String key;
   private Object[] params;
 
   public CacheKey(Object... params) {
@@ -38,18 +39,14 @@ public class CacheKey {
   }
 
   public String getString(int index) {
-    if (index < params.length) {
-      return ObjectValues.getString(params[index]);
-    } else {
-      throw new ParamException("invalid index" + index);
-    }
+    ExceptionChecker.checkNum(index, 0, params.length);
+    return ObjectValues.getString(params[index]);
+
   }
 
   public int getInt(int index) {
-    if (index < params.length) {
-      return ObjectValues.getInt(params[index]);
-    } else {
-      throw new ParamException("invalid index" + index);
-    }
+    ExceptionChecker.checkNum(index, 0, params.length);
+    return ObjectValues.getInt(params[index]);
+
   }
 }

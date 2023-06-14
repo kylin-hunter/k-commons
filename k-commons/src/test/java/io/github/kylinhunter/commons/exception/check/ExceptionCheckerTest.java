@@ -25,4 +25,18 @@ class ExceptionCheckerTest {
         KRuntimeException.class, () -> ExceptionChecker.checkArgument(false, "test"));
     ExceptionChecker.checkArgument(true, "test");
   }
+
+  @Test
+  void checkNum() {
+    Assertions.assertThrows(
+        KRuntimeException.class, () -> ExceptionChecker.checkNum(-1, 0, 10));
+
+    ExceptionChecker.checkNum(0, 0, 10);
+    ExceptionChecker.checkNum(9, 0, 10);
+
+    Assertions.assertThrows(
+        KRuntimeException.class, () -> ExceptionChecker.checkNum(10, 0, 10));
+
+
+  }
 }

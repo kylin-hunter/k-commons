@@ -37,7 +37,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param reference reference
+   * @param reference    reference
    * @param errorMessage errorMessage
    * @return T
    * @title checkNotNull
@@ -54,7 +54,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param collection collection
+   * @param collection   collection
    * @param errorMessage errorMessage
    * @title checkNotEmpty
    * @description
@@ -79,7 +79,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param array array
+   * @param array        array
    * @param errorMessage errorMessage
    * @title checkNotEmpty
    * @description
@@ -93,7 +93,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param name name
+   * @param name         name
    * @param errorMessage errorMessage
    * @title checkNotEmpty
    * @description
@@ -107,7 +107,7 @@ public class ExceptionChecker {
   }
 
   /**
-   * @param expression expression
+   * @param expression   expression
    * @param errorMessage errorMessage
    * @title checkArgument
    * @description
@@ -122,7 +122,7 @@ public class ExceptionChecker {
 
   /**
    * @param value value
-   * @param name name
+   * @param name  name
    * @title checkNonnegative
    * @description
    * @author BiJi'an
@@ -131,6 +131,21 @@ public class ExceptionChecker {
   public static void checkNonnegative(int value, String name) {
     if (value < 0) {
       throw new ParamException(name + " cannot be negative but was: " + value);
+    }
+  }
+
+  /**
+   * @param value value
+   * @param start start
+   * @param end   end
+   * @title checkNumScope
+   * @description checkNumScope
+   * @author BiJi'an
+   * @date 2023-06-15 01:10
+   */
+  public static void checkNum(int value, int start, int end) {
+    if (value < start || value >= end) {
+      throw new ParamException(value + " not in [" + start + "," + end + ")");
     }
   }
 }
