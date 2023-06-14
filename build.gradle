@@ -251,7 +251,7 @@ subprojects {
 // https://github.com/diffplug/spotless/tree/main/plugin-gradle
     spotless {
         java {
-//            target 'src/*/java/**/CamelFormat.java'
+            target 'src/main/java/**/*.java'
 //            importOrder()
 //            removeUnusedImports()
             googleJavaFormat()

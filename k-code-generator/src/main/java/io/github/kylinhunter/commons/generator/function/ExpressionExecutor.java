@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.generator.function;
 
 import com.googlecode.aviator.AviatorEvaluator;
@@ -35,7 +50,7 @@ public class ExpressionExecutor {
 
   /**
    * @param expression expression
-   * @param type       type
+   * @param type type
    * @return T
    * @title execute
    * @description
@@ -48,7 +63,7 @@ public class ExpressionExecutor {
 
   /**
    * @param expression expression
-   * @param env        env
+   * @param env env
    * @return T
    * @title execute
    * @description
@@ -63,8 +78,8 @@ public class ExpressionExecutor {
 
   /**
    * @param expression expression
-   * @param env        env
-   * @param type       type
+   * @param env env
+   * @param type type
    * @return T
    * @title execute
    * @description
@@ -91,7 +106,7 @@ public class ExpressionExecutor {
 
   /**
    * @param path path
-   * @param env  env
+   * @param env env
    * @param type type
    * @return T
    * @title executeFromFile
