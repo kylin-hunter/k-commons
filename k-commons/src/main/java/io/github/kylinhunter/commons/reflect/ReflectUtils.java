@@ -30,8 +30,8 @@ public class ReflectUtils {
 
   /**
    * @param method method
-   * @param obj obj
-   * @param args args
+   * @param obj    obj
+   * @param args   args
    * @return java.lang.Object
    * @title invoke
    * @description
@@ -49,10 +49,9 @@ public class ReflectUtils {
   }
 
   /**
-   * @param obj obj
+   * @param obj   obj
    * @param field field
    * @param value value
-   * @return T
    * @title set
    * @description
    * @author BiJi'an
@@ -62,6 +61,23 @@ public class ReflectUtils {
     try {
       field.setAccessible(true);
       field.set(obj, value);
+    } catch (Exception e) {
+      throw new InitException("invoke error", e);
+    }
+  }
+
+  /**
+   * @param obj   obj
+   * @param field field
+   * @title get
+   * @description get
+   * @author BiJi'an
+   * @date 2023-06-15 01:49
+   */
+  public static Object get(Object obj, Field field) {
+    try {
+      field.setAccessible(true);
+      return field.get(obj);
     } catch (Exception e) {
       throw new InitException("invoke error", e);
     }
@@ -94,7 +110,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.Class < ?>>
    * @title getInterfaces
@@ -108,7 +124,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.Class < ?>>
    * @title getAllInterfaces
@@ -122,7 +138,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Method>
    * @title get
@@ -136,7 +152,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Method>
    * @title getAll

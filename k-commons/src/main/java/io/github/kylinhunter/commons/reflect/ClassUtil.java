@@ -28,14 +28,18 @@ import java.util.Objects;
  * @date 2023-02-19 01:05
  */
 public class ClassUtil {
+
   public static final char INNER_CLASS_SEPARATOR_CHAR = '$';
 
   public static final char PACKAGE_SEPARATOR_CHAR = '.';
 
   private static final Map<String, String> abbreviationMap;
 
-  /** Maps an abbreviation used in array class names to corresponding primitive class name. */
+  /**
+   * Maps an abbreviation used in array class names to corresponding primitive class name.
+   */
   private static final Map<String, String> reverseAbbreviationMap;
+
   // Feed abbreviation maps
   static {
     final Map<String, String> m = new HashMap<>();
@@ -82,12 +86,12 @@ public class ClassUtil {
   }
 
   /**
+   * @param className className
+   * @return java.lang.Class<T>
    * @title loadClass
    * @description loadClass
    * @author BiJi'an
-   * @param className className
    * @date 2023-06-11 01:04
-   * @return java.lang.Class<T>
    */
   @SuppressWarnings("unchecked")
   public static <T> Class<T> loadClass(String className) {
@@ -98,13 +102,14 @@ public class ClassUtil {
       throw new GeneralException("loadClass error ", e);
     }
   }
+
   /**
+   * @param className className
+   * @return java.lang.String
    * @title getShortClassName
    * @description getShortClassName
    * @author BiJi'an
-   * @param className className
    * @date 2023-06-11 01:06
-   * @return java.lang.String
    */
   public static String getShortClassName(String className) {
     if (StringUtil.isEmpty(className)) {
@@ -138,13 +143,14 @@ public class ClassUtil {
     }
     return out + arrayPrefix;
   }
+
   /**
+   * @param cls cls
+   * @return java.lang.String
    * @title getShortClassName
    * @description getShortClassName
    * @author BiJi'an
-   * @param cls cls
    * @date 2023-06-11 01:16
-   * @return java.lang.String
    */
   public static String getShortClassName(final Class<?> cls) {
     if (cls == null) {
@@ -152,13 +158,14 @@ public class ClassUtil {
     }
     return getShortClassName(cls.getName());
   }
+
   /**
+   * @param cls cls
+   * @return java.lang.String
    * @title getPackageName
    * @description getPackageName
    * @author BiJi'an
-   * @param cls cls
    * @date 2023-06-11 01:36
-   * @return java.lang.String
    */
   public static String getPackageName(final Class<?> cls) {
     if (cls == null) {
@@ -166,13 +173,14 @@ public class ClassUtil {
     }
     return getPackageName(cls.getName());
   }
+
   /**
+   * @param className className
+   * @return java.lang.String
    * @title getPackageName
    * @description getPackageName
    * @author BiJi'an
-   * @param className className
    * @date 2023-06-11 01:36
-   * @return java.lang.String
    */
   public static String getPackageName(String className) {
     if (StringUtil.isEmpty(className)) {
@@ -194,13 +202,14 @@ public class ClassUtil {
     }
     return className.substring(0, i);
   }
+
   /**
+   * @param type type
+   * @return boolean
    * @title isPrimitiveOrWrapper
    * @description isPrimitiveOrWrapper
    * @author BiJi'an
-   * @param type type
    * @date 2023-06-11 01:50
-   * @return boolean
    */
   public static boolean isPrimitiveOrWrapper(final Class<?> type) {
     if (type == null) {
@@ -208,13 +217,14 @@ public class ClassUtil {
     }
     return type.isPrimitive() || isPrimitiveWrapper(type);
   }
+
   /**
+   * @param type type
+   * @return boolean
    * @title isPrimitiveWrapper
    * @description isPrimitiveWrapper
    * @author BiJi'an
-   * @param type type
    * @date 2023-06-11 01:50
-   * @return boolean
    */
   public static boolean isPrimitiveWrapper(final Class<?> type) {
     return wrapperPrimitiveMap.containsKey(type);

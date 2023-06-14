@@ -17,8 +17,9 @@ package io.github.kylinhunter.commons.cache.guava;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.biz.BizException;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
+import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import io.github.kylinhunter.commons.sys.KConst;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import java.lang.reflect.Field;
@@ -38,34 +39,20 @@ public class CacheKeyGenerator {
 
   private static final String DELIMITER = ",";
   private static Map<Class<?>, List<Field>> customKeyFields;
-  private static final Set<Class<?>> basicSerializedClasses = SetUtils.newHashSet();
 
   static {
     init(KConst.K_BASE_PACKAGE);
   }
 
-  public static void initBasicSerializedClasses() {
-    basicSerializedClasses.add(String.class);
-    basicSerializedClasses.add(Integer.class);
-    basicSerializedClasses.add(int.class);
-    basicSerializedClasses.add(Long.class);
-    basicSerializedClasses.add(long.class);
-    basicSerializedClasses.add(Float.class);
-    basicSerializedClasses.add(float.class);
-    basicSerializedClasses.add(Double.class);
-    basicSerializedClasses.add(double.class);
-  }
 
   /**
    * @param pkgs pkgs
-   * @return void
    * @title init
    * @description
    * @author BiJi'an
    * @date 2022-11-27 14:38
    */
   public static void init(String... pkgs) {
-    initBasicSerializedClasses();
     customKeyFields = MapUtils.newHashMap();
     for (String pkg : pkgs) {
       Reflections reflections = new Reflections(pkg, Scanners.FieldsAnnotated);
@@ -109,25 +96,24 @@ public class CacheKeyGenerator {
    */
   private static String keyString(Object... params) {
 
-    try {
-      StringJoiner joiner = new StringJoiner(DELIMITER);
-      for (Object param : params) {
-        List<Field> fields = customKeyFields.get(param.getClass());
-        if (fields != null && fields.size() > 0) {
-          for (Field field : fields) {
-            joiner.add(String.valueOf(field.get(param)));
-          }
+    StringJoiner joiner = new StringJoiner(DELIMITER);
+    for (Object paramObj : params) {
+      List<Field> fields = customKeyFields.get(paramObj.getClass());
+      if (fields != null && fields.size() > 0) {
+        for (Field field : fields) {
+          Object fieldObj = ReflectUtils.get(paramObj, field);
+          joiner.add(ObjectValues.getString(fieldObj));
+        }
+      } else {
+        if (ClassUtil.isPrimitiveOrWrapper(paramObj.getClass())
+            || paramObj.getClass() == String.class) {
+          joiner.add(ObjectValues.getString(paramObj));
         } else {
-          if (basicSerializedClasses.contains(param.getClass())) {
-            joiner.add(ObjectValues.getString(param));
-          } else {
-            throw new BizException("invalid param class " + param.getClass());
-          }
+          throw new BizException("invalid param class " + paramObj.getClass());
         }
       }
-      return joiner.toString();
-    } catch (Exception e) {
-      throw new BizException("to key error", e);
     }
+    return joiner.toString();
+
   }
 }
