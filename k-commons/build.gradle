@@ -1,11 +1,13 @@
 dependencies {
     api("org.reflections:reflections")
     api("com.google.guava:guava")
-
+    api("net.bytebuddy:byte-buddy")
+    api("net.bytebuddy:byte-buddy-agent")
+    api("org.javassist:javassist")
     implementation("org.slf4j:slf4j-api")
     implementation("ch.qos.logback:logback-classic")
     implementation("org.codehaus.janino:janino")
-    
+
     testImplementation("commons-io:commons-io")
     testImplementation("org.apache.commons:commons-lang3")
 }

@@ -15,6 +15,8 @@
  */
 package io.github.kylinhunter.commons.classloader;
 
+import io.github.kylinhunter.commons.exception.embed.SystemException;
+import io.github.kylinhunter.commons.exception.wrapper.ExceptionWrapper;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -52,7 +54,10 @@ public class ExClassLoaderUtil {
 
   @SuppressWarnings("unchecked")
   @SneakyThrows
+  @ExceptionWrapper(value = SystemException.class)
   public static <T> Class<T> loadClass(String clazz) {
     return (Class<T>) ExClassLoader.getInstance().loadClass(clazz);
   }
+
+
 }
