@@ -18,6 +18,7 @@ package io.github.kylinhunter.commons.io;
 import io.github.kylinhunter.commons.io.output.StringBuilderWriter;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -83,7 +84,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
+   * @param input   input
    * @param charset charset
    * @return java.util.List<java.lang.String>
    * @title readLines
@@ -128,7 +129,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
+   * @param input   input
    * @param charset charset
    * @return java.lang.String
    * @title toString
@@ -144,8 +145,8 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
-   * @param writer writer
+   * @param input        input
+   * @param writer       writer
    * @param inputCharset inputCharset
    * @title copy
    * @description copy
@@ -222,7 +223,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size size
+   * @param size  size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -240,7 +241,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size size
+   * @param size  size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -288,7 +289,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
    * @return int
    * @title copy
@@ -306,7 +307,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
    * @return long
    * @title copyLarge
@@ -320,9 +321,9 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
-   * @param bufferSize bufferSize
+   * @param bufferSize   bufferSize
    * @return long
    * @title copy
    * @description copy
@@ -336,9 +337,9 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
-   * @param buffer buffer
+   * @param buffer       buffer
    * @return long
    * @title copyLarge
    * @description copyLarge
@@ -357,5 +358,22 @@ public class IOUtil {
       count += n;
     }
     return count;
+  }
+
+  /**
+   * @param c c
+   * @return void
+   * @title closeQuietly
+   * @description closeQuietly
+   * @author BiJi'an
+   * @date 2023-06-21 02:09
+   */
+  public static void closeQuietly(final Closeable c) {
+    if (c != null) {
+      try {
+        c.close();
+      } catch (final IOException ignored) { // NOPMD NOSONAR
+      }
+    }
   }
 }
