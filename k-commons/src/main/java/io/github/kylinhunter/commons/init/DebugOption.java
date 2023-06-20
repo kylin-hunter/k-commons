@@ -30,7 +30,5 @@ import lombok.Setter;
 public class DebugOption {
 
   public static final DebugOption INSTANCE = new DebugOption();
-  private boolean enabled = true;
-
-  private File saveDir = UserDirUtils.getTmpDir("commons-clazz", "debug");
+  private File classSaveDir = UserDirUtils.getTmpDir("k-debug", "clazz");
 }

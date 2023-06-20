@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.init;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import java.util.Set;
 
 /**
  * @author BiJi'an
@@ -10,8 +9,9 @@ import java.util.Set;
  **/
 public interface Initializer {
 
-  void initialize(Set<String> pkgs) throws InitException;
+  void initialize() throws InitException;
 
   void setDebugOption(DebugOption debugOption);
+
 
 }

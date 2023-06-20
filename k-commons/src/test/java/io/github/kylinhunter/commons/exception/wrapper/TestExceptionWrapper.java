@@ -2,8 +2,7 @@ package io.github.kylinhunter.commons.exception.wrapper;
 
 import io.github.kylinhunter.commons.exception.embed.SystemException;
 import io.github.kylinhunter.commons.exception.embed.biz.BizException;
-import io.github.kylinhunter.commons.init.CommonsInitializer;
-import java.io.IOException;
+import io.github.kylinhunter.commons.init.KCommons;
 import org.junit.jupiter.api.Assertions;
 
 /**
@@ -14,13 +13,11 @@ import org.junit.jupiter.api.Assertions;
 public class TestExceptionWrapper {
 
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
 
-    CommonsInitializer.custom().init();
+    KCommons.custom().debug(true).init();
 
-    Assertions.assertThrows(BizException.class, () -> {
-      ExceptionWrapperBean.a();
-    });
+    Assertions.assertThrows(BizException.class, ExceptionWrapperBean::a);
 
     Assertions.assertThrows(SystemException.class, () -> {
       new ExceptionWrapperBean().b();

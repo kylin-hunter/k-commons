@@ -16,6 +16,7 @@
 package io.github.kylinhunter.commons.reflect;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -164,4 +165,36 @@ public class ReflectUtils {
   public static Set<Method> getAllMethods(Class<?> clazz, Predicate<Method>... predicates) {
     return Methods.getAll(clazz, predicates);
   }
+
+  /**
+   * @param clazz      clazz
+   * @param predicates predicates
+   * @return java.util.Set<java.lang.reflect.Constructor < ?>>
+   * @title getConstructors
+   * @description getConstructors
+   * @author BiJi'an
+   * @date 2023-06-21 02:06
+   */
+  @SafeVarargs
+  public static Set<Constructor<?>> getConstructors(Class<?> clazz,
+      Predicate<Constructor<?>>... predicates) {
+    return Constructors.get(clazz, predicates);
+  }
+
+  /**
+   * @param clazz      clazz
+   * @param predicates predicates
+   * @return java.util.Set<java.lang.reflect.Constructor < ?>>
+   * @title getAllConstructors
+   * @description getAllConstructors
+   * @author BiJi'an
+   * @date 2023-06-21 02:06
+   */
+  @SafeVarargs
+  public static Set<Constructor<?>> getAllConstructors(Class<?> clazz,
+      Predicate<Constructor<?>>... predicates) {
+    return Constructors.getAll(clazz, predicates);
+  }
+
+
 }
