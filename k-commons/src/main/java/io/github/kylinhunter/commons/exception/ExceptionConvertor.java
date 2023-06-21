@@ -18,7 +18,7 @@ package io.github.kylinhunter.commons.exception;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.explain.ExplainManager;
-import io.github.kylinhunter.commons.exception.explain.Explainer;
+import io.github.kylinhunter.commons.exception.explain.ExplainResult;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 
 /**
@@ -56,7 +56,7 @@ public class ExceptionConvertor {
         return (KRuntimeException) exception;
       }
 
-      Explainer.ExplainResult explainResult = ExplainManager.explain(exception);
+      ExplainResult explainResult = ExplainManager.explain(exception);
       if (withCause) {
         return new KRuntimeException(
             explainResult.getErrInfo(),

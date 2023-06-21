@@ -5,12 +5,14 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
 import java.util.Map;
 import java.util.Set;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023/6/19
  **/
+@Slf4j
 public abstract class AbstractInitializer implements Initializer {
 
   @Setter
@@ -41,6 +43,7 @@ public abstract class AbstractInitializer implements Initializer {
     Boolean initialized = INITIALIZED_TAGS.get(this.getClass());
     if (initialized == null || !initialized) {
       INITIALIZED_TAGS.put(this.getClass(), true);
+      log.info("Initializer = {}", this.getClass().getName());
       init();
     }
   }

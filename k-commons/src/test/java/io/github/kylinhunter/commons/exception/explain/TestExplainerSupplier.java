@@ -12,12 +12,12 @@ public class TestExplainerSupplier extends AbstractExplainerSupplier {
   public static final ErrInfo errInfoInfoTest = new ErrInfo(-100, "errInfo2-msg");
 
   @Override
-  public void customize() {
+  public void explain() {
 
-    this.createExplain(TestException2.class)
-        .setExplainer(
+    this.addExplainer(TestException2.class)
+        .explain(
             e -> {
-              Explainer.ExplainResult explainResult = new Explainer.ExplainResult(errInfoInfoTest);
+              ExplainResult explainResult = new ExplainResult(errInfoInfoTest);
               explainResult.setExtra("extra");
               return explainResult;
             });

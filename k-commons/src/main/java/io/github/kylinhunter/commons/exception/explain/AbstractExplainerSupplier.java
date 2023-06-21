@@ -25,7 +25,9 @@ import lombok.Getter;
  * @date 2022-11-24 02:11
  */
 public abstract class AbstractExplainerSupplier implements ExplainerSupplier {
-  @Getter private final List<Explainer> explainers = ListUtils.newArrayList();
+
+  @Getter
+  private final List<Explainer> explainers = ListUtils.newArrayList();
 
   /**
    * @return io.github.kylinhunter.commons.source.explainer.Explainer
@@ -34,17 +36,17 @@ public abstract class AbstractExplainerSupplier implements ExplainerSupplier {
    * @author BiJi'an
    * @date 2022-11-24 02:59
    */
-  public <T extends Throwable> Explainer<T> createExplain(Class<T> clazz) {
-    Explainer explainer = new Explainer<T>(clazz);
+  public <T extends Throwable> Explainer addExplainer(Class<T> clazz) {
+    Explainer explainer = new Explainer(clazz);
     explainers.add(explainer);
     return explainer;
   }
 
   @Override
   public List<Explainer> get() {
-    customize();
+    explain();
     return explainers;
   }
 
-  public abstract void customize();
+  public abstract void explain();
 }
