@@ -95,7 +95,7 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
 
   /**
    * @param keys keys
-   * @param v    v
+   * @param v v
    * @title put
    * @description
    * @author BiJi'an
@@ -108,7 +108,7 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
 
   /**
    * @param key key
-   * @param v   v
+   * @param v v
    * @title put
    * @description
    * @author BiJi'an
@@ -172,8 +172,8 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
   protected abstract void custom(CacheConfig cacheConfig);
 
   /**
-   * @return com.google.common.cache.LoadingCache<io.github.kylinhunter.commons.cache.guava.CacheKey,
-      * V>
+   * @return
+   *     com.google.common.cache.LoadingCache<io.github.kylinhunter.commons.cache.guava.CacheKey, V>
    * @title buildCache
    * @description
    * @author BiJi'an
@@ -202,8 +202,9 @@ public abstract class AbstractCache<V> extends CacheLoader<CacheKey, V> implemen
   }
 
   /**
-   * @return com.google.common.cache.RemovalListener<io.github.kylinhunter.commons.cache.guava.CacheKey,
-      * V>
+   * @return
+   *     com.google.common.cache.RemovalListener<io.github.kylinhunter.commons.cache.guava.CacheKey,
+   *     V>
    * @title getRemovalListener
    * @description
    * @author BiJi'an

@@ -36,7 +36,7 @@ public class ExceptionInvokeDelegation {
   private static final Logger log = Logger.getLogger(ExceptionInvokeDelegation.class.toString());
 
   /**
-   * @param method   method
+   * @param method method
    * @param callable callable
    * @return java.lang.Object
    * @title intercept
@@ -59,7 +59,7 @@ public class ExceptionInvokeDelegation {
   }
 
   /**
-   * @param method       method
+   * @param method method
    * @param oriThrowable oriThrowable
    * @return java.lang.Throwable
    * @title getNewThrowable
@@ -75,7 +75,8 @@ public class ExceptionInvokeDelegation {
 
       try {
         if (KRuntimeException.class.isAssignableFrom(thr)) {
-          Constructor<? extends KRuntimeException> constructor = (Constructor<? extends KRuntimeException>) thr.getConstructor();
+          Constructor<? extends KRuntimeException> constructor =
+              (Constructor<? extends KRuntimeException>) thr.getConstructor();
           KRuntimeException throwable = constructor.newInstance();
           String msg = annotation.msg();
           msg = !StringUtil.isEmpty(msg) ? msg : oriThrowable.getMessage();
@@ -93,11 +94,9 @@ public class ExceptionInvokeDelegation {
         return throwable;
       } catch (Exception e) {
         log.warning("Exception Invoke Delegation error:" + e.getMessage());
-
       }
     }
 
     return oriThrowable;
-
   }
 }

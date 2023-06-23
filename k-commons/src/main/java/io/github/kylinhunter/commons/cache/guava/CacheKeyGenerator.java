@@ -44,7 +44,6 @@ public class CacheKeyGenerator {
     init(KConst.K_BASE_PACKAGE);
   }
 
-
   /**
    * @param pkgs pkgs
    * @title init
@@ -114,6 +113,5 @@ public class CacheKeyGenerator {
       }
     }
     return joiner.toString();
-
   }
 }

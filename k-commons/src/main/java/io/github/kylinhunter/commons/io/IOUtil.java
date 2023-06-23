@@ -84,7 +84,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input   input
+   * @param input input
    * @param charset charset
    * @return java.util.List<java.lang.String>
    * @title readLines
@@ -129,7 +129,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input   input
+   * @param input input
    * @param charset charset
    * @return java.lang.String
    * @title toString
@@ -145,8 +145,8 @@ public class IOUtil {
   }
 
   /**
-   * @param input        input
-   * @param writer       writer
+   * @param input input
+   * @param writer writer
    * @param inputCharset inputCharset
    * @title copy
    * @description copy
@@ -223,7 +223,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size  size
+   * @param size size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -241,7 +241,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size  size
+   * @param size size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -289,7 +289,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream  inputStream
+   * @param inputStream inputStream
    * @param outputStream outputStream
    * @return int
    * @title copy
@@ -307,7 +307,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream  inputStream
+   * @param inputStream inputStream
    * @param outputStream outputStream
    * @return long
    * @title copyLarge
@@ -321,9 +321,9 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream  inputStream
+   * @param inputStream inputStream
    * @param outputStream outputStream
-   * @param bufferSize   bufferSize
+   * @param bufferSize bufferSize
    * @return long
    * @title copy
    * @description copy
@@ -337,9 +337,9 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream  inputStream
+   * @param inputStream inputStream
    * @param outputStream outputStream
-   * @param buffer       buffer
+   * @param buffer buffer
    * @return long
    * @title copyLarge
    * @description copyLarge

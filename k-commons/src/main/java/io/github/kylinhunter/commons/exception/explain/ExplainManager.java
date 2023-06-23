@@ -26,13 +26,11 @@ import lombok.Getter;
  */
 public class ExplainManager {
 
-  @Getter
-  private static Explainers explainers = new Explainers();
+  @Getter private static Explainers explainers = new Explainers();
 
   static {
     new ExplainerInitializer(SetUtils.newHashSet(KConst.K_BASE_PACKAGE)).initialize();
   }
-
 
   /**
    * @param throwable throwable

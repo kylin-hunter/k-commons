@@ -26,8 +26,7 @@ import lombok.Getter;
  */
 public abstract class AbstractExplainerSupplier implements ExplainerSupplier {
 
-  @Getter
-  private final List<Explainer> explainers = ListUtils.newArrayList();
+  @Getter private final List<Explainer> explainers = ListUtils.newArrayList();
 
   /**
    * @return io.github.kylinhunter.commons.source.explainer.Explainer

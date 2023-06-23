@@ -24,12 +24,10 @@ import lombok.RequiredArgsConstructor;
  * @description
  * @date 2022-11-24 02:45
  */
-
 @RequiredArgsConstructor
 public class Explainer {
 
-  @Getter
-  private final Class<? extends Throwable> source;
+  @Getter private final Class<? extends Throwable> source;
   private Function<Throwable, ExplainResult> explainFun;
 
   /**
@@ -54,6 +52,4 @@ public class Explainer {
   public void explain(Function<Throwable, ExplainResult> explainer) {
     this.explainFun = explainer;
   }
-
-
 }

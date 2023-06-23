@@ -49,7 +49,6 @@ public class ExClassLoaderUtil {
       URLClassLoader classLoader = (URLClassLoader) parentClassLoader;
       add.invoke(classLoader, path.toUri().toURL());
     }
-
   }
 
   @SuppressWarnings("unchecked")
@@ -58,6 +57,4 @@ public class ExClassLoaderUtil {
   public static <T> Class<T> loadClass(String clazz) {
     return (Class<T>) ExClassLoader.getInstance().loadClass(clazz);
   }
-
-
 }

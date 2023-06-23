@@ -41,7 +41,7 @@ public class Constructors {
   private static final Map<Class<?>, Set<Constructor<?>>> CACHE_GET_ALL = MapUtils.newHashMap();
 
   /**
-   * @param clazz      clazz
+   * @param clazz clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Constructor < ?>>
    * @title get
@@ -64,7 +64,7 @@ public class Constructors {
   }
 
   /**
-   * @param clazz      clazz
+   * @param clazz clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Constructor < ?>>
    * @title getAll
@@ -73,8 +73,8 @@ public class Constructors {
    * @date 2023-06-21 02:01
    */
   @SafeVarargs
-  public static Set<Constructor<?>> getAll(Class<?> clazz,
-      Predicate<Constructor<?>>... predicates) {
+  public static Set<Constructor<?>> getAll(
+      Class<?> clazz, Predicate<Constructor<?>>... predicates) {
     Set<Constructor<?>> result =
         CACHE_GET_ALL.computeIfAbsent(
             clazz,
@@ -91,7 +91,6 @@ public class Constructors {
     }
     return result;
   }
-
 
   @SneakyThrows
   @ExceptionWrapper

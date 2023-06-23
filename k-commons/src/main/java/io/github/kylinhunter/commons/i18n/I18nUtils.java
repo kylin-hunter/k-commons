@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.i18n;
 
 import io.github.kylinhunter.commons.collections.ArrayUtils;
@@ -14,14 +29,13 @@ import lombok.Getter;
  */
 public class I18nUtils {
 
-  @Getter
-  public static Locale currentLocale;
+  @Getter public static Locale currentLocale;
   public static ResourceBundle bundle;
 
   /**
    * @param baseName baseName
    * @param language language
-   * @param country  country
+   * @param country country
    * @title init
    * @description init
    * @author BiJi'an
@@ -34,7 +48,7 @@ public class I18nUtils {
 
   /**
    * @param language language
-   * @param country  country
+   * @param country country
    * @title init
    * @description init
    * @author BiJi'an
@@ -57,7 +71,7 @@ public class I18nUtils {
   }
 
   /**
-   * @param key   key
+   * @param key key
    * @param param param
    * @return java.lang.String
    * @title get
@@ -73,9 +87,7 @@ public class I18nUtils {
 
     if (!ArrayUtils.isEmpty(param)) {
       return MessageFormat.format(value, param);
-
     }
     return value;
   }
-
 }

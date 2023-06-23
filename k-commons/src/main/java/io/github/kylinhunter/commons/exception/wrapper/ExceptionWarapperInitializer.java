@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.exception.wrapper;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
@@ -28,7 +43,8 @@ public class ExceptionWarapperInitializer extends AbstractInitializer {
 
   private static final Logger log = Logger.getLogger(ExceptionWarapperInitializer.class.toString());
 
-  private static final String CLASS_NAME_EXCEPTION_WRAPPER = "io.github.kylinhunter.commons.exception.wrapper.ExceptionWrapper";
+  private static final String CLASS_NAME_EXCEPTION_WRAPPER =
+      "io.github.kylinhunter.commons.exception.wrapper.ExceptionWrapper";
 
   private final List<String> allClazzNames = ListUtils.newArrayList();
 
@@ -50,7 +66,6 @@ public class ExceptionWarapperInitializer extends AbstractInitializer {
 
     allClazzNames.add("io.github.kylinhunter.commons.classloader.ExClassLoaderUtil");
     allClazzNames.add("io.github.kylinhunter.commons.exception.wrapper.ExceptionWrapperBean");
-
   }
 
   /**
@@ -70,7 +85,6 @@ public class ExceptionWarapperInitializer extends AbstractInitializer {
     } catch (Throwable e) {
       log.warning("init error" + e.getMessage());
     }
-
   }
 
   /**
@@ -87,19 +101,17 @@ public class ExceptionWarapperInitializer extends AbstractInitializer {
       TypePool typePool = TypePool.Default.ofSystemLoader();
       TypeDescription clazz = typePool.describe(className).resolve();
       TypeDescription ano = typePool.describe(CLASS_NAME_EXCEPTION_WRAPPER).resolve();
-      loaded = new ByteBuddy().rebase(
-              clazz,
-              ForClassLoader.ofSystemLoader())
-          .method(ElementMatchers.isAnnotatedWith(ano))
-          .intercept(MethodDelegation.to(ExceptionInvokeDelegation.class))
-          .make()
-          .load(ClassLoader.getSystemClassLoader(), Default.INJECTION);
+      loaded =
+          new ByteBuddy()
+              .rebase(clazz, ForClassLoader.ofSystemLoader())
+              .method(ElementMatchers.isAnnotatedWith(ano))
+              .intercept(MethodDelegation.to(ExceptionInvokeDelegation.class))
+              .make()
+              .load(ClassLoader.getSystemClassLoader(), Default.INJECTION);
       trySaveIn(loaded);
     } finally {
       IOUtil.closeQuietly(loaded);
     }
-
-
   }
 
   /**
@@ -113,12 +125,10 @@ public class ExceptionWarapperInitializer extends AbstractInitializer {
     try {
       if (this.debugOption != null) {
         loaded.saveIn(debugOption.getClassSaveDir());
-
       }
 
     } catch (Throwable e) {
       log.warning("trySaveIn error:" + e.getMessage());
     }
   }
-
 }

@@ -61,7 +61,6 @@ public class ErrInfoManager {
     return ERR_INFOS.getOrDefault(code, ErrInfos.UNKNOWN).getDefaultMsg();
   }
 
-
   /**
    * @title println
    * @description
@@ -74,5 +73,4 @@ public class ErrInfoManager {
         (errCode, defaultMsg) ->
             System.out.println("erroCode=" + errCode + ",defaultMsg=" + defaultMsg));
   }
-
 }

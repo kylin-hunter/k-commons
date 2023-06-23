@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.init;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
@@ -51,7 +66,6 @@ public class KCommons {
     allPackages.add(pkg);
   }
 
-
   /**
    * @param debug debug
    * @return io.github.kylinhunter.commons.init.KCommons
@@ -89,28 +103,31 @@ public class KCommons {
     ClassScanner classScanner = new ClassScanner(allPackages);
 
     Map<Integer, List<Class<? extends Initializer>>> treeMap = MapUtils.newTreeMap();
-    for (Class<? extends Initializer> clazz : classScanner.getSubTypesOf(
-        AbstractInitializer.class)) {
+    for (Class<? extends Initializer> clazz :
+        classScanner.getSubTypesOf(AbstractInitializer.class)) {
       Order order = clazz.getAnnotation(Order.class);
       int orderNum = order != null ? order.value() : 0;
-      treeMap.compute(orderNum, (k, v) -> {
-        if (v == null) {
-          v = ListUtils.newArrayList();
-        }
-        v.add(clazz);
-        return v;
-      });
+      treeMap.compute(
+          orderNum,
+          (k, v) -> {
+            if (v == null) {
+              v = ListUtils.newArrayList();
+            }
+            v.add(clazz);
+            return v;
+          });
     }
 
-    treeMap.forEach((k, clazzes) -> {
-      for (Class<? extends Initializer> clazz : clazzes) {
-        log.info("init " + clazz.getName());
-        Constructor<? extends Initializer> constructor = Constructors.getConstructor(clazz,
-            ClassScanner.class);
-        Initializer initializer = ObjectCreator.create(constructor, classScanner);
-        initializer.setDebugOption(debugOption);
-        initializer.initialize();
-      }
-    });
+    treeMap.forEach(
+        (k, clazzes) -> {
+          for (Class<? extends Initializer> clazz : clazzes) {
+            log.info("init " + clazz.getName());
+            Constructor<? extends Initializer> constructor =
+                Constructors.getConstructor(clazz, ClassScanner.class);
+            Initializer initializer = ObjectCreator.create(constructor, classScanner);
+            initializer.setDebugOption(debugOption);
+            initializer.initialize();
+          }
+        });
   }
 }
