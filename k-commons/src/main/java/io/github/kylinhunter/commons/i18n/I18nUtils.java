@@ -29,13 +29,14 @@ import lombok.Getter;
  */
 public class I18nUtils {
 
-  @Getter public static Locale currentLocale;
-  public static ResourceBundle bundle;
+  @Getter
+  private static Locale currentLocale;
+  private static ResourceBundle bundle;
 
   /**
    * @param baseName baseName
    * @param language language
-   * @param country country
+   * @param country  country
    * @title init
    * @description init
    * @author BiJi'an
@@ -48,7 +49,7 @@ public class I18nUtils {
 
   /**
    * @param language language
-   * @param country country
+   * @param country  country
    * @title init
    * @description init
    * @author BiJi'an
@@ -71,7 +72,7 @@ public class I18nUtils {
   }
 
   /**
-   * @param key key
+   * @param key   key
    * @param param param
    * @return java.lang.String
    * @title get
