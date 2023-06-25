@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.cache.guava;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.biz.BizException;
 import io.github.kylinhunter.commons.reflect.ClassUtil;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
@@ -25,10 +26,7 @@ import io.github.kylinhunter.commons.util.ObjectValues;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringJoiner;
-import org.reflections.Reflections;
-import org.reflections.scanners.Scanners;
 
 /**
  * @author BiJi'an
@@ -38,37 +36,23 @@ import org.reflections.scanners.Scanners;
 public class CacheKeyGenerator {
 
   private static final String DELIMITER = ",";
-  private static Map<Class<?>, List<Field>> customKeyFields;
+  private static Map<Class<?>, List<Field>> customKeyFields = MapUtils.newHashMap();
 
   static {
-    init(KConst.K_BASE_PACKAGE);
+    new CacheKeyInitializer(SetUtils.newHashSet(KConst.K_BASE_PACKAGE)).initialize();
   }
 
-  /**
-   * @param pkgs pkgs
-   * @title init
-   * @description
-   * @author BiJi'an
-   * @date 2022-11-27 14:38
-   */
-  public static void init(String... pkgs) {
-    customKeyFields = MapUtils.newHashMap();
-    for (String pkg : pkgs) {
-      Reflections reflections = new Reflections(pkg, Scanners.FieldsAnnotated);
-      Set<Field> fields = reflections.getFieldsAnnotatedWith(Cache.Include.class);
-      fields.forEach(
-          field ->
-              customKeyFields.compute(
-                  field.getDeclaringClass(),
-                  (k, v) -> {
-                    if (v == null) {
-                      v = ListUtils.newArrayList();
-                    }
-                    field.setAccessible(true);
-                    v.add(field);
-                    return v;
-                  }));
-    }
+  public static void addCustomField(Field field) {
+    customKeyFields.compute(
+        field.getDeclaringClass(),
+        (k, v) -> {
+          if (v == null) {
+            v = ListUtils.newArrayList();
+          }
+          field.setAccessible(true);
+          v.add(field);
+          return v;
+        });
   }
 
   /**

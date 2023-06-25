@@ -16,6 +16,7 @@
 package io.github.kylinhunter.commons.init;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.Set;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
@@ -30,7 +31,9 @@ public class ClassScanner {
   private final Reflections reflections;
 
   public ClassScanner(Set<String> allPackages) {
-    reflections = new Reflections(allPackages, Scanners.SubTypes, Scanners.TypesAnnotated);
+    reflections =
+        new Reflections(
+            allPackages, Scanners.SubTypes, Scanners.TypesAnnotated, Scanners.FieldsAnnotated);
   }
 
   /**
@@ -55,5 +58,18 @@ public class ClassScanner {
    */
   public Set<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation> annotation) {
     return reflections.getTypesAnnotatedWith(annotation);
+  }
+
+  /**
+   * @param annotation annotation
+   * @return java.util.Set<java.lang.reflect.Field> x
+   * @title getFieldsAnnotatedWith
+   * @description getFieldsAnnotatedWith
+   * @author BiJi'an
+   * @date 2023-06-25 20:03
+   */
+  public Set<Field> getFieldsAnnotatedWith(Class<? extends Annotation> annotation) {
+
+    return reflections.getFieldsAnnotatedWith(annotation);
   }
 }
