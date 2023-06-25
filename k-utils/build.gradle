@@ -1,5 +1,6 @@
 dependencies {
     api project(":k-commons")
+// logging
     implementation("ch.qos.logback:logback-classic")
     implementation("org.codehaus.janino:janino")
 // commons
@@ -11,19 +12,16 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
     implementation 'com.sun.xml.bind:jaxb-impl'
 
-//    json
+//   json
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
-// yaml
+//   yaml
     implementation('org.yaml:snakeyaml')
 
 
 }
 
-jar.enabled = true
-//bootJar.enabled(false)
-//bootJarMainClassName.enabled(false)
 
 jar {
     exclude("logback.xml")

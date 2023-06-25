@@ -5,9 +5,6 @@ dependencies {
 }
 
 
-jar.enabled = true
-//bootJar.enabled(false)
-
 def jarMainlass = "io.github.kylinhunter.commons.clazz.Main"
 def jarPremainClass = "io.github.kylinhunter.commons.clazz.agent.PreMain"
 def jarAgentClass = "io.github.kylinhunter.commons.clazz.agent.AgentMain"
