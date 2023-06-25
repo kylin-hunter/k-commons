@@ -17,7 +17,8 @@ package io.github.kylinhunter.commons.clazz.agent.plugin.config.bean;
 
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -27,8 +28,10 @@ import net.bytebuddy.matcher.ElementMatchers;
  * @description
  * @date 2023-03-19 16:36
  */
-@Data
+@Getter
+@Setter
 public class TypeMatcher {
+
   private String nameStartsWith;
   private String nameContains;
   private String nameRegex;

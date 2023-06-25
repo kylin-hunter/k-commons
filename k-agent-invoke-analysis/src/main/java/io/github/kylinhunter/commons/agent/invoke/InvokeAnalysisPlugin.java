@@ -29,6 +29,7 @@ import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig
  * @date 2023-03-11 00:48
  */
 public class InvokeAnalysisPlugin extends AbstractPlugin {
+
   public InvokeAnalysisPlugin() {
     super("invoke-analysis");
   }

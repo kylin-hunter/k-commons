@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.bytebuddy.test;
+package io.github.kylinhunter.commons.clazz.test;
 
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import java.io.File;

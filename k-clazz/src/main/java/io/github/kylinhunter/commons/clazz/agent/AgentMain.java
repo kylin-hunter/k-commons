@@ -16,6 +16,7 @@
 package io.github.kylinhunter.commons.clazz.agent;
 
 import io.github.kylinhunter.commons.clazz.agent.plugin.PluginManager;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import io.github.kylinhunter.commons.util.OnceRunner;
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
@@ -25,6 +26,7 @@ import java.lang.instrument.Instrumentation;
  * @description
  * @date 2022-12-29 00:23
  */
+@KGenerated
 public class AgentMain {
 
   /**

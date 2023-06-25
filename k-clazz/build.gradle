@@ -1,8 +1,5 @@
 dependencies {
-    api(project(":k-utils")) {
-        exclude group: 'org.reflections', module: 'reflections'
-        exclude group: 'com.google.guava', module: 'guava'
-    }
+    api(project(":k-utils"))
 }
 
 
@@ -11,11 +8,46 @@ jar {
     exclude("k-jul-logging.properties")
 
 }
+
 test {
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
     println jvmArgs
+    jacoco {
+        includes = []
+        excludes = []
+    }
 }
 
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "io/github/kylinhunter/commons/**/exception/embed/**",
+                    "io/github/kylinhunter/commons/**/exception/common/**",
+            ])
+        }))
+    }
+}
 
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['io.github.kylinhunter.*']
+            excludes = ['io.github.kylinhunter.commons.exception.embed.*',
+                        'io.github.kylinhunter.commons.exception.common.*']
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.5
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.3
+            }
+        }
+    }
+}
 
 

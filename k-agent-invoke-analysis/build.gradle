@@ -1,6 +1,5 @@
 dependencies {
     api(project(":k-clazz"))
-    api("commons-io:commons-io")
 
 }
 
@@ -51,11 +50,46 @@ task originalJar(type: Jar) {
         )
     }
 }
+
 test {
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
     println jvmArgs
+    jacoco {
+        includes = []
+        excludes = []
+    }
 }
 
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "io/github/kylinhunter/commons/**/exception/embed/**",
+                    "io/github/kylinhunter/commons/**/exception/common/**",
+            ])
+        }))
+    }
+}
 
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['io.github.kylinhunter.*']
+            excludes = ['io.github.kylinhunter.commons.exception.embed.*',
+                        'io.github.kylinhunter.commons.exception.common.*']
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.5
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.3
+            }
+        }
+    }
+}
 
 

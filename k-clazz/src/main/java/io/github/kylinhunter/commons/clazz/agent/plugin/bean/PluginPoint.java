@@ -15,7 +15,8 @@
  */
 package io.github.kylinhunter.commons.clazz.agent.plugin.bean;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -25,8 +26,10 @@ import net.bytebuddy.matcher.ElementMatcher;
  * @description
  * @date 2023-03-11 00:47
  */
-@Data
+@Getter
+@Setter
 public class PluginPoint {
+
   ElementMatcher<TypeDescription> typeMatcher;
   ElementMatcher<MethodDescription> methodMatcher;
 }

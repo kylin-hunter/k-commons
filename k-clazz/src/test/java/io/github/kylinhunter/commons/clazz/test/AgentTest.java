@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons;
+package io.github.kylinhunter.commons.clazz.test;
 
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;

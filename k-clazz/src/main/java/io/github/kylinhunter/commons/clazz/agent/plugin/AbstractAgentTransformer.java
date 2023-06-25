@@ -17,10 +17,13 @@ package io.github.kylinhunter.commons.clazz.agent.plugin;
 
 import io.github.kylinhunter.commons.clazz.agent.plugin.bean.PluginPoint;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public abstract class AbstractAgentTransformer implements AgentTransformer {
+
   protected PluginPoint pluginPoint;
   protected PluginConfig pluginConfig;
 

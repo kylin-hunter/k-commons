@@ -26,6 +26,7 @@ import lombok.Data;
  */
 @Data
 public class PluginConfig {
+
   private List<PointCut> points = ListUtils.newArrayList();
   private DebugConfig debug;
 }
