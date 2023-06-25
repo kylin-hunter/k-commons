@@ -23,8 +23,7 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                    "io/github/kylinhunter/commons/**/exception/embed/**",
-                    "io/github/kylinhunter/commons/**/exception/common/**",
+                    "io/github/kylinhunter/commons/**/exception/**",
             ])
         }))
     }
@@ -36,8 +35,7 @@ jacocoTestCoverageVerification {
             enabled = true
             element = 'CLASS'
             includes = ['io.github.kylinhunter.*']
-            excludes = ['io.github.kylinhunter.commons.exception.embed.*',
-                        'io.github.kylinhunter.commons.exception.common.*']
+            excludes = ['io.github.kylinhunter.commons.clazz.exception.*']
             limit {
                 counter = 'INSTRUCTION'
                 minimum = 0.5

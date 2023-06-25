@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.clazz.agent.plugin.config;
 
 import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
+import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import java.util.Properties;
 import o.github.kylinhunter.commons.utils.properties.PropertiesHelper;
@@ -27,6 +28,7 @@ import o.github.kylinhunter.commons.utils.properties.PropertiesHelper;
  * @date 2023-04-15 22:40
  */
 public class PluginConfigReader {
+
   private static final String FIX_PREFIX = "plugins.";
 
   /**
@@ -40,7 +42,11 @@ public class PluginConfigReader {
    */
   public <T extends PluginConfig> T read(Class<T> clazz, String pluginName) {
     Properties properties = loadProperties(pluginName);
-    return PropertiesHelper.toBean(properties, clazz);
+    T t = PropertiesHelper.toBean(properties, clazz);
+    if (t.getPoints().size() == 0) {
+      throw new AgentException(" invalid plugin config ");
+    }
+    return t;
   }
 
   /**
@@ -53,6 +59,7 @@ public class PluginConfigReader {
   protected Properties loadProperties(String pluginName) {
 
     String configFile = AgentArgsHelper.getConfigFilePath();
+    System.out.println("configFile=>" + configFile);
     ExceptionChecker.checkNotEmpty(configFile, " no config file be specified ");
     Properties propertiesOld = PropertiesHelper.load(configFile);
     Properties propertiesNew = new Properties();
