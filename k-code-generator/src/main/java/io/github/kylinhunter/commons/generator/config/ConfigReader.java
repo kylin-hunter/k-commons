@@ -22,9 +22,9 @@ import io.github.kylinhunter.commons.generator.config.bean.Template;
 import io.github.kylinhunter.commons.generator.config.bean.Templates;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.name.NameRule;
+import io.github.kylinhunter.commons.utils.yaml.YamlHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import o.github.kylinhunter.commons.utils.yaml.YamlHelper;
 
 /**
  * @author BiJi'an
@@ -34,6 +34,7 @@ import o.github.kylinhunter.commons.utils.yaml.YamlHelper;
 @Getter
 @Slf4j
 public class ConfigReader {
+
   private static final String DEFAULT_PATH = "k-generator-config.yaml";
 
   public Config load() {

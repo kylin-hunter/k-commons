@@ -19,8 +19,8 @@ import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.utils.properties.PropertiesHelper;
 import java.util.Properties;
-import o.github.kylinhunter.commons.utils.properties.PropertiesHelper;
 
 /**
  * @author BiJi'an
@@ -32,7 +32,7 @@ public class PluginConfigReader {
   private static final String FIX_PREFIX = "plugins.";
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param pluginName pluginName
    * @return T
    * @title buildConfig
