@@ -18,7 +18,7 @@ package io.github.kylinhunter.commons.component;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.sys.KConst;
+import io.github.kylinhunter.commons.init.ClassScanner;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,15 +31,17 @@ import lombok.Getter;
  * @date 2023-02-11 10:52
  */
 public class CompManager {
+
   protected final Map<Class<?>, CObjects> allComponents = MapUtils.newHashMap();
-  @Getter protected CompTools compTools;
+  @Getter
+  protected ClassScanner classScanner;
   protected final ConstructorCompManager constructorCompManager;
   protected final MethodCompManager methodCompManager;
   private final CFieldCompSetter cfieldCompSetter;
   private final CAfterMethodCalculator cafterMethodCalculator;
 
-  public CompManager() {
-    compTools = new CompTools(KConst.K_BASE_PACKAGE);
+  public CompManager(ClassScanner classScanner) {
+    this.classScanner = classScanner;
     constructorCompManager = new ConstructorCompManager(this);
     methodCompManager = new MethodCompManager(this);
     cfieldCompSetter = new CFieldCompSetter(this);
@@ -47,20 +49,15 @@ public class CompManager {
   }
 
   /**
-   * @param pkgs pkgs
-   * @return void
    * @title init
    * @description
    * @author BiJi'an
    * @date 2023-02-12 22:47
    */
-  public void init(String... pkgs) {
+  public void init() {
 
     try {
       this.allComponents.clear();
-      if (pkgs != null && pkgs.length > 0) {
-        compTools.setPkgs(pkgs);
-      }
       this.calComponent();
     } catch (Throwable e) {
       throw new InitException("init CompManager error", e);
@@ -68,7 +65,6 @@ public class CompManager {
   }
 
   /**
-   * @return void
    * @title calComponent
    * @description
    * @author BiJi'an
@@ -83,7 +79,7 @@ public class CompManager {
 
   /**
    * @param compClazz compClazz
-   * @param required required
+   * @param required  required
    * @return java.util.List<T>
    * @title getComps
    * @description
@@ -105,7 +101,7 @@ public class CompManager {
 
   /**
    * @param compClazz compClazz
-   * @param required required
+   * @param required  required
    * @return java.util.List<T>
    * @title getComp
    * @description
@@ -126,9 +122,9 @@ public class CompManager {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz        clazz
    * @param cconstructor cconstructor
-   * @param obj obj
+   * @param obj          obj
    * @return void
    * @title register
    * @description
@@ -142,9 +138,9 @@ public class CompManager {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz   clazz
    * @param cmethod cmethod
-   * @param obj obj
+   * @param obj     obj
    * @return void
    * @title register
    * @description
@@ -159,7 +155,7 @@ public class CompManager {
 
   /**
    * @param clazz clazz
-   * @param obj obj
+   * @param obj   obj
    * @return void
    * @title register
    * @description
@@ -195,7 +191,7 @@ public class CompManager {
                 return cobjects;
               });
       allAffectedCObjects.add(affectedCObject);
-      Set<Class<?>> allInterfaces = compTools.getAllInterface(clazz);
+      Set<Class<?>> allInterfaces = classScanner.getAllInterface(clazz);
       if (allInterfaces != null && allInterfaces.size() > 0) {
         for (Class<?> iterfaceClass : allInterfaces) {
           CObjects affectedCObjects =
@@ -220,7 +216,6 @@ public class CompManager {
 
   /**
    * @param compClazzes compClazzes
-   * @return void
    * @title check
    * @description
    * @author BiJi'an

@@ -15,6 +15,9 @@
  */
 package io.github.kylinhunter.commons.component;
 
+import io.github.kylinhunter.commons.collections.SetUtils;
+import io.github.kylinhunter.commons.init.ClassScanner;
+import io.github.kylinhunter.commons.sys.KConst;
 import java.util.List;
 
 /**
@@ -23,21 +26,22 @@ import java.util.List;
  * @date 2022-10-22 01:48
  */
 public class CF {
-  private static final CompManager COMP_MANAGER = new CompManager();
+
+  private static CompManager COMP_MANAGER;
 
   static {
-    init();
+    new CFInitializer(SetUtils.newHashSet(KConst.K_BASE_PACKAGE)).initialize();
   }
 
   /**
-   * @return void
    * @title init
    * @description
    * @author BiJi'an
    * @date 2022-11-08 21:38
    */
-  public static void init(String... pkgs) {
-    COMP_MANAGER.init(pkgs);
+  public static void init(ClassScanner classScanner) {
+    COMP_MANAGER = new CompManager(classScanner);
+    COMP_MANAGER.init();
   }
 
   /**
@@ -66,7 +70,7 @@ public class CF {
 
   /**
    * @param compClazz clazz
-   * @param required required
+   * @param required  required
    * @return T
    * @title get
    * @description
@@ -91,7 +95,7 @@ public class CF {
 
   /**
    * @param compClazz clazz
-   * @param required required
+   * @param required  required
    * @return T
    * @title get
    * @description

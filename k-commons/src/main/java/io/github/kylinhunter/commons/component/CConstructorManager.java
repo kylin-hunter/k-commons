@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.init.ClassScanner;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -33,18 +34,19 @@ import lombok.Getter;
 class CConstructorManager {
 
   private final Map<Class<?>, List<CConstructor>> constructorsMap = MapUtils.newHashMap();
-  @Getter private List<CConstructor> constructors = ListUtils.newArrayList();
-  @Getter private final Set<Class<?>> compClasses = SetUtils.newHashSet();
-  private final CompTools compTools;
+  @Getter
+  private List<CConstructor> constructors = ListUtils.newArrayList();
+  @Getter
+  private final Set<Class<?>> compClasses = SetUtils.newHashSet();
+  private final ClassScanner classScanner;
   private final CConstructorDepCalculator constructorDepCalculator;
 
   public CConstructorManager(CompManager compManager) {
-    this.compTools = compManager.compTools;
+    this.classScanner = compManager.classScanner;
     this.constructorDepCalculator = new CConstructorDepCalculator(this);
   }
 
   /**
-   * @return void
    * @title clear
    * @description
    * @author BiJi'an
@@ -65,7 +67,7 @@ class CConstructorManager {
    */
   public void calculate() {
     this.clean();
-    Set<Class<?>> compClazzes = compTools.getClassesByAnnotatedWith(C.class);
+    Set<Class<?>> compClazzes = classScanner.getClassesByAnnotatedWith(C.class);
     for (Class<?> compClazz : compClazzes) {
       this.calculate(compClazz);
     }
@@ -74,7 +76,6 @@ class CConstructorManager {
 
   /**
    * @param compClazz clazz
-   * @return void
    * @title calConstructor
    * @description
    * @author BiJi'an
@@ -89,9 +90,8 @@ class CConstructorManager {
   }
 
   /**
-   * @param compClazz compClazz
+   * @param compClazz    compClazz
    * @param cconstructor cconstructor
-   * @return void
    * @title registerAll
    * @description
    * @author BiJi'an
@@ -99,16 +99,15 @@ class CConstructorManager {
    */
   private void registerAll(Class<?> compClazz, CConstructor cconstructor) {
     this.register(compClazz, cconstructor);
-    Set<Class<?>> interfaces = compTools.getAllInterface(compClazz);
+    Set<Class<?>> interfaces = classScanner.getAllInterface(compClazz);
     for (Class<?> interfaceClazz : interfaces) {
       this.register(interfaceClazz, cconstructor);
     }
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz        clazz
    * @param cconstructor cconstructor
-   * @return void
    * @title register
    * @description
    * @author BiJi'an
@@ -146,7 +145,7 @@ class CConstructorManager {
 
   /**
    * @param compClazz compClazz
-   * @param required required
+   * @param required  required
    * @return io.github.kylinhunter.commons.component.CConstructor
    * @title getFirst
    * @description

@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.init.ClassScanner;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -34,17 +35,20 @@ import org.reflections.ReflectionUtils;
  * @date 2022-10-25 23:17
  */
 class CMethodManager {
+
   private final Map<Class<?>, List<CMethod>> cmethodsMap = MapUtils.newHashMap();
-  @Getter private List<CMethod> cmethods = ListUtils.newArrayList();
+  @Getter
+  private List<CMethod> cmethods = ListUtils.newArrayList();
 
   private final CompManager compManager;
-  private final CompTools compTools;
+  private final ClassScanner classScanner;
   private final CMethodDepCalculator methodDepCalculator;
-  @Getter private final Set<Class<?>> compClasses = SetUtils.newHashSet();
+  @Getter
+  private final Set<Class<?>> compClasses = SetUtils.newHashSet();
 
   public CMethodManager(CompManager compManager) {
     this.compManager = compManager;
-    this.compTools = compManager.compTools;
+    this.classScanner = compManager.classScanner;
     this.methodDepCalculator = new CMethodDepCalculator(this);
   }
 
@@ -55,7 +59,6 @@ class CMethodManager {
   }
 
   /**
-   * @return void
    * @title calComponents
    * @description
    * @author BiJi'an
@@ -63,7 +66,7 @@ class CMethodManager {
    */
   public void calculate() {
     this.clean();
-    Set<Class<?>> ccClasses = compTools.getClassesByAnnotatedWith(CC.class);
+    Set<Class<?>> ccClasses = classScanner.getClassesByAnnotatedWith(CC.class);
     for (Class<?> ccClazz : ccClasses) {
       calculate(ccClazz);
     }
@@ -72,7 +75,6 @@ class CMethodManager {
 
   /**
    * @param compClazz compClazz
-   * @return void
    * @title calculate
    * @description
    * @author BiJi'an
@@ -96,8 +98,7 @@ class CMethodManager {
 
   /**
    * @param compClazz compClazz
-   * @param cmethod cmethod
-   * @return void
+   * @param cmethod   cmethod
    * @title registerAll
    * @description
    * @author BiJi'an
@@ -105,16 +106,15 @@ class CMethodManager {
    */
   private void registerAll(Class<?> compClazz, CMethod cmethod) {
     this.register(compClazz, cmethod);
-    Set<Class<?>> interfaces = compTools.getAllInterface(compClazz);
+    Set<Class<?>> interfaces = classScanner.getAllInterface(compClazz);
     for (Class<?> interfaceClazz : interfaces) {
       this.register(interfaceClazz, cmethod);
     }
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz   clazz
    * @param cmethod cmethod
-   * @return void
    * @title register
    * @description
    * @author BiJi'an
@@ -152,7 +152,7 @@ class CMethodManager {
 
   /**
    * @param compClazz compClazz
-   * @param required required
+   * @param required  required
    * @return io.github.kylinhunter.commons.component.CConstructor
    * @title getFirst
    * @description
