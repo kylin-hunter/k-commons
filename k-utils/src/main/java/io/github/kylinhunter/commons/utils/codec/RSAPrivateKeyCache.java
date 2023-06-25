@@ -43,6 +43,5 @@ public class RSAPrivateKeyCache extends AbstractCache<RSAPrivateKey> {
   }
 
   @Override
-  protected void custom(CacheConfig cacheConfig) {
-  }
+  protected void custom(CacheConfig cacheConfig) {}
 }

@@ -48,7 +48,7 @@ public class ExPropertyDescriptor {
       this.exPropType = ExPropType.STRING;
     } else if (propertyType.isArray()) {
       this.exPropType = ExPropType.ARRAY;
-      this.genericActualClazzes = new Class[]{propertyType.getComponentType()};
+      this.genericActualClazzes = new Class[] {propertyType.getComponentType()};
     } else if (List.class.isAssignableFrom(propertyType)) {
       this.exPropType = ExPropType.LIST;
       ActualType actualType = GenericTypeUtils.getMethodReturnActualType(pd.getReadMethod());

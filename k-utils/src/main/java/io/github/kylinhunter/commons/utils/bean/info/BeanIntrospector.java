@@ -33,10 +33,8 @@ import lombok.Getter;
  */
 public class BeanIntrospector {
 
-  @Getter
-  private final Class<?> clazz;
-  @Getter
-  private final BeanInfo beanInfo;
+  @Getter private final Class<?> clazz;
+  @Getter private final BeanInfo beanInfo;
   private final Map<String, ExPropertyDescriptor> exPropertyDescriptors = MapUtils.newTreeMap();
 
   private final Map<String, PropertyDescriptor> propertyDescriptors = MapUtils.newTreeMap();
@@ -58,7 +56,7 @@ public class BeanIntrospector {
 
   /**
    * @return java.util.Map<java.lang.String,
-      * io.github.kylinhunter.commons.bean.info.ExPropertyDescriptor>
+   *     io.github.kylinhunter.commons.bean.info.ExPropertyDescriptor>
    * @title getExPropertyDescriptors
    * @description
    * @author BiJi'an
@@ -81,7 +79,7 @@ public class BeanIntrospector {
   }
 
   /**
-   * @param name               name
+   * @param name name
    * @param propertyDescriptor propertyDescriptor
    * @title put
    * @description

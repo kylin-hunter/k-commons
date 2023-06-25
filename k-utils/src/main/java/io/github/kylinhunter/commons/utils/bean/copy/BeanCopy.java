@@ -27,8 +27,7 @@ import lombok.Setter;
  */
 public class BeanCopy {
 
-  @Setter
-  private List<FieldConvertor> fieldConvertors;
+  @Setter private List<FieldConvertor> fieldConvertors;
 
   public boolean isEmpty() {
     return (fieldConvertors == null || fieldConvertors.isEmpty());

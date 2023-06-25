@@ -28,8 +28,8 @@ import java.util.Map;
 public class JsonUtils {
 
   /**
-   * @param content    content
-   * @param valueType  valueType
+   * @param content content
+   * @param valueType valueType
    * @param jsonOption jsonOption
    * @return T
    * @title readToObject
@@ -43,7 +43,7 @@ public class JsonUtils {
 
   /**
    * @param content content
-   * @param type    type
+   * @param type type
    * @return T
    * @title toObject
    * @description
@@ -55,8 +55,8 @@ public class JsonUtils {
   }
 
   /**
-   * @param data       data
-   * @param type       userType
+   * @param data data
+   * @param type userType
    * @param jsonOption jsonOption
    * @return T
    * @title toObject
@@ -83,7 +83,7 @@ public class JsonUtils {
   }
 
   /**
-   * @param value      value
+   * @param value value
    * @param jsonOption jsonOption
    * @return java.lang.String
    * @title toString
@@ -120,7 +120,7 @@ public class JsonUtils {
   }
 
   /**
-   * @param source     source
+   * @param source source
    * @param jsonOption jsonOption
    * @return byte[]
    * @title 对象转字节
@@ -133,7 +133,7 @@ public class JsonUtils {
   }
 
   /**
-   * @param content    content
+   * @param content content
    * @param jsonOption jsonOption
    * @return java.util.Map
    * @title toMap
@@ -159,8 +159,8 @@ public class JsonUtils {
   }
 
   /**
-   * @param content    content
-   * @param clazz      clazz
+   * @param content content
+   * @param clazz clazz
    * @param jsonOption jsonOption
    * @return java.util.List<T>
    * @title toList
@@ -176,7 +176,7 @@ public class JsonUtils {
 
   /**
    * @param content content
-   * @param clazz   clazz
+   * @param clazz clazz
    * @return java.util.List<T>
    * @title readToListObject
    * @description
@@ -188,8 +188,8 @@ public class JsonUtils {
   }
 
   /**
-   * @param content    content
-   * @param valueType  valueType
+   * @param content content
+   * @param valueType valueType
    * @param jsonOption jsonOption
    * @return T
    * @title readValue
@@ -203,7 +203,7 @@ public class JsonUtils {
   }
 
   /**
-   * @param content  content
+   * @param content content
    * @param javaType javaType
    * @return T
    * @title readValue
@@ -217,7 +217,7 @@ public class JsonUtils {
 
   /**
    * @param collectionClass collectionClass
-   * @param elementClass    elementClass
+   * @param elementClass elementClass
    * @return com.fasterxml.jackson.databind.JavaType
    * @title constructParametricType
    * @description

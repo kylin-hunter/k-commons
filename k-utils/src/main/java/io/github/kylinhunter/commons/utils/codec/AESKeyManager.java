@@ -30,10 +30,8 @@ import lombok.Getter;
  */
 public class AESKeyManager {
 
-  @Getter
-  private final SecretKey defaultKey;
-  @Getter
-  private final String defaultKeyStr;
+  @Getter private final SecretKey defaultKey;
+  @Getter private final String defaultKeyStr;
   private static final String DEFAULT_SEED = "kplat";
   private final AESKeyCache keyCache = new AESKeyCache();
 

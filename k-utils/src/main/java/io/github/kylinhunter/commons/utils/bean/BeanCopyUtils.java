@@ -33,8 +33,8 @@ import java.util.Map;
 public class BeanCopyUtils {
 
   /**
-   * @param source           the source bean
-   * @param target           the target bean
+   * @param source the source bean
+   * @param target the target bean
    * @param ignoreProperties array of property names to ignore
    * @return void
    * @title copyProperties
@@ -55,8 +55,8 @@ public class BeanCopyUtils {
   }
 
   /**
-   * @param source           source
-   * @param target           target
+   * @param source source
+   * @param target target
    * @param ignoreProperties ignoreProperties
    * @return void
    * @title copy
@@ -83,7 +83,7 @@ public class BeanCopyUtils {
                   && writeMethod != null
                   && writeMethod.getParameterCount() == 1
                   && writeMethod.getParameterTypes()[0].isAssignableFrom(
-                  readMethod.getReturnType())) {
+                      readMethod.getReturnType())) {
                 Object readObj = ReflectUtils.invoke(source, readMethod);
                 ReflectUtils.invoke(target, writeMethod, readObj);
               }
@@ -93,7 +93,7 @@ public class BeanCopyUtils {
   }
 
   /**
-   * @param name             name
+   * @param name name
    * @param ignoreProperties ignoreProperties
    * @return boolean
    * @title isIgnoreProperties

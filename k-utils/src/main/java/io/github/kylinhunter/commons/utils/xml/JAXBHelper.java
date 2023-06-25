@@ -57,7 +57,7 @@ public class JAXBHelper {
 
   /**
    * @param clazz clazz
-   * @param xml   xml
+   * @param xml xml
    * @return T
    * @title toBean
    * @description

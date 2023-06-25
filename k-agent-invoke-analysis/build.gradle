@@ -9,6 +9,7 @@ def jarPremainClass = "io.github.kylinhunter.commons.clazz.agent.PreMain"
 def jarAgentClass = "io.github.kylinhunter.commons.clazz.agent.AgentMain"
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     exclude("logback.xml")
     exclude("k-jul-logging.properties")
     manifest {

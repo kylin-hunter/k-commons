@@ -33,8 +33,7 @@ import lombok.Getter;
  */
 public class RSAUtils {
 
-  @Getter
-  private static final RSAKeyManager rsaKeyManager = new RSAKeyManager();
+  @Getter private static final RSAKeyManager rsaKeyManager = new RSAKeyManager();
 
   private static final CipherManager cipherManager = new CipherManager(CipherManager.CodecType.RSA);
 
@@ -63,7 +62,7 @@ public class RSAUtils {
   }
 
   /**
-   * @param data   data
+   * @param data data
    * @param cipher cipher
    * @param rsaKey rsaKey
    * @return java.lang.String
@@ -105,7 +104,7 @@ public class RSAUtils {
   }
 
   /**
-   * @param data      data
+   * @param data data
    * @param publicKey publicKey
    * @return java.lang.String
    * @title decryptPub
@@ -118,7 +117,7 @@ public class RSAUtils {
   }
 
   /**
-   * @param data         data
+   * @param data data
    * @param rsaPublicKey rsaPublicKey
    * @return java.lang.String
    * @title decryptPub
@@ -132,7 +131,7 @@ public class RSAUtils {
   }
 
   /**
-   * @param data       data
+   * @param data data
    * @param privateKey privateKey
    * @return java.lang.String
    * @title decryptPrivate
@@ -145,7 +144,7 @@ public class RSAUtils {
   }
 
   /**
-   * @param data         data
+   * @param data data
    * @param rsaPrivateKe rsaPrivateKe
    * @return java.lang.String
    * @title decryptPrivate
@@ -159,7 +158,7 @@ public class RSAUtils {
   }
 
   /**
-   * @param data   data
+   * @param data data
    * @param cipher cipher
    * @param rsaKey rsaKey
    * @return java.lang.String
@@ -189,7 +188,7 @@ public class RSAUtils {
 
   /**
    * @param data data
-   * @param len  len
+   * @param len len
    * @return byte[][]
    * @title splitArray
    * @description
@@ -200,7 +199,7 @@ public class RSAUtils {
 
     int dataLen = data.length;
     if (dataLen <= len) {
-      return new byte[][]{data};
+      return new byte[][] {data};
     }
     byte[][] result = new byte[(dataLen - 1) / len + 1][];
     int resultLen = result.length;

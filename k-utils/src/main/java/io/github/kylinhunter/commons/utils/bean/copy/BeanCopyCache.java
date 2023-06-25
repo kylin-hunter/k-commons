@@ -149,10 +149,10 @@ public class BeanCopyCache {
   }
 
   /**
-   * @param direction   direction
+   * @param direction direction
    * @param sourceClass sourceClass
    * @param targetClass targetClass
-   * @param fieldName   fieldName
+   * @param fieldName fieldName
    * @param convertType convertType
    * @return io.github.kylinhunter.commons.bean.copy.convertor.FieldConvertor
    * @title processJson
@@ -167,9 +167,9 @@ public class BeanCopyCache {
       String fieldName,
       ConvertType convertType)
       throws NoSuchMethodException,
-      IllegalAccessException,
-      InvocationTargetException,
-      InstantiationException {
+          IllegalAccessException,
+          InvocationTargetException,
+          InstantiationException {
     BeanIntrospector sourceBeanIntrospector = BeanIntrospectors.get(sourceClass);
     PropertyDescriptor sourcePD = sourceBeanIntrospector.getPropertyDescriptor(fieldName);
     BeanIntrospector targetBeanIntrospector = BeanIntrospectors.get(targetClass);

@@ -30,6 +30,5 @@ public enum ConvertType {
   XML(XmlFieldConvertor.class),
   YAML(YamlFieldConvertor.class),
   NUM_STR(NumberToStrFieldConvertor.class);
-  @Getter
-  private final Class<? extends FieldConvertor> clazz;
+  @Getter private final Class<? extends FieldConvertor> clazz;
 }

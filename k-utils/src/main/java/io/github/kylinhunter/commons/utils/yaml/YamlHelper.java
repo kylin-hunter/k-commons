@@ -47,7 +47,7 @@ public class YamlHelper {
 
   /**
    * @param clazz clazz
-   * @param path  path
+   * @param path path
    * @return T
    * @title loadFromClassPath
    * @description
@@ -60,7 +60,7 @@ public class YamlHelper {
 
   /**
    * @param clazz clazz
-   * @param path  path
+   * @param path path
    * @return T
    * @title loadFromClassPath
    * @description
@@ -86,7 +86,7 @@ public class YamlHelper {
 
   /**
    * @param clazz clazz
-   * @param text  text
+   * @param text text
    * @return T
    * @title loadFromText
    * @description
@@ -99,7 +99,7 @@ public class YamlHelper {
 
   /**
    * @param clazz clazz
-   * @param text  text
+   * @param text text
    * @return T
    * @title loadFromText
    * @description
@@ -130,7 +130,7 @@ public class YamlHelper {
   }
 
   /**
-   * @param obj      obj
+   * @param obj obj
    * @param nameRule nameRule
    * @return java.lang.String
    * @title dumpAsMap

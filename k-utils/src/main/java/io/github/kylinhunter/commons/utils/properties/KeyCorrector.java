@@ -26,7 +26,7 @@ import io.github.kylinhunter.commons.name.NameRule;
 public interface KeyCorrector {
 
   /**
-   * @param key      key
+   * @param key key
    * @param nameRule nameRule
    * @return java.lang.String
    * @title correct

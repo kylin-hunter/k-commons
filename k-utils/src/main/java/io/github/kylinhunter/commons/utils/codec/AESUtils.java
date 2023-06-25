@@ -35,8 +35,7 @@ public class AESUtils {
   private static CipherManager.CodecType CODEC_TYPE = CipherManager.CodecType.AES_ECB_NOPADDING;
 
   private static CipherManager cipherManager = new CipherManager(CODEC_TYPE);
-  @Getter
-  private static AESKeyManager keyManager = new AESKeyManager(CODEC_TYPE);
+  @Getter private static AESKeyManager keyManager = new AESKeyManager(CODEC_TYPE);
 
   private static final SecureRandom secureRandom = new SecureRandom();
   private static final int IV_LENGTH_BYTE = 12;
@@ -69,7 +68,7 @@ public class AESUtils {
   }
 
   /**
-   * @param text   text
+   * @param text text
    * @param keyStr keyStr
    * @return java.lang.String
    * @title encrypt
@@ -82,7 +81,7 @@ public class AESUtils {
   }
 
   /**
-   * @param text   text
+   * @param text text
    * @param cipher cipher
    * @return java.lang.String
    * @title encrypt
@@ -142,7 +141,7 @@ public class AESUtils {
   }
 
   /**
-   * @param text   text
+   * @param text text
    * @param keyStr keyStr
    * @return java.lang.String
    * @title decrypt
@@ -156,7 +155,7 @@ public class AESUtils {
 
   /**
    * @param decryptText decryptText
-   * @param cipher      cipher
+   * @param cipher cipher
    * @return java.lang.String
    * @title decrypt
    * @description

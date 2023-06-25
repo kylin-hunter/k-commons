@@ -29,7 +29,7 @@ import java.util.Base64;
 public class Base64Utils {
 
   /**
-   * @param text        text
+   * @param text text
    * @param charsetName charsetName
    * @return java.lang.String
    * @title encodeToString
@@ -46,7 +46,7 @@ public class Base64Utils {
   }
 
   /**
-   * @param text    text
+   * @param text text
    * @param charset charset
    * @return java.lang.String
    * @title encodeToString
@@ -95,7 +95,7 @@ public class Base64Utils {
   }
 
   /**
-   * @param text        text
+   * @param text text
    * @param charsetName charsetName
    * @return java.lang.String
    * @title decodeToString
@@ -113,7 +113,7 @@ public class Base64Utils {
   }
 
   /**
-   * @param text    text
+   * @param text text
    * @param charset charset
    * @return java.lang.String
    * @title decodeToString

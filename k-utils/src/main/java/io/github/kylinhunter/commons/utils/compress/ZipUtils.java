@@ -41,7 +41,7 @@ import org.apache.commons.io.IOUtils;
 public class ZipUtils {
 
   /**
-   * @param files   files
+   * @param files files
    * @param zipFile zipFile
    * @return java.io.File
    * @title zip
@@ -54,7 +54,7 @@ public class ZipUtils {
   }
 
   /**
-   * @param files   files
+   * @param files files
    * @param zipFile zipFile
    * @return java.io.File
    * @title doZip
@@ -89,7 +89,7 @@ public class ZipUtils {
 
   /**
    * @param rootPath rootPath
-   * @param file     file
+   * @param file file
    * @return java.lang.String
    * @title getRelativePath
    * @description
@@ -108,7 +108,7 @@ public class ZipUtils {
   }
 
   /**
-   * @param file      file
+   * @param file file
    * @param unzipPath unzipPath
    * @return void
    * @title unzip
@@ -142,7 +142,7 @@ public class ZipUtils {
   }
 
   /**
-   * @param content   content
+   * @param content content
    * @param unzipPath unzipPath
    * @return void
    * @title unzip
