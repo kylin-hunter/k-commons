@@ -34,8 +34,7 @@ import net.bytebuddy.utility.JavaModule;
  */
 public class InvokeTransformer extends AbstractAgentTransformer {
 
-  public InvokeTransformer() {
-  }
+  public InvokeTransformer() {}
 
   @Override
   public DynamicType.Builder<?> transform(

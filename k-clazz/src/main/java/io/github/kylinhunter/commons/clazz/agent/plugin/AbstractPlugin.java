@@ -74,7 +74,6 @@ public abstract class AbstractPlugin implements Plugin {
       } else {
         debug.setFileClassSaveDir(UserDirUtils.getTmpDir());
         System.out.println("====>" + UserDirUtils.getTmpDir());
-
       }
 
       if (debug.isClassSaveDirAutoClean()) {
