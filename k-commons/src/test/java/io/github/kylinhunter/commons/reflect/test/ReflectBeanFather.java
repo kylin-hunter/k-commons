@@ -12,4 +12,12 @@ public class ReflectBeanFather extends ReflectBeanGrandFather {
 
   private int f1;
   private int f2;
+
+  public ReflectBeanFather() {
+  }
+
+  public ReflectBeanFather(int f1, int f2) {
+    this.f1 = f1;
+    this.f2 = f2;
+  }
 }

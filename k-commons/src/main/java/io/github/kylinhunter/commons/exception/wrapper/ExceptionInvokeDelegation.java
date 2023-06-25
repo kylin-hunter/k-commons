@@ -18,6 +18,7 @@ package io.github.kylinhunter.commons.exception.wrapper;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
@@ -31,6 +32,7 @@ import net.bytebuddy.implementation.bind.annotation.SuperCall;
  * @description
  * @date 2023-03-11 10:36
  */
+@KGenerated
 public class ExceptionInvokeDelegation {
 
   private static final Logger log = Logger.getLogger(ExceptionInvokeDelegation.class.toString());

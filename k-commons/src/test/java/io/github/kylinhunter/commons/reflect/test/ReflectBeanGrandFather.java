@@ -13,6 +13,15 @@ public class ReflectBeanGrandFather implements ReflectInterface4 {
   private int gf1;
   private int gf2;
 
+  public ReflectBeanGrandFather() {
+  }
+
+  public ReflectBeanGrandFather(int gf1, int gf2) {
+    this.gf1 = gf1;
+    this.gf2 = gf2;
+  }
+
   @Override
-  public void interface4() {}
+  public void interface4() {
+  }
 }

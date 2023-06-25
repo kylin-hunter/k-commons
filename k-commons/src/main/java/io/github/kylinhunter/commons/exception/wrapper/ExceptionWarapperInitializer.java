@@ -21,6 +21,7 @@ import io.github.kylinhunter.commons.init.AbstractInitializer;
 import io.github.kylinhunter.commons.init.ClassScanner;
 import io.github.kylinhunter.commons.init.Order;
 import io.github.kylinhunter.commons.io.IOUtil;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -39,6 +40,7 @@ import net.bytebuddy.pool.TypePool;
  * @date 2023-06-15 10:48
  */
 @Order(Integer.MIN_VALUE)
+@KGenerated
 public class ExceptionWarapperInitializer extends AbstractInitializer {
 
   private static final Logger log = Logger.getLogger(ExceptionWarapperInitializer.class.toString());

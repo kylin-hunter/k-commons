@@ -15,12 +15,27 @@ public class ReflectBeanChild extends ReflectBeanFather
   private int c1;
   private int c2;
 
-  @Override
-  public void interface1() {}
+
+  public ReflectBeanChild() {
+
+  }
+
+  public ReflectBeanChild(int f1, int c1, int c2) {
+    this.f1 = f1;
+    this.c1 = c1;
+    this.c2 = c2;
+
+  }
 
   @Override
-  public void interface2() {}
+  public void interface1() {
+  }
 
   @Override
-  public void interface3() {}
+  public void interface2() {
+  }
+
+  @Override
+  public void interface3() {
+  }
 }

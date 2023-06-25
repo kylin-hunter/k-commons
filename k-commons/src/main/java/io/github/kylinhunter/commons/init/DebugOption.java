@@ -16,6 +16,7 @@
 package io.github.kylinhunter.commons.init;
 
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import java.io.File;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@KGenerated
 public class DebugOption {
 
   public static final DebugOption INSTANCE = new DebugOption();

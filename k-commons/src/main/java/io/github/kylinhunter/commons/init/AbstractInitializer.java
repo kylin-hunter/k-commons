@@ -50,9 +50,9 @@ public abstract class AbstractInitializer implements Initializer {
    * @author BiJi'an
    * @date 2023-06-21 00:57
    */
-  public void initialize() throws InitException {
+  public synchronized void initialize() throws InitException {
     Boolean initialized = INITIALIZED_TAGS.get(this.getClass());
-    if (initialized == null || !initialized) {
+    if (initialized == null) {
       INITIALIZED_TAGS.put(this.getClass(), true);
       log.info("Initializer = {}", this.getClass().getName());
       init();

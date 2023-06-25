@@ -21,6 +21,7 @@ import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.reflect.Constructors;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import io.github.kylinhunter.commons.sys.KConst;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import java.util.logging.Logger;
  * @description
  * @date 2023-06-16 10:57
  */
+@KGenerated
 public class KCommons {
 
   private static final Logger log = Logger.getLogger(KCommons.class.toString());
@@ -62,8 +64,9 @@ public class KCommons {
    * @author BiJi'an
    * @date 2023-06-19 23:27
    */
-  public void scanPackage(String pkg) {
+  public KCommons scanPackage(String pkg) {
     allPackages.add(pkg);
+    return this;
   }
 
   /**
