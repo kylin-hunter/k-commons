@@ -70,7 +70,7 @@ public class CF {
 
   /**
    * @param compClazz clazz
-   * @param required  required
+   * @param required required
    * @return T
    * @title get
    * @description
@@ -95,7 +95,7 @@ public class CF {
 
   /**
    * @param compClazz clazz
-   * @param required  required
+   * @param required required
    * @return T
    * @title get
    * @description

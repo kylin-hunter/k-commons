@@ -33,8 +33,7 @@ import lombok.Getter;
 public class CompManager {
 
   protected final Map<Class<?>, CObjects> allComponents = MapUtils.newHashMap();
-  @Getter
-  protected ClassScanner classScanner;
+  @Getter protected ClassScanner classScanner;
   protected final ConstructorCompManager constructorCompManager;
   protected final MethodCompManager methodCompManager;
   private final CFieldCompSetter cfieldCompSetter;
@@ -79,7 +78,7 @@ public class CompManager {
 
   /**
    * @param compClazz compClazz
-   * @param required  required
+   * @param required required
    * @return java.util.List<T>
    * @title getComps
    * @description
@@ -101,7 +100,7 @@ public class CompManager {
 
   /**
    * @param compClazz compClazz
-   * @param required  required
+   * @param required required
    * @return java.util.List<T>
    * @title getComp
    * @description
@@ -122,9 +121,9 @@ public class CompManager {
   }
 
   /**
-   * @param clazz        clazz
+   * @param clazz clazz
    * @param cconstructor cconstructor
-   * @param obj          obj
+   * @param obj obj
    * @return void
    * @title register
    * @description
@@ -138,9 +137,9 @@ public class CompManager {
   }
 
   /**
-   * @param clazz   clazz
+   * @param clazz clazz
    * @param cmethod cmethod
-   * @param obj     obj
+   * @param obj obj
    * @return void
    * @title register
    * @description
@@ -155,7 +154,7 @@ public class CompManager {
 
   /**
    * @param clazz clazz
-   * @param obj   obj
+   * @param obj obj
    * @return void
    * @title register
    * @description
