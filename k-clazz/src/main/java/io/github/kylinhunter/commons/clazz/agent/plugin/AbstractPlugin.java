@@ -24,8 +24,8 @@ import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PointCut;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
-import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.file.FileUtil;
+import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.io.File;
@@ -46,6 +46,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 @Data
 @RequiredArgsConstructor
 public abstract class AbstractPlugin implements Plugin {
+
   private Logger logger = Logger.getLogger(AbstractPlugin.class.toString());
   private final List<PluginPoint> pluginPoints = ListUtils.newArrayList();
   private final AgentListenr defaultAgentListenr = new AgentListenr();
@@ -68,11 +69,16 @@ public abstract class AbstractPlugin implements Plugin {
     if (debug.isEnabled()) {
       String classSaveDir = debug.getClassSaveDir();
       if (!StringUtil.isEmpty(classSaveDir)) {
-        File dir = ResourceHelper.getDir(classSaveDir, ResourceHelper.PathType.FILESYSTEM, true);
+        File dir = FileUtil.getDir(true, classSaveDir);
         debug.setFileClassSaveDir(dir);
-        if (debug.isClassSaveDirAutoClean()) {
-          FileUtil.cleanDirectoryQuietly(dir);
-        }
+      } else {
+        debug.setFileClassSaveDir(UserDirUtils.getTmpDir());
+        System.out.println("====>" + UserDirUtils.getTmpDir());
+
+      }
+
+      if (debug.isClassSaveDirAutoClean()) {
+        FileUtil.cleanDirectoryQuietly(debug.getFileClassSaveDir());
       }
     }
   }

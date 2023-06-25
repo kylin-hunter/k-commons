@@ -18,10 +18,7 @@ package io.github.kylinhunter.commons.agent.invoke;
 import io.github.kylinhunter.commons.clazz.agent.plugin.AbstractAgentTransformer;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.DebugConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
-import io.github.kylinhunter.commons.io.ResourceHelper;
-import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.util.ThreadHelper;
-import java.io.File;
 import java.io.IOException;
 import java.security.ProtectionDomain;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +34,8 @@ import net.bytebuddy.utility.JavaModule;
  */
 public class InvokeTransformer extends AbstractAgentTransformer {
 
-  public InvokeTransformer() {}
+  public InvokeTransformer() {
+  }
 
   @Override
   public DynamicType.Builder<?> transform(
@@ -61,10 +59,8 @@ public class InvokeTransformer extends AbstractAgentTransformer {
     try {
       DebugConfig debug = pluginConfig.getDebug();
       if (debug != null && debug.isEnabled()) {
-        String classSaveDir = debug.getClassSaveDir();
-        if (!StringUtil.isEmpty(classSaveDir)) {
-          File dir = ResourceHelper.getDir(classSaveDir, ResourceHelper.PathType.FILESYSTEM, true);
-          builder.make().saveIn(dir);
+        if (debug.getFileClassSaveDir() != null) {
+          builder.make().saveIn(debug.getFileClassSaveDir());
         }
       }
     } catch (IOException e) {
