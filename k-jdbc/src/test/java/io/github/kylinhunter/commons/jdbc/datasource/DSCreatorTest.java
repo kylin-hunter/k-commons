@@ -1,7 +1,7 @@
 package io.github.kylinhunter.commons.jdbc.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
-import io.github.kylinhunter.commons.clazz.debug.DebugOption;
+import io.github.kylinhunter.commons.init.DebugOption;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

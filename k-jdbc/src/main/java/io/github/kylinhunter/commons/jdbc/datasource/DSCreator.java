@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.datasource;
 
-import io.github.kylinhunter.commons.clazz.debug.DebugOption;
+import io.github.kylinhunter.commons.init.DebugOption;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
@@ -82,7 +82,7 @@ public class DSCreator {
   private static void processDebug(DynamicType.Unloaded<?> dynamicType, DebugOption debugOption) {
     try {
       if (debugOption != null) {
-        dynamicType.saveIn(debugOption.getSaveDir());
+        dynamicType.saveIn(debugOption.getClassSaveDir());
       }
     } catch (Exception e) {
       log.error("processDebug error", e);

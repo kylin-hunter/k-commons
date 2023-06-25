@@ -3,8 +3,6 @@ dependencies {
         exclude group: 'org.reflections', module: 'reflections'
         exclude group: 'com.google.guava', module: 'guava'
     }
-    api("net.bytebuddy:byte-buddy")
-    api("net.bytebuddy:byte-buddy-agent")
 }
 
 

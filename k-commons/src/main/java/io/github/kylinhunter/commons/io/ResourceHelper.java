@@ -256,7 +256,8 @@ public class ResourceHelper {
       } else {
         if (priorityType == PathType.FILESYSTEM) {
           try {
-            return FileUtil.checkValidFile(FileUtil.getFile(path), isFile);
+            File fileOrDir = FileUtil.getFileOrDir(null, false, false, isFile, path);
+            return FileUtil.checkValidFile(fileOrDir, isFile);
           } catch (Exception e) {
             file = _getFileInClassPath(pathInfo.getPath());
           }

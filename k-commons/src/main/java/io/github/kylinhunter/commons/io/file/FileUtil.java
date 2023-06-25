@@ -123,7 +123,7 @@ public class FileUtil {
    * @author BiJi'an
    * @date 2023-04-22 01:21
    */
-  private static File getFileOrDir(
+  public static File getFileOrDir(
       final File directory,
       boolean createParent,
       boolean createFile,
