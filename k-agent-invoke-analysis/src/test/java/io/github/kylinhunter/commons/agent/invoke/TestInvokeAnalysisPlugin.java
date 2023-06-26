@@ -4,10 +4,11 @@ import io.github.kylinhunter.commons.agent.invoke.test.Campus;
 import io.github.kylinhunter.commons.agent.invoke.test.Course;
 import io.github.kylinhunter.commons.agent.invoke.test.Student;
 import io.github.kylinhunter.commons.agent.invoke.test.Teacher;
+import io.github.kylinhunter.commons.agent.invoke.trace.InvokeTraceManager;
 
 class TestInvokeAnalysisPlugin {
 
-  //-javaagent:/Users/bijian/Documents/workspace_gitee/k-commons/k-agent-invoke-analysis/build/libs/k-agent-invoke-analysis-1.0.1.jar=config-file=/Users/bijian/Documents/workspace_gitee/k-commons/k-agent-invoke-analysis/src/main/resources/k-agent-plugin-invoke-analysis.properties
+  //-javaagent:/Users/bijian/Documents/workspace_gitee/k-commons/k-agent-invoke-analysis/build/libs/k-agent-invoke-analysis-1.0.1.jar=config-file=/Users/bijian/Documents/workspace_gitee/k-commons/k-agent-invoke-analysis/src/test/resources/k-agent-plugin-invoke-analysis.properties
   public static void main(String[] args) {
 
     Campus campus = new Campus("campus1");
@@ -34,9 +35,7 @@ class TestInvokeAnalysisPlugin {
             (k, v) -> {
               System.out.println("trace id=>" + k);
               v.forEach(
-                  t -> {
-                    System.out.println(t);
-                  });
+                  t -> System.out.println(t));
               System.out.println("===trace end with time ===");
             });
   }

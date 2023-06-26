@@ -15,6 +15,9 @@
  */
 package io.github.kylinhunter.commons.agent.invoke;
 
+import io.github.kylinhunter.commons.agent.invoke.trace.InvokeTrace;
+import io.github.kylinhunter.commons.agent.invoke.trace.InvokeTraceManager;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
@@ -27,9 +30,10 @@ import net.bytebuddy.implementation.bind.annotation.SuperCall;
  * @description
  * @date 2023-03-11 10:36
  */
+@KGenerated
 public class InvokeMethodDelegation {
 
-  private static InvokeTraceManager invokeTraceManager = InvokeTraceManager.getInstance();
+  private static final InvokeTraceManager invokeTraceManager = InvokeTraceManager.getInstance();
 
   @RuntimeType
   public static Object intercept(

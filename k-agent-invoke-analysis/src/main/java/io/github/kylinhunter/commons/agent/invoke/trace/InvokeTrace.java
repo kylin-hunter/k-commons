@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.agent.invoke;
+package io.github.kylinhunter.commons.agent.invoke.trace;
 
 import java.lang.reflect.Method;
 import lombok.Data;
@@ -25,8 +25,9 @@ import lombok.Data;
  */
 @Data
 public class InvokeTrace {
+
   private final long threadId;
-  private final StackTraceElement stacks[];
+  private final StackTraceElement[] stacks;
   private final Method method;
   private long start = System.currentTimeMillis();
 
@@ -40,14 +41,15 @@ public class InvokeTrace {
   public String toString() {
     final Class<?> declaringClass = method.getDeclaringClass();
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(declaringClass.getSimpleName() + "." + method.getName() + "\n");
+    stringBuilder.append(declaringClass.getSimpleName()).append(".").append(method.getName())
+        .append("\n");
 
-    for (int i = 0; i < stacks.length; i++) {
-      StackTraceElement stack = stacks[i];
-      stringBuilder.append(stack.getClassName() + ".");
-      stringBuilder.append(stack.getMethodName() + "(" + stack.getLineNumber() + ") \n");
+    for (StackTraceElement stack : stacks) {
+      stringBuilder.append(stack.getClassName()).append(".");
+      stringBuilder.append(stack.getMethodName()).append("(").append(stack.getLineNumber())
+          .append(") \n");
     }
-    stringBuilder.append("with cost " + this.cost + " ms\n");
+    stringBuilder.append("with cost ").append(this.cost).append(" ms\n");
 
     return stringBuilder.toString();
   }

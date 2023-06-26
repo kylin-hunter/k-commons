@@ -18,10 +18,9 @@ package io.github.kylinhunter.commons.agent.invoke;
 import io.github.kylinhunter.commons.clazz.agent.plugin.AbstractAgentTransformer;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.DebugConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
-import io.github.kylinhunter.commons.util.ThreadHelper;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import java.io.IOException;
 import java.security.ProtectionDomain;
-import java.util.concurrent.TimeUnit;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.implementation.MethodDelegation;
@@ -32,6 +31,7 @@ import net.bytebuddy.utility.JavaModule;
  * @description
  * @date 2023-03-19 00:40
  */
+@KGenerated
 public class InvokeTransformer extends AbstractAgentTransformer {
 
   public InvokeTransformer() {}
@@ -48,9 +48,7 @@ public class InvokeTransformer extends AbstractAgentTransformer {
             .method(pluginPoint.getMethodMatcher())
             .intercept(MethodDelegation.to(InvokeMethodDelegation.class));
     debug(builder);
-    String path = "org/apache/commons/io/FileUtils.class";
 
-    ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
     return builder;
   }
 
