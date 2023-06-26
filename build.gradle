@@ -162,6 +162,15 @@ subprojects {
                 artifactId project.name
                 version project.version
                 from components.java
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
+
                 pom {
 
                     name = "${KYLIN_MVN_CONFIG.name}"
