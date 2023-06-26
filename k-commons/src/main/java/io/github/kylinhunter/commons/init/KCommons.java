@@ -69,6 +69,11 @@ public class KCommons {
     return this;
   }
 
+  public KCommons cleanPackage() {
+    allPackages.clear();
+    return this;
+  }
+
   /**
    * @param debug debug
    * @return io.github.kylinhunter.commons.init.KCommons
