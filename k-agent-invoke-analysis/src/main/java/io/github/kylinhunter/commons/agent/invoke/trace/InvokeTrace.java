@@ -41,12 +41,18 @@ public class InvokeTrace {
   public String toString() {
     final Class<?> declaringClass = method.getDeclaringClass();
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(declaringClass.getSimpleName()).append(".").append(method.getName())
+    stringBuilder
+        .append(declaringClass.getSimpleName())
+        .append(".")
+        .append(method.getName())
         .append("\n");
 
     for (StackTraceElement stack : stacks) {
       stringBuilder.append(stack.getClassName()).append(".");
-      stringBuilder.append(stack.getMethodName()).append("(").append(stack.getLineNumber())
+      stringBuilder
+          .append(stack.getMethodName())
+          .append("(")
+          .append(stack.getLineNumber())
           .append(") \n");
     }
     stringBuilder.append("with cost ").append(this.cost).append(" ms\n");
