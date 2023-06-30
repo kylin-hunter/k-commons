@@ -10,4 +10,10 @@ public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("i
 #foreach($field in ${class.fields})
     private ${field.type} ${field.name}; // ${field.comment}
 #end
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
+

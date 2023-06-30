@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.cache.guava;
 
 import java.lang.annotation.Documented;
@@ -10,31 +25,30 @@ import java.lang.annotation.Target;
  * @author BiJi'an
  * @description
  * @date 2022-11-27 01:26
- **/
+ */
 public interface Cache<V> {
 
-    void put(String key, V v);
+  void put(String key, V v);
 
-    void put(Object key, V v);
+  void put(Object key, V v);
 
-    void put(Object[] keys, V v);
+  void put(Object[] keys, V v);
 
-    V get(String key);
+  V get(String key);
 
-    V get(Object... keys);
+  V get(Object... keys);
 
-    void invalidate(String key);
+  void invalidate(String key);
 
-    void invalidate(Object... keys);
+  void invalidate(Object... keys);
 
-    /**
-     * @author BiJi'an
-     * @description
-     * @date 2022-11-27 01:26
-     **/
-    @Target({ElementType.FIELD})
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @interface Include {
-    }
+  /**
+   * @author BiJi'an
+   * @description
+   * @date 2022-11-27 01:26
+   */
+  @Target({ElementType.FIELD})
+  @Retention(RetentionPolicy.RUNTIME)
+  @Documented
+  @interface Include {}
 }

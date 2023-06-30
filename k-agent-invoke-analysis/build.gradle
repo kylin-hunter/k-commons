@@ -1,0 +1,133 @@
+dependencies {
+    api(project(":k-clazz")) {
+        // logging
+        exclude group: "ch.qos.logback", module: "logback-classic"
+        exclude group: "org.codehaus.janino", module: "janino"
+
+
+        // commons
+        exclude group: "commons-io", module: "commons-io"
+        exclude group: "commons-codec", module: "commons-codec"
+        exclude group: "org.apache.commons", module: "commons-compress"
+
+
+        //xml
+        exclude group: "jakarta.xml.bind", module: "jakarta.xml.bind-api"
+        exclude group: "com.sun.xml.bind", module: "jaxb-impl"
+
+        // json
+        exclude group: "com.fasterxml.jackson.core", module: "jackson-databind"
+
+        exclude group: "com.fasterxml.jackson.datatype", module: "jackson-datatype-jsr310"
+
+        //yaml
+        exclude group: "org.yaml", module: "snakeyaml"
+
+
+        //javasist
+        exclude group: "org.javassist", module: "javassistl"
+
+
+        //reflections
+        exclude group: "org.reflections", module: "reflections"
+        //guava
+        exclude group: "com.google.guava", module: "guava"
+        //slf4j
+        exclude group: "org.slf4j", module: "slf4j-api"
+
+
+    }
+
+}
+
+
+def jarMainlass = "io.github.kylinhunter.commons.clazz.Main"
+def jarPremainClass = "io.github.kylinhunter.commons.clazz.agent.PreMain"
+def jarAgentClass = "io.github.kylinhunter.commons.clazz.agent.AgentMain"
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    exclude("logback.xml")
+    exclude("k-jul-logging.properties")
+    manifest {
+        attributes(
+                'Main-Class': jarMainlass,
+                'Premain-Class': jarPremainClass,
+                'Agent-Class': jarAgentClass,
+                'Can-Redefine-Classes': true,
+                'Can-Retransform-Classes': true
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+}
+
+
+def allJars = (configurations.runtimeClasspath).findAll { it.isFile() }.collect { 'lib/' + it.name }.join(' ')
+
+task copyDependencies(type: Copy) {
+    from configurations.runtimeClasspath
+    into "$buildDir/libs/lib"
+}
+task originalJar(type: Jar) {
+
+    dependsOn(copyDependencies)
+    exclude("logback.xml")
+    exclude("k-jul-logging.properties")
+    archiveClassifier = 'original'
+    manifest {
+        attributes(
+                'Main-Class': jarMainlass,
+                'Premain-Class': jarPremainClass,
+                'Agent-Class': jarAgentClass,
+                'Can-Redefine-Classes': true,
+                'Can-Retransform-Classes': true,
+                'Class-Path': allJars + " ."
+        )
+    }
+}
+
+test {
+    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
+    println jvmArgs
+    jacoco {
+        includes = []
+        excludes = []
+    }
+}
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "io/github/kylinhunter/commons/**/exception/embed/**",
+                    "io/github/kylinhunter/commons/**/exception/common/**",
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['io.github.kylinhunter.*']
+            excludes = ['io.github.kylinhunter.commons.exception.embed.*',
+                        'io.github.kylinhunter.commons.exception.common.*']
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.5
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.3
+            }
+        }
+    }
+}
+
+

@@ -15,4 +15,8 @@ public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("i
     @ApiModelProperty(value = "${field.comment}")
     private ${field.type} ${field.name};
 #end
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

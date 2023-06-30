@@ -6,9 +6,9 @@ target/
 output/
 build/
 .gradle/
-#gradle/
-#gradlew
-#gradlew.bat
+gradle/wrapper/gradle-wrapper.jar
+gradlew
+gradlew.bat
 # *.jar
 *.war
 *.zip
@@ -41,3 +41,5 @@ Thumbs.db
 /k-code-generator/src_generator/*
 !/k-commons/src/main/resources/io/github/kylinhunter/commons/logs
 
+/*/out/
+/k-commons/src/test/resources/test/java-io-test/
