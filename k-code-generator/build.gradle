@@ -1,25 +1,21 @@
-import org.gradle.internal.jvm.Jvm
-
 dependencies {
-    api project(":k-commons")
-    api project(":k-jdbc")
-    api(rootProject.dependency_management['velocity-engine-core'])
-    api(rootProject.dependency_management['velocity-tools-generic'])
-    api(rootProject.dependency_management['springfox-swagger2'])
+    implementation project(":k-utils")
+    implementation project(":k-jdbc")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("org.codehaus.janino:janino")
 
-    implementation(rootProject.dependency_management['mysql-connector-java'])
-    implementation(rootProject.dependency_management['ojdbc8'])
-    implementation(rootProject.dependency_management['commons-dbutils'])
-    implementation(rootProject.dependency_management['aviator'])
+    implementation("org.apache.velocity:velocity-engine-core")
+    implementation("org.apache.velocity.tools:velocity-tools-generic")
+    implementation("io.springfox:springfox-swagger2")
 
-    testImplementation files(Jvm.current().toolsJar)
+    // jdbc
+    implementation("mysql:mysql-connector-java")
+    implementation("com.oracle.database.jdbc:ojdbc8")
+    implementation fileTree(dir: 'lib', includes: ['*.jar'])
+    implementation("com.googlecode.aviator:aviator")
 
 
 }
-
-
-jar.enabled = true
-bootJar.enabled(false)
 
 
 jar {
@@ -33,8 +29,45 @@ sourceSets {
 }
 test {
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
     println jvmArgs
 }
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "io/github/kylinhunter/commons/generator/exception/**",
+                    "io/github/kylinhunter/commons/generator/*/exception/**",
+                    "com/kylinhunter/**"
+
+
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['io.github.kylinhunter.*']
+            excludes = ['io.github.kylinhunter.commons.generator.exception.*',
+                        'io.github.kylinhunter.commons.generator.*.exception.*']
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.5
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.3
+            }
+        }
+    }
+}
+
 
 
 

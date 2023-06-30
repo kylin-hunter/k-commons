@@ -1,100 +1,112 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.jdbc.datasource;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.io.IOUtils;
-
-import com.google.common.collect.Maps;
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
+import io.github.kylinhunter.commons.collections.CollectionUtils;
+import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.jdbc.datasource.bean.HikariConfigEx;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
+import org.apache.commons.io.IOUtils;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-10 00:34
- **/
-
+ */
 public class DataSourceUtils {
-    private static final HikariConfigExParser hikariConfigExParser = new HikariConfigExParser();
-    @Getter
-    private static DataSourceEx defaultDataSource;
-    private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = Maps.newHashMap();
-    private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = Maps.newHashMap();
 
-    static {
-        init(null);
+  private static final HikariConfigExParser hikariConfigExParser = new HikariConfigExParser();
+  @Getter private static DataSourceEx defaultDataSource;
+  private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = MapUtils.newHashMap();
+  private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = MapUtils.newHashMap();
+
+  static {
+    init(null);
+  }
+
+  /**
+   * @param path path
+   * @return void
+   * @title load
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-18 12:25
+   */
+  public static synchronized void init(String path) {
+    closeAll();
+    List<HikariConfigEx> hikariConfigExs = hikariConfigExParser.load(path);
+    if (CollectionUtils.isEmpty(hikariConfigExs)) {
+      throw new InitException(" can't find datasource config");
     }
+    for (HikariConfigEx hikariConfigEx : hikariConfigExs) {
+      int no = hikariConfigEx.getNo();
+      String name = hikariConfigEx.getName();
+      Class<? extends DataSourceEx> clazz = DSCreator.create(HikariDataSource.class);
 
-    /**
-     * @param path path
-     * @return void
-     * @title load
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-18 12:25
-     */
-    public synchronized static void init(String path) {
-        closeAll();
-        List<HikariConfigEx> dataSources = hikariConfigExParser.load(path);
-        if (CollectionUtils.isEmpty(dataSources)) {
-            throw new InitException(" can't find datasource config");
-        }
-        for (int i = 0; i < dataSources.size(); i++) {
-            HikariConfigEx hikariConfigEx = dataSources.get(i);
-            HikariDataSource hikariDataSource = new HikariDataSource(hikariConfigEx);
-
-            DataSourceEx dataSourceEx = new DataSourceEx(hikariConfigEx, hikariDataSource);
-            if (defaultDataSource == null) {
-                defaultDataSource = dataSourceEx;
-            }
-            ID_DATA_SOURCES.put(i, dataSourceEx);
-            NAME_DATA_SOURCES.put(hikariConfigEx.getName(), dataSourceEx);
-        }
-
+      DataSourceEx dataSourceEx =
+          ObjectCreator.create(
+              clazz, new Class[] {HikariConfig.class}, new Object[] {hikariConfigEx});
+      if (defaultDataSource == null) {
+        defaultDataSource = dataSourceEx;
+      }
+      ID_DATA_SOURCES.put(no, dataSourceEx);
+      NAME_DATA_SOURCES.put(name, dataSourceEx);
     }
+  }
 
-    /**
-     * @return void
-     * @title closeAll
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-18 12:25
-     */
-    private static void closeAll() {
-        for (DataSourceEx dataSourceEx : ID_DATA_SOURCES.values()) {
-            IOUtils.closeQuietly(dataSourceEx);
-        }
-
+  /**
+   * @return void
+   * @title closeAll
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-18 12:25
+   */
+  private static void closeAll() {
+    for (DataSourceEx dataSourceEx : ID_DATA_SOURCES.values()) {
+      IOUtils.closeQuietly(dataSourceEx);
     }
+  }
 
-    /**
-     * @param no no
-     * @return io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx
-     * @title getByNo
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-18 12:25
-     */
+  /**
+   * @param no no
+   * @return io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx
+   * @title getByNo
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-18 12:25
+   */
+  public static DataSourceEx getByNo(int no) {
+    return ID_DATA_SOURCES.get(no);
+  }
 
-    public static DataSourceEx getByNo(int no) {
-        return ID_DATA_SOURCES.get(no);
-    }
-
-    /**
-     * @param name name
-     * @return io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx
-     * @title getByName
-     * @description
-     * @author BiJi'an
-     * @date 2023-01-18 12:25
-     */
-    public static DataSourceEx getByName(String name) {
-        return NAME_DATA_SOURCES.get(name);
-    }
-
+  /**
+   * @param name name
+   * @return io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx
+   * @title getByName
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-18 12:25
+   */
+  public static DataSourceEx getByName(String name) {
+    return NAME_DATA_SOURCES.get(name);
+  }
 }

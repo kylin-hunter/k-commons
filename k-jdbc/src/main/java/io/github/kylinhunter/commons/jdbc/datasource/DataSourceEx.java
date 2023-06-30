@@ -1,85 +1,26 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.jdbc.datasource;
 
 import java.io.Closeable;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.util.logging.Logger;
-
 import javax.sql.DataSource;
-
-import com.zaxxer.hikari.HikariDataSource;
-
-import io.github.kylinhunter.commons.jdbc.datasource.bean.HikariConfigEx;
-import lombok.Getter;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-18 00:39
- **/
-public class DataSourceEx implements DataSource, Closeable {
-    @Getter
-    private final int no;
-    @Getter
-    private final String name;
-
-    private final HikariDataSource dataSource;
-
-    public DataSourceEx(HikariConfigEx hikariConfigEx, HikariDataSource dataSource) {
-        this.no = hikariConfigEx.getNo();
-        this.name = hikariConfigEx.getName();
-        this.dataSource = dataSource;
-    }
-
-    @Override
-    public Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
-    }
-
-    @Override
-    public Connection getConnection(String username, String password) throws SQLException {
-        return dataSource.getConnection(username, password);
-    }
-
-    @Override
-    public <T> T unwrap(Class<T> iface) throws SQLException {
-        return dataSource.unwrap(iface);
-    }
-
-    @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return dataSource.isWrapperFor(iface);
-    }
-
-    @Override
-    public PrintWriter getLogWriter() throws SQLException {
-        return dataSource.getLogWriter();
-    }
-
-    @Override
-    public void setLogWriter(PrintWriter out) throws SQLException {
-        dataSource.setLogWriter(out);
-    }
-
-    @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
-        dataSource.setLoginTimeout(seconds);
-    }
-
-    @Override
-    public int getLoginTimeout() throws SQLException {
-        return dataSource.getLoginTimeout();
-    }
-
-    @Override
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-        return dataSource.getParentLogger();
-    }
-
-    @Override
-    public void close() {
-        this.dataSource.close();
-    }
-}
+ */
+public interface DataSourceEx extends DataSource, Closeable, DSAccessor {}

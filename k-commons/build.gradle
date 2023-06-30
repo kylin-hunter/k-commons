@@ -1,45 +1,60 @@
-import org.gradle.internal.jvm.Jvm
-
 dependencies {
+    api("org.reflections:reflections")
+    api("com.google.guava:guava")
+    api("net.bytebuddy:byte-buddy")
+    api("net.bytebuddy:byte-buddy-agent")
+    api("org.slf4j:slf4j-api")
 
-    api(rootProject.dependency_management['reflections'])
-    api(rootProject.dependency_management['commons-io'])
-    api(rootProject.dependency_management['commons-lang3'])
-    api(rootProject.dependency_management['guava'])
-    api(rootProject.dependency_management['commons-collections4'])
-
-    implementation(rootProject.dependency_management['velocity-engine-core'])
-    implementation(rootProject.dependency_management['velocity-tools-generic'])
-
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-
-
-    implementation(rootProject.dependency_management['commons-codec'])
-    implementation(rootProject.dependency_management['commons-compress'])
-    implementation(rootProject.dependency_management['dom4j'])
-    implementation('org.yaml:snakeyaml')
-
-
-
-
-
-    testImplementation files(Jvm.current().toolsJar)
-
-
+// logging
+    implementation("ch.qos.logback:logback-classic")
+    implementation("org.codehaus.janino:janino")
+// testing
+    testImplementation("commons-io:commons-io")
+    testImplementation("org.apache.commons:commons-lang3")
 }
-
-jar.enabled = true
-bootJar.enabled(false)
 
 jar {
     exclude("logback.xml")
+    exclude("k-jul-logging.properties")
 }
+
 test {
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
     println jvmArgs
+    jacoco {
+        includes = []
+        excludes = []
+    }
 }
 
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "io/github/kylinhunter/commons/**/exception/embed/**",
+                    "io/github/kylinhunter/commons/**/exception/common/**",
+            ])
+        }))
+    }
+}
 
-
-
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['io.github.kylinhunter.*']
+            excludes = ['io.github.kylinhunter.commons.exception.embed.*',
+                        'io.github.kylinhunter.commons.exception.common.*']
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.5
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.3
+            }
+        }
+    }
+}

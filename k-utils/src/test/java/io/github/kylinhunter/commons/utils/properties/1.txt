@@ -1,0 +1,18 @@
+grandfather1:SimpleGrandfather[name='grandfather-name'
+father=SimpleFather[name='father-name'
+son=SimpleSon[name='null'
+ grandSonArr=[SimpleGrandSon(name=(son-name0)grandson-name1), SimpleGrandSon(name=(son-name0)grandson-name2)]
+ grandSonList=[SimpleGrandSon(name=(son-name0)grandson-name1), SimpleGrandSon(name=(son-name0)grandson-name2)]]
+sonList=[SimpleSon[name='son-name1'
+ grandSonArr=[SimpleGrandSon(name=(son-name1)grandson-name1), SimpleGrandSon(name=(son-name1)grandson-name2)]
+ grandSonList=[SimpleGrandSon(name=(son-name1)grandson-name1), SimpleGrandSon(name=(son-name1)grandson-name2)]], SimpleSon[name='son-name2'
+ grandSonArr=[SimpleGrandSon(name=(son-name2)grandson-name1), SimpleGrandSon(name=(son-name2)grandson-name2)]
+ grandSonList=[SimpleGrandSon(name=(son-name2)grandson-name1), SimpleGrandSon(name=(son-name2)grandson-name2)]]]
+sonList2=null
+sonSet=null
+sonMap=null
+sonArrays=[SimpleSon[name='son-name3'
+ grandSonArr=[SimpleGrandSon(name=(son-name3)grandson-name1), SimpleGrandSon(name=(son-name3)grandson-name2)]
+ grandSonList=[SimpleGrandSon(name=(son-name3)grandson-name1), SimpleGrandSon(name=(son-name3)grandson-name2)]], SimpleSon[name='son-name4'
+ grandSonArr=[SimpleGrandSon(name=(son-name4)grandson-name1), SimpleGrandSon(name=(son-name4)grandson-name2)]
+ grandSonList=[SimpleGrandSon(name=(son-name4)grandson-name1), SimpleGrandSon(name=(son-name4)grandson-name2)]]]]]
