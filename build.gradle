@@ -231,7 +231,7 @@ subprojects {
         showProgress = true
         effort = 'max'  // -effort[:min|less|default|more|max]:
         reportLevel = 'medium' // low medium high
-        excludeFilter = file("../auto-test/spotbugs/exclude.xml")
+        excludeFilter = file("../script/auto-test/spotbugs/exclude.xml")
         onlyAnalyze = ['io.github.kylinhunter.-']
         maxHeapSize = '1g'
         extraArgs = ['-nested:false']
