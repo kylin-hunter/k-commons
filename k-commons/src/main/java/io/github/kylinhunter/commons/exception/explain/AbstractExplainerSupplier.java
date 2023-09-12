@@ -35,8 +35,8 @@ public abstract class AbstractExplainerSupplier implements ExplainerSupplier {
    * @author BiJi'an
    * @date 2022-11-24 02:59
    */
-  public <T extends Throwable> Explainer addExplainer(Class<T> clazz) {
-    Explainer explainer = new Explainer(clazz);
+  public <T extends Throwable> Explainer<T> addExplainer(Class<T> clazz) {
+    Explainer<T> explainer = new Explainer<>(clazz);
     explainers.add(explainer);
     return explainer;
   }

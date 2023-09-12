@@ -17,9 +17,16 @@ public class TestExplainerSupplier extends AbstractExplainerSupplier {
     this.addExplainer(TestException2.class)
         .explain(
             e -> {
-              ExplainResult explainResult = new ExplainResult(errInfoInfoTest);
-              explainResult.setExtra("extra");
-              return explainResult;
+              if (e.getValue() == 99) {
+                ExplainResult explainResult = new ExplainResult(errInfoInfoTest);
+                explainResult.setExtra("extra");
+                return explainResult;
+              } else {
+                ExplainResult explainResult = new ExplainResult(errInfoInfoTest);
+                explainResult.setExtra("extra2");
+                return explainResult;
+              }
+
             });
   }
 }

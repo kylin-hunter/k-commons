@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.exception.wrapper;
 
 import io.github.kylinhunter.commons.exception.embed.SystemException;
 import io.github.kylinhunter.commons.exception.embed.biz.BizException;
+import io.github.kylinhunter.commons.init.AbstractInitializer;
 import io.github.kylinhunter.commons.init.KCommons;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,7 +17,10 @@ public class TestExceptionWrapper {
   public static void main(String[] args) {
 
     KCommons.custom().debug(true).init();
-
+    ExceptionWarapperInitializer exceptionWarapperInitializer = AbstractInitializer.get(
+        ExceptionWarapperInitializer.class);
+    exceptionWarapperInitializer.initialize(
+        "io.github.kylinhunter.commons.exception.wrapper.ExceptionWrapperBean");
     Assertions.assertThrows(BizException.class, ExceptionWrapperBean::a);
 
     Assertions.assertThrows(SystemException.class, () -> {
