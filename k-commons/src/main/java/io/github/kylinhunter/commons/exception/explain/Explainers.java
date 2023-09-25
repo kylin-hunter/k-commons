@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.ExceptionFinder;
 import io.github.kylinhunter.commons.exception.ExceptionFinder.ExceptionFind;
+import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.common.KThrowable;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 import java.util.List;
@@ -76,7 +77,13 @@ public class Explainers {
         }
       }
       if (explainResult == null) {
-        explainResult = new ExplainResult(ErrInfos.UNKNOWN, throwable.getMessage());
+        KRuntimeException exception = ExceptionFinder.find(throwable, true,
+            KRuntimeException.class);
+        if (exception != null) {
+          explainResult = new ExplainResult(exception);
+        } else {
+          explainResult = new ExplainResult(ErrInfos.UNKNOWN, throwable.getMessage());
+        }
       }
     }
     return explainResult;

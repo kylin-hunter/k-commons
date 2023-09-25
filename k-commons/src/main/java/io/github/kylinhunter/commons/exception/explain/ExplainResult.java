@@ -35,6 +35,15 @@ public class ExplainResult {
   private Object extra;
   private String msg;
 
+  public ExplainResult(KThrowable throwable) {
+    this.errInfo = throwable.getErrInfo();
+    if (this.errInfo == null) {
+      this.errInfo = ErrInfos.UNKNOWN;
+    }
+    this.extra = throwable.getExtra();
+    this.msg = throwable.getMessage();
+  }
+
   public ExplainResult(KThrowable throwable, String msg) {
     this.errInfo = throwable.getErrInfo();
     if (this.errInfo == null) {
