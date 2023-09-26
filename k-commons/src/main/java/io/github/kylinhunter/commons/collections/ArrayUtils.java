@@ -33,4 +33,18 @@ public class ArrayUtils {
   public static boolean isEmpty(final Object[] array) {
     return array == null || array.length == 0;
   }
+
+  /**
+   * @param array array
+   * @return boolean
+   * @throws
+   * @title isEmpty
+   * @description isEmpty
+   * @author BiJi'an
+   * @date 2023-09-26 23:21
+   */
+  public static boolean isEmpty(final byte[] array) {
+    return array == null || array.length == 0;
+  }
+
 }

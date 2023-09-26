@@ -15,8 +15,12 @@
  */
 package io.github.kylinhunter.commons.io;
 
+import io.github.kylinhunter.commons.collections.ArrayUtils;
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.output.StringBuilderWriter;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +89,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
+   * @param input   input
    * @param charset charset
    * @return java.util.List<java.lang.String>
    * @title readLines
@@ -129,7 +134,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
+   * @param input   input
    * @param charset charset
    * @return java.lang.String
    * @title toString
@@ -145,8 +150,8 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
-   * @param writer writer
+   * @param input        input
+   * @param writer       writer
    * @param inputCharset inputCharset
    * @title copy
    * @description copy
@@ -223,7 +228,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size size
+   * @param size  size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -241,7 +246,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size size
+   * @param size  size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -289,7 +294,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
    * @return int
    * @title copy
@@ -307,7 +312,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
    * @return long
    * @title copyLarge
@@ -321,9 +326,9 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
-   * @param bufferSize bufferSize
+   * @param bufferSize   bufferSize
    * @return long
    * @title copy
    * @description copy
@@ -337,9 +342,9 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
-   * @param buffer buffer
+   * @param buffer       buffer
    * @return long
    * @title copyLarge
    * @description copyLarge
@@ -375,5 +380,76 @@ public class IOUtil {
       } catch (final IOException ignored) { // NOPMD NOSONAR
       }
     }
+  }
+
+  /**
+   * @param body    body
+   * @param charset charset
+   * @param charLen charLen
+   * @return java.lang.String
+   * @throws
+   * @title toString
+   * @description toString
+   * @author BiJi'an
+   * @date 2023-09-26 19:39
+   */
+  public static String toString(byte[] body, Charset charset, int charLen) {
+    if (ArrayUtils.isEmpty(body)) {
+      return StringUtil.EMPTY;
+    }
+    charset = Charsets.defaultCharset(charset, Charsets.UTF_8);
+    if (charLen <= 0 || body.length < charLen) {
+      return new String(body, charset);
+    }
+    try (Reader reader = new InputStreamReader(new ByteArrayInputStream(body), charset)) {
+      return toString(reader, charLen);
+    } catch (IOException e) {
+      throw new KIOException("toString error", e);
+    }
+  }
+
+  public static String toString(InputStream input, Charset charset, int charLen)
+      throws IOException {
+    if (input == null) {
+      return StringUtil.EMPTY;
+    }
+    charset = Charsets.defaultCharset(charset, Charsets.UTF_8);
+    if (charLen <= 0) {
+      byte[] bytes = IOUtil.toByteArray(input);
+      return new String(bytes, charset);
+    }
+    try (Reader reader = new InputStreamReader(input, charset)) {
+      return toString(reader, charLen);
+    } catch (IOException e) {
+      throw new KIOException("toString error", e);
+    }
+
+  }
+
+  /**
+   * @param reader  reader
+   * @param charLen charLen
+   * @return java.lang.String
+   * @throws IOException IOException
+   * @title toString
+   * @description toString
+   * @author BiJi'an
+   * @date 2023-09-26 23:59
+   */
+  public static String toString(Reader reader, int charLen) throws IOException {
+    CharBuffer result = CharBuffer.allocate(charLen);
+    int readLength = reader.read(result);
+    result.flip();
+    if (readLength > 0) {
+      String resultText = result.toString();
+      result.clear();
+      readLength = reader.read(result);
+      if (readLength > 0) {
+        resultText += "...";
+      }
+      return resultText;
+    }
+    return "";
+
   }
 }
