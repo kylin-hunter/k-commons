@@ -286,10 +286,12 @@ public class IOUtil {
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-  public static byte[] toByteArray(final InputStream inputStream) throws IOException {
+  public static byte[] toByteArray(final InputStream inputStream) {
     try (final ByteArrayOutputStream ubaOutput = new ByteArrayOutputStream()) {
       copy(inputStream, ubaOutput);
       return ubaOutput.toByteArray();
+    } catch (IOException e) {
+      throw new KIOException("toByteArray error", e);
     }
   }
 
@@ -302,8 +304,7 @@ public class IOUtil {
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-  public static int copy(final InputStream inputStream, final OutputStream outputStream)
-      throws IOException {
+  public static int copy(final InputStream inputStream, final OutputStream outputStream) {
     final long count = copyLarge(inputStream, outputStream);
     if (count > Integer.MAX_VALUE) {
       return EOF;
@@ -320,8 +321,7 @@ public class IOUtil {
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-  public static long copyLarge(final InputStream inputStream, final OutputStream outputStream)
-      throws IOException {
+  public static long copyLarge(final InputStream inputStream, final OutputStream outputStream) {
     return copy(inputStream, outputStream, DEFAULT_BUFFER_SIZE);
   }
 
@@ -336,8 +336,7 @@ public class IOUtil {
    * @date 2023-06-12 23:35
    */
   public static long copy(
-      final InputStream inputStream, final OutputStream outputStream, final int bufferSize)
-      throws IOException {
+      final InputStream inputStream, final OutputStream outputStream, final int bufferSize) {
     return copyLarge(inputStream, outputStream, IOUtil.byteArray(bufferSize));
   }
 
@@ -352,15 +351,18 @@ public class IOUtil {
    * @date 2023-06-12 23:35
    */
   public static long copyLarge(
-      final InputStream inputStream, final OutputStream outputStream, final byte[] buffer)
-      throws IOException {
+      final InputStream inputStream, final OutputStream outputStream, final byte[] buffer) {
     Objects.requireNonNull(inputStream, "inputStream");
     Objects.requireNonNull(outputStream, "outputStream");
     long count = 0;
     int n;
-    while (EOF != (n = inputStream.read(buffer))) {
-      outputStream.write(buffer, 0, n);
-      count += n;
+    try {
+      while (EOF != (n = inputStream.read(buffer))) {
+        outputStream.write(buffer, 0, n);
+        count += n;
+      }
+    } catch (IOException e) {
+      throw new KIOException("copyLarge error", e);
     }
     return count;
   }
@@ -408,15 +410,16 @@ public class IOUtil {
     }
   }
 
-  public static String toString(InputStream input, Charset charset, int charLen)
-      throws IOException {
+  public static String toString(InputStream input, Charset charset, int charLen) {
     if (input == null) {
       return StringUtil.EMPTY;
     }
     charset = Charsets.defaultCharset(charset, Charsets.UTF_8);
     if (charLen <= 0) {
+
       byte[] bytes = IOUtil.toByteArray(input);
       return new String(bytes, charset);
+
     }
     try (Reader reader = new InputStreamReader(input, charset)) {
       return toString(reader, charLen);
