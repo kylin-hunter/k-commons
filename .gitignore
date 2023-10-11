@@ -27,7 +27,8 @@ gradlew.bat
 *.iws
 
 # temp ignore
-logs/
+/*/logs/
+/logs
 tmp/
 *.log
 *.cache
@@ -39,8 +40,6 @@ tmp/
 .DS_Store
 Thumbs.db
 /k-code-generator/src_generator/*
-
-
 /k-commons/src/test/resources/test/java-io-test/
 /*/output/
 /*/out/
