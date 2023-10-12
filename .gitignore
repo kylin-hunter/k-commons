@@ -2,9 +2,7 @@
 .gitee/
 
 # gradle ignore
-target/
 
-build/
 .gradle/
 gradle/wrapper/gradle-wrapper.jar
 gradlew
@@ -27,7 +25,8 @@ gradlew.bat
 *.iws
 
 # temp ignore
-tmp/
+
+*.log
 *.cache
 *.diff
 *.patch
@@ -36,13 +35,20 @@ tmp/
 # system ignore
 .DS_Store
 Thumbs.db
-# logs
-/*/logs/
-/logs
-*.log
 
+
+/output/
 /*/output/
+/build/
+/*/build/
+/out/
 /*/out/
+/logs/
+/*/logs/
+/tmp/
+/*/tmp/
+/target/
+/*/target/
 
 /k-code-generator/src_generator/*
 /k-commons/src/test/resources/test/java-io-test/
