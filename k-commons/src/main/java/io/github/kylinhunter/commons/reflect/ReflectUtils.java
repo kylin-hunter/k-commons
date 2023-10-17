@@ -31,8 +31,8 @@ public class ReflectUtils {
 
   /**
    * @param method method
-   * @param obj obj
-   * @param args args
+   * @param obj    obj
+   * @param args   args
    * @return java.lang.Object
    * @title invoke
    * @description
@@ -50,7 +50,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param obj obj
+   * @param obj   obj
    * @param field field
    * @param value value
    * @title set
@@ -68,7 +68,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param obj obj
+   * @param obj   obj
    * @param field field
    * @title get
    * @description get
@@ -111,7 +111,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.Class < ?>>
    * @title getInterfaces
@@ -125,7 +125,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.Class < ?>>
    * @title getAllInterfaces
@@ -139,7 +139,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Method>
    * @title get
@@ -152,8 +152,18 @@ public class ReflectUtils {
     return Methods.get(clazz, predicates);
   }
 
+  public static Method getMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
+
+    try {
+      return clazz.getMethod(name, parameterTypes);
+    } catch (NoSuchMethodException e) {
+      // no method
+    }
+    return null;
+  }
+
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Method>
    * @title getAll
@@ -167,7 +177,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Constructor < ?>>
    * @title getConstructors
@@ -182,7 +192,7 @@ public class ReflectUtils {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz      clazz
    * @param predicates predicates
    * @return java.util.Set<java.lang.reflect.Constructor < ?>>
    * @title getAllConstructors

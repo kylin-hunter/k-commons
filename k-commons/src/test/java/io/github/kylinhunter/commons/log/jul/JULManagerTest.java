@@ -9,13 +9,11 @@ class JULManagerTest {
   @Test
   void init() {
     Assertions.assertTrue(JULManager.init());
-    ;
     Logger logger = Logger.getLogger("111");
     logger.info("test");
 
-    JULManager.setConfigFile("aaa.properties");
-    Assertions.assertFalse(JULManager.init());
-    ;
+    Assertions.assertFalse(JULManager.init("aaa.properties"));
+
     logger = Logger.getLogger("111");
     logger.info("test");
   }

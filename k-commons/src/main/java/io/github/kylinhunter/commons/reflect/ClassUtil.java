@@ -35,7 +35,9 @@ public class ClassUtil {
 
   private static final Map<String, String> abbreviationMap;
 
-  /** Maps an abbreviation used in array class names to corresponding primitive class name. */
+  /**
+   * Maps an abbreviation used in array class names to corresponding primitive class name.
+   */
   private static final Map<String, String> reverseAbbreviationMap;
 
   // Feed abbreviation maps
@@ -99,6 +101,16 @@ public class ClassUtil {
     } catch (Exception e) {
       throw new GeneralException("loadClass error ", e);
     }
+  }
+
+  public static <T> Class<T> findClass(String className) {
+    try {
+
+      return (Class<T>) Class.forName(className);
+    } catch (Exception e) {
+      // load class error
+    }
+    return null;
   }
 
   /**
