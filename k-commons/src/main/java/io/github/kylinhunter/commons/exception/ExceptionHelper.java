@@ -59,16 +59,16 @@ public class ExceptionHelper {
   }
 
   /**
-   * @param e e
-   * @param showUnknownMsg showUnknownMsg
-   * @param max max
+   * @param e     e
+   * @param debug debug
+   * @param max   max
    * @return java.lang.String
    * @title 获取异常消息
    * @description
    * @author BiJi'an
    * @date 2022/01/01 5:23 下午
    */
-  public static String getMessage(Throwable e, boolean showUnknownMsg, int max) {
+  public static String getMessage(Throwable e, boolean debug, int max) {
 
     if (e instanceof KThrowable) {
       ErrInfo errInfo = ((KThrowable) e).getErrInfo();
@@ -82,7 +82,7 @@ public class ExceptionHelper {
       }
     }
     String returnMsg;
-    if (showUnknownMsg) {
+    if (debug) {
       returnMsg = StringUtil.defaultString(e.getMessage(), ErrInfos.MSG_UNKNOWN);
     } else {
       returnMsg = ErrInfos.MSG_UNKNOWN;

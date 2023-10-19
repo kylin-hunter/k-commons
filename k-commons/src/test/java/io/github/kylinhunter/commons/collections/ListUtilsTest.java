@@ -22,5 +22,9 @@ class ListUtilsTest {
 
     list = ListUtils.newArrayListWithCapacity(3);
     assertEquals(0, list.size());
+    List<String> list2 = ListUtils.newArrayList("1", "2", "3", "4");
+    System.out.println(ListUtils.toString(list2));
+    List<Integer> list3 = ListUtils.newArrayList(1, 2, 3, 4);
+    System.out.println(ListUtils.toString(list3));
   }
 }

@@ -19,6 +19,8 @@ import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author BiJi'an
@@ -26,7 +28,9 @@ import java.util.Collections;
  * @date 2022/1/1
  */
 public class ListUtils {
-  private ListUtils() {}
+
+  private ListUtils() {
+  }
 
   /**
    * @return java.util.ArrayList<E>
@@ -74,5 +78,17 @@ public class ListUtils {
       Iterators.addAll(set, elements.iterator());
       return set;
     }
+  }
+
+  /**
+   * @param list list
+   * @return java.lang.String
+   * @title toString
+   * @description toString
+   * @author BiJi'an
+   * @date 2023-10-18 17:19
+   */
+  public static <E> String toString(List<E> list) {
+    return list.stream().map(String::valueOf).collect(Collectors.joining(",", "[", "]"));
   }
 }
