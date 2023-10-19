@@ -29,8 +29,7 @@ import java.util.stream.Collectors;
  */
 public class ListUtils {
 
-  private ListUtils() {
-  }
+  private ListUtils() {}
 
   /**
    * @return java.util.ArrayList<E>

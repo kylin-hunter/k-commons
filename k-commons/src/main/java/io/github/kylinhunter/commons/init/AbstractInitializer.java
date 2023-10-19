@@ -30,13 +30,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractInitializer implements Initializer {
 
-  @Setter
-  protected DebugOption debugOption;
+  @Setter protected DebugOption debugOption;
 
   protected static volatile Map<Class<?>, Object> INITIALIZED_TAGS = MapUtils.newHashMap();
 
-  @Setter
-  protected ClassScanner classScanner;
+  @Setter protected ClassScanner classScanner;
 
   public AbstractInitializer(Set<String> pkgs) {
     this.classScanner = new ClassScanner(pkgs);

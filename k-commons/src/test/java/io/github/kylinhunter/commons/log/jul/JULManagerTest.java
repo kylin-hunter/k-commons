@@ -8,13 +8,20 @@ class JULManagerTest {
 
   @Test
   void init() {
-    Assertions.assertTrue(JULManager.init());
+    Assertions.assertTrue(JULManager.init(false));
     Logger logger = Logger.getLogger("111");
     logger.info("test");
 
-    Assertions.assertFalse(JULManager.init("aaa.properties"));
+    JULManager.reset();
+    Assertions.assertFalse(JULManager.init("error.properties", false));
+    logger.info("test");
 
-    logger = Logger.getLogger("111");
+    JULManager.reset();
+    Assertions.assertTrue(JULManager.init("k-jul-logging-with-slf4j.properties", false));
+    logger.info("test");
+
+    JULManager.reset();
+    Assertions.assertTrue(JULManager.init("", true));
     logger.info("test");
   }
 }

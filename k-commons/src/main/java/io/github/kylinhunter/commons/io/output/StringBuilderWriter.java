@@ -21,22 +21,19 @@ import java.io.Writer;
 /**
  * {@link Writer} implementation that outputs to a {@link StringBuilder}.
  *
- * <p><strong>NOTE:</strong> This implementation, as an alternative to
- * {@code java.io.StringWriter}, provides an <i>un-synchronized</i> (i.e. for use in a single
- * thread) implementation for better performance. For safe usage with multiple {@link Thread}s then
- * {@code java.io.StringWriter} should be used.
+ * <p><strong>NOTE:</strong> This implementation, as an alternative to {@code java.io.StringWriter},
+ * provides an <i>un-synchronized</i> (i.e. for use in a single thread) implementation for better
+ * performance. For safe usage with multiple {@link Thread}s then {@code java.io.StringWriter}
+ * should be used.
  *
  * @since 2.0
  */
-
 public class StringBuilderWriter extends Writer implements Serializable {
 
   private static final long serialVersionUID = -146927496096066153L;
   private final StringBuilder builder;
 
-  /**
-   * www Constructs a new {@link StringBuilder} instance with default capacity.
-   */
+  /** www Constructs a new {@link StringBuilder} instance with default capacity. */
   public StringBuilderWriter() {
     this.builder = new StringBuilder();
   }
@@ -90,7 +87,7 @@ public class StringBuilderWriter extends Writer implements Serializable {
    *
    * @param value The character to append
    * @param start The index of the first character
-   * @param end   The index of the last character + 1
+   * @param end The index of the last character + 1
    * @return This writer instance
    */
   @Override
@@ -99,17 +96,13 @@ public class StringBuilderWriter extends Writer implements Serializable {
     return this;
   }
 
-  /**
-   * Closing this writer has no effect.
-   */
+  /** Closing this writer has no effect. */
   @Override
   public void close() {
     // no-op
   }
 
-  /**
-   * Flushing this writer has no effect.
-   */
+  /** Flushing this writer has no effect. */
   @Override
   public void flush() {
     // no-op
@@ -130,7 +123,7 @@ public class StringBuilderWriter extends Writer implements Serializable {
   /**
    * Writes a portion of a character array to the {@link StringBuilder}.
    *
-   * @param value  The value to write
+   * @param value The value to write
    * @param offset The index of the first character
    * @param length The number of characters to write
    */

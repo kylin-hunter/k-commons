@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.exception.common.KThrowable;
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,6 +30,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@KGenerated
 public class ExplainResult {
 
   private ErrInfo errInfo;
