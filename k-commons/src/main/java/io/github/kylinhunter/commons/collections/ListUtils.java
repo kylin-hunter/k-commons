@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +32,8 @@ import java.util.stream.Collectors;
  */
 public class ListUtils {
 
-  private ListUtils() {}
+  private ListUtils() {
+  }
 
   /**
    * @return java.util.ArrayList<E>
@@ -42,10 +46,9 @@ public class ListUtils {
     return new ArrayList<>();
   }
 
-  @SuppressWarnings("unchecked")
   public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
     ExceptionChecker.checkNonnegative(initialArraySize, "initialArraySize");
-    return new ArrayList(initialArraySize);
+    return new ArrayList<>(initialArraySize);
   }
 
   /**
@@ -90,4 +93,26 @@ public class ListUtils {
   public static <E> String toString(List<E> list) {
     return list.stream().map(String::valueOf).collect(Collectors.joining(",", "[", "]"));
   }
+
+  /**
+   * @param list      list
+   * @param getSortId getSortId
+   * @param sortIds   sortIds
+   * @return java.util.List<E>
+   * @title sort
+   * @description sort
+   * @author BiJi'an
+   * @date 2023-10-23 15:18
+   */
+  public static <E, C> List<E> sort(List<E> list, Function<E, C> getSortId, List<C> sortIds) {
+
+    Map<C, E> tmpMaps = MapUtils.newHashMap();
+    list.forEach(e -> {
+      C tmpC = getSortId.apply(e);
+      tmpMaps.put(tmpC, e);
+    });
+    return sortIds.stream().map(e -> Objects.requireNonNull(tmpMaps.get(e)))
+        .collect(Collectors.toList());
+  }
+
 }
