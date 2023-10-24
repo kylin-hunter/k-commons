@@ -58,9 +58,9 @@ public class ExceptionHelper {
   }
 
   /**
-   * @param e e
+   * @param e     e
    * @param debug debug
-   * @param max max
+   * @param max   max
    * @return java.lang.String
    * @title 获取异常消息
    * @description
@@ -69,20 +69,21 @@ public class ExceptionHelper {
    */
   public static String getMessage(Throwable e, boolean debug, int max) {
 
-    String message = ErrInfos.UNKNOWN.getDefaultMsg();
-    if (debug) {
-      message = StringUtil.defaultString(e.getMessage(), ErrInfos.UNKNOWN.getDefaultMsg());
-    } else {
-      if (e instanceof KThrowable) {
+    String message = null;
+
+    if (e instanceof KThrowable) {
+      ErrInfo errInfo = ((KThrowable) e).getErrInfo();
+      if (errInfo != null && errInfo != ErrInfos.UNKNOWN) {
         message = e.getMessage();
         if (StringUtil.isBlank(message)) {
-          ErrInfo errInfo = ((KThrowable) e).getErrInfo();
-          if (errInfo != null) {
-            message = errInfo.getDefaultMsg();
-          }
+          message = errInfo.getDefaultMsg();
         }
       }
+
+    } else if (debug) {
+      message = e.getMessage();
     }
+    message = StringUtil.defaultString(message, ErrInfos.UNKNOWN.getDefaultMsg());
     return StringUtil.substring(message, 0, max);
   }
 }
