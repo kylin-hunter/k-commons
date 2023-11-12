@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.cache.guava;
+package io.github.kylinhunter.commons.utils.cache.guava;
 
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.util.ObjectValues;
@@ -29,7 +29,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CacheKey {
 
-  @EqualsAndHashCode.Include private String key;
+  @EqualsAndHashCode.Include
+  private String key;
   private Object[] params;
 
   public CacheKey(Object... params) {

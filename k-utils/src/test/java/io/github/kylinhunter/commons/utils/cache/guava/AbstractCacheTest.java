@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.cache.guava;
+package io.github.kylinhunter.commons.utils.cache.guava;
 
 import io.github.kylinhunter.commons.util.ThreadHelper;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +19,7 @@ public class AbstractCacheTest {
       System.out.println(value);
       ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
     }
-    guavaCache.put(new Object[] {Integer.valueOf(1), Integer.valueOf(2)}, 100L);
+    guavaCache.put(new Object[]{Integer.valueOf(1), Integer.valueOf(2)}, 100L);
     value = guavaCache.get(Integer.valueOf(1), Integer.valueOf(2));
     System.out.println(value);
     guavaCache.invalidate(Integer.valueOf(1), Integer.valueOf(2));

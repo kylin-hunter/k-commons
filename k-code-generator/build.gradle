@@ -1,5 +1,4 @@
 dependencies {
-    implementation project(":k-utils")
     implementation project(":k-jdbc")
     implementation("ch.qos.logback:logback-classic")
     implementation("org.codehaus.janino:janino")

@@ -1,6 +1,5 @@
 dependencies {
     api project(":k-utils")
-    api project(":k-clazz")
     api("commons-io:commons-io")
     api("com.zaxxer:HikariCP")
     api("commons-dbutils:commons-dbutils")

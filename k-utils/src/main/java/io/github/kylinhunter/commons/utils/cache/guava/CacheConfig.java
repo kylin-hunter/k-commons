@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.cache.guava;
+package io.github.kylinhunter.commons.utils.cache.guava;
 
 import java.util.concurrent.TimeUnit;
 import lombok.Data;
@@ -26,18 +26,28 @@ import lombok.Data;
 @Data
 public class CacheConfig {
 
-  /** maxSize */
+  /**
+   * maxSize
+   */
   private int maxSize = 10000;
 
-  /** expireAfterWrite（optional） */
+  /**
+   * expireAfterWrite（optional）
+   */
   private int expireAfterWrite = -1;
 
-  /** expireTimeUnit */
+  /**
+   * expireTimeUnit
+   */
   private TimeUnit expireTimeUnit = TimeUnit.MINUTES;
 
-  /** refreshAfterWrite */
+  /**
+   * refreshAfterWrite
+   */
   private int refreshAfterWrite = -1;
 
-  /** refreshTimeUnit */
+  /**
+   * refreshTimeUnit
+   */
   private TimeUnit refreshTimeUnit = TimeUnit.MINUTES;
 }

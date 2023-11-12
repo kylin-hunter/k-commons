@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.cache.guava;
+package io.github.kylinhunter.commons.utils.cache.guava;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -50,5 +50,7 @@ public interface Cache<V> {
   @Target({ElementType.FIELD})
   @Retention(RetentionPolicy.RUNTIME)
   @Documented
-  @interface Include {}
+  @interface Include {
+
+  }
 }

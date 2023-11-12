@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.generator.function;
 
-import com.google.common.collect.Maps;
+import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.component.CF;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +17,7 @@ class ExpressionExecutorTest {
     int result2 = expressionExecutor.execute("1+1", int.class);
     Assertions.assertEquals(2, result2);
 
-    Map<String, Object> env = Maps.newHashMap();
+    Map<String, Object> env = MapUtils.newHashMap();
     env.put("a", 2);
 
     Long result3 = expressionExecutor.execute("a+1", env);
@@ -30,7 +30,7 @@ class ExpressionExecutorTest {
   @Test
   void testExecuteByFile() {
 
-    Map<String, Object> env = Maps.newHashMap();
+    Map<String, Object> env = MapUtils.newHashMap();
     env.put("a", 2);
     env.put("b", 2);
 
@@ -45,5 +45,6 @@ class ExpressionExecutorTest {
   }
 
   @Test
-  void executeFile() {}
+  void executeFile() {
+  }
 }

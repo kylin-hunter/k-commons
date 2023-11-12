@@ -15,10 +15,10 @@
  */
 package io.github.kylinhunter.commons.utils.codec;
 
-import io.github.kylinhunter.commons.cache.guava.AbstractCache;
-import io.github.kylinhunter.commons.cache.guava.CacheConfig;
-import io.github.kylinhunter.commons.cache.guava.CacheKey;
 import io.github.kylinhunter.commons.exception.embed.CryptException;
+import io.github.kylinhunter.commons.utils.cache.guava.AbstractCache;
+import io.github.kylinhunter.commons.utils.cache.guava.CacheConfig;
+import io.github.kylinhunter.commons.utils.cache.guava.CacheKey;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -43,5 +43,6 @@ public class RSAPrivateKeyCache extends AbstractCache<RSAPrivateKey> {
   }
 
   @Override
-  protected void custom(CacheConfig cacheConfig) {}
+  protected void custom(CacheConfig cacheConfig) {
+  }
 }

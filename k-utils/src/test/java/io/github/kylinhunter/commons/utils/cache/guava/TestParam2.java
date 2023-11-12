@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.cache.guava;
+package io.github.kylinhunter.commons.utils.cache.guava;
 
 import lombok.RequiredArgsConstructor;
 
@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
  * @date 2022-11-27 13:39
  */
 @RequiredArgsConstructor
-public class TestParam1 {
-  @Cache.Include private final String param1;
+public class TestParam2 {
+
+  @Cache.Include
+  private final String param2;
 }

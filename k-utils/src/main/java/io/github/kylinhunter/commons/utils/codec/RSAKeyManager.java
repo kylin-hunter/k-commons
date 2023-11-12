@@ -15,8 +15,8 @@
  */
 package io.github.kylinhunter.commons.utils.codec;
 
-import io.github.kylinhunter.commons.cache.guava.Cache;
 import io.github.kylinhunter.commons.exception.embed.CryptException;
+import io.github.kylinhunter.commons.utils.cache.guava.Cache;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -34,8 +34,10 @@ public class RSAKeyManager {
 
   public static final String ALGORITHM_RSA = "RSA";
   private static final int DEFAULT_KEY_SIZE = 1024;
-  @Getter private final RSAPrivateKey defaultPrivateKey;
-  @Getter private final RSAPublicKey defaultPubKey;
+  @Getter
+  private final RSAPrivateKey defaultPrivateKey;
+  @Getter
+  private final RSAPublicKey defaultPubKey;
 
   private final Cache<RSAPublicKey> rsaPublicKeyCache = new RSAPublicKeyCache();
 
