@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.algorithm.bloom;
+package io.github.kylinhunter.commons.utils.algorithm.bloom;
 
 import com.google.common.hash.BloomFilter;
 import java.text.NumberFormat;

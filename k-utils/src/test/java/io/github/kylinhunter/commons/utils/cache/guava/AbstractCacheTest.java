@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.utils.cache.guava;
 
 import io.github.kylinhunter.commons.util.ThreadHelper;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AbstractCacheTest {
@@ -17,14 +18,15 @@ public class AbstractCacheTest {
 
       value = guavaCache.get(Integer.valueOf(1), Integer.valueOf(2));
       System.out.println(value);
-      ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
+      ThreadHelper.sleep(3, TimeUnit.MILLISECONDS);
+
     }
     guavaCache.put(new Object[]{Integer.valueOf(1), Integer.valueOf(2)}, 100L);
     value = guavaCache.get(Integer.valueOf(1), Integer.valueOf(2));
-    System.out.println(value);
+    Assertions.assertEquals(100, value.intValue());
     guavaCache.invalidate(Integer.valueOf(1), Integer.valueOf(2));
     value = guavaCache.get(Integer.valueOf(1), Integer.valueOf(2));
-    System.out.println(value);
+    Assertions.assertEquals(10, value.intValue());
   }
 
   @Test
@@ -38,14 +40,14 @@ public class AbstractCacheTest {
 
       value = guavaCache.get(new TestParam1("1"), new TestParam2("parm2"));
       System.out.println(value);
-      ThreadHelper.sleep(100, TimeUnit.MILLISECONDS);
+      ThreadHelper.sleep(3, TimeUnit.MILLISECONDS);
     }
     guavaCache.put(new TestParam1("1"), new TestParam2("parm2"), 100L);
 
     value = guavaCache.get(new TestParam1("1"), new TestParam2("parm2"));
-    System.out.println(value);
+    Assertions.assertEquals(100, value.intValue());
     guavaCache.invalidate(new TestParam1("1"), new TestParam2("parm2"));
     value = guavaCache.get(new TestParam1("1"), new TestParam2("parm2"));
-    System.out.println(value);
+    Assertions.assertEquals(10, value.intValue());
   }
 }

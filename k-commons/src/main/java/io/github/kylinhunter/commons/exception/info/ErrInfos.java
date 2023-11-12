@@ -28,7 +28,7 @@ public class ErrInfos {
 
   public static final ErrInfo UNKNOWN = new ErrInfo(-1, "UNKNOWN");
 
-  private static int BASE_CODE = 10000;
+  private static int BASE_CODE = 1000;
   public static final ErrInfo FORMAT = new ErrInfo(++BASE_CODE);
   public static final ErrInfo INIT = new ErrInfo(++BASE_CODE);
   public static final ErrInfo INTERNAL = new ErrInfo(++BASE_CODE);
@@ -38,6 +38,6 @@ public class ErrInfos {
   public static final ErrInfo SYSTEM = new ErrInfo(++BASE_CODE);
   public static final ErrInfo CRYPT = new ErrInfo(++BASE_CODE);
 
-  private static int BASE_BIZ_CODE = 20000;
+  private static int BASE_BIZ_CODE = 2000;
   public static final ErrInfo BIZ = new ErrInfo(++BASE_BIZ_CODE);
 }
