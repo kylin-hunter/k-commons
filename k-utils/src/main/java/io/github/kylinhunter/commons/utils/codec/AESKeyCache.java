@@ -34,6 +34,5 @@ public class AESKeyCache extends AbstractCache<SecretKey> {
   }
 
   @Override
-  protected void custom(CacheConfig cacheConfig) {
-  }
+  protected void custom(CacheConfig cacheConfig) {}
 }

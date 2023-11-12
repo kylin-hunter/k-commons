@@ -29,8 +29,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CacheKey {
 
-  @EqualsAndHashCode.Include
-  private String key;
+  @EqualsAndHashCode.Include private String key;
   private Object[] params;
 
   public CacheKey(Object... params) {

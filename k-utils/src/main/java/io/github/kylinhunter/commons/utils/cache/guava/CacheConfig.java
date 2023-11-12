@@ -26,28 +26,18 @@ import lombok.Data;
 @Data
 public class CacheConfig {
 
-  /**
-   * maxSize
-   */
+  /** maxSize */
   private int maxSize = 10000;
 
-  /**
-   * expireAfterWrite（optional）
-   */
+  /** expireAfterWrite（optional） */
   private int expireAfterWrite = -1;
 
-  /**
-   * expireTimeUnit
-   */
+  /** expireTimeUnit */
   private TimeUnit expireTimeUnit = TimeUnit.MINUTES;
 
-  /**
-   * refreshAfterWrite
-   */
+  /** refreshAfterWrite */
   private int refreshAfterWrite = -1;
 
-  /**
-   * refreshTimeUnit
-   */
+  /** refreshTimeUnit */
   private TimeUnit refreshTimeUnit = TimeUnit.MINUTES;
 }

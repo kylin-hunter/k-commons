@@ -50,7 +50,5 @@ public interface Cache<V> {
   @Target({ElementType.FIELD})
   @Retention(RetentionPolicy.RUNTIME)
   @Documented
-  @interface Include {
-
-  }
+  @interface Include {}
 }

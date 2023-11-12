@@ -58,9 +58,9 @@ public class ExceptionHelper {
   }
 
   /**
-   * @param e     e
+   * @param e e
    * @param debug debug
-   * @param max   max
+   * @param max max
    * @return java.lang.String
    * @title 获取异常消息
    * @description

@@ -34,10 +34,8 @@ public class RSAKeyManager {
 
   public static final String ALGORITHM_RSA = "RSA";
   private static final int DEFAULT_KEY_SIZE = 1024;
-  @Getter
-  private final RSAPrivateKey defaultPrivateKey;
-  @Getter
-  private final RSAPublicKey defaultPubKey;
+  @Getter private final RSAPrivateKey defaultPrivateKey;
+  @Getter private final RSAPublicKey defaultPubKey;
 
   private final Cache<RSAPublicKey> rsaPublicKeyCache = new RSAPublicKeyCache();
 

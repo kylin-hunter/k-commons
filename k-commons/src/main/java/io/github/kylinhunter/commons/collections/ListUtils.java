@@ -32,8 +32,7 @@ import java.util.stream.Collectors;
  */
 public class ListUtils {
 
-  private ListUtils() {
-  }
+  private ListUtils() {}
 
   /**
    * @return java.util.ArrayList<E>
@@ -95,9 +94,9 @@ public class ListUtils {
   }
 
   /**
-   * @param list      list
+   * @param list list
    * @param getSortId getSortId
-   * @param sortIds   sortIds
+   * @param sortIds sortIds
    * @return java.util.List<E>
    * @title sort
    * @description sort
@@ -107,12 +106,13 @@ public class ListUtils {
   public static <E, C> List<E> sort(List<E> list, Function<E, C> getSortId, List<C> sortIds) {
 
     Map<C, E> tmpMaps = MapUtils.newHashMap();
-    list.forEach(e -> {
-      C tmpC = getSortId.apply(e);
-      tmpMaps.put(tmpC, e);
-    });
-    return sortIds.stream().map(e -> Objects.requireNonNull(tmpMaps.get(e)))
+    list.forEach(
+        e -> {
+          C tmpC = getSortId.apply(e);
+          tmpMaps.put(tmpC, e);
+        });
+    return sortIds.stream()
+        .map(e -> Objects.requireNonNull(tmpMaps.get(e)))
         .collect(Collectors.toList());
   }
-
 }

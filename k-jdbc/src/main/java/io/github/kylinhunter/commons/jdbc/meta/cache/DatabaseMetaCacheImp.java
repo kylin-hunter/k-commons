@@ -53,8 +53,7 @@ public class DatabaseMetaCacheImp extends AbstractCache<Optional<DatabaseMeta>>
   }
 
   @Override
-  protected void custom(CacheConfig cacheConfig) {
-  }
+  protected void custom(CacheConfig cacheConfig) {}
 
   /**
    * @param no no
