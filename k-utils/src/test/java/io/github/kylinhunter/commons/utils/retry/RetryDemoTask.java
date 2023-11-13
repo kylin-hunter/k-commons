@@ -60,5 +60,17 @@ public class RetryDemoTask {
     return true;
   }
 
+  /**
+   * @return io.github.kylinhunter.commons.utils.retry.RetryDemoTask
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-11-14 01:17
+   */
+
+  public RetryDemoTask reset() {
+    this.stats.clear();
+    return this;
+  }
 
 }

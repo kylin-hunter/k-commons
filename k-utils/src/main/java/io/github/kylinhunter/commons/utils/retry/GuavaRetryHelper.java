@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.utils.retry;
 
-import com.github.rholder.retry.RetryException;
 import com.github.rholder.retry.Retryer;
 import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
@@ -52,7 +51,7 @@ public class GuavaRetryHelper {
   }
 
   /**
-   * @param type    type
+   * @param type type
    * @param retryer retryer
    * @return void
    * @title registerRetryer
@@ -77,55 +76,63 @@ public class GuavaRetryHelper {
   }
 
   /**
-   * @param callable     callable
-   * @param defaultValue defaultValue
+   * @param callable callable
    * @return V
    * @title retry
    * @description retry
    * @author BiJi'an
    * @date 2023-11-12 22:45
    */
-  public static <V> V retry(Retryer<V> retryer, Callable<V> callable, V defaultValue) {
+  public static <V> V retry(
+      Retryer<V> retryer, Callable<V> callable, RecoveryCallback<V> recoveryCallback)
+      throws Exception {
 
     try {
       return retryer.call(callable);
     } catch (Exception e) {
-      log.error("retry error", e);
-      if (e instanceof RetryException) {
-        RetryException retryException = (RetryException) e;
-        log.error(
-            "retry error  numberOfFailedAttempts={}", retryException.getNumberOfFailedAttempts());
+      if (recoveryCallback != null) {
+        return recoveryCallback.recover();
+      } else {
+        throw e;
       }
     }
-
-    return defaultValue;
   }
 
   /**
-   * @param type         type
-   * @param callable     callable
-   * @param defaultValue defaultValue
+   * @param type type
+   * @param callable callable
    * @return V
    * @title retry
    * @description retry
    * @author BiJi'an
    * @date 2023-11-12 23:37
    */
-  public static <V, E extends Enum<E>> V retry(Enum<E> type, Callable<V> callable, V defaultValue) {
+  public static <V, E extends Enum<E>> V retry(Enum<E> type, Callable<V> callable)
+      throws Exception {
     Retryer<V> retryer = RETRYERS.get(type);
-    return retry(retryer, callable, defaultValue);
+    return retry(retryer, callable, null);
+  }
+
+  public static <V, E extends Enum<E>> V retry(
+      Enum<E> type, Callable<V> callable, RecoveryCallback<V> recoveryCallback) throws Exception {
+    Retryer<V> retryer = RETRYERS.get(type);
+    return retry(retryer, callable, recoveryCallback);
   }
 
   /**
-   * @param callable     callable
-   * @param defaultValue defaultValue
+   * @param callable callable
    * @return V
    * @title retry
    * @description retry
    * @author BiJi'an
    * @date 2023-11-12 23:37
    */
-  public static <V> V retry(Callable<V> callable, V defaultValue) {
-    return (V) retry(DEFAULT_RETRYER, callable, defaultValue);
+  public static <V> V retry(Callable<V> callable) throws Exception {
+    return (V) retry(DEFAULT_RETRYER, callable, null);
+  }
+
+  public static <V> V retry(Callable<V> callable, RecoveryCallback<V> recoveryCallback)
+      throws Exception {
+    return (V) retry(DEFAULT_RETRYER, callable, recoveryCallback);
   }
 }
