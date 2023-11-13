@@ -35,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GuavaRetryHelper {
 
+  private static long FIXED_PERIOD_TIME = 1000L;
+  private static int MAX_RETRY_TIMES = 2;
+
   private static final Map<Enum, Retryer> RETRYERS = MapUtils.newHashMap();
   private static Retryer DEFAULT_RETRYER;
 
@@ -42,14 +45,14 @@ public class GuavaRetryHelper {
     Retryer<?> defaultRetriever =
         RetryerBuilder.<Boolean>newBuilder()
             .retryIfExceptionOfType(ToRetryException.class)
-            .withWaitStrategy(WaitStrategies.fixedWait(1, TimeUnit.SECONDS))
-            .withStopStrategy(StopStrategies.stopAfterAttempt(2))
+            .withWaitStrategy(WaitStrategies.fixedWait(FIXED_PERIOD_TIME, TimeUnit.MILLISECONDS))
+            .withStopStrategy(StopStrategies.stopAfterAttempt(MAX_RETRY_TIMES))
             .build();
     DEFAULT_RETRYER = defaultRetriever;
   }
 
   /**
-   * @param type type
+   * @param type    type
    * @param retryer retryer
    * @return void
    * @title registerRetryer
@@ -74,7 +77,7 @@ public class GuavaRetryHelper {
   }
 
   /**
-   * @param callable callable
+   * @param callable     callable
    * @param defaultValue defaultValue
    * @return V
    * @title retry
@@ -82,10 +85,10 @@ public class GuavaRetryHelper {
    * @author BiJi'an
    * @date 2023-11-12 22:45
    */
-  public static <V> V retry(Retryer retryer, Callable<V> callable, V defaultValue) {
+  public static <V> V retry(Retryer<V> retryer, Callable<V> callable, V defaultValue) {
 
     try {
-      return (V) retryer.call(callable);
+      return retryer.call(callable);
     } catch (Exception e) {
       log.error("retry error", e);
       if (e instanceof RetryException) {
@@ -99,8 +102,8 @@ public class GuavaRetryHelper {
   }
 
   /**
-   * @param type type
-   * @param callable callable
+   * @param type         type
+   * @param callable     callable
    * @param defaultValue defaultValue
    * @return V
    * @title retry
@@ -109,11 +112,12 @@ public class GuavaRetryHelper {
    * @date 2023-11-12 23:37
    */
   public static <V, E extends Enum<E>> V retry(Enum<E> type, Callable<V> callable, V defaultValue) {
-    return retry(RETRYERS.get(type), callable, defaultValue);
+    Retryer<V> retryer = RETRYERS.get(type);
+    return retry(retryer, callable, defaultValue);
   }
 
   /**
-   * @param callable callable
+   * @param callable     callable
    * @param defaultValue defaultValue
    * @return V
    * @title retry
@@ -122,6 +126,6 @@ public class GuavaRetryHelper {
    * @date 2023-11-12 23:37
    */
   public static <V> V retry(Callable<V> callable, V defaultValue) {
-    return retry(DEFAULT_RETRYER, callable, defaultValue);
+    return (V) retry(DEFAULT_RETRYER, callable, defaultValue);
   }
 }
