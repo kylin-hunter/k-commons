@@ -21,6 +21,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * @author BiJi'an
@@ -54,6 +56,21 @@ public class ObjectBytesSerializer {
   }
 
   /**
+   * @param obj obj
+   * @return java.lang.String
+   * @title serializeToString
+   * @description serializeToString
+   * @author BiJi'an
+   * @date 2023-11-22 01:19
+   */
+  public static String serializeToString(Object obj) {
+    byte[] serialize = serialize(obj);
+    byte[] bytes = Base64.getEncoder().encode(serialize);
+    return new String(bytes, StandardCharsets.UTF_8);
+  }
+
+
+  /**
    * @param bytes bytes
    * @return T
    * @title deserialize
@@ -75,4 +92,18 @@ public class ObjectBytesSerializer {
     }
     return null;
   }
+
+  /**
+   * @param text text
+   * @return T
+   * @title deserializeFromStr
+   * @description deserializeFromStr
+   * @author BiJi'an
+   * @date 2023-11-22 01:22
+   */
+  public static <T> T deserialize(String text) {
+    byte[] bytes = Base64.getDecoder().decode(text.getBytes(StandardCharsets.UTF_8));
+    return deserialize(bytes);
+  }
+
 }
