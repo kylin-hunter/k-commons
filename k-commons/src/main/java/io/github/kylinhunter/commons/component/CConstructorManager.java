@@ -34,8 +34,10 @@ import lombok.Getter;
 class CConstructorManager {
 
   private final Map<Class<?>, List<CConstructor>> constructorsMap = MapUtils.newHashMap();
-  @Getter private List<CConstructor> constructors = ListUtils.newArrayList();
-  @Getter private final Set<Class<?>> compClasses = SetUtils.newHashSet();
+  @Getter
+  private List<CConstructor> constructors = ListUtils.newArrayList();
+  @Getter
+  private final Set<Class<?>> compClasses = SetUtils.newHashSet();
   private final ClassScanner classScanner;
   private final CConstructorDepCalculator constructorDepCalculator;
 
@@ -88,7 +90,7 @@ class CConstructorManager {
   }
 
   /**
-   * @param compClazz compClazz
+   * @param compClazz    compClazz
    * @param cconstructor cconstructor
    * @title registerAll
    * @description
@@ -104,7 +106,7 @@ class CConstructorManager {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz        clazz
    * @param cconstructor cconstructor
    * @title register
    * @description
@@ -143,7 +145,7 @@ class CConstructorManager {
 
   /**
    * @param compClazz compClazz
-   * @param required required
+   * @param required  required
    * @return io.github.kylinhunter.commons.component.CConstructor
    * @title getFirst
    * @description

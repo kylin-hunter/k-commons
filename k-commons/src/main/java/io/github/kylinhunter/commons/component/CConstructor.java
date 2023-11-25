@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.component;
 
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.lang.reflect.Constructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,13 +28,25 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 class CConstructor {
-  @EqualsAndHashCode.Include private Class<?> clazz;
+
+  @EqualsAndHashCode.Include
+  private Class<?> clazz;
   private Constructor<?> constructor;
   private boolean primary;
   private int order;
   private int depLevel;
 
+  private String name;
+
   public CConstructor(Class<?> clazz, C c) {
+    String name = c.name();
+    if (StringUtil.isEmpty(name)) {
+      this.name = c.value();
+    }
+
+    if (StringUtil.isEmpty(this.name)) {
+      this.name = clazz.getSimpleName();
+    }
     this.clazz = clazz;
     this.constructor = clazz.getConstructors()[0];
     this.primary = c.primary();

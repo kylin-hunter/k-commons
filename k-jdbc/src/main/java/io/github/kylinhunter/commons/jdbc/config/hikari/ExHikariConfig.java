@@ -13,29 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.component;
+package io.github.kylinhunter.commons.jdbc.config.hikari;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.zaxxer.hikari.HikariConfig;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BiJi'an
- * @description abbreviations for component
- * @date 2022/11/8
+ * @description
+ * @date 2023-01-18 11:01
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface C {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class ExHikariConfig extends HikariConfig {
 
-  String value() default "";
+  private int no;
+  private String name;
 
-  String name() default "";
-
-  boolean primary() default false;
-
-  int order() default 0;
+  public ExHikariConfig(int no, String name) {
+    this.no = no;
+    if (!StringUtil.isEmpty(name)) {
+      this.name = name;
+    } else {
+      this.name = "datasource-" + no;
+    }
+  }
 }

@@ -20,12 +20,13 @@ import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
-import io.github.kylinhunter.commons.jdbc.datasource.bean.HikariConfigEx;
+import io.github.kylinhunter.commons.io.IOUtil;
+import io.github.kylinhunter.commons.jdbc.config.ConfigLoader;
+import io.github.kylinhunter.commons.jdbc.config.hikari.ExHikariConfig;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author BiJi'an
@@ -34,8 +35,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class DataSourceUtils {
 
-  private static final HikariConfigExParser hikariConfigExParser = new HikariConfigExParser();
-  @Getter private static DataSourceEx defaultDataSource;
+  private static final ConfigLoader EX_HIKARI_CONFIG_PARSER = new ConfigLoader();
+  @Getter
+  private static DataSourceEx defaultDataSource;
   private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = MapUtils.newHashMap();
   private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = MapUtils.newHashMap();
 
@@ -53,18 +55,18 @@ public class DataSourceUtils {
    */
   public static synchronized void init(String path) {
     closeAll();
-    List<HikariConfigEx> hikariConfigExs = hikariConfigExParser.load(path);
-    if (CollectionUtils.isEmpty(hikariConfigExs)) {
+    List<ExHikariConfig> exHikariConfigs = EX_HIKARI_CONFIG_PARSER.load(path);
+    if (CollectionUtils.isEmpty(exHikariConfigs)) {
       throw new InitException(" can't find datasource config");
     }
-    for (HikariConfigEx hikariConfigEx : hikariConfigExs) {
-      int no = hikariConfigEx.getNo();
-      String name = hikariConfigEx.getName();
+    for (ExHikariConfig exHikariConfig : exHikariConfigs) {
+      int no = exHikariConfig.getNo();
+      String name = exHikariConfig.getName();
       Class<? extends DataSourceEx> clazz = DSCreator.create(HikariDataSource.class);
 
       DataSourceEx dataSourceEx =
           ObjectCreator.create(
-              clazz, new Class[] {HikariConfig.class}, new Object[] {hikariConfigEx});
+              clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
       if (defaultDataSource == null) {
         defaultDataSource = dataSourceEx;
       }
@@ -82,7 +84,7 @@ public class DataSourceUtils {
    */
   private static void closeAll() {
     for (DataSourceEx dataSourceEx : ID_DATA_SOURCES.values()) {
-      IOUtils.closeQuietly(dataSourceEx);
+      IOUtil.closeQuietly(dataSourceEx);
     }
   }
 

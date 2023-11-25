@@ -13,13 +13,17 @@ import lombok.RequiredArgsConstructor;
 @C
 @Getter
 public class A3 {
+
   private final I primary1;
   private final List<I> is1;
 
-  @CSet private I primary2;
-  @CSet private List<I> is2;
+  @CSet
+  private I primary2;
+  @CSet
+  private List<I> is2;
 
-  @Getter private boolean init;
+  @Getter
+  private boolean init;
 
   public void println() {
     System.out.print("all Interface is1=>");

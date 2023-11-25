@@ -1,6 +1,5 @@
 dependencies {
     api project(":k-utils")
-    api("commons-io:commons-io")
     api("com.zaxxer:HikariCP")
     api("commons-dbutils:commons-dbutils")
 
@@ -11,6 +10,8 @@ dependencies {
     implementation("mysql:mysql-connector-java")
     implementation("com.oracle.database.jdbc:ojdbc8")
     implementation fileTree(dir: 'lib', includes: ['*.jar'])
+    implementation 'com.zendesk:mysql-binlog-connector-java:0.28.3'
+
 }
 
 

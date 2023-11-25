@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.datasource.bean;
+package io.github.kylinhunter.commons.jdbc.config.datasource;
 
 import java.util.Map;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BiJi'an
@@ -24,14 +25,12 @@ import lombok.Data;
  * @date 2023-01-18 00:08
  */
 @Data
-public class DataSourceInfo {
+@EqualsAndHashCode(callSuper = true)
+public class DSInfo extends JdbcConfig {
+
   private String name;
   private boolean primary;
-  private String driverClassName;
-  private String jdbcUrl;
-  private String username;
-  private String password;
 
   private PoolInfo pool;
-  private Map<String, String> dataSourceProperties;
+  private Map<String, String> properties;
 }

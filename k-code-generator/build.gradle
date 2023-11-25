@@ -3,6 +3,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic")
     implementation("org.codehaus.janino:janino")
 
+    implementation("commons-io:commons-io")
+
     implementation("org.apache.velocity:velocity-engine-core")
     implementation("org.apache.velocity.tools:velocity-tools-generic")
     implementation("io.springfox:springfox-swagger2")

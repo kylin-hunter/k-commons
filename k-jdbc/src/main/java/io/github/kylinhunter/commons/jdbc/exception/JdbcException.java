@@ -23,7 +23,12 @@ import io.github.kylinhunter.commons.exception.embed.biz.BizException;
  * @date 2023-01-17 23:47
  */
 public class JdbcException extends BizException {
+
   public JdbcException(String message, Throwable cause) {
     super(message, cause);
+  }
+
+  public JdbcException(String message) {
+    super(message);
   }
 }

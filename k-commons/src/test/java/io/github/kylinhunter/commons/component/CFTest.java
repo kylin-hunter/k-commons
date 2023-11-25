@@ -60,5 +60,18 @@ class CFTest {
     for (I component : components) {
       component.println();
     }
+
+    System.out.println("=boB2===");
+    b2 = CF.get("boB2");
+    b2.println();
+
+    System.out.println("=B3-OBJECT===");
+    b3 = CF.get("B3-OBJECT");
+    b3.println();
+    Assertions.assertEquals(4, b3.getIs1().size());
+    Assertions.assertEquals(4, b3.getIs2().size());
+    Assertions.assertEquals(B2.class, b3.getPrimary1().getClass());
+    Assertions.assertEquals(B2.class, b3.getPrimary2().getClass());
+
   }
 }

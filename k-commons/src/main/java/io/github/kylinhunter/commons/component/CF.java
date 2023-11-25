@@ -70,7 +70,7 @@ public class CF {
 
   /**
    * @param compClazz clazz
-   * @param required required
+   * @param required  required
    * @return T
    * @title get
    * @description
@@ -95,7 +95,7 @@ public class CF {
 
   /**
    * @param compClazz clazz
-   * @param required required
+   * @param required  required
    * @return T
    * @title get
    * @description
@@ -104,5 +104,44 @@ public class CF {
    */
   public static <T> List<T> getAll(Class<T> compClazz, boolean required) {
     return COMP_MANAGER.getAll(compClazz, required);
+  }
+
+  /**
+   * @param name name
+   * @param obj  obj
+   * @title register
+   * @description register
+   * @author BiJi'an
+   * @date 2023-11-25 18:08
+   */
+  public static void register(String name, Object obj) {
+    COMP_MANAGER.register(name, obj);
+  }
+
+
+  /**
+   * @param name name
+   * @return T
+   * @title get
+   * @description get
+   * @author BiJi'an
+   * @date 2023-11-25 18:07
+   */
+  public static <T> T get(String name) {
+    return COMP_MANAGER.get(name, true);
+  }
+
+  /**
+   * @param name     name
+   * @param required required
+   * @return T
+   * @title get
+   * @description get
+   * @author BiJi'an
+   * @date 2023-11-25 18:13
+   */
+
+  public static <T> T get(String name, boolean required) {
+    return COMP_MANAGER.get(name, required);
   }
 }

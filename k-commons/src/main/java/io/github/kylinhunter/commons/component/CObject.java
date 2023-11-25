@@ -26,30 +26,42 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CObject {
-  private int order;
-  @EqualsAndHashCode.Include private Object object;
 
-  private boolean primary;
+
   private CConstructor cconstructor;
   private CMethod cmethod;
 
-  public CObject(boolean primary, int order, Object object) {
+
+  private boolean primary;
+  private int order;
+  private String name;
+
+  @EqualsAndHashCode.Include
+  private Object object;
+
+  public CObject(String name, Object object) {
+    this.name = name;
+    this.object = object;
+  }
+
+  public CObject(boolean primary, int order, String name, Object object) {
     this.primary = primary;
     if (primary) {
       this.order = Integer.MIN_VALUE;
     } else {
       this.order = order;
     }
+    this.name = name;
     this.object = object;
   }
 
   public CObject(CConstructor cconstructor, Object object) {
-    this(cconstructor.isPrimary(), cconstructor.getOrder(), object);
+    this(cconstructor.isPrimary(), cconstructor.getOrder(), cconstructor.getName(), object);
     this.cconstructor = cconstructor;
   }
 
   public CObject(CMethod cmethod, Object object) {
-    this(cmethod.isPrimary(), cmethod.getOrder(), object);
+    this(cmethod.isPrimary(), cmethod.getOrder(), cmethod.getName(), object);
     this.cmethod = cmethod;
   }
 }

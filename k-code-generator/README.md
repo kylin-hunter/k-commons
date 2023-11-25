@@ -87,7 +87,7 @@ datasources:
       idleTimeout: 600000 # default: 600000 (10 minutes)
       maxLifetime: 1800000  # default: 1800000 (30 minutes
       validationTimeout: 5000 # default: 5000
-    dataSourceProperties:
+    properties:
       cachePrepStmts: true
       prepStmtCacheSize: 250
       prepStmtCacheSqlLimit: 2048

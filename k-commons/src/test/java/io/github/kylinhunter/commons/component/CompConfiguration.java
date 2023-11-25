@@ -16,11 +16,11 @@ public class CompConfiguration {
   }
 
   @C(primary = true, order = 1)
-  public B2 e(B1 b1) {
+  public B2 boB2(B1 b1) {
     return new B2(b1);
   }
 
-  @C
+  @C("B3-OBJECT")
   public B3 f(List<I> is, I i) {
     return new B3(i, is);
   }
