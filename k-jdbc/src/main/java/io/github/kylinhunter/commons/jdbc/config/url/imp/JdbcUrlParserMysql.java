@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * @description
  * @date 2023-01-10 11:11
  */
-@C
+@C("JDBC-URL-PARSER-MYSQL")
 public class JdbcUrlParserMysql implements JdbcUrlParser {
 
   private final Pattern pattern = Pattern.compile(".+//(.+):(\\d+)/([\\d\\w]+)([\\?]{0,1})(.*)");

@@ -18,8 +18,8 @@ package io.github.kylinhunter.commons.jdbc.meta;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
+import io.github.kylinhunter.commons.jdbc.datasource.ExDataSource;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.util.ObjectValues;
@@ -84,7 +84,7 @@ public class TableMetaReader {
    * @date 2023-01-18 12:42
    */
   public List<TableMeta> getTableMetaDatas(
-      DataSourceEx dataSource, String catalog, String tableName) {
+      ExDataSource dataSource, String catalog, String tableName) {
     try (Connection connection = dataSource.getConnection()) {
       catalog = catalog != null && catalog.length() > 0 ? catalog : null;
       return getTableMetaDatas(connection, catalog, null, tableName);

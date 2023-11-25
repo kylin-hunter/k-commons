@@ -16,8 +16,8 @@
 package io.github.kylinhunter.commons.jdbc.meta.cache;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
+import io.github.kylinhunter.commons.jdbc.datasource.ExDataSource;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
 import io.github.kylinhunter.commons.utils.cache.guava.AbstractCache;
@@ -44,9 +44,9 @@ public class DatabaseMetaCacheImp extends AbstractCache<Optional<DatabaseMeta>>
   public Optional<DatabaseMeta> load(CacheKey cacheKey) {
 
     int datasourceNo = cacheKey.getInt(0);
-    DataSourceEx dataSourceEx = DataSourceUtils.getByNo(datasourceNo);
-    if (dataSourceEx != null) {
-      return Optional.ofNullable(databaseMetaReader.getDatabaseMetaData(dataSourceEx));
+    ExDataSource exDataSource = DataSourceUtils.getByNo(datasourceNo);
+    if (exDataSource != null) {
+      return Optional.ofNullable(databaseMetaReader.getDatabaseMetaData(exDataSource));
     } else {
       return Optional.empty();
     }
@@ -80,9 +80,9 @@ public class DatabaseMetaCacheImp extends AbstractCache<Optional<DatabaseMeta>>
    * @date 2023-05-31 15:49
    */
   public DatabaseMeta getByDsName(String name) {
-    DataSourceEx dataSourceEx = DataSourceUtils.getByName(name);
-    if (dataSourceEx != null) {
-      Optional<DatabaseMeta> databaseMeta = super.get(dataSourceEx.getDsNo());
+    ExDataSource exDataSource = DataSourceUtils.getByName(name);
+    if (exDataSource != null) {
+      Optional<DatabaseMeta> databaseMeta = super.get(exDataSource.getDsNo());
       if (databaseMeta.isPresent()) {
         return databaseMeta.get();
       }

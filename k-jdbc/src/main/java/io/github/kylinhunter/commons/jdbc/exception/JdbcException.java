@@ -25,10 +25,10 @@ import io.github.kylinhunter.commons.exception.embed.biz.BizException;
 public class JdbcException extends BizException {
 
   public JdbcException(String message, Throwable cause) {
-    super(message, cause);
+    super(JdbcErrInfos.JDBC, message, cause);
   }
 
   public JdbcException(String message) {
-    super(message);
+    super(JdbcErrInfos.JDBC, message);
   }
 }

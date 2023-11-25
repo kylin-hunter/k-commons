@@ -40,7 +40,7 @@ public class DSCreator {
    * @author BiJi'an
    * @date 2023-05-27 00:26
    */
-  public static <T extends DataSource> Class<? extends DataSourceEx> create(Class<T> clazz) {
+  public static <T extends DataSource> Class<? extends ExDataSource> create(Class<T> clazz) {
     return create(clazz, null);
   }
 
@@ -53,19 +53,19 @@ public class DSCreator {
    * @date 2023-05-27 00:15
    */
   @SuppressWarnings("unchecked")
-  public static <T extends DataSource> Class<? extends DataSourceEx> create(
+  public static <T extends DataSource> Class<? extends ExDataSource> create(
       Class<T> clazz, DebugOption debugOption) {
     DynamicType.Unloaded<T> dynamicType =
         new ByteBuddy()
             .subclass(clazz)
-            .implement(DataSourceEx.class)
+            .implement(ExDataSource.class)
             .defineField("dsNo", int.class, Visibility.PRIVATE)
             .defineField("dsName", String.class, Visibility.PRIVATE)
             .implement(DSAccessor.class)
             .intercept(FieldAccessor.ofBeanProperty())
             .make();
     processDebug(dynamicType, debugOption);
-    return (Class<? extends DataSourceEx>)
+    return (Class<? extends ExDataSource>)
         dynamicType
             .load(DSCreator.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
             .getLoaded();

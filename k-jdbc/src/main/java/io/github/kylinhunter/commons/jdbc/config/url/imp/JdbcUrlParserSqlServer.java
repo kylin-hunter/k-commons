@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  *     <p>jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd
  * @date 2023-01-10 11:11
  */
-@C
+@C("JDBC-URL-PARSER-SQL_SERVER")
 public class JdbcUrlParserSqlServer implements JdbcUrlParser {
 
   private Pattern pattern = Pattern.compile(".+//(.+):(\\d+);(.*)");

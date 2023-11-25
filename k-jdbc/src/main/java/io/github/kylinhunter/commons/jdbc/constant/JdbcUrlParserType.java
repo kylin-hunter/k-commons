@@ -15,21 +15,26 @@
  */
 package io.github.kylinhunter.commons.jdbc.constant;
 
+import io.github.kylinhunter.commons.component.CT;
+import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserMysql;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserOracle;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserSqlServer;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023/1/18
  */
-@RequiredArgsConstructor
-public enum DbType {
-  MYSQL(ColumnParserType.MYSQL, JdbcUrlParserType.MYSQL),
-  ORACLE(ColumnParserType.ORACLE, JdbcUrlParserType.ORACLE),
-  SQL_SERVER(ColumnParserType.SQL_SERVER, JdbcUrlParserType.SQL_SERVER);
+public enum JdbcUrlParserType implements CT<JdbcUrlParser> {
+  MYSQL(JdbcUrlParserMysql.class),
+  ORACLE(JdbcUrlParserOracle.class),
+  SQL_SERVER(JdbcUrlParserSqlServer.class);
 
-  @Getter private final ColumnParserType columnParserType;
+  @Getter private final Class<? extends JdbcUrlParser> clazz;
 
-  @Getter private final JdbcUrlParserType jdbcUrlParserType;
+  JdbcUrlParserType(Class<? extends JdbcUrlParser> clazz) {
+    this.clazz = clazz;
+  }
 }

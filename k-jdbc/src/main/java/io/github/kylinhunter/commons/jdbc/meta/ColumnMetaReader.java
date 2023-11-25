@@ -20,8 +20,8 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.jdbc.constant.ColumnParserType;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
+import io.github.kylinhunter.commons.jdbc.datasource.ExDataSource;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
@@ -46,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @C
 @RequiredArgsConstructor
 public class ColumnMetaReader {
+
   private final DatabaseMetaReader databaseMetaReader;
 
   /**
@@ -72,7 +73,7 @@ public class ColumnMetaReader {
    * @date 2023-01-18 12:42
    */
   public List<ColumnMeta> getColumnMetaData(
-      DataSourceEx dataSource, String catalog, String tableName) {
+      ExDataSource dataSource, String catalog, String tableName) {
     try (Connection connection = dataSource.getConnection()) {
       catalog = catalog != null && catalog.length() > 0 ? catalog : null;
       return getColumnMetaData(connection, catalog, null, tableName);

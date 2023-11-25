@@ -16,12 +16,12 @@
 package io.github.kylinhunter.commons.jdbc.meta;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -52,7 +52,7 @@ public class DatabaseMetaReader {
    * @author BiJi'an
    * @date 2023-01-18 12:41
    */
-  public DatabaseMeta getDatabaseMetaData(DataSourceEx dataSource) {
+  public DatabaseMeta getDatabaseMetaData(DataSource dataSource) {
 
     try (Connection connection = dataSource.getConnection()) {
       return getDatabaseMetaData(connection);
@@ -77,6 +77,7 @@ public class DatabaseMetaReader {
       databaseMeta.setProductName(metaData.getDatabaseProductName());
       databaseMeta.setVersion(metaData.getDatabaseProductVersion());
       databaseMeta.setDriverName(metaData.getDriverName());
+
       return databaseMeta;
     } catch (Exception e) {
       throw new JdbcException("getDatabaseMetaData error", e);

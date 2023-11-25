@@ -16,11 +16,10 @@
 package io.github.kylinhunter.commons.jdbc.utils;
 
 import io.github.kylinhunter.commons.component.CF;
-import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserMysql;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserOracle;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserSqlServer;
+import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import java.util.Objects;
 
 /**
@@ -40,16 +39,22 @@ public class JdbcUtils {
    * @date 2023-11-25 22:19
    */
   public static JdbcUrl parse(String jdbcUrl) {
+    DbType dbType = calDbType(jdbcUrl);
+    JdbcUrlParser parse = CF.get(dbType.getJdbcUrlParserType());
+    return parse.parse(jdbcUrl);
+  }
+
+  public static DbType calDbType(String jdbcUrl) {
     Objects.requireNonNull(jdbcUrl);
     String lowerCaseJdbcUrl = jdbcUrl.toLowerCase();
     if (lowerCaseJdbcUrl.contains("mysql")) {
-      return CF.get(JdbcUrlParserMysql.class).parse(jdbcUrl);
+      return DbType.MYSQL;
     } else if (lowerCaseJdbcUrl.contains("oracle")) {
-      return CF.get(JdbcUrlParserOracle.class).parse(jdbcUrl);
+      return DbType.ORACLE;
     } else if (lowerCaseJdbcUrl.contains("sqlserver")) {
-      return CF.get(JdbcUrlParserSqlServer.class).parse(jdbcUrl);
+      return DbType.SQL_SERVER;
     } else {
-      throw new ParamException("unkown dbtype");
+      throw new JdbcException("no suppert jdbc url:" + jdbcUrl);
     }
   }
 }

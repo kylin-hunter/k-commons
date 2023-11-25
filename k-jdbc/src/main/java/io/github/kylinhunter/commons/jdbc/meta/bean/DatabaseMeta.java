@@ -15,8 +15,8 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.bean;
 
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import lombok.Data;
 
 /**
@@ -35,21 +35,6 @@ public class DatabaseMeta {
 
   public void setUrl(String url) {
     this.url = url;
-    this.dbType = calDbType(url);
-  }
-
-  public DbType calDbType(String jdbcUrl) {
-
-    ExceptionChecker.checkNotEmpty(jdbcUrl, "jdbcUrl can't be  empty");
-    String lowerCaseJdbcUrl = jdbcUrl.toLowerCase();
-    if (lowerCaseJdbcUrl.contains("mysql")) {
-      return DbType.MYSQL;
-    } else if (lowerCaseJdbcUrl.contains("oracle")) {
-      return DbType.ORACLE;
-    } else if (lowerCaseJdbcUrl.contains("sqlserver")) {
-      return DbType.SQL_SERVER;
-    } else {
-      return DbType.OTHERS;
-    }
+    this.dbType = JdbcUtils.calDbType(url);
   }
 }

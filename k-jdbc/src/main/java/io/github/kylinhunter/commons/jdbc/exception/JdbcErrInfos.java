@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.constant;
+package io.github.kylinhunter.commons.jdbc.exception;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import io.github.kylinhunter.commons.exception.info.ErrInfo;
+import io.github.kylinhunter.commons.exception.info.ErrInfoAware;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023/1/18
+ * @date 2022-01-01 00:53
  */
-@RequiredArgsConstructor
-public enum DbType {
-  MYSQL(ColumnParserType.MYSQL, JdbcUrlParserType.MYSQL),
-  ORACLE(ColumnParserType.ORACLE, JdbcUrlParserType.ORACLE),
-  SQL_SERVER(ColumnParserType.SQL_SERVER, JdbcUrlParserType.SQL_SERVER);
+@ErrInfoAware
+public class JdbcErrInfos {
 
-  @Getter private final ColumnParserType columnParserType;
+  static int BASE_CODE = 5000;
 
-  @Getter private final JdbcUrlParserType jdbcUrlParserType;
+  public static final ErrInfo JDBC = new ErrInfo(++BASE_CODE);
 }

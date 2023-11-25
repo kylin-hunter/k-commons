@@ -36,9 +36,9 @@ import lombok.Getter;
 public class DataSourceUtils {
 
   private static final ConfigLoader EX_HIKARI_CONFIG_PARSER = new ConfigLoader();
-  @Getter private static DataSourceEx defaultDataSource;
-  private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = MapUtils.newHashMap();
-  private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = MapUtils.newHashMap();
+  @Getter private static ExDataSource defaultDataSource;
+  private static final Map<Integer, ExDataSource> ID_DATA_SOURCES = MapUtils.newHashMap();
+  private static final Map<String, ExDataSource> NAME_DATA_SOURCES = MapUtils.newHashMap();
 
   static {
     init(null);
@@ -61,16 +61,16 @@ public class DataSourceUtils {
     for (ExHikariConfig exHikariConfig : exHikariConfigs) {
       int no = exHikariConfig.getNo();
       String name = exHikariConfig.getName();
-      Class<? extends DataSourceEx> clazz = DSCreator.create(HikariDataSource.class);
+      Class<? extends ExDataSource> clazz = DSCreator.create(HikariDataSource.class);
 
-      DataSourceEx dataSourceEx =
+      ExDataSource exDataSource =
           ObjectCreator.create(
               clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
       if (defaultDataSource == null) {
-        defaultDataSource = dataSourceEx;
+        defaultDataSource = exDataSource;
       }
-      ID_DATA_SOURCES.put(no, dataSourceEx);
-      NAME_DATA_SOURCES.put(name, dataSourceEx);
+      ID_DATA_SOURCES.put(no, exDataSource);
+      NAME_DATA_SOURCES.put(name, exDataSource);
     }
   }
 
@@ -82,8 +82,8 @@ public class DataSourceUtils {
    * @date 2023-01-18 12:25
    */
   private static void closeAll() {
-    for (DataSourceEx dataSourceEx : ID_DATA_SOURCES.values()) {
-      IOUtil.closeQuietly(dataSourceEx);
+    for (ExDataSource exDataSource : ID_DATA_SOURCES.values()) {
+      IOUtil.closeQuietly(exDataSource);
     }
   }
 
@@ -95,7 +95,7 @@ public class DataSourceUtils {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  public static DataSourceEx getByNo(int no) {
+  public static ExDataSource getByNo(int no) {
     return ID_DATA_SOURCES.get(no);
   }
 
@@ -107,7 +107,7 @@ public class DataSourceUtils {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  public static DataSourceEx getByName(String name) {
+  public static ExDataSource getByName(String name) {
     return NAME_DATA_SOURCES.get(name);
   }
 }

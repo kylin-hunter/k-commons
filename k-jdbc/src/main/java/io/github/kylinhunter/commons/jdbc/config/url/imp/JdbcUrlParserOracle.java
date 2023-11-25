@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  *     <p>jdbc:oracle:thin:@localhost:1521:ORACLE?user=your_username&password=your_password
  * @date 2023-01-10 11:11
  */
-@C
+@C("JDBC-URL-PARSER-ORACLE")
 public class JdbcUrlParserOracle implements JdbcUrlParser {
 
   private final Pattern pattern = Pattern.compile(".+@(.+):(\\d+):([\\d\\w]+)([\\?]{0,1})(.*)");

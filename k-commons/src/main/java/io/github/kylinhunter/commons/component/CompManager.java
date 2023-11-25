@@ -259,7 +259,6 @@ public class CompManager {
    */
   private void register(String name, CObject cobject) {
     if (!StringUtil.isEmpty(name)) {
-      System.out.println("register====>:" + name);
       CObjects cObjects = this.allComponents.get(name);
       if (cObjects != null) {
         throw new InitException("invalid cobject name:" + cobject.getName());

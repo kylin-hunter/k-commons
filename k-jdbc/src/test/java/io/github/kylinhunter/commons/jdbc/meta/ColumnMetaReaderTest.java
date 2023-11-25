@@ -18,6 +18,9 @@ class ColumnMetaReaderTest {
       System.out.println(columnMeta);
       Assertions.assertNotNull(columnMeta.getJavaClass());
       System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
+      columnMeta.getRawMetadatas().forEach((k, v) -> {
+        System.out.println(k + ":" + v);
+      });
     }
   }
 }
