@@ -42,16 +42,15 @@ public class JdbcUrl implements Serializable {
    * @author BiJi'an
    * @date 2023-11-25 20:48
    */
-
   public void setParams(Map<String, String> params) {
     if (params != null && params.size() > 0) {
-      params.forEach((k, v) -> {
-        if (k != null && v != null) {
-          this.params.put(k.trim(), v.trim());
-        }
-      });
+      params.forEach(
+          (k, v) -> {
+            if (k != null && v != null) {
+              this.params.put(k.trim(), v.trim());
+            }
+          });
     }
-
   }
 
   /**
@@ -61,7 +60,6 @@ public class JdbcUrl implements Serializable {
    * @author BiJi'an
    * @date 2023-11-25 20:49
    */
-
   public void setHost(String host) {
     if (host != null) {
       this.host = host.trim();

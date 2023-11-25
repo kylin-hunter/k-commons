@@ -29,8 +29,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 class CMethod {
 
-  @EqualsAndHashCode.Include
-  private final Method method;
+  @EqualsAndHashCode.Include private final Method method;
   private final Object compObject;
   private boolean primary;
   private int depLevel;

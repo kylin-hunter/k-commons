@@ -29,8 +29,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 class CConstructor {
 
-  @EqualsAndHashCode.Include
-  private Class<?> clazz;
+  @EqualsAndHashCode.Include private Class<?> clazz;
   private Constructor<?> constructor;
   private boolean primary;
   private int order;

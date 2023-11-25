@@ -27,17 +27,14 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CObject {
 
-
   private CConstructor cconstructor;
   private CMethod cmethod;
-
 
   private boolean primary;
   private int order;
   private String name;
 
-  @EqualsAndHashCode.Include
-  private Object object;
+  @EqualsAndHashCode.Include private Object object;
 
   public CObject(String name, Object object) {
     this.name = name;

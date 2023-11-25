@@ -37,14 +37,12 @@ import org.reflections.ReflectionUtils;
 class CMethodManager {
 
   private final Map<Class<?>, List<CMethod>> cmethodsMap = MapUtils.newHashMap();
-  @Getter
-  private List<CMethod> cmethods = ListUtils.newArrayList();
+  @Getter private List<CMethod> cmethods = ListUtils.newArrayList();
 
   private final CompManager compManager;
   private final ClassScanner classScanner;
   private final CMethodDepCalculator methodDepCalculator;
-  @Getter
-  private final Set<Class<?>> compClasses = SetUtils.newHashSet();
+  @Getter private final Set<Class<?>> compClasses = SetUtils.newHashSet();
 
   public CMethodManager(CompManager compManager) {
     this.compManager = compManager;
@@ -98,7 +96,7 @@ class CMethodManager {
 
   /**
    * @param compClazz compClazz
-   * @param cmethod   cmethod
+   * @param cmethod cmethod
    * @title registerAll
    * @description
    * @author BiJi'an
@@ -113,7 +111,7 @@ class CMethodManager {
   }
 
   /**
-   * @param clazz   clazz
+   * @param clazz clazz
    * @param cmethod cmethod
    * @title register
    * @description
@@ -152,7 +150,7 @@ class CMethodManager {
 
   /**
    * @param compClazz compClazz
-   * @param required  required
+   * @param required required
    * @return io.github.kylinhunter.commons.component.CConstructor
    * @title getFirst
    * @description

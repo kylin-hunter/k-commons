@@ -69,7 +69,6 @@ public class ObjectBytesSerializer {
     return new String(bytes, StandardCharsets.UTF_8);
   }
 
-
   /**
    * @param bytes bytes
    * @return T
@@ -105,5 +104,4 @@ public class ObjectBytesSerializer {
     byte[] bytes = Base64.getDecoder().decode(text.getBytes(StandardCharsets.UTF_8));
     return deserialize(bytes);
   }
-
 }

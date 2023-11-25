@@ -1,5 +1,19 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.jdbc.binlog;
-
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient.EventListener;
 import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
@@ -20,29 +34,29 @@ public class DefaultBinLogEventListener implements EventListener {
   public void onEvent(Event event) {
     EventData data = event.getData();
     if (data instanceof TableMapEventData) {
-      //只要连接的MySQL发生的增删改的操作，则都会进入这里，无论哪个数据库
+      // 只要连接的MySQL发生的增删改的操作，则都会进入这里，无论哪个数据库
 
       TableMapEventData tableMapEventData = (TableMapEventData) data;
 
-      //可以通过转成TableMapEventData类实例的tableMapEventData来获取当前发生变更的数据库
+      // 可以通过转成TableMapEventData类实例的tableMapEventData来获取当前发生变更的数据库
       System.out.println("发生变更的数据库：" + tableMapEventData.getDatabase());
 
       System.out.print("TableID:");
-      //表ID
+      // 表ID
       System.out.println(tableMapEventData.getTableId());
       System.out.print("TableName:");
-      //表名字
+      // 表名字
       System.out.println(tableMapEventData.getTable());
     }
-    //表数据发生修改时触发
+    // 表数据发生修改时触发
     if (data instanceof UpdateRowsEventData) {
       System.out.println("Update:");
       System.out.println(data.toString());
-      //表数据发生插入时触发
+      // 表数据发生插入时触发
     } else if (data instanceof WriteRowsEventData) {
       System.out.println("Insert:");
       System.out.println(data.toString());
-      //表数据发生删除后触发
+      // 表数据发生删除后触发
     } else if (data instanceof DeleteRowsEventData) {
       System.out.println("Delete:");
       System.out.println(data.toString());

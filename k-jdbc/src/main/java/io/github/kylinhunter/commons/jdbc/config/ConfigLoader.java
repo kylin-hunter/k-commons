@@ -46,9 +46,8 @@ public class ConfigLoader {
    */
   public List<ExHikariConfig> load(String path) {
     path = StringUtil.defaultString(path, DEFAULT_PATH);
-    DataSourceConfig dataSourceConfig = YamlHelper.loadFromPath(DataSourceConfig.class, path,
-        NameRule.CAMEL_LOW);
+    DataSourceConfig dataSourceConfig =
+        YamlHelper.loadFromPath(DataSourceConfig.class, path, NameRule.CAMEL_LOW);
     return ExHikariConfigHelper.parse(dataSourceConfig);
   }
-
 }

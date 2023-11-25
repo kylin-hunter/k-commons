@@ -31,7 +31,7 @@ public class DateUtils {
 
   /**
    * @param localDateTime localDateTime
-   * @param format        format
+   * @param format format
    * @return java.lang.String
    * @title format
    * @description
@@ -103,7 +103,7 @@ public class DateUtils {
   /*  parse part */
 
   /**
-   * @param date   date
+   * @param date date
    * @param format format
    * @return java.time.LocalDateTime
    * @title parse

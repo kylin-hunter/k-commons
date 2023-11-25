@@ -36,8 +36,7 @@ import lombok.Getter;
 public class DataSourceUtils {
 
   private static final ConfigLoader EX_HIKARI_CONFIG_PARSER = new ConfigLoader();
-  @Getter
-  private static DataSourceEx defaultDataSource;
+  @Getter private static DataSourceEx defaultDataSource;
   private static final Map<Integer, DataSourceEx> ID_DATA_SOURCES = MapUtils.newHashMap();
   private static final Map<String, DataSourceEx> NAME_DATA_SOURCES = MapUtils.newHashMap();
 
@@ -66,7 +65,7 @@ public class DataSourceUtils {
 
       DataSourceEx dataSourceEx =
           ObjectCreator.create(
-              clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
+              clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
       if (defaultDataSource == null) {
         defaultDataSource = dataSourceEx;
       }

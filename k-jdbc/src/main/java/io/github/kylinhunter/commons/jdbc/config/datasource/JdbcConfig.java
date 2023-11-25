@@ -52,12 +52,10 @@ public class JdbcConfig implements Serializable {
     }
   }
 
-
   public DbType getDbType() {
     if (this.jdbcUrlInfo != null) {
       return this.jdbcUrlInfo.getDbType();
     }
     return null;
   }
-
 }

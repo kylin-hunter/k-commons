@@ -35,11 +35,9 @@ public class JdbcUrlParserMysql implements JdbcUrlParser {
 
   private final Pattern pattern = Pattern.compile(".+//(.+):(\\d+)/([\\d\\w]+)([\\?]{0,1})(.*)");
 
-
   /**
    * jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
    */
-
   @Override
   public JdbcUrl parse(String jdbcUrl) {
     JdbcUrl jdbcUrlInfo = null;
@@ -60,5 +58,4 @@ public class JdbcUrlParserMysql implements JdbcUrlParser {
     }
     return jdbcUrlInfo;
   }
-
 }

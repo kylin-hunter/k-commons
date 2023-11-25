@@ -51,7 +51,5 @@ public class JdbcUtils {
     } else {
       throw new ParamException("unkown dbtype");
     }
-
   }
-
 }
