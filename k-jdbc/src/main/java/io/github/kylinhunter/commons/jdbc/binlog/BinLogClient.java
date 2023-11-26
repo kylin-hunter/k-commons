@@ -17,40 +17,80 @@ package io.github.kylinhunter.commons.jdbc.binlog;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
+import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-11-25 02:51
  */
+@Slf4j
 public class BinLogClient {
 
-  BinaryLogClient binaryLogClient;
+  private final BinaryLogClient binaryLogClient;
 
-  public BinLogClient(String hostname, int port, String schema, String username, String password) {
-    binaryLogClient = new BinaryLogClient(hostname, port, username, password);
-
-    binaryLogClient.setBinlogFilename("binlog.000012");
-    binaryLogClient.setBinlogPosition(0);
-
-    binaryLogClient.registerEventListener(new DefaultBinLogEventListener());
+  public BinLogClient(String jdbcUrl, String username, String password) {
+    this(JdbcUtils.parse(jdbcUrl), username, password);
   }
 
+  public BinLogClient(JdbcUrl jdbcUrl, String username, String password) {
+    this(jdbcUrl.getHost(), jdbcUrl.getPort(), jdbcUrl.getDatabase(), username, password);
+  }
+
+  public BinLogClient(String hostname, int port, String schema, String username, String password) {
+    binaryLogClient = new BinaryLogClient(hostname, port, schema, username, password);
+  }
+
+  public void setBinlogFilename(String binlogFilename) {
+    this.binaryLogClient.setBinlogFilename(binlogFilename);
+  }
+
+  public void setBinlogPosition(long binlogPosition) {
+    this.binaryLogClient.setBinlogPosition(binlogPosition);
+  }
+
+  /**
+   * @title start
+   * @description start
+   * @author BiJi'an
+   * @date 2023-11-27 01:32
+   */
   public void start() {
     try {
+      binaryLogClient.registerEventListener(new DefaultBinLogEventListener());
       binaryLogClient.connect();
     } catch (IOException e) {
       throw new InitException("start error", e);
     }
   }
 
+  /**
+   * @title disconnect
+   * @description disconnect
+   * @author BiJi'an
+   * @date 2023-11-27 01:32
+   */
+  public void disconnect() {
+    try {
+      binaryLogClient.disconnect();
+    } catch (Exception e) {
+      log.error("disconnect error", e);
+    }
+  }
+
   public static void main(String[] args) {
-    new Thread(
-            () -> {
-              BinLogClient binLogClient = new BinLogClient("localhost", 3306, "kp", "root", "root");
-              binLogClient.start();
-            })
-        .start();
+
+    String jdbcUrl = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+    BinLogClient binLogClient = new BinLogClient(jdbcUrl, "root", "root");
+    try {
+      binLogClient.setBinlogFilename("binlog.000012");
+      binLogClient.setBinlogPosition(0);
+      binLogClient.start();
+    } finally {
+      binLogClient.disconnect();
+    }
   }
 }
