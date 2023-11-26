@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.generator.context;
 
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.component.C;
+import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
@@ -25,6 +26,7 @@ import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
@@ -63,8 +65,10 @@ public class ModuleInfoReader {
    * @date 2023-03-19 22:36
    */
   private TableInfo toTable(Module module) {
-    TableReader tableMetaReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
-    ColumnReader columnMetaReader = MetaReaderFactory.getColumnMetaReader(DbType.MYSQL);
+    DatabaseMetaReader databaseMetaReader = CF.get(DatabaseMetaReader.class);
+    DbType dbType = databaseMetaReader.getMetaData().getDbType();
+    TableReader tableMetaReader = MetaReaderFactory.getTableMetaReader(dbType);
+    ColumnReader columnMetaReader = MetaReaderFactory.getColumnMetaReader(dbType);
 
     Table table = module.getTable();
 
