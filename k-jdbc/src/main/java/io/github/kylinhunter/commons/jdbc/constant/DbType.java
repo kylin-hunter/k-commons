@@ -25,11 +25,15 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public enum DbType {
-  MYSQL(ColumnParserType.MYSQL, JdbcUrlParserType.MYSQL),
-  ORACLE(ColumnParserType.ORACLE, JdbcUrlParserType.ORACLE),
-  SQL_SERVER(ColumnParserType.SQL_SERVER, JdbcUrlParserType.SQL_SERVER);
+  MYSQL(ColumnParserType.MYSQL, JdbcUrlParserType.MYSQL, "Mysql"),
+  ORACLE(ColumnParserType.ORACLE, JdbcUrlParserType.ORACLE, "Oracle"),
+  SQL_SERVER(ColumnParserType.SQL_SERVER, JdbcUrlParserType.SQL_SERVER, "SqlServer");
 
-  @Getter private final ColumnParserType columnParserType;
+  @Getter
+  private final ColumnParserType columnParserType;
 
-  @Getter private final JdbcUrlParserType jdbcUrlParserType;
+  @Getter
+  private final JdbcUrlParserType jdbcUrlParserType;
+  @Getter
+  private final String prefix;
 }

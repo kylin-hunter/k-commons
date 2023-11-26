@@ -17,7 +17,6 @@ package io.github.kylinhunter.commons.generator.context;
 
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
@@ -25,10 +24,12 @@ import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.generator.exception.CodeException;
-import io.github.kylinhunter.commons.jdbc.meta.ColumnMetaReader;
-import io.github.kylinhunter.commons.jdbc.meta.TableMetaReader;
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
+import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -42,9 +43,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ModuleInfoReader {
 
-  @CSet private ColumnMetaReader columnMetaReader;
-
-  @CSet private TableMetaReader tableMetaReader;
 
   /**
    * @return io.github.kylinhunter.commons.generator.context.bean.ModuleInfos
@@ -66,6 +64,9 @@ public class ModuleInfoReader {
    * @date 2023-03-19 22:36
    */
   private TableInfo toTable(Module module) {
+    TableReader tableMetaReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
+    ColumnReader columnMetaReader = MetaReaderFactory.getColumnMetaReader(DbType.MYSQL);
+
     Table table = module.getTable();
 
     String databaseName = module.getDatabase().getName();

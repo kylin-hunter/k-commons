@@ -13,24 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta.parser.imp;
+package io.github.kylinhunter.commons.jdbc.meta.column.imp;
 
-import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.jdbc.meta.parser.ColumnParser;
-import io.github.kylinhunter.commons.sys.KGenerated;
+import com.mysql.cj.MysqlType;
+import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.jdbc.meta.column.ColumnParser;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-10 11:11
  */
-@C
-@KGenerated
-public class ColumnParserSqlServer extends ColumnParserMysql {
+
+public class MysqlColumnParser implements ColumnParser {
+
   /**
    * @see ColumnParser#calJavaClass(int)
    */
   public Class<?> calJavaClass(int dataType) {
-    return super.calJavaClass(dataType);
+    try {
+      MysqlType mysqlType = MysqlType.getByJdbcType(dataType);
+      String className = mysqlType.getClassName();
+      if (!StringUtil.isEmpty(className)) {
+        return ClassUtil.loadClass(className);
+      }
+    } catch (Exception e) {
+      throw new InitException("can't get javaClass", e);
+    }
+    return null;
   }
 }

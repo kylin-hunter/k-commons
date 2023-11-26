@@ -25,17 +25,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-02-11 10:52
  */
+@Slf4j
 public class CompManager {
 
   protected final Map<Object, CObjects> allComponents = MapUtils.newHashMap();
 
-  @Getter protected ClassScanner classScanner;
+  @Getter
+  protected ClassScanner classScanner;
   protected final ConstructorCompManager constructorCompManager;
   protected final MethodCompManager methodCompManager;
   private final CFieldCompSetter cfieldCompSetter;
@@ -80,7 +83,7 @@ public class CompManager {
 
   /**
    * @param compClazz compClazz
-   * @param required required
+   * @param required  required
    * @return java.util.List<T>
    * @title getComps
    * @description
@@ -101,7 +104,7 @@ public class CompManager {
   }
 
   /**
-   * @param key key
+   * @param key      key
    * @param required required
    * @return java.util.List<T>
    * @title getComp
@@ -123,9 +126,9 @@ public class CompManager {
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz        clazz
    * @param cconstructor cconstructor
-   * @param obj obj
+   * @param obj          obj
    * @return void
    * @title register
    * @description
@@ -134,14 +137,15 @@ public class CompManager {
    */
   @SuppressWarnings("UnusedReturnValue")
   public List<CObjects> register(Class<?> clazz, CConstructor cconstructor, Object obj) {
+    log.info("register {},{}", clazz.getName(), cconstructor.toString());
     CObject cobject = new CObject(cconstructor, obj);
     return register(clazz, cobject);
   }
 
   /**
-   * @param clazz clazz
+   * @param clazz   clazz
    * @param cmethod cmethod
-   * @param obj obj
+   * @param obj     obj
    * @return void
    * @title register
    * @description
@@ -156,7 +160,7 @@ public class CompManager {
 
   /**
    * @param clazz clazz
-   * @param obj obj
+   * @param obj   obj
    * @return void
    * @title register
    * @description
@@ -192,7 +196,12 @@ public class CompManager {
                 cobjects.add(cobject);
                 return cobjects;
               });
-      register(cobject.getName(), cobject);
+      register(clazz.getSimpleName(), cobject);
+
+      String name = cobject.getName();
+      if (!StringUtil.isEmpty(name) && !name.equals(clazz.getSimpleName())) {
+        register(name, cobject);
+      }
 
       allAffectedCObjects.add(affectedCObject);
       Set<Class<?>> allInterfaces = classScanner.getAllInterface(clazz);
@@ -236,7 +245,7 @@ public class CompManager {
 
   /**
    * @param name name
-   * @param obj obj
+   * @param obj  obj
    * @title register
    * @description register
    * @author BiJi'an
@@ -249,7 +258,7 @@ public class CompManager {
   }
 
   /**
-   * @param name name
+   * @param name    name
    * @param cobject cobject
    * @return void
    * @title register

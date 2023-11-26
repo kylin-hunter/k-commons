@@ -1,19 +1,20 @@
-package io.github.kylinhunter.commons.jdbc.meta;
+package io.github.kylinhunter.commons.jdbc.meta.column;
 
-import io.github.kylinhunter.commons.component.CF;
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class ColumnMetaReaderTest {
+class ColumnReaderTest {
 
   @Test
   void test() {
-    ColumnMetaReader columnMetaReader = CF.get(ColumnMetaReader.class);
+    ColumnReader columnReader = MetaReaderFactory.getColumnMetaReader(DbType.MYSQL);
 
-    List<ColumnMeta> columnMetas = columnMetaReader.getColumnMetaData("", "test_user");
-    Assertions.assertTrue(!columnMetas.isEmpty());
+    List<ColumnMeta> columnMetas = columnReader.getColumnMetaData("", "test_user");
+    Assertions.assertTrue(columnMetas.size() == 19);
     for (ColumnMeta columnMeta : columnMetas) {
       System.out.println(columnMeta);
       Assertions.assertNotNull(columnMeta.getJavaClass());

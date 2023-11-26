@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta;
+package io.github.kylinhunter.commons.jdbc.meta.table;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.datasource.ExDataSource;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
-import io.github.kylinhunter.commons.util.ObjectValues;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.List;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -38,12 +35,10 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-@C
-@RequiredArgsConstructor
-public class TableMetaReader {
+public abstract class AbstractTableReader implements TableReader {
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
    * @title getTableMetaData
@@ -61,7 +56,7 @@ public class TableMetaReader {
   }
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -75,8 +70,8 @@ public class TableMetaReader {
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -98,9 +93,9 @@ public class TableMetaReader {
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -113,7 +108,7 @@ public class TableMetaReader {
     try {
       columnMetaDatas = ListUtils.newArrayList();
       DatabaseMetaData metaData = connection.getMetaData();
-      ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[] {"TABLE"});
+      ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[]{"TABLE"});
       ResultSetMetaData tableMetadata = tables.getMetaData();
       Map<String, Object> rawMetadata = MapUtils.newHashMap();
       while (tables.next()) {
@@ -138,23 +133,12 @@ public class TableMetaReader {
   /**
    * @param tableMeta tableMeta
    * @param columName columName
-   * @param value value
+   * @param value     value
    * @return void
    * @title processMetadata
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:43
    */
-  private void processMetadata(TableMeta tableMeta, String columName, Object value) {
-    //        log.info(columName + ":" + value);
-    switch (columName) {
-      case "TABLE_NAME":
-        tableMeta.setName(ObjectValues.getString(value));
-        break;
-      case "REMARKS":
-        tableMeta.setRemarks(ObjectValues.getString(value));
-        break;
-      default:
-    }
-  }
+  abstract void processMetadata(TableMeta tableMeta, String columName, Object value);
 }

@@ -7,12 +7,12 @@ import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class JdbcUrlParserOracleTest {
+class OracleJdbcUrlParserTest {
 
   @Test
   void parse() {
     String jdbcUrl = "jdbc:oracle:thin:@localhost:1521:ORACLE?user=your_username&password=your_password";
-    JdbcUrlParser jdbcUrlParser = new JdbcUrlParserOracle();
+    JdbcUrlParser jdbcUrlParser = new OracleJdbcUrlParser();
     JdbcUrl jdbcUrlInfo = jdbcUrlParser.parse(jdbcUrl);
     Assertions.assertEquals(DbType.ORACLE, jdbcUrlInfo.getDbType());
     Assertions.assertEquals("localhost", jdbcUrlInfo.getHost());

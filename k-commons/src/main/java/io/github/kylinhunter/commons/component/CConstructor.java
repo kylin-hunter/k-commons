@@ -29,7 +29,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 class CConstructor {
 
-  @EqualsAndHashCode.Include private Class<?> clazz;
+  @EqualsAndHashCode.Include
+  private Class<?> clazz;
   private Constructor<?> constructor;
   private boolean primary;
   private int order;
@@ -43,11 +44,17 @@ class CConstructor {
       this.name = c.value();
     }
 
-    if (StringUtil.isEmpty(this.name)) {
-      this.name = clazz.getSimpleName();
-    }
     this.clazz = clazz;
-    this.constructor = clazz.getConstructors()[0];
+    Constructor<?>[] constructors = clazz.getConstructors();
+    for (Constructor<?> constructor : constructors) {
+      if (constructor.getAnnotation(CM.class) != null) {
+        this.constructor = constructor;
+      }
+    }
+    if (this.constructor == null) {
+      this.constructor = constructors[0];
+
+    }
     this.primary = c.primary();
     this.order = c.order();
   }

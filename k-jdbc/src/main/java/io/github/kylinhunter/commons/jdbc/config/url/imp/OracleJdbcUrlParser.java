@@ -22,39 +22,38 @@ import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * @author BiJi'an
- * @description JdbcUrlParserSqlServer j
- *     <p>jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd
+ * @description parse
+ * <p>jdbc:oracle:thin:@localhost:1521:ORACLE?user=your_username&password=your_password
  * @date 2023-01-10 11:11
  */
-@C("JDBC-URL-PARSER-SQL_SERVER")
-public class JdbcUrlParserSqlServer implements JdbcUrlParser {
+@C
+public class OracleJdbcUrlParser implements JdbcUrlParser {
 
-  private Pattern pattern = Pattern.compile(".+//(.+):(\\d+);(.*)");
+  private final Pattern pattern = Pattern.compile(".+@(.+):(\\d+):([\\d\\w]+)([\\?]{0,1})(.*)");
 
+  /**
+   *
+   */
   @Override
   public JdbcUrl parse(String jdbcUrl) {
     JdbcUrl jdbcUrlInfo = null;
     Matcher matcher = pattern.matcher(jdbcUrl);
 
     if (matcher.find()) {
+
       jdbcUrlInfo = new JdbcUrl();
-      jdbcUrlInfo.setDbType(DbType.SQL_SERVER);
+      jdbcUrlInfo.setDbType(DbType.ORACLE);
       jdbcUrlInfo.setHost(matcher.group(1));
       jdbcUrlInfo.setPort(Integer.parseInt(matcher.group(2)));
-      String group3 = matcher.group(3);
-      Map<String, String> params = StringUtil.split(group3, ';', '=');
+      jdbcUrlInfo.setDatabase(matcher.group(3));
+      String group5 = matcher.group(5);
+      Map<String, String> params = StringUtil.split(group5, '&', '=');
       jdbcUrlInfo.setParams(params);
-      for (Entry<String, String> env : params.entrySet()) {
-        if ("DatabaseName".equalsIgnoreCase(env.getKey())) {
-          jdbcUrlInfo.setDatabase(env.getValue());
-        }
-      }
     }
 
     if (jdbcUrlInfo == null) {

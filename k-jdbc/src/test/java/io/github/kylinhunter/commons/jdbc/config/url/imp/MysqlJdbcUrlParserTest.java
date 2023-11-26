@@ -7,12 +7,12 @@ import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class JdbcUrlParserMysqlTest {
+class MysqlJdbcUrlParserTest {
 
   @Test
   void parse() {
     String jdbcUrl = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
-    JdbcUrlParser jdbcUrlParser = new JdbcUrlParserMysql();
+    JdbcUrlParser jdbcUrlParser = new MysqlJdbcUrlParser();
     JdbcUrl jdbcUrlInfo = jdbcUrlParser.parse(jdbcUrl);
     Assertions.assertEquals(DbType.MYSQL, jdbcUrlInfo.getDbType());
     Assertions.assertEquals("localhost", jdbcUrlInfo.getHost());
@@ -47,4 +47,6 @@ class JdbcUrlParserMysqlTest {
     Assertions.assertEquals("kp", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(0, jdbcUrlInfo.getParams().size());
   }
+
+
 }

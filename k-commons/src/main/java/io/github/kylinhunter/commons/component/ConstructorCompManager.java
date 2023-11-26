@@ -22,6 +22,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
  * @date 2022-10-25 23:17
  */
 @RequiredArgsConstructor
+@Slf4j
 class ConstructorCompManager {
 
   private final CompManager compManager;
@@ -68,7 +70,9 @@ class ConstructorCompManager {
     Class<?> clazz = cconstructor.getClazz();
     int parameterCount = constructor.getParameterCount();
     if (parameterCount <= 0) {
+      
       compManager.register(clazz, cconstructor, ObjectCreator.create(constructor));
+
     } else {
       Class<?>[] parameterTypes = constructor.getParameterTypes();
       Type[] genericParameterTypes = constructor.getGenericParameterTypes();

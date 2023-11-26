@@ -13,32 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta.bean;
-
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
-import lombok.Data;
+package io.github.kylinhunter.commons.jdbc.meta.column;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-10 11:11
  */
-@Data
-public class DatabaseMeta {
+public interface ColumnParser {
 
-  private String url;
-  private JdbcUrl jdbcUrl;
-  private String productName;
-  private String version;
-  private String driverName;
-  private DbType dbType;
-
-  public void setUrl(String url) {
-    this.url = url;
-    this.jdbcUrl = JdbcUtils.parse(url);
-    this.dbType = this.jdbcUrl.getDbType();
-
-  }
+  Class<?> calJavaClass(int dataType);
 }

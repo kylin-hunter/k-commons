@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta.parser.imp;
+package io.github.kylinhunter.commons.jdbc.meta.column.imp;
 
-import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.jdbc.meta.parser.ColumnParser;
+import io.github.kylinhunter.commons.jdbc.meta.column.ColumnParser;
 import io.github.kylinhunter.commons.sys.KGenerated;
 
 /**
@@ -24,9 +23,10 @@ import io.github.kylinhunter.commons.sys.KGenerated;
  * @description
  * @date 2023-01-10 11:11
  */
-@C
+
 @KGenerated
-public class ColumnParserOracle extends ColumnParserMysql {
+public class OracleColumnParser extends MysqlColumnParser {
+
   /**
    * @see ColumnParser#calJavaClass(int)
    */

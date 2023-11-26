@@ -13,13 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta.parser;
+package io.github.kylinhunter.commons.jdbc.meta.column.imp;
+
+import io.github.kylinhunter.commons.jdbc.meta.column.ColumnParser;
+import io.github.kylinhunter.commons.sys.KGenerated;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-10 11:11
  */
-public interface ColumnParser {
-  Class<?> calJavaClass(int dataType);
+
+@KGenerated
+public class SqlServerColumnParser extends MysqlColumnParser {
+
+  /**
+   * @see ColumnParser#calJavaClass(int)
+   */
+  public Class<?> calJavaClass(int dataType) {
+    return super.calJavaClass(dataType);
+  }
 }

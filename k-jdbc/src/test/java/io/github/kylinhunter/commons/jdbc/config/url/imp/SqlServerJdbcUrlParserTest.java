@@ -7,12 +7,12 @@ import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class JdbcUrlParserSqlserverTest {
+class SqlServerJdbcUrlParserTest {
 
   @Test
   void parse() {
     String jdbcUrl = "jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd";
-    JdbcUrlParser jdbcUrlParser = new JdbcUrlParserSqlServer();
+    JdbcUrlParser jdbcUrlParser = new SqlServerJdbcUrlParser();
     JdbcUrl jdbcUrlInfo = jdbcUrlParser.parse(jdbcUrl);
     Assertions.assertEquals(DbType.SQL_SERVER, jdbcUrlInfo.getDbType());
     Assertions.assertEquals("localhost", jdbcUrlInfo.getHost());

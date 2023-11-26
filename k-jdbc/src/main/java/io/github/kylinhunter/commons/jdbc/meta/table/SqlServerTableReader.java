@@ -13,32 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta.bean;
+package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
+import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
-import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-01-10 11:11
  */
-@Data
-public class DatabaseMeta {
+@Slf4j
+@C
+public class SqlServerTableReader extends MysqlTableReader {
 
-  private String url;
-  private JdbcUrl jdbcUrl;
-  private String productName;
-  private String version;
-  private String driverName;
-  private DbType dbType;
+  private static final DbType DATABASE_TYPE = DbType.SQL_SERVER;
 
-  public void setUrl(String url) {
-    this.url = url;
-    this.jdbcUrl = JdbcUtils.parse(url);
-    this.dbType = this.jdbcUrl.getDbType();
 
-  }
 }

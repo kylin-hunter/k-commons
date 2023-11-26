@@ -71,6 +71,7 @@ public class DatabaseMetaReader {
    */
   public DatabaseMeta getMetaData(Connection connection) {
     try {
+
       DatabaseMetaData metaData = connection.getMetaData();
       DatabaseMeta databaseMeta = new DatabaseMeta();
       databaseMeta.setUrl(metaData.getURL());

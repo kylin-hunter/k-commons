@@ -17,9 +17,9 @@ package io.github.kylinhunter.commons.jdbc.constant;
 
 import io.github.kylinhunter.commons.component.CT;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserMysql;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserOracle;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.JdbcUrlParserSqlServer;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.MysqlJdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.OracleJdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.SqlServerJdbcUrlParser;
 import lombok.Getter;
 
 /**
@@ -28,11 +28,12 @@ import lombok.Getter;
  * @date 2023/1/18
  */
 public enum JdbcUrlParserType implements CT<JdbcUrlParser> {
-  MYSQL(JdbcUrlParserMysql.class),
-  ORACLE(JdbcUrlParserOracle.class),
-  SQL_SERVER(JdbcUrlParserSqlServer.class);
+  MYSQL(MysqlJdbcUrlParser.class),
+  ORACLE(OracleJdbcUrlParser.class),
+  SQL_SERVER(SqlServerJdbcUrlParser.class);
 
-  @Getter private final Class<? extends JdbcUrlParser> clazz;
+  @Getter
+  private final Class<? extends JdbcUrlParser> clazz;
 
   JdbcUrlParserType(Class<? extends JdbcUrlParser> clazz) {
     this.clazz = clazz;

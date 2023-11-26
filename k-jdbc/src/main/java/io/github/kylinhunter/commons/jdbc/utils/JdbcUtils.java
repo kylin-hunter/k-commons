@@ -44,6 +44,14 @@ public class JdbcUtils {
     return parse.parse(jdbcUrl);
   }
 
+  /**
+   * @param jdbcUrl jdbcUrl
+   * @return io.github.kylinhunter.commons.jdbc.constant.DbType
+   * @title calDbType
+   * @description calDbType
+   * @author BiJi'an
+   * @date 2023-11-26 11:50
+   */
   public static DbType calDbType(String jdbcUrl) {
     Objects.requireNonNull(jdbcUrl);
     String lowerCaseJdbcUrl = jdbcUrl.toLowerCase();

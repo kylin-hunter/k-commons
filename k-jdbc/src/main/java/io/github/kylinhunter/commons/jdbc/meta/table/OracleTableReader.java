@@ -13,34 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta.cache;
+package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
+import io.github.kylinhunter.commons.component.C;
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-01-19 00:44
+ * @date 2023-01-10 11:11
  */
-public interface DatabaseMetaCache {
+@Slf4j
+@C
+public class OracleTableReader extends MysqlTableReader {
 
-  /**
-   * @param no no
-   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title get
-   * @description
-   * @author BiJi'an
-   * @date 2023-05-31 15:47
-   */
-  DatabaseMeta getByDsNo(int no);
+  private static final DbType DATABASE_TYPE = DbType.ORACLE;
 
-  /**
-   * @param name name
-   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title getByDsName
-   * @description
-   * @author BiJi'an
-   * @date 2023-05-31 15:49
-   */
-  DatabaseMeta getByDsName(String name);
+
 }
