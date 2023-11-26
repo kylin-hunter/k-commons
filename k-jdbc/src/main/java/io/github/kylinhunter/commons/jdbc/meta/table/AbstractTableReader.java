@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.jdbc.meta.table;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.datasource.ExDataSource;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
@@ -37,8 +38,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractTableReader implements TableReader {
 
+  protected DbType dbType;
+
   /**
-   * @param catalog   catalog
+   * @param catalog catalog
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
    * @title getTableMetaData
@@ -56,7 +59,7 @@ public abstract class AbstractTableReader implements TableReader {
   }
 
   /**
-   * @param catalog   catalog
+   * @param catalog catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -70,8 +73,8 @@ public abstract class AbstractTableReader implements TableReader {
 
   /**
    * @param dataSource dataSource
-   * @param catalog    catalog
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -93,9 +96,9 @@ public abstract class AbstractTableReader implements TableReader {
 
   /**
    * @param connection connection
-   * @param catalog    catalog
-   * @param schema     schema
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param schema schema
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -108,7 +111,7 @@ public abstract class AbstractTableReader implements TableReader {
     try {
       columnMetaDatas = ListUtils.newArrayList();
       DatabaseMetaData metaData = connection.getMetaData();
-      ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[]{"TABLE"});
+      ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[] {"TABLE"});
       ResultSetMetaData tableMetadata = tables.getMetaData();
       Map<String, Object> rawMetadata = MapUtils.newHashMap();
       while (tables.next()) {
@@ -133,8 +136,7 @@ public abstract class AbstractTableReader implements TableReader {
   /**
    * @param tableMeta tableMeta
    * @param columName columName
-   * @param value     value
-   * @return void
+   * @param value value
    * @title processMetadata
    * @description
    * @author BiJi'an

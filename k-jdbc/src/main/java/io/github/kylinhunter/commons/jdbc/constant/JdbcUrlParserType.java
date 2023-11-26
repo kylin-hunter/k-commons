@@ -32,8 +32,7 @@ public enum JdbcUrlParserType implements CT<JdbcUrlParser> {
   ORACLE(OracleJdbcUrlParser.class),
   SQL_SERVER(SqlServerJdbcUrlParser.class);
 
-  @Getter
-  private final Class<? extends JdbcUrlParser> clazz;
+  @Getter private final Class<? extends JdbcUrlParser> clazz;
 
   JdbcUrlParserType(Class<? extends JdbcUrlParser> clazz) {
     this.clazz = clazz;

@@ -29,6 +29,4 @@ import java.lang.annotation.Target;
 @Target({ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CM {
-
-}
+public @interface CM {}

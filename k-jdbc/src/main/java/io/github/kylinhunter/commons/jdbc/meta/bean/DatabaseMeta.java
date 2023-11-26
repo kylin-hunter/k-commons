@@ -39,6 +39,5 @@ public class DatabaseMeta {
     this.url = url;
     this.jdbcUrl = JdbcUtils.parse(url);
     this.dbType = this.jdbcUrl.getDbType();
-
   }
 }

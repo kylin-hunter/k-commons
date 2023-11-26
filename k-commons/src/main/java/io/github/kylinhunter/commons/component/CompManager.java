@@ -37,8 +37,7 @@ public class CompManager {
 
   protected final Map<Object, CObjects> allComponents = MapUtils.newHashMap();
 
-  @Getter
-  protected ClassScanner classScanner;
+  @Getter protected ClassScanner classScanner;
   protected final ConstructorCompManager constructorCompManager;
   protected final MethodCompManager methodCompManager;
   private final CFieldCompSetter cfieldCompSetter;
@@ -83,7 +82,7 @@ public class CompManager {
 
   /**
    * @param compClazz compClazz
-   * @param required  required
+   * @param required required
    * @return java.util.List<T>
    * @title getComps
    * @description
@@ -104,7 +103,7 @@ public class CompManager {
   }
 
   /**
-   * @param key      key
+   * @param key key
    * @param required required
    * @return java.util.List<T>
    * @title getComp
@@ -113,7 +112,7 @@ public class CompManager {
    * @date 2023-02-12 22:22
    */
   @SuppressWarnings("unchecked")
-  public <T, S extends T> T get(Object key, boolean required) {
+  public <T> T get(Object key, boolean required) {
     Objects.requireNonNull(key, "key can't be null");
     CObjects cobjects = allComponents.get(key);
     if (cobjects != null && !cobjects.isEmpty()) {
@@ -126,9 +125,9 @@ public class CompManager {
   }
 
   /**
-   * @param clazz        clazz
+   * @param clazz clazz
    * @param cconstructor cconstructor
-   * @param obj          obj
+   * @param obj obj
    * @return void
    * @title register
    * @description
@@ -143,9 +142,9 @@ public class CompManager {
   }
 
   /**
-   * @param clazz   clazz
+   * @param clazz clazz
    * @param cmethod cmethod
-   * @param obj     obj
+   * @param obj obj
    * @return void
    * @title register
    * @description
@@ -160,7 +159,7 @@ public class CompManager {
 
   /**
    * @param clazz clazz
-   * @param obj   obj
+   * @param obj obj
    * @return void
    * @title register
    * @description
@@ -245,7 +244,7 @@ public class CompManager {
 
   /**
    * @param name name
-   * @param obj  obj
+   * @param obj obj
    * @title register
    * @description register
    * @author BiJi'an
@@ -258,9 +257,8 @@ public class CompManager {
   }
 
   /**
-   * @param name    name
+   * @param name name
    * @param cobject cobject
-   * @return void
    * @title register
    * @description register
    * @author BiJi'an

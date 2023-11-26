@@ -29,8 +29,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 class CConstructor {
 
-  @EqualsAndHashCode.Include
-  private Class<?> clazz;
+  @EqualsAndHashCode.Include private Class<?> clazz;
   private Constructor<?> constructor;
   private boolean primary;
   private int order;
@@ -53,7 +52,6 @@ class CConstructor {
     }
     if (this.constructor == null) {
       this.constructor = constructors[0];
-
     }
     this.primary = c.primary();
     this.order = c.order();

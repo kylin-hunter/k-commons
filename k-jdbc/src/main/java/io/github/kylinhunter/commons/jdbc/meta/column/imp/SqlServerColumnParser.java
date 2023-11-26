@@ -23,7 +23,6 @@ import io.github.kylinhunter.commons.sys.KGenerated;
  * @description
  * @date 2023-01-10 11:11
  */
-
 @KGenerated
 public class SqlServerColumnParser extends MysqlColumnParser {
 

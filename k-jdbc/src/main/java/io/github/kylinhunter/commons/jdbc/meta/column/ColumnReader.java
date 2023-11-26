@@ -25,12 +25,10 @@ import java.util.List;
  * @description
  * @date 2023-01-10 11:11
  */
-
 public interface ColumnReader {
 
-
   /**
-   * @param catalog   catalog
+   * @param catalog catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -42,22 +40,21 @@ public interface ColumnReader {
 
   /**
    * @param dataSource dataSource
-   * @param catalog    catalog
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  List<ColumnMeta> getColumnMetaData(
-      ExDataSource dataSource, String catalog, String tableName);
+  List<ColumnMeta> getColumnMetaData(ExDataSource dataSource, String catalog, String tableName);
 
   /**
    * @param connection connection
-   * @param catalog    catalog
-   * @param schema     schema
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param schema schema
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -66,5 +63,4 @@ public interface ColumnReader {
    */
   List<ColumnMeta> getColumnMetaData(
       Connection connection, String catalog, String schema, String tableName);
-
 }

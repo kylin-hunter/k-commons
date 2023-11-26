@@ -30,13 +30,14 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class MysqlTableReader extends AbstractTableReader {
 
-  private static final DbType DATABASE_TYPE = DbType.MYSQL;
+  public MysqlTableReader() {
+    this.dbType = DbType.MYSQL;
+  }
 
   /**
    * @param tableMeta tableMeta
    * @param columName columName
-   * @param value     value
-   * @return void
+   * @param value value
    * @title processMetadata
    * @description
    * @author BiJi'an

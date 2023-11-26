@@ -28,8 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class OracleColumnReader extends MysqlColumnReader {
 
-
   public OracleColumnReader() {
-    super(DbType.ORACLE, new OracleColumnParser());
+    this.dbType = DbType.ORACLE;
+    this.columnParser = new MysqlColumnParser();
   }
 }

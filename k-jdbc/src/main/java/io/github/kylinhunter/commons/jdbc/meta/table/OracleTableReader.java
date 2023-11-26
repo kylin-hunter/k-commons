@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class OracleTableReader extends MysqlTableReader {
 
-  private static final DbType DATABASE_TYPE = DbType.ORACLE;
-
-
+  public OracleTableReader() {
+    this.dbType = DbType.ORACLE;
+  }
 }

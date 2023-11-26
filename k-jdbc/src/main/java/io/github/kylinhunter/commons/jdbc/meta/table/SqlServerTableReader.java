@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class SqlServerTableReader extends MysqlTableReader {
 
-  private static final DbType DATABASE_TYPE = DbType.SQL_SERVER;
-
-
+  public SqlServerTableReader() {
+    this.dbType = DbType.SQL_SERVER;
+  }
 }

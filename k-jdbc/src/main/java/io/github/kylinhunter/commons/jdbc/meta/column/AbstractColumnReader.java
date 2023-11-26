@@ -17,7 +17,6 @@ package io.github.kylinhunter.commons.jdbc.meta.column;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.jdbc.constant.ColumnParserType;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.datasource.ExDataSource;
@@ -41,12 +40,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public abstract class AbstractColumnReader implements ColumnReader {
 
-  private final DbType dbType;
+  protected DbType dbType;
 
-  private final ColumnParser columnParser;
+  protected ColumnParser columnParser;
 
   /**
-   * @param catalog   catalog
+   * @param catalog catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -60,8 +59,8 @@ public abstract class AbstractColumnReader implements ColumnReader {
 
   /**
    * @param dataSource dataSource
-   * @param catalog    catalog
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -83,9 +82,9 @@ public abstract class AbstractColumnReader implements ColumnReader {
 
   /**
    * @param connection connection
-   * @param catalog    catalog
-   * @param schema     schema
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param schema schema
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -97,7 +96,6 @@ public abstract class AbstractColumnReader implements ColumnReader {
     List<ColumnMeta> columnMetaDatas;
     try {
       columnMetaDatas = ListUtils.newArrayList();
-      ColumnParserType columnParserType = dbType.getColumnParserType();
       DatabaseMetaData metaData = connection.getMetaData();
       ResultSet columns = metaData.getColumns(catalog, schema, tableName, null);
       ResultSetMetaData columnMetadata = columns.getMetaData();
@@ -123,5 +121,4 @@ public abstract class AbstractColumnReader implements ColumnReader {
   }
 
   protected abstract void processMetadata(ColumnMeta columnMeta, String colName, Object value);
-
 }

@@ -20,7 +20,6 @@ import io.github.kylinhunter.commons.component.CM;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.AbstractColumnReader;
-import io.github.kylinhunter.commons.jdbc.meta.column.ColumnParser;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import java.sql.JDBCType;
 import lombok.extern.slf4j.Slf4j;
@@ -34,21 +33,16 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class MysqlColumnReader extends AbstractColumnReader {
 
-
-  public MysqlColumnReader(DbType dbType, ColumnParser columnParser) {
-    super(DbType.MYSQL, columnParser);
-  }
-
   @CM
   public MysqlColumnReader() {
-    super(DbType.MYSQL, new MysqlColumnParser());
+    this.dbType = DbType.MYSQL;
+    this.columnParser = new MysqlColumnParser();
   }
-
 
   /**
    * @param columnMeta columnMeta
-   * @param columName  columName
-   * @param value      value
+   * @param columName columName
+   * @param value value
    * @return void
    * @title processMetadata
    * @description

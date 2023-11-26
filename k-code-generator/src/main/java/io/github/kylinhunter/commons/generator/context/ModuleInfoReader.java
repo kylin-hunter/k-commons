@@ -43,7 +43,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ModuleInfoReader {
 
-
   /**
    * @return io.github.kylinhunter.commons.generator.context.bean.ModuleInfos
    * @title read

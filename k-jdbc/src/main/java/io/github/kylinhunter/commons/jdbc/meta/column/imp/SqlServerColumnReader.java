@@ -28,8 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class SqlServerColumnReader extends MysqlColumnReader {
 
-
   public SqlServerColumnReader() {
-    super(DbType.SQL_SERVER, new SqlServerColumnParser());
+    this.dbType = DbType.SQL_SERVER;
+    this.columnParser = new MysqlColumnParser();
   }
 }

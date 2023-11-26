@@ -26,7 +26,6 @@ import io.github.kylinhunter.commons.reflect.ClassUtil;
  * @description
  * @date 2023-01-10 11:11
  */
-
 public class MysqlColumnParser implements ColumnParser {
 
   /**

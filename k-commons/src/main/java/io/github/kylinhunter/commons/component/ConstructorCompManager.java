@@ -42,7 +42,6 @@ class ConstructorCompManager {
   }
 
   /**
-   * @return void
    * @title calComponents
    * @description
    * @author BiJi'an
@@ -59,7 +58,6 @@ class ConstructorCompManager {
 
   /**
    * @param cconstructor cconstructor
-   * @return void
    * @title calComponent
    * @description
    * @author BiJi'an
@@ -70,7 +68,7 @@ class ConstructorCompManager {
     Class<?> clazz = cconstructor.getClazz();
     int parameterCount = constructor.getParameterCount();
     if (parameterCount <= 0) {
-      
+
       compManager.register(clazz, cconstructor, ObjectCreator.create(constructor));
 
     } else {
