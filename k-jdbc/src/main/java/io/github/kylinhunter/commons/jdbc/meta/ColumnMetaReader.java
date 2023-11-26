@@ -101,7 +101,7 @@ public class ColumnMetaReader {
     List<ColumnMeta> columnMetaDatas;
     try {
       columnMetaDatas = ListUtils.newArrayList();
-      DatabaseMeta databaseMeta = databaseMetaReader.getDatabaseMetaData(connection);
+      DatabaseMeta databaseMeta = databaseMetaReader.getMetaData(connection);
       ColumnParserType columnParserType = databaseMeta.getDbType().getColumnParserType();
       DatabaseMetaData metaData = connection.getMetaData();
       ResultSet columns = metaData.getColumns(catalog, schema, tableName, null);

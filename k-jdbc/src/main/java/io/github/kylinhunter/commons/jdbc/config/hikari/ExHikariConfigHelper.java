@@ -52,7 +52,7 @@ public class ExHikariConfigHelper {
 
       ExHikariConfig exHikariConfig = new ExHikariConfig(i, datasourceInfo.getName());
       exHikariConfig.setDriverClassName(datasourceInfo.getDriverClassName());
-      exHikariConfig.setJdbcUrl(datasourceInfo.getJdbcUrl());
+      exHikariConfig.setJdbcUrl(datasourceInfo.getUrl());
       exHikariConfig.setUsername(datasourceInfo.getUsername());
       exHikariConfig.setPassword(datasourceInfo.getPassword());
 

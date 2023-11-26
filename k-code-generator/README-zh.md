@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `test_user`(
 
 datasources:
   - driverClassName: 'com.mysql.cj.jdbc.Driver'
-    jdbcUrl: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
+    url: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
     username: 'root'
     password: 'root'
     pool:

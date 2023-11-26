@@ -31,24 +31,24 @@ import lombok.Data;
 public class JdbcConfig implements Serializable {
 
   private String driverClassName;
-  private String jdbcUrl;
+  private String url;
   private String username;
   private String password;
 
   private JdbcUrl jdbcUrlInfo;
 
   /**
-   * @param jdbcUrl jdbcUrl
+   * @param url jdbcUrl
    * @title setJdbcUrl
    * @description setJdbcUrl
    * @author BiJi'an
    * @date 2023-11-25 22:29
    */
-  public void setJdbcUrl(String jdbcUrl) {
+  public void setUrl(String url) {
 
-    if (!StringUtil.isEmpty(jdbcUrl)) {
-      this.jdbcUrl = jdbcUrl;
-      this.jdbcUrlInfo = JdbcUtils.parse(jdbcUrl);
+    if (!StringUtil.isEmpty(url)) {
+      this.url = url;
+      this.jdbcUrlInfo = JdbcUtils.parse(url);
     }
   }
 

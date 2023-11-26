@@ -35,27 +35,27 @@ public class DatabaseMetaReader {
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title getDatabaseMetaData
+   * @title getMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:41
    */
-  public DatabaseMeta getDatabaseMetaData() {
-    return this.getDatabaseMetaData(DataSourceUtils.getDefaultDataSource());
+  public DatabaseMeta getMetaData() {
+    return this.getMetaData(DataSourceUtils.getDefaultDataSource());
   }
 
   /**
    * @param dataSource dataSource
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title getDatabaseMetaData
+   * @title getMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:41
    */
-  public DatabaseMeta getDatabaseMetaData(DataSource dataSource) {
+  public DatabaseMeta getMetaData(DataSource dataSource) {
 
     try (Connection connection = dataSource.getConnection()) {
-      return getDatabaseMetaData(connection);
+      return getMetaData(connection);
     } catch (Exception e) {
       throw new JdbcException("getDatabaseMetaData error", e);
     }
@@ -64,12 +64,12 @@ public class DatabaseMetaReader {
   /**
    * @param connection connection
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title getDatabaseMetaData
+   * @title getMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:41
    */
-  public DatabaseMeta getDatabaseMetaData(Connection connection) {
+  public DatabaseMeta getMetaData(Connection connection) {
     try {
       DatabaseMetaData metaData = connection.getMetaData();
       DatabaseMeta databaseMeta = new DatabaseMeta();

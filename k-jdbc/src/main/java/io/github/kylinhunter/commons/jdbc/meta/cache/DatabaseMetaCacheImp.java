@@ -46,7 +46,7 @@ public class DatabaseMetaCacheImp extends AbstractCache<Optional<DatabaseMeta>>
     int datasourceNo = cacheKey.getInt(0);
     ExDataSource exDataSource = DataSourceUtils.getByNo(datasourceNo);
     if (exDataSource != null) {
-      return Optional.ofNullable(databaseMetaReader.getDatabaseMetaData(exDataSource));
+      return Optional.ofNullable(databaseMetaReader.getMetaData(exDataSource));
     } else {
       return Optional.empty();
     }
