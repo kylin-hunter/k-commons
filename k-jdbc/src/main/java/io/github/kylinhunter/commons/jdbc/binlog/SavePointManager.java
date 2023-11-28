@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.exception;
-
-import io.github.kylinhunter.commons.exception.embed.biz.BizException;
+package io.github.kylinhunter.commons.jdbc.binlog;
 
 /**
  * @author BiJi'an
- * @description JdbcException
- * @date 2023-01-17 23:47
+ * @description
+ * @date 2023-11-25 02:51
  */
-public class JdbcException extends BizException {
+
+public interface SavePointManager {
+
+  void delete(String fileName);
+
+  void saveOrUpdate(SavePoint savePoint);
+
+  SavePoint get(String fileName);
+
+  void init();
 
 
-  public JdbcException(Throwable cause) {
-    super(JdbcErrInfos.JDBC, "JDBC", cause);
-  }
-
-  public JdbcException(String message, Throwable cause) {
-    super(JdbcErrInfos.JDBC, message, cause);
-  }
-
-  public JdbcException(String message) {
-    super(JdbcErrInfos.JDBC, message);
-  }
 }

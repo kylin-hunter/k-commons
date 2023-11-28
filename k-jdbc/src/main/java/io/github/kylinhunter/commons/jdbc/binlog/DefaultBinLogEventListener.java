@@ -19,47 +19,106 @@ import com.github.shyiko.mysql.binlog.BinaryLogClient.EventListener;
 import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
 import com.github.shyiko.mysql.binlog.event.Event;
 import com.github.shyiko.mysql.binlog.event.EventData;
+import com.github.shyiko.mysql.binlog.event.EventHeader;
+import com.github.shyiko.mysql.binlog.event.EventHeaderV4;
+import com.github.shyiko.mysql.binlog.event.EventType;
+import com.github.shyiko.mysql.binlog.event.FormatDescriptionEventData;
+import com.github.shyiko.mysql.binlog.event.RotateEventData;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description EventListener
  * @date 2023-11-25 02:56
  */
+@Slf4j
 public class DefaultBinLogEventListener implements EventListener {
 
   @Override
   public void onEvent(Event event) {
+    EventHeader header = event.getHeader();
     EventData data = event.getData();
-    if (data instanceof TableMapEventData) {
-      // 只要连接的MySQL发生的增删改的操作，则都会进入这里，无论哪个数据库
+//    log.info("header={} \r\n data={}", header, data);
 
-      TableMapEventData tableMapEventData = (TableMapEventData) data;
+    if (header instanceof EventHeaderV4) {
+      EventHeaderV4 eventHeaderV4 = (EventHeaderV4) header;
+      EventType eventType = eventHeaderV4.getEventType();
+      log.info("event={},nextPosition={}", eventType, eventHeaderV4.getNextPosition());
+      switch (eventType) {
+        case ROTATE: {
+          eventROTATE(data);
+          break;
+        }
+        case FORMAT_DESCRIPTION: {
+          eventFORMAT_DESCRIPTION(data);
+          break;
+        }
+        case TABLE_MAP: {
+          eventTABLE_MAP(data);
+          break;
+        }
+        case EXT_WRITE_ROWS: {
+          eventEXT_WRITE_ROWS(data);
+        }
+        case EXT_DELETE_ROWS: {
+          eventEXT_DELETE_ROWS(data);
+        }
+        case EXT_UPDATE_ROWS: {
+          eventEXT_UPDATE_ROWS(data);
+        }
+      }
 
-      // 可以通过转成TableMapEventData类实例的tableMapEventData来获取当前发生变更的数据库
-      System.out.println("发生变更的数据库：" + tableMapEventData.getDatabase());
-
-      System.out.print("TableID:");
-      // 表ID
-      System.out.println(tableMapEventData.getTableId());
-      System.out.print("TableName:");
-      // 表名字
-      System.out.println(tableMapEventData.getTable());
     }
-    // 表数据发生修改时触发
+
+  }
+
+  private void eventROTATE(EventData data) {
+    if (data instanceof RotateEventData) {
+      RotateEventData eventData = (RotateEventData) data;
+      String binlogFilename = eventData.getBinlogFilename();
+      long binlogPosition = eventData.getBinlogPosition();
+      log.info("binlogFilename={},binlogPosition={}", binlogFilename, binlogPosition);
+    }
+  }
+
+  private void eventFORMAT_DESCRIPTION(EventData data) {
+    if (data instanceof FormatDescriptionEventData) {
+      FormatDescriptionEventData eventData = (FormatDescriptionEventData) data;
+      int binlogVersion = eventData.getBinlogVersion();
+      String serverVersion = eventData.getServerVersion();
+      log.info("binVersion={},serverVersion={}", binlogVersion, serverVersion);
+    }
+  }
+
+  private void eventTABLE_MAP(EventData data) {
+    if (data instanceof TableMapEventData) {
+      TableMapEventData eventData = (TableMapEventData) data;
+      log.info("table={}/{}/{}", eventData.getDatabase(), eventData.getTableId(),
+          eventData.getTable());
+    }
+  }
+
+  private void eventEXT_WRITE_ROWS(EventData data) {
+    if (data instanceof WriteRowsEventData) {
+      WriteRowsEventData eventData = (WriteRowsEventData) data;
+      log.info("writeRowsEventData={}", eventData);
+    }
+  }
+
+  private void eventEXT_DELETE_ROWS(EventData data) {
+    if (data instanceof DeleteRowsEventData) {
+      DeleteRowsEventData eventData = (DeleteRowsEventData) data;
+      log.info("DeleteRowsEventData={}", eventData);
+    }
+  }
+
+  private void eventEXT_UPDATE_ROWS(EventData data) {
     if (data instanceof UpdateRowsEventData) {
-      System.out.println("Update:");
-      System.out.println(data.toString());
-      // 表数据发生插入时触发
-    } else if (data instanceof WriteRowsEventData) {
-      System.out.println("Insert:");
-      System.out.println(data.toString());
-      // 表数据发生删除后触发
-    } else if (data instanceof DeleteRowsEventData) {
-      System.out.println("Delete:");
-      System.out.println(data.toString());
+      UpdateRowsEventData eventData = (UpdateRowsEventData) data;
+      log.info("UpdateRowsEventData={}", eventData);
     }
   }
 }

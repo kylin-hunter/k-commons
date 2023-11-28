@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -187,6 +188,33 @@ class ResourceHelperTest {
     Assertions.assertEquals(text1, text3);
 
     String text4 = ResourceHelper.getText(path, PathType.CLASSPATH, StandardCharsets.ISO_8859_1);
+    System.out.println(text4);
+    Assertions.assertNotEquals(text1, text4);
+  }
+
+
+  @Test
+  void readLines() {
+
+    String path = "/test/file/test1.txt";
+    List<String> text1 = ResourceHelper.readLines(path);
+    System.out.println(text1);
+
+    List<String> text11 = ResourceHelper.readLines(path, Charset.defaultCharset());
+    System.out.println(text11);
+    Assertions.assertEquals(text1, text11);
+
+    List<String> text2 = ResourceHelper.readLines(path, PathType.CLASSPATH);
+    System.out.println(text2);
+    Assertions.assertEquals(text1, text2);
+
+    List<String> text3 = ResourceHelper.readLines(path, PathType.CLASSPATH, StandardCharsets.UTF_8);
+    System.out.println(text3);
+
+    Assertions.assertEquals(text1, text3);
+
+    List<String> text4 = ResourceHelper.readLines(path, PathType.CLASSPATH,
+        StandardCharsets.ISO_8859_1);
     System.out.println(text4);
     Assertions.assertNotEquals(text1, text4);
   }

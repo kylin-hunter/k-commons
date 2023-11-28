@@ -18,11 +18,11 @@ class FileReaderUtilsTest {
     File distFile = ResourceHelper.getFile(path);
     AtomicInteger lines = new AtomicInteger(0);
     FileReaderUtils.process(distFile, "UTF-8", (line -> lines.incrementAndGet()));
-    assertEquals(2, lines.get());
+    assertEquals(3, lines.get());
 
     FileStatLineProcessor fileStatLinesProcessor = new FileStatLineProcessor();
     FileReaderUtils.process(distFile, "UTF-8", fileStatLinesProcessor);
-    assertEquals(2, fileStatLinesProcessor.getResult().getLineNum());
+    assertEquals(3, fileStatLinesProcessor.getResult().getLineNum());
 
     byte[] bytes1 = FileUtils.readFileToByteArray(distFile);
     byte[] bytes2 = FileReaderUtils.readFileToByteArray(distFile);

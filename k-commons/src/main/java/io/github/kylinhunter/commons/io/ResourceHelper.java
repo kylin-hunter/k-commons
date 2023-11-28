@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Objects;
 import lombok.Data;
 
@@ -46,7 +47,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path     path
    * @param required required
    * @return java.io.InputStream
    * @title getInputStream
@@ -59,7 +60,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.io.InputStream
    * @title getInputStream
@@ -144,7 +145,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path     path
    * @param required required
    * @return java.io.File
    * @title getFile
@@ -157,7 +158,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getFile
@@ -170,9 +171,9 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
-   * @param required required
+   * @param required     required
    * @return java.io.File
    * @title getFile
    * @description
@@ -208,7 +209,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getDir
@@ -221,7 +222,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.io.File
    * @title getDir
@@ -318,7 +319,7 @@ public class ResourceHelper {
 
   /**
    * @param classPath classPath
-   * @param required required
+   * @param required  required
    * @return java.io.File
    * @title getDirInClassPath
    * @description
@@ -331,8 +332,8 @@ public class ResourceHelper {
 
   /**
    * @param classPath classPath
-   * @param isFile isFile
-   * @param required required
+   * @param isFile    isFile
+   * @param required  required
    * @return java.io.File
    * @title _getFileInClassPath
    * @description
@@ -400,7 +401,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
    * @return java.lang.String
    * @title getText
@@ -413,7 +414,7 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path    path
    * @param charset charset
    * @return java.lang.String
    * @title getText
@@ -426,9 +427,9 @@ public class ResourceHelper {
   }
 
   /**
-   * @param path path
+   * @param path         path
    * @param priorityType priorityType
-   * @param charset charset
+   * @param charset      charset
    * @return java.lang.String
    * @title getText
    * @description
@@ -442,6 +443,64 @@ public class ResourceHelper {
       throw new KIOException("get text error", e);
     }
   }
+
+
+  /**
+   * @param path path
+   * @return java.lang.String
+   * @title getText
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-19 19:09
+   */
+  public static List<String> readLines(String path) {
+    return readLines(path, PathType.CLASSPATH, Charset.defaultCharset());
+  }
+
+  /**
+   * @param path         path
+   * @param priorityType priorityType
+   * @return java.lang.String
+   * @title getText
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-19 19:08
+   */
+  public static List<String> readLines(String path, PathType priorityType) {
+    return readLines(path, priorityType, Charset.defaultCharset());
+  }
+
+  /**
+   * @param path    path
+   * @param charset charset
+   * @return java.lang.String
+   * @title getText
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-19 19:10
+   */
+  public static List<String> readLines(String path, Charset charset) {
+    return readLines(path, PathType.CLASSPATH, charset);
+  }
+
+  /**
+   * @param path         path
+   * @param priorityType priorityType
+   * @param charset      charset
+   * @return java.lang.String
+   * @title getText
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-19 19:08
+   */
+  public static List<String> readLines(String path, PathType priorityType, Charset charset) {
+    try (InputStream inputStream = getInputStream(path, priorityType, true)) {
+      return IOUtil.readLines(inputStream, charset);
+    } catch (IOException e) {
+      throw new KIOException("get text error", e);
+    }
+  }
+
 
   /**
    * @author BiJi'an

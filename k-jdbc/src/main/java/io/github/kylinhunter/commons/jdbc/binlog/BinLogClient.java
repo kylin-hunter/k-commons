@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
- * @description
+ * @description the client reading bin log
  * @date 2023-11-25 02:51
  */
 @Slf4j
@@ -44,12 +44,37 @@ public class BinLogClient {
     binaryLogClient = new BinaryLogClient(hostname, port, schema, username, password);
   }
 
+  /**
+   * @param binlogFilename binlogFilename
+   * @title setBinlogFilename
+   * @description setBinlogFilename
+   * @author BiJi'an
+   * @date 2023-11-28 23:24
+   */
   public void setBinlogFilename(String binlogFilename) {
     this.binaryLogClient.setBinlogFilename(binlogFilename);
   }
 
+  /**
+   * @param binlogPosition binlogPosition
+   * @title setBinlogPosition
+   * @description setBinlogPosition
+   * @author BiJi'an
+   * @date 2023-11-28 23:24
+   */
   public void setBinlogPosition(long binlogPosition) {
     this.binaryLogClient.setBinlogPosition(binlogPosition);
+  }
+
+  /**
+   * @param serverId serverId
+   * @title setServerId
+   * @description setServerId
+   * @author BiJi'an
+   * @date 2023-11-28 23:24
+   */
+  public void setServerId(long serverId) {
+    this.binaryLogClient.setServerId(serverId);
   }
 
   /**
@@ -81,16 +106,5 @@ public class BinLogClient {
     }
   }
 
-  public static void main(String[] args) {
 
-    String jdbcUrl = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
-    BinLogClient binLogClient = new BinLogClient(jdbcUrl, "root", "root");
-    try {
-      binLogClient.setBinlogFilename("binlog.000012");
-      binLogClient.setBinlogPosition(0);
-      binLogClient.start();
-    } finally {
-      binLogClient.disconnect();
-    }
-  }
 }

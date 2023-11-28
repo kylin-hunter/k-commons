@@ -14,14 +14,12 @@ class TableReaderTest {
   void test() {
     TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
 
-    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "test_user");
-    Assertions.assertTrue(tableMetas.size() == 1);
+    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "k_jdbc_test_user");
+    Assertions.assertEquals(1, tableMetas.size());
     TableMeta tableMeta = tableMetas.get(0);
     System.out.println(tableMeta);
     Map<String, Object> rawMetadatas = tableMeta.getRawMetadatas();
-    rawMetadatas.forEach((k, v) -> {
-      System.out.println(k + ":" + v);
-    });
+    rawMetadatas.forEach((k, v) -> System.out.println(k + ":" + v));
 
   }
 }
