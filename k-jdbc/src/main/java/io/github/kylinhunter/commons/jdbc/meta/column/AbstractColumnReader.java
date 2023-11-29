@@ -28,7 +28,7 @@ import java.sql.ResultSetMetaData;
 import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,12 +37,16 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-@RequiredArgsConstructor
+@NoArgsConstructor
 public abstract class AbstractColumnReader extends AbstractDatabaseManager implements ColumnReader {
 
   protected DbType dbType;
 
   protected ColumnParser columnParser;
+
+  public AbstractColumnReader(DataSource dataSource) {
+    super(dataSource);
+  }
 
   /**
    * @param catalog   catalog

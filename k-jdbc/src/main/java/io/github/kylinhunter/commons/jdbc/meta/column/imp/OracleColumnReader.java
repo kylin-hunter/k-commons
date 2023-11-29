@@ -16,7 +16,9 @@
 package io.github.kylinhunter.commons.jdbc.meta.column.imp;
 
 import io.github.kylinhunter.commons.component.C;
+import io.github.kylinhunter.commons.component.CM;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,8 +30,14 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class OracleColumnReader extends MysqlColumnReader {
 
+  @CM
   public OracleColumnReader() {
     this.dbType = DbType.ORACLE;
-    this.columnParser = new MysqlColumnParser();
+    this.columnParser = new OracleColumnParser();
+  }
+
+  public OracleColumnReader(DataSource dataSource) {
+    super(dataSource);
+    this.columnParser = new OracleColumnParser();
   }
 }

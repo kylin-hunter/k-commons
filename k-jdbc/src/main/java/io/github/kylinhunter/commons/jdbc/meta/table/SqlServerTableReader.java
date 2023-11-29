@@ -16,7 +16,9 @@
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
 import io.github.kylinhunter.commons.component.C;
+import io.github.kylinhunter.commons.component.CM;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,7 +30,14 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class SqlServerTableReader extends MysqlTableReader {
 
+  @CM
   public SqlServerTableReader() {
+    this.dbType = DbType.SQL_SERVER;
+  }
+
+
+  public SqlServerTableReader(DataSource dataSource) {
+    super(dataSource);
     this.dbType = DbType.SQL_SERVER;
   }
 }

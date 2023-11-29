@@ -16,9 +16,11 @@
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
 import io.github.kylinhunter.commons.component.C;
+import io.github.kylinhunter.commons.component.CM;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.util.ObjectValues;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -30,7 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 @C
 public class MysqlTableReader extends AbstractTableReader {
 
+  @CM
   public MysqlTableReader() {
+    this.dbType = DbType.MYSQL;
+  }
+
+  public MysqlTableReader(DataSource dataSource) {
+    super(dataSource);
     this.dbType = DbType.MYSQL;
   }
 

@@ -16,4 +16,7 @@ public class AbstractDatabaseManager {
     this.dataSource = DataSourceUtils.getDefaultDataSource();
   }
 
+  public AbstractDatabaseManager(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
 }

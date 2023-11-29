@@ -42,6 +42,10 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
 
   protected DbType dbType;
 
+  public AbstractTableReader(DataSource dataSource) {
+    super(dataSource);
+  }
+
   /**
    * @param catalog   catalog
    * @param tableName tableName
