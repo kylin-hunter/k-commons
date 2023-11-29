@@ -47,8 +47,8 @@ public class MysqlColumnReader extends AbstractColumnReader {
 
   /**
    * @param columnMeta columnMeta
-   * @param columName  columName
-   * @param value      value
+   * @param columName columName
+   * @param value value
    * @return void
    * @title processMetadata
    * @description

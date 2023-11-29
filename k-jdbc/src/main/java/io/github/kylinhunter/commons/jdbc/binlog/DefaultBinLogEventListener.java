@@ -39,7 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultBinLogEventListener implements EventListener {
 
-
   private final SavePointManager savePointManager = new DefaultSavePointManager();
   private String binlogName;
 
@@ -47,7 +46,7 @@ public class DefaultBinLogEventListener implements EventListener {
   public void onEvent(Event event) {
     EventHeader header = event.getHeader();
     EventData data = event.getData();
-//    log.info("header={} \r\n data={}", header, data);
+    //    log.info("header={} \r\n data={}", header, data);
 
     if (header instanceof EventHeaderV4) {
       EventHeaderV4 eventHeaderV4 = (EventHeaderV4) header;
@@ -57,36 +56,39 @@ public class DefaultBinLogEventListener implements EventListener {
       if (!StringUtil.isEmpty(binlogName) && nextPosition > 0) {
         savePointManager.saveOrUpdate(new SavePoint(binlogName, nextPosition));
         log.info("save point : event={},nextPosition={}", eventType, nextPosition);
-
       }
-
     }
-
   }
 
   private void process(EventType eventType, EventData data) {
     switch (eventType) {
-      case ROTATE: {
-        eventROTATE(data);
-        break;
-      }
-      case FORMAT_DESCRIPTION: {
-        eventFORMAT_DESCRIPTION(data);
-        break;
-      }
-      case TABLE_MAP: {
-        eventTABLE_MAP(data);
-        break;
-      }
-      case EXT_WRITE_ROWS: {
-        eventEXT_WRITE_ROWS(data);
-      }
-      case EXT_DELETE_ROWS: {
-        eventEXT_DELETE_ROWS(data);
-      }
-      case EXT_UPDATE_ROWS: {
-        eventEXT_UPDATE_ROWS(data);
-      }
+      case ROTATE:
+        {
+          eventROTATE(data);
+          break;
+        }
+      case FORMAT_DESCRIPTION:
+        {
+          eventFORMAT_DESCRIPTION(data);
+          break;
+        }
+      case TABLE_MAP:
+        {
+          eventTABLE_MAP(data);
+          break;
+        }
+      case EXT_WRITE_ROWS:
+        {
+          eventEXT_WRITE_ROWS(data);
+        }
+      case EXT_DELETE_ROWS:
+        {
+          eventEXT_DELETE_ROWS(data);
+        }
+      case EXT_UPDATE_ROWS:
+        {
+          eventEXT_UPDATE_ROWS(data);
+        }
     }
   }
 
@@ -112,8 +114,8 @@ public class DefaultBinLogEventListener implements EventListener {
   private void eventTABLE_MAP(EventData data) {
     if (data instanceof TableMapEventData) {
       TableMapEventData eventData = (TableMapEventData) data;
-      log.info("table={}/{}/{}", eventData.getDatabase(), eventData.getTableId(),
-          eventData.getTable());
+      log.info(
+          "table={}/{}/{}", eventData.getDatabase(), eventData.getTableId(), eventData.getTable());
     }
   }
 

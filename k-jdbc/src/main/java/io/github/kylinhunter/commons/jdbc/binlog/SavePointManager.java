@@ -22,7 +22,6 @@ import io.github.kylinhunter.commons.jdbc.binlog.bean.SavePoint;
  * @description
  * @date 2023-11-25 02:51
  */
-
 public interface SavePointManager {
 
   void delete(String fileName);
@@ -34,6 +33,4 @@ public interface SavePointManager {
   SavePoint getLatest();
 
   void init();
-
-
 }

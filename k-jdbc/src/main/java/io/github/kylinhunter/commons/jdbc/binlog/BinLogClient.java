@@ -113,6 +113,4 @@ public class BinLogClient {
       log.error("disconnect error", e);
     }
   }
-
-
 }

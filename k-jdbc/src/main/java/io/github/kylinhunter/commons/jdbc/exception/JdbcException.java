@@ -24,7 +24,6 @@ import io.github.kylinhunter.commons.exception.embed.biz.BizException;
  */
 public class JdbcException extends BizException {
 
-
   public JdbcException(Throwable cause) {
     super(JdbcErrInfos.JDBC, "JDBC", cause);
   }

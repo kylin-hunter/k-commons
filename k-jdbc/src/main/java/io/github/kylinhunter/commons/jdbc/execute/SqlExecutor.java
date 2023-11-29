@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.jdbc.execute;
 
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
@@ -15,12 +30,10 @@ import org.apache.commons.dbutils.ResultSetHandler;
  * @description
  * @date 2023-11-29 14:30
  */
-
 @RequiredArgsConstructor
 public class SqlExecutor {
 
-  @Getter
-  private QueryRunner queryRunner;
+  @Getter private QueryRunner queryRunner;
   private DataSource dataSource;
 
   public SqlExecutor(DataSource dataSource) {
@@ -29,7 +42,7 @@ public class SqlExecutor {
   }
 
   /**
-   * @param sql    sql
+   * @param sql sql
    * @param params params
    * @return int
    * @title execute
@@ -45,10 +58,9 @@ public class SqlExecutor {
     }
   }
 
-
   /**
-   * @param sql    sql
-   * @param rsh    rsh
+   * @param sql sql
+   * @param rsh rsh
    * @param params params
    * @return T
    * @title query
@@ -64,7 +76,6 @@ public class SqlExecutor {
     }
   }
 
-
   public Connection getConnection() {
     try {
       return this.dataSource.getConnection();
@@ -72,7 +83,6 @@ public class SqlExecutor {
       throw new JdbcException("getConnection  error", e);
     }
   }
-
 
   /**
    * @param sqlLines sqlLines
@@ -84,7 +94,7 @@ public class SqlExecutor {
   public void execute(List<String> sqlLines, boolean isTransaction) {
     try {
       if (isTransaction) {
-        
+
         try (Connection connection = this.getConnection()) {
           connection.setAutoCommit(false);
           for (String sqlLine : sqlLines) {
@@ -102,7 +112,5 @@ public class SqlExecutor {
     } catch (SQLException e) {
       throw new JdbcException("execute sql error", e);
     }
-
   }
-
 }

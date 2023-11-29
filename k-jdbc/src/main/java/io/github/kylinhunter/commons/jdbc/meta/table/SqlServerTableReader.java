@@ -35,7 +35,6 @@ public class SqlServerTableReader extends MysqlTableReader {
     this.dbType = DbType.SQL_SERVER;
   }
 
-
   public SqlServerTableReader(DataSource dataSource) {
     super(dataSource);
     this.dbType = DbType.SQL_SERVER;
