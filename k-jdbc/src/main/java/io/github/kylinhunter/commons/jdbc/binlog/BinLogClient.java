@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.jdbc.binlog;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.SavePoint;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import java.io.IOException;
@@ -31,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 public class BinLogClient {
 
   private final BinaryLogClient binaryLogClient;
+
+  private final SavePointManager savePointManager = new DefaultSavePointManager();
 
   public BinLogClient(String jdbcUrl, String username, String password) {
     this(JdbcUtils.parse(jdbcUrl), username, password);
@@ -85,6 +88,11 @@ public class BinLogClient {
    */
   public void start() {
     try {
+      SavePoint savePoint = savePointManager.getLatest();
+      if (savePoint != null) {
+        binaryLogClient.setBinlogFilename(savePoint.getName());
+        binaryLogClient.setBinlogPosition(savePoint.getPosition());
+      }
       binaryLogClient.registerEventListener(new DefaultBinLogEventListener());
       binaryLogClient.connect();
     } catch (IOException e) {

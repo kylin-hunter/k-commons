@@ -58,7 +58,7 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
    * @date 2023-01-18 12:42
    */
   public List<ColumnMeta> getColumnMetaData(String catalog, String tableName) {
-    return getColumnMetaData(this.dataSource, catalog, tableName);
+    return getColumnMetaData(this.defaultDataSource, catalog, tableName);
   }
 
   /**

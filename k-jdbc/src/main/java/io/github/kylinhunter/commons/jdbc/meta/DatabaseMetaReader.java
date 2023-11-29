@@ -40,7 +40,7 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @date 2023-01-18 12:41
    */
   public DatabaseMeta getMetaData() {
-    return this.getMetaData(this.dataSource);
+    return this.getMetaData(this.defaultDataSource);
   }
 
   /**

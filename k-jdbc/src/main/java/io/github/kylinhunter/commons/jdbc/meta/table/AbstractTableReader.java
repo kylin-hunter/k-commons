@@ -57,7 +57,7 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
    */
   public TableMeta getTableMetaData(String catalog, String tableName) {
     List<TableMeta> tableMetaDatas =
-        getTableMetaDatas(dataSource, catalog, tableName);
+        getTableMetaDatas(defaultDataSource, catalog, tableName);
     if (tableMetaDatas != null && tableMetaDatas.size() > 0) {
       return tableMetaDatas.get(0);
     }
@@ -74,7 +74,7 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
    * @date 2023-01-18 12:42
    */
   public List<TableMeta> getTableMetaDatas(String catalog, String tableName) {
-    return getTableMetaDatas(dataSource, catalog, tableName);
+    return getTableMetaDatas(defaultDataSource, catalog, tableName);
   }
 
   /**

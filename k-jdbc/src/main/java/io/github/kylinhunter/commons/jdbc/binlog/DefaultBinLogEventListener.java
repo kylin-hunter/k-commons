@@ -27,6 +27,8 @@ import com.github.shyiko.mysql.binlog.event.RotateEventData;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.SavePoint;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,6 +39,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultBinLogEventListener implements EventListener {
 
+
+  private final SavePointManager savePointManager = new DefaultSavePointManager();
+  private String binlogName;
+
   @Override
   public void onEvent(Event event) {
     EventHeader header = event.getHeader();
@@ -46,33 +52,42 @@ public class DefaultBinLogEventListener implements EventListener {
     if (header instanceof EventHeaderV4) {
       EventHeaderV4 eventHeaderV4 = (EventHeaderV4) header;
       EventType eventType = eventHeaderV4.getEventType();
-      log.info("event={},nextPosition={}", eventType, eventHeaderV4.getNextPosition());
-      switch (eventType) {
-        case ROTATE: {
-          eventROTATE(data);
-          break;
-        }
-        case FORMAT_DESCRIPTION: {
-          eventFORMAT_DESCRIPTION(data);
-          break;
-        }
-        case TABLE_MAP: {
-          eventTABLE_MAP(data);
-          break;
-        }
-        case EXT_WRITE_ROWS: {
-          eventEXT_WRITE_ROWS(data);
-        }
-        case EXT_DELETE_ROWS: {
-          eventEXT_DELETE_ROWS(data);
-        }
-        case EXT_UPDATE_ROWS: {
-          eventEXT_UPDATE_ROWS(data);
-        }
+      long nextPosition = eventHeaderV4.getNextPosition();
+      process(eventType, data);
+      if (!StringUtil.isEmpty(binlogName) && nextPosition > 0) {
+        savePointManager.saveOrUpdate(new SavePoint(binlogName, nextPosition));
+        log.info("save point : event={},nextPosition={}", eventType, nextPosition);
+
       }
 
     }
 
+  }
+
+  private void process(EventType eventType, EventData data) {
+    switch (eventType) {
+      case ROTATE: {
+        eventROTATE(data);
+        break;
+      }
+      case FORMAT_DESCRIPTION: {
+        eventFORMAT_DESCRIPTION(data);
+        break;
+      }
+      case TABLE_MAP: {
+        eventTABLE_MAP(data);
+        break;
+      }
+      case EXT_WRITE_ROWS: {
+        eventEXT_WRITE_ROWS(data);
+      }
+      case EXT_DELETE_ROWS: {
+        eventEXT_DELETE_ROWS(data);
+      }
+      case EXT_UPDATE_ROWS: {
+        eventEXT_UPDATE_ROWS(data);
+      }
+    }
   }
 
   private void eventROTATE(EventData data) {
@@ -80,6 +95,7 @@ public class DefaultBinLogEventListener implements EventListener {
       RotateEventData eventData = (RotateEventData) data;
       String binlogFilename = eventData.getBinlogFilename();
       long binlogPosition = eventData.getBinlogPosition();
+      this.binlogName = binlogFilename;
       log.info("binlogFilename={},binlogPosition={}", binlogFilename, binlogPosition);
     }
   }

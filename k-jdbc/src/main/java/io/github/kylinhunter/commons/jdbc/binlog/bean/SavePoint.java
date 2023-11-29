@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.binlog;
+package io.github.kylinhunter.commons.jdbc.binlog.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -15,6 +15,8 @@
  */
 package io.github.kylinhunter.commons.jdbc.binlog;
 
+import io.github.kylinhunter.commons.jdbc.binlog.bean.SavePoint;
+
 /**
  * @author BiJi'an
  * @description
@@ -28,6 +30,8 @@ public interface SavePointManager {
   void saveOrUpdate(SavePoint savePoint);
 
   SavePoint get(String fileName);
+
+  SavePoint getLatest();
 
   void init();
 
