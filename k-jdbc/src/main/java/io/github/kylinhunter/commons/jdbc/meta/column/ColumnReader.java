@@ -15,10 +15,10 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.column;
 
-import io.github.kylinhunter.commons.jdbc.datasource.ExDataSource;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import java.sql.Connection;
 import java.util.List;
+import javax.sql.DataSource;
 
 /**
  * @author BiJi'an
@@ -28,7 +28,7 @@ import java.util.List;
 public interface ColumnReader {
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -40,21 +40,21 @@ public interface ColumnReader {
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  List<ColumnMeta> getColumnMetaData(ExDataSource dataSource, String catalog, String tableName);
+  List<ColumnMeta> getColumnMetaData(DataSource dataSource, String catalog, String tableName);
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description

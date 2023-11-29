@@ -15,9 +15,11 @@
  */
 package io.github.kylinhunter.commons.jdbc.utils;
 
-import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.MysqlJdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.OracleJdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.config.url.imp.SqlServerJdbcUrlParser;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import java.util.Objects;
@@ -28,6 +30,10 @@ import java.util.Objects;
  * @date 2023-01-10 11:11
  */
 public class JdbcUtils {
+
+  private static JdbcUrlParser mysqlJdbcUrlParser = new MysqlJdbcUrlParser();
+  private static OracleJdbcUrlParser oracleJdbcUrlParser = new OracleJdbcUrlParser();
+  private static SqlServerJdbcUrlParser sqlServerJdbcUrlParser = new SqlServerJdbcUrlParser();
 
   /**
    * @param jdbcUrl jdbcUrl
@@ -40,8 +46,15 @@ public class JdbcUtils {
    */
   public static JdbcUrl parse(String jdbcUrl) {
     DbType dbType = calDbType(jdbcUrl);
-    JdbcUrlParser parse = CF.get(dbType.getJdbcUrlParserType());
-    return parse.parse(jdbcUrl);
+    switch (dbType) {
+      case MYSQL:
+        return mysqlJdbcUrlParser.parse(jdbcUrl);
+      case ORACLE:
+        return oracleJdbcUrlParser.parse(jdbcUrl);
+      case SQL_SERVER:
+        return sqlServerJdbcUrlParser.parse(jdbcUrl);
+    }
+    throw new JdbcException("UnSupported dbType" + dbType);
   }
 
   /**

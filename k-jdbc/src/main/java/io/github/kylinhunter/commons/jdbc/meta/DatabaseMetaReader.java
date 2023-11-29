@@ -16,7 +16,6 @@
 package io.github.kylinhunter.commons.jdbc.meta;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
 import java.sql.Connection;
@@ -31,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @C
-public class DatabaseMetaReader {
+public class DatabaseMetaReader extends AbstractDatabaseManager {
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
@@ -41,7 +40,7 @@ public class DatabaseMetaReader {
    * @date 2023-01-18 12:41
    */
   public DatabaseMeta getMetaData() {
-    return this.getMetaData(DataSourceUtils.getDefaultDataSource());
+    return this.getMetaData(this.dataSource);
   }
 
   /**

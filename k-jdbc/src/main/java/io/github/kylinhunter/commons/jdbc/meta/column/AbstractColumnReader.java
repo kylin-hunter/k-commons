@@ -18,9 +18,8 @@ package io.github.kylinhunter.commons.jdbc.meta.column;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
-import io.github.kylinhunter.commons.jdbc.datasource.ExDataSource;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
+import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -28,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.List;
 import java.util.Map;
+import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,14 +38,14 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractColumnReader implements ColumnReader {
+public abstract class AbstractColumnReader extends AbstractDatabaseManager implements ColumnReader {
 
   protected DbType dbType;
 
   protected ColumnParser columnParser;
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -54,13 +54,13 @@ public abstract class AbstractColumnReader implements ColumnReader {
    * @date 2023-01-18 12:42
    */
   public List<ColumnMeta> getColumnMetaData(String catalog, String tableName) {
-    return getColumnMetaData(DataSourceUtils.getDefaultDataSource(), catalog, tableName);
+    return getColumnMetaData(this.dataSource, catalog, tableName);
   }
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -68,7 +68,7 @@ public abstract class AbstractColumnReader implements ColumnReader {
    * @date 2023-01-18 12:42
    */
   public List<ColumnMeta> getColumnMetaData(
-      ExDataSource dataSource, String catalog, String tableName) {
+      DataSource dataSource, String catalog, String tableName) {
     try (Connection connection = dataSource.getConnection()) {
       catalog = catalog != null && catalog.length() > 0 ? catalog : null;
       return getColumnMetaData(connection, catalog, null, tableName);
@@ -82,9 +82,9 @@ public abstract class AbstractColumnReader implements ColumnReader {
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
