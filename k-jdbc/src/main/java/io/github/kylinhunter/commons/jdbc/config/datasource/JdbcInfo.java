@@ -32,7 +32,6 @@ public class JdbcInfo implements Serializable {
   private String username;
   private String password;
 
-
   /**
    * @param url jdbcUrl
    * @title setJdbcUrl
@@ -46,5 +45,4 @@ public class JdbcInfo implements Serializable {
       this.url = url;
     }
   }
-
 }

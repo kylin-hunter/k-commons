@@ -37,8 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DataSourceManager {
 
-  @Getter
-  private ExDataSource defaultDataSource;
+  @Getter private ExDataSource defaultDataSource;
   private final Map<Object, ExDataSource> DATA_SOURCES = MapUtils.newHashMap();
 
   public DataSourceManager() {
@@ -60,7 +59,6 @@ public class DataSourceManager {
     } catch (Exception e) {
       log.error("init error", e);
     }
-
   }
 
   /**
@@ -70,7 +68,6 @@ public class DataSourceManager {
    * @author BiJi'an
    * @date 2023-12-04 00:57
    */
-
   public synchronized void init(List<ExHikariConfig> exHikariConfigs) {
     closeAll();
     if (CollectionUtils.isEmpty(exHikariConfigs)) {
@@ -85,13 +82,12 @@ public class DataSourceManager {
 
       ExDataSource exDataSource =
           ObjectCreator.create(
-              clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
+              clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
       if (i == 0) {
         defaultDataSource = exDataSource;
       }
       DATA_SOURCES.put(no, exDataSource);
       DATA_SOURCES.put(name, exDataSource);
-
     }
   }
 

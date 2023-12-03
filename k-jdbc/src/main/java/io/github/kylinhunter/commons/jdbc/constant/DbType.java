@@ -29,6 +29,5 @@ public enum DbType {
   ORACLE("Oracle"),
   SQL_SERVER("SqlServer");
 
-  @Getter
-  private final String prefix;
+  @Getter private final String prefix;
 }

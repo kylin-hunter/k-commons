@@ -36,7 +36,6 @@ public class ConfigLoader {
 
   public static final String DEFAULT_PATH = "k-db-config.yaml";
 
-
   /**
    * @param path path
    * @return io.github.kylinhunter.commons.jdbc.config.datasource.DataSourceConfig
@@ -53,7 +52,8 @@ public class ConfigLoader {
   }
 
   /**
-   * @return java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
+   * @return
+   *     java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
    * @title load
    * @description load
    * @author BiJi'an

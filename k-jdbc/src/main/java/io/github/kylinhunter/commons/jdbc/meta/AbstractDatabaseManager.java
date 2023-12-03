@@ -34,7 +34,6 @@ public class AbstractDatabaseManager {
 
   public AbstractDatabaseManager() {
     this(null);
-
   }
 
   public AbstractDatabaseManager(DataSource defaultDataSource) {
@@ -44,7 +43,5 @@ public class AbstractDatabaseManager {
       this.defaultDataSource = dataSourceManager.getDefaultDataSource();
     }
     this.defaultQueryRunner = new QueryRunner(this.defaultDataSource);
-
-
   }
 }
