@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.execute;
 
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
+import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import java.util.List;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.junit.jupiter.api.Test;
@@ -9,8 +9,8 @@ class SqlExecutorTest {
 
   @Test
   void execute() {
-
-    SqlExecutor sqlExecutor = new SqlExecutor(DataSourceUtils.getDefaultDataSource());
+    DataSourceManager dataSourceManager = new DataSourceManager();
+    SqlExecutor sqlExecutor = new SqlExecutor(dataSourceManager.getDefaultDataSource());
     List<String> sqls = SqlFileReader.read(
         "io/github/kylinhunter/commons/jdbc/execute/execute.sql");
 

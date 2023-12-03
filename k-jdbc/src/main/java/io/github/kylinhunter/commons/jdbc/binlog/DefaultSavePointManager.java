@@ -17,7 +17,6 @@ package io.github.kylinhunter.commons.jdbc.binlog;
 
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.jdbc.binlog.bean.SavePoint;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
@@ -37,8 +36,7 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
       "select name,position from  " + TABLE_NAME + " where name=?";
 
   private static final String SELECT_SQL_LATEST =
-      "select name,position from  "
-          + TABLE_NAME
+      "select name,position from  " + TABLE_NAME
           + "  order by auto_updated desc,name desc limit 1 ";
 
   private static final String DELETE_SQL = "delete from  " + TABLE_NAME + "  where name=?";
@@ -54,7 +52,7 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
   private final BeanListHandler<SavePoint> beanListHandler = new BeanListHandler<>(SavePoint.class);
 
   public DefaultSavePointManager() {
-    this.defaultDataSource = DataSourceUtils.getByNo(1);
+    this.defaultDataSource = dataSourceManager.getByNo(1);
     this.sqlExecutor = new SqlExecutor(this.defaultDataSource);
     this.init();
   }
@@ -68,7 +66,7 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
   @Override
   public void delete(String fileName) {
 
-    this.sqlExecutor.execute(DELETE_SQL, new Object[] {fileName});
+    this.sqlExecutor.execute(DELETE_SQL, new Object[]{fileName});
   }
 
   @Override
@@ -78,9 +76,9 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
     SavePoint oldSavePoint = this.get(name);
     long position = savePoint.getPosition();
     if (oldSavePoint != null) {
-      this.sqlExecutor.execute(UPDATE_SQL, new Object[] {position, name});
+      this.sqlExecutor.execute(UPDATE_SQL, new Object[]{position, name});
     } else {
-      this.sqlExecutor.execute(INSERT_SQL, new Object[] {name, position});
+      this.sqlExecutor.execute(INSERT_SQL, new Object[]{name, position});
     }
   }
 
@@ -88,7 +86,7 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
   public SavePoint get(String fileName) {
 
     List<SavePoint> savePoints =
-        this.sqlExecutor.query(SELECT_SQL, beanListHandler, new Object[] {fileName});
+        this.sqlExecutor.query(SELECT_SQL, beanListHandler, new Object[]{fileName});
     if (!CollectionUtils.isEmpty(savePoints)) {
       return savePoints.get(0);
     }

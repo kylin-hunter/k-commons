@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta;
 
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceUtils;
+import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import javax.sql.DataSource;
 import org.apache.commons.dbutils.QueryRunner;
 
@@ -30,6 +30,8 @@ public class AbstractDatabaseManager {
 
   protected QueryRunner defaultQueryRunner;
 
+  protected final DataSourceManager dataSourceManager = new DataSourceManager();
+
   public AbstractDatabaseManager() {
     this(null);
 
@@ -39,7 +41,7 @@ public class AbstractDatabaseManager {
     if (defaultDataSource != null) {
       this.defaultDataSource = defaultDataSource;
     } else {
-      this.defaultDataSource = DataSourceUtils.getDefaultDataSource();
+      this.defaultDataSource = dataSourceManager.getDefaultDataSource();
     }
     this.defaultQueryRunner = new QueryRunner(this.defaultDataSource);
 

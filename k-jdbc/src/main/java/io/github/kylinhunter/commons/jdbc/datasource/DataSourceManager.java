@@ -35,13 +35,13 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 00:34
  */
 @Slf4j
-public class DataSourceUtils {
+public class DataSourceManager {
 
   @Getter
-  private static ExDataSource defaultDataSource;
-  private static final Map<Object, ExDataSource> DATA_SOURCES = MapUtils.newHashMap();
+  private ExDataSource defaultDataSource;
+  private final Map<Object, ExDataSource> DATA_SOURCES = MapUtils.newHashMap();
 
-  static {
+  public DataSourceManager() {
     init(ConfigLoader.DEFAULT_PATH);
   }
 
@@ -52,7 +52,7 @@ public class DataSourceUtils {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  public static synchronized void init(String path) {
+  public synchronized void init(String path) {
     try {
       ConfigLoader configLoader = new ConfigLoader();
       List<ExHikariConfig> exHikariConfigs = configLoader.load(path);
@@ -71,7 +71,7 @@ public class DataSourceUtils {
    * @date 2023-12-04 00:57
    */
 
-  public static synchronized void init(List<ExHikariConfig> exHikariConfigs) {
+  public synchronized void init(List<ExHikariConfig> exHikariConfigs) {
     closeAll();
     if (CollectionUtils.isEmpty(exHikariConfigs)) {
       throw new InitException(" can't find datasource config");
@@ -101,7 +101,7 @@ public class DataSourceUtils {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  private static void closeAll() {
+  private void closeAll() {
     for (ExDataSource exDataSource : DATA_SOURCES.values()) {
       IOUtil.closeQuietly(exDataSource);
     }
@@ -115,7 +115,7 @@ public class DataSourceUtils {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  public static ExDataSource getByNo(int no) {
+  public ExDataSource getByNo(int no) {
     return DATA_SOURCES.get(no);
   }
 
@@ -127,7 +127,7 @@ public class DataSourceUtils {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  public static ExDataSource getByName(String name) {
+  public ExDataSource getByName(String name) {
     return DATA_SOURCES.get(name);
   }
 }
