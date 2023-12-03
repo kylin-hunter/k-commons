@@ -32,12 +32,12 @@ public class SqlServerColumnReader extends MysqlColumnReader {
 
   @CM
   public SqlServerColumnReader() {
-    this.dbType = DbType.SQL_SERVER;
-    this.columnParser = new SqlServerColumnParser();
+    this(null);
   }
 
   public SqlServerColumnReader(DataSource dataSource) {
     super(dataSource);
+    this.dbType = DbType.SQL_SERVER;
     this.columnParser = new SqlServerColumnParser();
   }
 }

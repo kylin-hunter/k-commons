@@ -32,12 +32,12 @@ public class OracleColumnReader extends MysqlColumnReader {
 
   @CM
   public OracleColumnReader() {
-    this.dbType = DbType.ORACLE;
-    this.columnParser = new OracleColumnParser();
+    this(null);
   }
 
   public OracleColumnReader(DataSource dataSource) {
     super(dataSource);
+    this.dbType = DbType.ORACLE;
     this.columnParser = new OracleColumnParser();
   }
 }

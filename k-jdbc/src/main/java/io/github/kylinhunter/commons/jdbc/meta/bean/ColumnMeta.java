@@ -30,9 +30,12 @@ import lombok.ToString;
 @ToString(exclude = "rawMetadatas")
 public class ColumnMeta {
 
+  /*
+   * the raw metadata of column
+   */
   private Map<String, Object> rawMetadatas = MapUtils.newHashMap();
-  private String tableName;
-  private String columnName;
+  private String tableName; // table name
+  private String columnName; // column name
 
   private int dataType;
   private String typeName;

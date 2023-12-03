@@ -36,20 +36,19 @@ public class MysqlColumnReader extends AbstractColumnReader {
 
   @CM
   public MysqlColumnReader() {
-    this.dbType = DbType.MYSQL;
-    this.columnParser = new MysqlColumnParser();
+    this(null);
   }
 
   public MysqlColumnReader(DataSource dataSource) {
     super(dataSource);
+    this.dbType = DbType.MYSQL;
     this.columnParser = new MysqlColumnParser();
   }
 
   /**
    * @param columnMeta columnMeta
-   * @param columName columName
-   * @param value value
-   * @return void
+   * @param columName  columName
+   * @param value      value
    * @title processMetadata
    * @description
    * @author BiJi'an

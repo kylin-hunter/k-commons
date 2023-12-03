@@ -16,7 +16,7 @@
 package io.github.kylinhunter.commons.jdbc.meta.column.imp;
 
 import com.mysql.cj.MysqlType;
-import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnParser;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.reflect.ClassUtil;
@@ -39,7 +39,7 @@ public class MysqlColumnParser implements ColumnParser {
         return ClassUtil.loadClass(className);
       }
     } catch (Exception e) {
-      throw new InitException("can't get javaClass", e);
+      throw new JdbcException("can't get javaClass", e);
     }
     return null;
   }

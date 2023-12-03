@@ -49,7 +49,7 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
   }
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -63,8 +63,8 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -86,9 +86,9 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -107,10 +107,10 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
       while (columns.next()) {
         ColumnMeta columnMeta = new ColumnMeta();
         for (int i = 0; i < columnMetadata.getColumnCount(); i++) {
-          String col_name = columnMetadata.getColumnName(i + 1);
-          Object value = columns.getObject(col_name);
-          rawMetadata.put(col_name, value);
-          processMetadata(columnMeta, col_name, value);
+          String colName = columnMetadata.getColumnName(i + 1);
+          Object value = columns.getObject(colName);
+          rawMetadata.put(colName, value);
+          processMetadata(columnMeta, colName, value);
         }
         columnMeta.setRawMetadatas(rawMetadata);
         Class<?> javaClass = columnParser.calJavaClass(columnMeta.getDataType());
@@ -123,6 +123,16 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
 
     return columnMetaDatas;
   }
+
+  /**
+   * @param columnMeta columnMeta
+   * @param colName    colName
+   * @param value      value
+   * @title processMetadata
+   * @description read cloumn metadata
+   * @author BiJi'an
+   * @date 2023-12-01 00:11
+   */
 
   protected abstract void processMetadata(ColumnMeta columnMeta, String colName, Object value);
 }

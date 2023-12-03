@@ -31,12 +31,18 @@ public class AbstractDatabaseManager {
   protected QueryRunner defaultQueryRunner;
 
   public AbstractDatabaseManager() {
-    this.defaultDataSource = DataSourceUtils.getDefaultDataSource();
-    this.defaultQueryRunner = new QueryRunner(this.defaultDataSource);
+    this(null);
+
   }
 
   public AbstractDatabaseManager(DataSource defaultDataSource) {
-    this.defaultDataSource = defaultDataSource;
+    if (defaultDataSource != null) {
+      this.defaultDataSource = defaultDataSource;
+    } else {
+      this.defaultDataSource = DataSourceUtils.getDefaultDataSource();
+    }
     this.defaultQueryRunner = new QueryRunner(this.defaultDataSource);
+
+
   }
 }

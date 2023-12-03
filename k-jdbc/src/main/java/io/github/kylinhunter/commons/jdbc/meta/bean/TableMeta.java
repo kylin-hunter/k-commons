@@ -28,6 +28,10 @@ import lombok.ToString;
 @Data
 @ToString(exclude = "rawMetadatas")
 public class TableMeta {
+
+  /*
+   * the raw metadata of table
+   */
   private Map<String, Object> rawMetadatas = MapUtils.newHashMap();
 
   private String name;

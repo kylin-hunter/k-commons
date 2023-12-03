@@ -22,5 +22,13 @@ package io.github.kylinhunter.commons.jdbc.meta.column;
  */
 public interface ColumnParser {
 
+  /**
+   * @param dataType dataType
+   * @return java.lang.Class<?>
+   * @title calJavaClass
+   * @description convert the jdbc type to java class
+   * @author BiJi'an
+   * @date 2023-12-01 00:15
+   */
   Class<?> calJavaClass(int dataType);
 }
