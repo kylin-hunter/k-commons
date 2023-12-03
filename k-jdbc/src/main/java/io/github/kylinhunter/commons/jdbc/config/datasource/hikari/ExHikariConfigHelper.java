@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.hikari;
+package io.github.kylinhunter.commons.jdbc.config.datasource.hikari;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.jdbc.config.datasource.DSInfo;
 import io.github.kylinhunter.commons.jdbc.config.datasource.DataSourceConfig;
+import io.github.kylinhunter.commons.jdbc.config.datasource.DataSourceInfo;
 import io.github.kylinhunter.commons.jdbc.config.datasource.PoolInfo;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +40,13 @@ public class ExHikariConfigHelper {
    */
   public static List<ExHikariConfig> parse(DataSourceConfig dataSourceConfig) {
 
-    List<DSInfo> dsInfos = dataSourceConfig.getDatasources();
+    List<DataSourceInfo> dataSourceInfos = dataSourceConfig.getDatasources();
 
     List<ExHikariConfig> exHikariConfigs = ListUtils.newArrayList();
 
-    for (int i = 0; i < dsInfos.size(); i++) {
+    for (int i = 0; i < dataSourceInfos.size(); i++) {
 
-      DSInfo datasourceInfo = dsInfos.get(i);
+      DataSourceInfo datasourceInfo = dataSourceInfos.get(i);
       PoolInfo poolInfo = datasourceInfo.getPool();
       Map<String, String> dataSourceProperties = datasourceInfo.getProperties();
 

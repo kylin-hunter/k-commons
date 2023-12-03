@@ -13,31 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.hikari;
+package io.github.kylinhunter.commons.jdbc.config.datasource;
 
-import com.zaxxer.hikari.HikariConfig;
-import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-01-18 11:01
+ * @date 2023-01-18 00:08
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class ExHikariConfig extends HikariConfig {
+@EqualsAndHashCode(callSuper = true)
+public class DataSourceInfo extends JdbcInfo {
 
-  private int no;
   private String name;
+  private boolean primary;
 
-  public ExHikariConfig(int no, String name) {
-    this.no = no;
-    if (!StringUtil.isEmpty(name)) {
-      this.name = name;
-    } else {
-      this.name = "datasource-" + no;
-    }
-  }
+  private PoolInfo pool;
+  private Map<String, String> properties;
 }

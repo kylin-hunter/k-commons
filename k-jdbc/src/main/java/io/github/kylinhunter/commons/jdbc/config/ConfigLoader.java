@@ -16,8 +16,8 @@
 package io.github.kylinhunter.commons.jdbc.config;
 
 import io.github.kylinhunter.commons.jdbc.config.datasource.DataSourceConfig;
-import io.github.kylinhunter.commons.jdbc.config.hikari.ExHikariConfig;
-import io.github.kylinhunter.commons.jdbc.config.hikari.ExHikariConfigHelper;
+import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig;
+import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfigHelper;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.utils.yaml.YamlHelper;
@@ -34,7 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ConfigLoader {
 
-  private static final String DEFAULT_PATH = "k-db-config.yaml";
+  public static final String DEFAULT_PATH = "k-db-config.yaml";
+
 
   /**
    * @param path path
@@ -49,5 +50,16 @@ public class ConfigLoader {
     DataSourceConfig dataSourceConfig =
         YamlHelper.loadFromPath(DataSourceConfig.class, path, NameRule.CAMEL_LOW);
     return ExHikariConfigHelper.parse(dataSourceConfig);
+  }
+
+  /**
+   * @return java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
+   * @title load
+   * @description load
+   * @author BiJi'an
+   * @date 2023-12-04 00:44
+   */
+  public List<ExHikariConfig> load() {
+    return load(DEFAULT_PATH);
   }
 }

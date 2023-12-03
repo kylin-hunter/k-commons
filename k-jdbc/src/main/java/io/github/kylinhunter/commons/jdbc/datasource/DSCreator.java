@@ -64,7 +64,7 @@ public class DSCreator {
             .implement(DSAccessor.class)
             .intercept(FieldAccessor.ofBeanProperty())
             .make();
-    processDebug(dynamicType, debugOption);
+    debug(dynamicType, debugOption);
     return (Class<? extends ExDataSource>)
         dynamicType
             .load(DSCreator.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
@@ -73,19 +73,18 @@ public class DSCreator {
 
   /**
    * @param debugOption debugOption
-   * @return void
    * @title process
    * @description
    * @author BiJi'an
    * @date 2023-05-27 01:15
    */
-  private static void processDebug(DynamicType.Unloaded<?> dynamicType, DebugOption debugOption) {
+  private static void debug(DynamicType.Unloaded<?> dynamicType, DebugOption debugOption) {
     try {
       if (debugOption != null) {
         dynamicType.saveIn(debugOption.getClassSaveDir());
       }
     } catch (Exception e) {
-      log.error("processDebug error", e);
+      log.error("debug error", e);
     }
   }
 }

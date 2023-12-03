@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.jdbc.meta.table;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
@@ -88,6 +89,8 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
    */
   public List<TableMeta> getTableMetaDatas(
       DataSource dataSource, String catalog, String tableName) {
+    ExceptionChecker.checkNotNull(dataSource, "datasource can't be null");
+
     try (Connection connection = dataSource.getConnection()) {
       catalog = catalog != null && catalog.length() > 0 ? catalog : null;
       return getTableMetaDatas(connection, catalog, null, tableName);

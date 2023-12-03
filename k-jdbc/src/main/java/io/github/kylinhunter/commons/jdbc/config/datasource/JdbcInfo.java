@@ -15,9 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.config.datasource;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.io.Serializable;
 import lombok.Data;
@@ -28,14 +25,13 @@ import lombok.Data;
  * @date 2023-01-18 00:08
  */
 @Data
-public class JdbcConfig implements Serializable {
+public class JdbcInfo implements Serializable {
 
   private String driverClassName;
   private String url;
   private String username;
   private String password;
 
-  private JdbcUrl jdbcUrlInfo;
 
   /**
    * @param url jdbcUrl
@@ -48,14 +44,7 @@ public class JdbcConfig implements Serializable {
 
     if (!StringUtil.isEmpty(url)) {
       this.url = url;
-      this.jdbcUrlInfo = JdbcUtils.parse(url);
     }
   }
 
-  public DbType getDbType() {
-    if (this.jdbcUrlInfo != null) {
-      return this.jdbcUrlInfo.getDbType();
-    }
-    return null;
-  }
 }

@@ -11,7 +11,7 @@ class SqlFileReaderTest {
   void read() {
 
     List<String> sqlLines = SqlFileReader.read(
-        "io/github/kylinhunter/commons/jdbc/binlog/binlog-test2.sql");
+        "io/github/kylinhunter/commons/jdbc/binlog/binlog-test.sql");
 
     System.out.println(sqlLines.get(0));
     System.out.println(sqlLines.get(1));

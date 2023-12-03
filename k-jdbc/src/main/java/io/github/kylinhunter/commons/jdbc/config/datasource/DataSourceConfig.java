@@ -26,5 +26,5 @@ import lombok.Data;
 @Data
 public class DataSourceConfig {
 
-  private List<DSInfo> datasources;
+  private List<DataSourceInfo> datasources;
 }
