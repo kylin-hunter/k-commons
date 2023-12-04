@@ -37,7 +37,7 @@ public class ThrowChecker {
   }
 
   /**
-   * @param reference    reference
+   * @param reference reference
    * @param errorMessage errorMessage
    * @return T
    * @title checkNotNull
@@ -54,7 +54,7 @@ public class ThrowChecker {
   }
 
   /**
-   * @param collection   collection
+   * @param collection collection
    * @param errorMessage errorMessage
    * @title checkNotEmpty
    * @description
@@ -79,7 +79,7 @@ public class ThrowChecker {
   }
 
   /**
-   * @param array        array
+   * @param array array
    * @param errorMessage errorMessage
    * @title checkNotEmpty
    * @description
@@ -93,7 +93,7 @@ public class ThrowChecker {
   }
 
   /**
-   * @param name         name
+   * @param name name
    * @param errorMessage errorMessage
    * @title checkNotEmpty
    * @description
@@ -107,7 +107,7 @@ public class ThrowChecker {
   }
 
   /**
-   * @param expression   expression
+   * @param expression expression
    * @param errorMessage errorMessage
    * @title checkArgument
    * @description
@@ -122,7 +122,7 @@ public class ThrowChecker {
 
   /**
    * @param value value
-   * @param name  name
+   * @param name name
    * @title checkNonnegative
    * @description
    * @author BiJi'an
@@ -137,7 +137,7 @@ public class ThrowChecker {
   /**
    * @param value value
    * @param start start
-   * @param end   end
+   * @param end end
    * @title checkNumScope
    * @description checkNumScope
    * @author BiJi'an

@@ -52,7 +52,8 @@ public class ConfigLoader {
   }
 
   /**
-   * @return java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
+   * @return
+   *     java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
    * @title load
    * @description load
    * @author BiJi'an

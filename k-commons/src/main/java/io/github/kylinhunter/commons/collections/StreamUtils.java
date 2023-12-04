@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 public class StreamUtils {
 
   /**
-   * @param stream     stream
+   * @param stream stream
    * @param predicates predicates
    * @return java.util.stream.Stream<T>
    * @title filter
@@ -43,7 +43,7 @@ public class StreamUtils {
   }
 
   /**
-   * @param stream     stream
+   * @param stream stream
    * @param predicates predicates
    * @return java.util.stream.Stream<T>
    * @title orFilter

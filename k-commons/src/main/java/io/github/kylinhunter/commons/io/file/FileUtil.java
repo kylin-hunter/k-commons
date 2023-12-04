@@ -70,7 +70,7 @@ public class FileUtil {
 
   /**
    * @param parent parent
-   * @param child  child
+   * @param child child
    * @return java.io.File
    * @title newFile
    * @description
@@ -83,7 +83,7 @@ public class FileUtil {
 
   /**
    * @param parent parent
-   * @param child  child
+   * @param child child
    * @return java.io.File
    * @title newFile
    * @description
@@ -111,11 +111,11 @@ public class FileUtil {
   }
 
   /**
-   * @param directory    directory
+   * @param directory directory
    * @param createParent createParent
-   * @param createFile   createFile
-   * @param isFile       isFile
-   * @param names        names
+   * @param createFile createFile
+   * @param isFile isFile
+   * @param names names
    * @return java.io.File
    * @title getFile
    * @description
@@ -167,10 +167,10 @@ public class FileUtil {
   }
 
   /**
-   * @param directory    directory
+   * @param directory directory
    * @param createParent createParent
-   * @param createFile   createFile
-   * @param names        names
+   * @param createFile createFile
+   * @param names names
    * @return java.io.File
    * @title getFile
    * @description
@@ -183,7 +183,7 @@ public class FileUtil {
   }
 
   /**
-   * @param dir   dir
+   * @param dir dir
    * @param names names
    * @return java.io.File
    * @title getFile
@@ -196,9 +196,9 @@ public class FileUtil {
   }
 
   /**
-   * @param dir          dir
+   * @param dir dir
    * @param createParent createParent
-   * @param names        names
+   * @param names names
    * @return java.io.File
    * @title getFile
    * @description
@@ -223,7 +223,7 @@ public class FileUtil {
 
   /**
    * @param createParent createParent
-   * @param names        names
+   * @param names names
    * @return java.io.File
    * @title getFile
    * @description
@@ -236,8 +236,8 @@ public class FileUtil {
 
   /**
    * @param createParent createParent
-   * @param createFile   createFile
-   * @param names        names
+   * @param createFile createFile
+   * @param names names
    * @return java.io.File
    * @title getFile
    * @description
@@ -249,9 +249,9 @@ public class FileUtil {
   }
 
   /**
-   * @param dir    dir
+   * @param dir dir
    * @param create create
-   * @param names  names
+   * @param names names
    * @return java.io.File
    * @title getFile
    * @description
@@ -263,7 +263,7 @@ public class FileUtil {
   }
 
   /**
-   * @param dir   dir
+   * @param dir dir
    * @param names names
    * @return java.io.File
    * @title getFile
@@ -289,7 +289,7 @@ public class FileUtil {
 
   /**
    * @param createParent createParent
-   * @param names        names
+   * @param names names
    * @return java.io.File
    * @title getFile
    * @description
@@ -313,9 +313,9 @@ public class FileUtil {
   }
 
   /**
-   * @param directory  directory
+   * @param directory directory
    * @param extensions extensions
-   * @param recursive  recursive
+   * @param recursive recursive
    * @return java.util.Collection<java.io.File>
    * @title listFiles
    * @description
@@ -330,8 +330,8 @@ public class FileUtil {
   }
 
   /**
-   * @param directory  directory
-   * @param recursive  recursive
+   * @param directory directory
+   * @param recursive recursive
    * @param extensions extensions
    * @return java.util.stream.Stream<java.io.File>
    * @title streamFiles
@@ -438,7 +438,7 @@ public class FileUtil {
   }
 
   /**
-   * @param directory  directory
+   * @param directory directory
    * @param fileFilter fileFilter
    * @return java.io.File[]
    * @title listFiles
@@ -469,7 +469,7 @@ public class FileUtil {
   }
 
   /**
-   * @param file   file
+   * @param file file
    * @param isFile isFile
    * @return java.io.File
    * @title checkValidFile
@@ -482,7 +482,7 @@ public class FileUtil {
   }
 
   /**
-   * @param file   file
+   * @param file file
    * @param isFile isFile
    * @return java.io.File
    * @title checkValidFile

@@ -32,7 +32,7 @@ public class PluginConfigReader {
   private static final String FIX_PREFIX = "plugins.";
 
   /**
-   * @param clazz      clazz
+   * @param clazz clazz
    * @param pluginName pluginName
    * @return T
    * @title buildConfig

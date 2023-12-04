@@ -32,8 +32,7 @@ import java.util.stream.Collectors;
  */
 public class ListUtils {
 
-  private ListUtils() {
-  }
+  private ListUtils() {}
 
   /**
    * @return java.util.ArrayList<E>
@@ -95,9 +94,9 @@ public class ListUtils {
   }
 
   /**
-   * @param list      list
+   * @param list list
    * @param getSortId getSortId
-   * @param sortIds   sortIds
+   * @param sortIds sortIds
    * @return java.util.List<E>
    * @title sort
    * @description sort

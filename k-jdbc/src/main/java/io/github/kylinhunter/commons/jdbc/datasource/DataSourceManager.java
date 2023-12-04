@@ -85,8 +85,9 @@ public class DataSourceManager implements AutoCloseable {
       for (ExHikariConfig exHikariConfig : exHikariConfigs) {
         Class<? extends ExDataSource> clazz = DSCreator.create(HikariDataSource.class);
 
-        ExDataSource exDataSource = ObjectCreator.create(
-            clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
+        ExDataSource exDataSource =
+            ObjectCreator.create(
+                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -101,11 +102,9 @@ public class DataSourceManager implements AutoCloseable {
               allDataSources.put(exDataSource.getDsNo(), exDataSource);
               allDataSources.put(exDataSource.getDsName(), exDataSource);
             });
-
       }
       initialized = true;
     }
-
   }
 
   /**
@@ -199,6 +198,5 @@ public class DataSourceManager implements AutoCloseable {
       IOUtil.closeQuietly(exDataSource);
     }
     allDataSources.clear();
-
   }
 }
