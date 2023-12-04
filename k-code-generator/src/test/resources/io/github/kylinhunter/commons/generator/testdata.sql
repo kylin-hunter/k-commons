@@ -29,4 +29,4 @@ CREATE TABLE IF NOT EXISTS `test_user`
     PRIMARY KEY (`id`),
     constraint test_user_role_fk
    foreign key (role_id) references test_role (id)
-) comment ='the user'
+) comment ='the user';

@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.jdbc.binlog.savepoint;
 
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import java.util.List;
@@ -60,7 +61,7 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
   @Override
   public void delete(String fileName) {
 
-    this.getSqlExecutor().execute(DELETE_SQL, new Object[] {fileName});
+    this.getSqlExecutor().execute(DELETE_SQL, fileName);
   }
 
   @Override
@@ -70,9 +71,9 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
     SavePoint oldSavePoint = this.get(name);
     long position = savePoint.getPosition();
     if (oldSavePoint != null) {
-      this.getSqlExecutor().execute(UPDATE_SQL, new Object[] {position, name});
+      this.getSqlExecutor().execute(UPDATE_SQL, position, name);
     } else {
-      this.getSqlExecutor().execute(INSERT_SQL, new Object[] {name, position});
+      this.getSqlExecutor().execute(INSERT_SQL, name, position);
     }
   }
 
@@ -80,7 +81,7 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
   public SavePoint get(String fileName) {
 
     List<SavePoint> savePoints =
-        this.getSqlExecutor().query(SELECT_SQL, beanListHandler, new Object[] {fileName});
+        this.getSqlExecutor().query(SELECT_SQL, beanListHandler, fileName);
     if (!CollectionUtils.isEmpty(savePoints)) {
       return savePoints.get(0);
     }
@@ -100,5 +101,22 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
   public void init() {
     List<String> sqlLines = SqlFileReader.read(INIT_SQL_PATH);
     this.getSqlExecutor().execute(sqlLines, true);
+  }
+
+
+  protected DataSource getDataSource() {
+
+    return dataSourceManager.getByNo(1);
+  }
+
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getDefaultDataSource
+   * @description getSqlExecutor
+   * @author BiJi'an
+   * @date 2023-12-03 15:45
+   */
+  protected SqlExecutor getSqlExecutor() {
+    return dataSourceManager.getSqlExecutorByNo(1);
   }
 }

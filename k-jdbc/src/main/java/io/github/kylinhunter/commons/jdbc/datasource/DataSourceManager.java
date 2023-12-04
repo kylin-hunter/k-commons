@@ -45,6 +45,9 @@ public class DataSourceManager implements AutoCloseable {
 
   private SqlExecutor defaultSqlExecutor;
 
+  private final Map<Object, SqlExecutor> allSqlExecutors = MapUtils.newHashMap();
+
+
   private volatile boolean initialized = false;
 
   public void init() {
@@ -87,7 +90,7 @@ public class DataSourceManager implements AutoCloseable {
 
         ExDataSource exDataSource =
             ObjectCreator.create(
-                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
+                clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -101,6 +104,10 @@ public class DataSourceManager implements AutoCloseable {
             exDataSource -> {
               allDataSources.put(exDataSource.getDsNo(), exDataSource);
               allDataSources.put(exDataSource.getDsName(), exDataSource);
+              SqlExecutor sqlExecutor = new SqlExecutor(exDataSource);
+              allSqlExecutors.put(exDataSource.getDsNo(), sqlExecutor);
+              allSqlExecutors.put(exDataSource.getDsName(), sqlExecutor);
+
             });
       }
       initialized = true;
@@ -157,10 +164,11 @@ public class DataSourceManager implements AutoCloseable {
     }
     exDataSource = allDataSources.get(dsKey);
     if (exDataSource == null) {
-      throw new JdbcException("dsKey  Datasource for:" + dsKey);
+      throw new JdbcException("no  Datasource for:" + dsKey);
     }
     return exDataSource;
   }
+
 
   /**
    * @param no no
@@ -174,6 +182,7 @@ public class DataSourceManager implements AutoCloseable {
     return this.getDatasource(no);
   }
 
+
   /**
    * @param name name
    * @return io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx
@@ -184,6 +193,51 @@ public class DataSourceManager implements AutoCloseable {
    */
   public ExDataSource getByName(String name) {
     return this.getDatasource(name);
+  }
+
+  /**
+   * @param dsKey dsKey
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getSqlExecutor
+   * @description getSqlExecutor
+   * @author BiJi'an
+   * @date 2023-12-04 23:17
+   */
+
+  private SqlExecutor getSqlExecutor(Object dsKey) {
+    SqlExecutor sqlExecutor = allSqlExecutors.get(dsKey);
+    if (sqlExecutor == null) {
+      init();
+    }
+    sqlExecutor = allSqlExecutors.get(dsKey);
+    if (sqlExecutor == null) {
+      throw new JdbcException("no  SqlExecutor for:" + dsKey);
+    }
+    return sqlExecutor;
+  }
+
+  /**
+   * @param no no
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getSqlExecutorByNo
+   * @description getSqlExecutorByNo
+   * @author BiJi'an
+   * @date 2023-12-04 23:16
+   */
+  public SqlExecutor getSqlExecutorByNo(int no) {
+    return this.getSqlExecutor(no);
+  }
+
+  /**
+   * @param name name
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getSqlExecutorByName
+   * @description getSqlExecutorByName
+   * @author BiJi'an
+   * @date 2023-12-04 23:16
+   */
+  public SqlExecutor getSqlExecutorByName(String name) {
+    return this.getSqlExecutor(name);
   }
 
   /**
