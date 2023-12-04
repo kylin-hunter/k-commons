@@ -15,6 +15,6 @@ class ErrInfoManagerTest {
     Assertions.assertEquals("INTERNAL", ErrInfoManager.getDefaultMsg(1003));
     Assertions.assertEquals("IO", ErrInfoManager.getDefaultMsg(1004));
     Assertions.assertEquals("PARAM", ErrInfoManager.getDefaultMsg(1005));
-    Assertions.assertEquals("BIZ", ErrInfoManager.getDefaultMsg(2001));
+    Assertions.assertEquals("BIZ", ErrInfoManager.getDefaultMsg(1101));
   }
 }

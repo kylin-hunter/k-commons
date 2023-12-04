@@ -15,33 +15,61 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta;
 
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
+import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import javax.sql.DataSource;
-import org.apache.commons.dbutils.QueryRunner;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-11-29 22:34
+ * @date 2023-11-29 00:34
  */
 public class AbstractDatabaseManager {
 
-  protected DataSource defaultDataSource;
+  protected DbType dbType;
+  private DataSource dataSource;
 
-  protected QueryRunner defaultQueryRunner;
+  private SqlExecutor sqlExecutor;
 
-  protected final DataSourceManager dataSourceManager = new DataSourceManager();
+  protected static final DataSourceManager dataSourceManager = new DataSourceManager();
 
   public AbstractDatabaseManager() {
     this(null);
   }
 
-  public AbstractDatabaseManager(DataSource defaultDataSource) {
-    if (defaultDataSource != null) {
-      this.defaultDataSource = defaultDataSource;
-    } else {
-      this.defaultDataSource = dataSourceManager.getDefaultDataSource();
+  public AbstractDatabaseManager(DataSource dataSource) {
+    if (dataSource != null) {
+      this.dataSource = dataSource;
+      this.sqlExecutor = new SqlExecutor(dataSource);
     }
-    this.defaultQueryRunner = new QueryRunner(this.defaultDataSource);
+  }
+
+  /***
+   * @title getDataSource
+   * @description getDataSource
+   * @author BiJi'an
+   * @date 2023-12-03 15:45
+   * @return javax.sql.DataSource
+   */
+  protected DataSource getDataSource() {
+    if (dataSource != null) {
+      return dataSource;
+    }
+    return dataSourceManager.getDefaultDataSource();
+  }
+
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getDefaultDataSource
+   * @description getSqlExecutor
+   * @author BiJi'an
+   * @date 2023-12-03 15:45
+   */
+  protected SqlExecutor getSqlExecutor() {
+    if (sqlExecutor != null) {
+      return sqlExecutor;
+    }
+    return dataSourceManager.getDefaultSqlExecutor();
   }
 }

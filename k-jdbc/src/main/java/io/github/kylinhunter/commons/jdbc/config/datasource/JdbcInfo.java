@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.config.datasource;
 
-import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -31,18 +30,4 @@ public class JdbcInfo implements Serializable {
   private String url;
   private String username;
   private String password;
-
-  /**
-   * @param url jdbcUrl
-   * @title setJdbcUrl
-   * @description setJdbcUrl
-   * @author BiJi'an
-   * @date 2023-11-25 22:29
-   */
-  public void setUrl(String url) {
-
-    if (!StringUtil.isEmpty(url)) {
-      this.url = url;
-    }
-  }
 }

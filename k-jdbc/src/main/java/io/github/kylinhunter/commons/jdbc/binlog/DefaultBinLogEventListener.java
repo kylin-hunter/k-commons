@@ -27,7 +27,9 @@ import com.github.shyiko.mysql.binlog.event.RotateEventData;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
-import io.github.kylinhunter.commons.jdbc.binlog.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.DefaultSavePointManager;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 

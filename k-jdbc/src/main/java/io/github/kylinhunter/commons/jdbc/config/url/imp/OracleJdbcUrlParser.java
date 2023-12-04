@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.config.url.imp;
 
-import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
@@ -31,7 +30,6 @@ import java.util.regex.Pattern;
  *     <p>jdbc:oracle:thin:@localhost:1521:ORACLE?user=your_username&password=your_password
  * @date 2023-01-10 11:11
  */
-@C
 public class OracleJdbcUrlParser implements JdbcUrlParser {
 
   private final Pattern pattern = Pattern.compile(".+@(.+):(\\d+):([\\d\\w]+)([\\?]{0,1})(.*)");

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.binlog;
+package io.github.kylinhunter.commons.jdbc.binlog.savepoint;
 
-import io.github.kylinhunter.commons.jdbc.binlog.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
 
 /**
  * @author BiJi'an

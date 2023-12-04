@@ -65,10 +65,8 @@ public class DSCreator {
             .intercept(FieldAccessor.ofBeanProperty())
             .make();
     debug(dynamicType, debugOption);
-    return (Class<? extends ExDataSource>)
-        dynamicType
-            .load(DSCreator.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
-            .getLoaded();
+    return (Class<? extends ExDataSource>) dynamicType.load(DSCreator.class.getClassLoader(),
+        ClassLoadingStrategy.Default.WRAPPER).getLoaded();
   }
 
   /**

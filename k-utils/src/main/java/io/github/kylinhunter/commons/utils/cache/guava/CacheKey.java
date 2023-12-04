@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.utils.cache.guava;
 
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,21 +29,22 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CacheKey {
 
-  @EqualsAndHashCode.Include private String key;
+  @EqualsAndHashCode.Include
+  private String key;
   private Object[] params;
 
   public CacheKey(Object... params) {
-    ExceptionChecker.checkArgument(params != null && params.length > 0, "param eror");
+    ThrowChecker.checkArgument(params != null && params.length > 0, "param eror");
     this.params = params;
   }
 
   public String getString(int index) {
-    ExceptionChecker.checkNum(index, 0, params.length);
+    ThrowChecker.checkNum(index, 0, params.length);
     return ObjectValues.getString(params[index]);
   }
 
   public int getInt(int index) {
-    ExceptionChecker.checkNum(index, 0, params.length);
+    ThrowChecker.checkNum(index, 0, params.length);
     return ObjectValues.getInt(params[index]);
   }
 }

@@ -26,7 +26,7 @@ import io.github.kylinhunter.commons.exception.info.ErrInfoAware;
 @ErrInfoAware
 public class JdbcErrInfos {
 
-  static int BASE_CODE = 5000;
+  static int BASE_CODE = 3000;
 
   public static final ErrInfo JDBC = new ErrInfo(++BASE_CODE);
 }

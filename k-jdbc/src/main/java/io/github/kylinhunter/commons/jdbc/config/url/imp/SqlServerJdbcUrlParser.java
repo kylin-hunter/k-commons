@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.config.url.imp;
 
-import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
@@ -32,10 +31,10 @@ import java.util.regex.Pattern;
  *     <p>jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd
  * @date 2023-01-10 11:11
  */
-@C
 public class SqlServerJdbcUrlParser implements JdbcUrlParser {
 
   private final Pattern pattern = Pattern.compile(".+//(.+):(\\d+);(.*)");
+  private static final String DATABASENAME_TAG = "DatabaseName";
 
   @Override
   public JdbcUrl parse(String jdbcUrl) {
@@ -51,7 +50,7 @@ public class SqlServerJdbcUrlParser implements JdbcUrlParser {
       Map<String, String> params = StringUtil.split(group3, ';', '=');
       jdbcUrlInfo.setParams(params);
       for (Entry<String, String> env : params.entrySet()) {
-        if ("DatabaseName".equalsIgnoreCase(env.getKey())) {
+        if (DATABASENAME_TAG.equalsIgnoreCase(env.getKey())) {
           jdbcUrlInfo.setDatabase(env.getValue());
         }
       }

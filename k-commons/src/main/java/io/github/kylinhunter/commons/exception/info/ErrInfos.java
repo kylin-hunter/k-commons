@@ -36,8 +36,12 @@ public class ErrInfos {
   public static final ErrInfo PARAM = new ErrInfo(++BASE_CODE);
   public static final ErrInfo GENERAL = new ErrInfo(++BASE_CODE);
   public static final ErrInfo SYSTEM = new ErrInfo(++BASE_CODE);
+
   public static final ErrInfo CRYPT = new ErrInfo(++BASE_CODE);
 
-  private static int BASE_BIZ_CODE = 2000;
-  public static final ErrInfo BIZ = new ErrInfo(++BASE_BIZ_CODE);
+
+  private static int BIZ_CODE = 1100;
+  public static final ErrInfo BIZ = new ErrInfo(++BIZ_CODE);
+
+
 }

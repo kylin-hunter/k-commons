@@ -18,7 +18,7 @@ package io.github.kylinhunter.commons.generator.context;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.component.CF;
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Table;
@@ -76,7 +76,7 @@ public class ModuleInfoReader {
     TableInfo tableInfo = new TableInfo(table);
 
     TableMeta tableMetaData = tableMetaReader.getTableMetaData(databaseName, table.getName());
-    ExceptionChecker.checkNotNull(tableMetaData, "tableMetaData can't be null");
+    ThrowChecker.checkNotNull(tableMetaData, "tableMetaData can't be null");
     tableInfo.setTableMeta(tableMetaData);
 
     List<String> skipColumns = table.getSkipColumns();

@@ -29,10 +29,14 @@ import lombok.Data;
 public class DatabaseMeta {
 
   private String url;
-  private JdbcUrl jdbcUrl;
   private String productName;
   private String version;
   private String driverName;
+
+  /*
+   * the extra information of the database
+   */
+  private JdbcUrl jdbcUrl;
   private DbType dbType;
 
   public void setUrl(String url) {

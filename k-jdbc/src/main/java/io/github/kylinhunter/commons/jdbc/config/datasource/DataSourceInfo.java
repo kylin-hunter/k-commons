@@ -30,7 +30,6 @@ public class DataSourceInfo extends JdbcInfo {
 
   private String name;
   private boolean primary;
-
   private PoolInfo pool;
   private Map<String, String> properties;
 }

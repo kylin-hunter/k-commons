@@ -45,7 +45,7 @@ public class SqlFileReader {
       StringBuilder buf = new StringBuilder();
       for (String line : lines) {
         if (!StringUtil.isEmpty(line)) {
-          line = line.trim();
+          line = " " + line.trim();
           if (line.endsWith(";")) {
             buf.append(line, 0, line.length() - 1);
             sqlLines.add(buf.toString());

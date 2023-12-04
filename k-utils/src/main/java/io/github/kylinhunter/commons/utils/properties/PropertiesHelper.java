@@ -19,7 +19,7 @@ import static java.lang.reflect.Array.newInstance;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
@@ -58,7 +58,6 @@ public class PropertiesHelper {
 
   /**
    * @param keyCorrector keyCorrector
-   * @return void
    * @title resetKeyCorrector
    * @description
    * @author BiJi'an
@@ -82,7 +81,7 @@ public class PropertiesHelper {
   }
 
   /**
-   * @param path path
+   * @param path    path
    * @param charset charset
    * @return java.util.Properties
    * @title load
@@ -93,7 +92,7 @@ public class PropertiesHelper {
   public static Properties load(String path, String charset) {
     Properties properties = new Properties();
     try (InputStream inputStream =
-            ResourceHelper.getInputStream(path, ResourceHelper.PathType.FILESYSTEM, true);
+        ResourceHelper.getInputStream(path, ResourceHelper.PathType.FILESYSTEM, true);
         InputStreamReader read = new InputStreamReader(inputStream, Charsets.toCharset(charset))) {
       properties.load(read);
     } catch (IOException e) {
@@ -103,7 +102,7 @@ public class PropertiesHelper {
   }
 
   /**
-   * @param path path
+   * @param path  path
    * @param clazz clazz
    * @return T
    * @title load
@@ -116,9 +115,9 @@ public class PropertiesHelper {
   }
 
   /**
-   * @param path path
+   * @param path     path
    * @param nameRule nameRule
-   * @param clazz clazz
+   * @param clazz    clazz
    * @return T
    * @title load
    * @description
@@ -130,7 +129,7 @@ public class PropertiesHelper {
   }
 
   /**
-   * @param path path
+   * @param path  path
    * @param clazz clazz
    * @return T
    * @title load
@@ -145,7 +144,7 @@ public class PropertiesHelper {
 
   /**
    * @param properties properties
-   * @param clazz clazz
+   * @param clazz      clazz
    * @return T
    * @title toBean
    * @description
@@ -158,7 +157,7 @@ public class PropertiesHelper {
 
   /**
    * @param properties properties
-   * @param clazz clazz
+   * @param clazz      clazz
    * @return T
    * @title toBean
    * @description
@@ -172,7 +171,7 @@ public class PropertiesHelper {
       properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
       properties = newProperties;
     }
-    ExceptionChecker.checkNotNull(clazz);
+    ThrowChecker.checkNotNull(clazz);
     PropObjectPool objectPool = createPropObjectPool(properties, clazz);
     List<PropObject> propObjects = objectPool.getSortedPropObjes(); // resort
     propObjects.forEach(
@@ -207,7 +206,7 @@ public class PropertiesHelper {
 
   /**
    * @param objectPool objectPool
-   * @param propFiled propFiled
+   * @param propFiled  propFiled
    * @return io.github.kylinhunter.commons.properties.PropObject
    * @title getPropObject
    * @description
@@ -237,9 +236,8 @@ public class PropertiesHelper {
   }
 
   /**
-   * @param objectPool objectPool
+   * @param objectPool    objectPool
    * @param curPropObject curPropObject
-   * @return void
    * @title processPropFileds
    * @description
    * @author BiJi'an
@@ -283,7 +281,7 @@ public class PropertiesHelper {
             } else {
               arr = Arrays.copyOf(arr, arrLen);
             }
-            Object[] params = new Object[] {arr};
+            Object[] params = new Object[]{arr};
             ReflectUtils.invoke(curObj, writeMethod, params);
             Object newObj = ObjectCreator.create(propActualClazz);
             arr[propFiled.arrIndex] = newObj;
@@ -330,7 +328,7 @@ public class PropertiesHelper {
   }
 
   /**
-   * @param obj obj
+   * @param obj  obj
    * @param file file
    * @return void
    * @title store
@@ -343,8 +341,8 @@ public class PropertiesHelper {
   }
 
   /**
-   * @param obj obj
-   * @param file file
+   * @param obj     obj
+   * @param file    file
    * @param charset charset
    * @return void
    * @title store
@@ -358,8 +356,8 @@ public class PropertiesHelper {
 
   /**
    * @param properties properties
-   * @param file file
-   * @param charset charset
+   * @param file       file
+   * @param charset    charset
    * @return void
    * @title store
    * @description
@@ -406,10 +404,9 @@ public class PropertiesHelper {
 
   /**
    * @param properties properties
-   * @param parent parent
-   * @param obj obj
-   * @param exPd exPd
-   * @return void
+   * @param parent     parent
+   * @param obj        obj
+   * @param exPd       exPd
    * @title toProperties
    * @description
    * @author BiJi'an

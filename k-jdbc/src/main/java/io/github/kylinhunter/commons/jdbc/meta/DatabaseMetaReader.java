@@ -16,7 +16,7 @@
 package io.github.kylinhunter.commons.jdbc.meta;
 
 import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
 import java.sql.Connection;
@@ -41,7 +41,7 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @date 2023-01-18 12:41
    */
   public DatabaseMeta getMetaData() {
-    return this.getMetaData(this.defaultDataSource);
+    return this.getMetaData(this.getDataSource());
   }
 
   /**
@@ -53,7 +53,7 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @date 2023-01-18 12:41
    */
   public DatabaseMeta getMetaData(DataSource dataSource) {
-    ExceptionChecker.checkNotNull(dataSource, "datasource can't be null");
+    ThrowChecker.checkNotNull(dataSource, "datasource can't be null");
 
     try (Connection connection = dataSource.getConnection()) {
       return getMetaData(connection);

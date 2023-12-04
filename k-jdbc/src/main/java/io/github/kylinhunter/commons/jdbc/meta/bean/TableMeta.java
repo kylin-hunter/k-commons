@@ -34,7 +34,7 @@ public class TableMeta {
    */
   private Map<String, Object> rawMetadatas = MapUtils.newHashMap();
 
-  private String name;
+  private String name; // column name
 
-  private String remarks;
+  private String remarks; // column remarks
 }

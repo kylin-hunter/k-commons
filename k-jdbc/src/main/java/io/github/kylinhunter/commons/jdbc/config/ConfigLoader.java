@@ -52,12 +52,11 @@ public class ConfigLoader {
   }
 
   /**
-   * @return
-   *     java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
+   * @return java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
    * @title load
    * @description load
    * @author BiJi'an
-   * @date 2023-12-04 00:44
+   * @date 2023-12-03 00:44
    */
   public List<ExHikariConfig> load() {
     return load(DEFAULT_PATH);

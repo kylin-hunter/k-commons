@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.collections;
 
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,7 +32,8 @@ import java.util.stream.Collectors;
  */
 public class ListUtils {
 
-  private ListUtils() {}
+  private ListUtils() {
+  }
 
   /**
    * @return java.util.ArrayList<E>
@@ -46,7 +47,7 @@ public class ListUtils {
   }
 
   public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
-    ExceptionChecker.checkNonnegative(initialArraySize, "initialArraySize");
+    ThrowChecker.checkNonnegative(initialArraySize, "initialArraySize");
     return new ArrayList<>(initialArraySize);
   }
 
@@ -94,9 +95,9 @@ public class ListUtils {
   }
 
   /**
-   * @param list list
+   * @param list      list
    * @param getSortId getSortId
-   * @param sortIds sortIds
+   * @param sortIds   sortIds
    * @return java.util.List<E>
    * @title sort
    * @description sort

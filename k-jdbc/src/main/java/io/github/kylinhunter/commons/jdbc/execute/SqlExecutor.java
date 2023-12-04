@@ -28,12 +28,13 @@ import org.apache.commons.dbutils.ResultSetHandler;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-11-29 14:30
+ * @date 2023-11-29 00:30
  */
 @RequiredArgsConstructor
 public class SqlExecutor {
 
-  @Getter private QueryRunner queryRunner;
+  @Getter
+  private QueryRunner queryRunner;
   private DataSource dataSource;
 
   public SqlExecutor(DataSource dataSource) {
@@ -42,13 +43,13 @@ public class SqlExecutor {
   }
 
   /**
-   * @param sql sql
+   * @param sql    sql
    * @param params params
    * @return int
    * @title execute
    * @description execute
    * @author BiJi'an
-   * @date 2023-11-29 14:48
+   * @date 2023-11-29 00:48
    */
   public int execute(String sql, Object... params) {
     try {
@@ -59,8 +60,8 @@ public class SqlExecutor {
   }
 
   /**
-   * @param sql sql
-   * @param rsh rsh
+   * @param sql    sql
+   * @param rsh    rsh
    * @param params params
    * @return T
    * @title query
@@ -76,6 +77,13 @@ public class SqlExecutor {
     }
   }
 
+  /**
+   * @return java.sql.Connection
+   * @title getConnection
+   * @description getConnection
+   * @author BiJi'an
+   * @date 2023-12-03 00:08
+   */
   public Connection getConnection() {
     try {
       return this.dataSource.getConnection();
@@ -89,7 +97,7 @@ public class SqlExecutor {
    * @title execute with QueryRunner
    * @description execute
    * @author BiJi'an
-   * @date 2023-11-29 14:45
+   * @date 2023-11-29 00:45
    */
   public void execute(List<String> sqlLines, boolean isTransaction) {
     try {
@@ -108,8 +116,7 @@ public class SqlExecutor {
           queryRunner.execute(sqlLine);
         }
       }
-
-    } catch (SQLException e) {
+    } catch (Exception e) {
       throw new JdbcException("execute sql error", e);
     }
   }

@@ -28,5 +28,5 @@ CREATE TABLE IF NOT EXISTS `test_user`
     `extend_3`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
     PRIMARY KEY (`id`),
     constraint test_user_role_fk
-        foreign key (role_id) references test_role (id)
+   foreign key (role_id) references test_role (id)
 ) comment ='the user'

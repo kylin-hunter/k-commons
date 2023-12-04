@@ -2,7 +2,9 @@ package io.github.kylinhunter.commons.jdbc.binlog;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.github.kylinhunter.commons.jdbc.binlog.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.DefaultSavePointManager;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
 import org.junit.jupiter.api.Test;
 
 class DefaultSavePointManagerTest {
@@ -10,6 +12,7 @@ class DefaultSavePointManagerTest {
   @Test
   void test() {
     SavePointManager savePointManager = new DefaultSavePointManager();
+    savePointManager.init();
 
     savePointManager.delete("test1");
     savePointManager.delete("test2");

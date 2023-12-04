@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.datasource;
 
+import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
@@ -23,10 +24,12 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.jdbc.config.ConfigLoader;
 import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig;
+import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
+import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.util.List;
 import java.util.Map;
-import lombok.Getter;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,12 +38,16 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 00:34
  */
 @Slf4j
-public class DataSourceManager {
+public class DataSourceManager implements AutoCloseable {
 
-  @Getter private ExDataSource defaultDataSource;
-  private final Map<Object, ExDataSource> DATA_SOURCES = MapUtils.newHashMap();
+  private DataSource defaultDataSource;
+  private final Map<Object, ExDataSource> allDataSources = MapUtils.newHashMap();
 
-  public DataSourceManager() {
+  private SqlExecutor defaultSqlExecutor;
+
+  private volatile boolean initialized = false;
+
+  public void init() {
     init(ConfigLoader.DEFAULT_PATH);
   }
 
@@ -51,13 +58,13 @@ public class DataSourceManager {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  public synchronized void init(String path) {
+  public void init(String path) {
     try {
       ConfigLoader configLoader = new ConfigLoader();
       List<ExHikariConfig> exHikariConfigs = configLoader.load(path);
       init(exHikariConfigs);
     } catch (Exception e) {
-      log.error("init error", e);
+      throw new InitException("init error", e);
     }
   }
 
@@ -66,53 +73,106 @@ public class DataSourceManager {
    * @title init
    * @description init
    * @author BiJi'an
-   * @date 2023-12-04 00:57
+   * @date 2023-12-03 00:57
    */
   public synchronized void init(List<ExHikariConfig> exHikariConfigs) {
-    closeAll();
-    if (CollectionUtils.isEmpty(exHikariConfigs)) {
-      throw new InitException(" can't find datasource config");
-    }
-    for (int i = 0; i < exHikariConfigs.size(); i++) {
-      ExHikariConfig exHikariConfig = exHikariConfigs.get(i);
-
-      int no = exHikariConfig.getNo();
-      String name = exHikariConfig.getName();
-      Class<? extends ExDataSource> clazz = DSCreator.create(HikariDataSource.class);
-
-      ExDataSource exDataSource =
-          ObjectCreator.create(
-              clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
-      if (i == 0) {
-        defaultDataSource = exDataSource;
+    if (!initialized) {
+      close();
+      List<ExDataSource> allExDataSources = Lists.newArrayList();
+      if (CollectionUtils.isEmpty(exHikariConfigs)) {
+        throw new InitException(" can't find datasource config");
       }
-      DATA_SOURCES.put(no, exDataSource);
-      DATA_SOURCES.put(name, exDataSource);
+      for (ExHikariConfig exHikariConfig : exHikariConfigs) {
+        Class<? extends ExDataSource> clazz = DSCreator.create(HikariDataSource.class);
+
+        ExDataSource exDataSource = ObjectCreator.create(
+            clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
+        exDataSource.setDsNo(exHikariConfig.getNo());
+        exDataSource.setDsName(exHikariConfig.getName());
+        allExDataSources.add(exDataSource);
+      }
+
+      if (allExDataSources.size() > 0) {
+        ExDataSource firstDatasource = allExDataSources.get(0);
+        this.defaultDataSource = firstDatasource;
+        this.defaultSqlExecutor = new SqlExecutor(firstDatasource);
+        allExDataSources.forEach(
+            exDataSource -> {
+              allDataSources.put(exDataSource.getDsNo(), exDataSource);
+              allDataSources.put(exDataSource.getDsName(), exDataSource);
+            });
+
+      }
+      initialized = true;
     }
+
   }
 
   /**
-   * @title closeAll
-   * @description
+   * @return javax.sql.DataSource
+   * @title getDefaultDataSource
+   * @description getDefaultDataSource
    * @author BiJi'an
-   * @date 2023-01-18 12:25
+   * @date 2023-12-03 16:45
    */
-  private void closeAll() {
-    for (ExDataSource exDataSource : DATA_SOURCES.values()) {
-      IOUtil.closeQuietly(exDataSource);
+  public DataSource getDefaultDataSource() {
+    if (defaultDataSource == null) {
+      init();
     }
+    if (defaultDataSource == null) {
+      throw new JdbcException("no default Datasource ");
+    }
+    return defaultDataSource;
   }
 
   /**
-   * @param no no
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getDefaultSqlExecutor
+   * @description getDefaultSqlExecutor
+   * @author BiJi'an
+   * @date 2023-12-03 16:53
+   */
+  public SqlExecutor getDefaultSqlExecutor() {
+
+    if (defaultSqlExecutor == null) {
+      init();
+    }
+    if (defaultSqlExecutor == null) {
+      throw new JdbcException("no default SqlExecutor ");
+    }
+    return defaultSqlExecutor;
+  }
+
+  /**
+   * @param dsKey dsKey
    * @return io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx
    * @title getByNo
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
+  private ExDataSource getDatasource(Object dsKey) {
+    ExDataSource exDataSource = allDataSources.get(dsKey);
+    if (exDataSource == null) {
+      init();
+    }
+    exDataSource = allDataSources.get(dsKey);
+    if (exDataSource == null) {
+      throw new JdbcException("dsKey  Datasource for:" + dsKey);
+    }
+    return exDataSource;
+  }
+
+  /**
+   * @param no no
+   * @return io.github.kylinhunter.commons.jdbc.datasource.ExDataSource
+   * @title getByNo
+   * @description getByNo
+   * @author BiJi'an
+   * @date 2023-12-03 15:32
+   */
   public ExDataSource getByNo(int no) {
-    return DATA_SOURCES.get(no);
+    return this.getDatasource(no);
   }
 
   /**
@@ -124,6 +184,21 @@ public class DataSourceManager {
    * @date 2023-01-18 12:25
    */
   public ExDataSource getByName(String name) {
-    return DATA_SOURCES.get(name);
+    return this.getDatasource(name);
+  }
+
+  /**
+   * @title close
+   * @description close
+   * @author BiJi'an
+   * @date 2023-12-03 16:54
+   */
+  @Override
+  public void close() {
+    for (ExDataSource exDataSource : allDataSources.values()) {
+      IOUtil.closeQuietly(exDataSource);
+    }
+    allDataSources.clear();
+
   }
 }

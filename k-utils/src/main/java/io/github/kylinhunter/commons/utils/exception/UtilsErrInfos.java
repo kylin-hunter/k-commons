@@ -26,7 +26,7 @@ import io.github.kylinhunter.commons.exception.info.ErrInfoAware;
 @ErrInfoAware
 public class UtilsErrInfos {
 
-  static int BASE_CODE = 3000;
+  static int BASE_CODE = 2000;
 
   public static final ErrInfo RETRY = new ErrInfo(++BASE_CODE);
 }

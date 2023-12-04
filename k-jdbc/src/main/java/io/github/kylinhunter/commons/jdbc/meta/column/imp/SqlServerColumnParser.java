@@ -20,7 +20,7 @@ import io.github.kylinhunter.commons.sys.KGenerated;
 
 /**
  * @author BiJi'an
- * @description
+ * @description no-test ，Reserved functions: Support for sql-server
  * @date 2023-01-10 11:11
  */
 @KGenerated
@@ -30,6 +30,7 @@ public class SqlServerColumnParser extends MysqlColumnParser {
    * @see ColumnParser#calJavaClass(int)
    */
   public Class<?> calJavaClass(int dataType) {
+    // Reserved functions: Support for sql-server
     return super.calJavaClass(dataType);
   }
 }

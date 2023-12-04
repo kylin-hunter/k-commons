@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
- * @description
+ * @description no-test ，Reserved functions: Support for oracle
  * @date 2023-01-10 11:11
  */
 @Slf4j

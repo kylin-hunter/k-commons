@@ -6,17 +6,38 @@ import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
+import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
+import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.File;
 import java.time.LocalTime;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CodeGeneratorTest {
+
   File sourceDir = ResourceHelper.getDir("$user.dir$/src_generator");
 
   File compileOutputDir = UserDirUtils.getTmpDir("src_generator/classes");
+
+  @BeforeAll
+  static void beforeAll() {
+
+    DataSourceManager dataSourceManager = new DataSourceManager();
+    dataSourceManager.init();
+
+    List<String> sqls = SqlFileReader.read("io/github/kylinhunter/commons/generator/testdata.sql");
+
+    SqlExecutor defaultSqlExecutor = dataSourceManager.getDefaultSqlExecutor();
+
+    defaultSqlExecutor.execute(sqls, true);
+    dataSourceManager.close();
+
+  }
 
   @Test
   void execute() throws NoSuchFieldException {
@@ -71,7 +92,6 @@ class CodeGeneratorTest {
 
   /**
    * @param file file
-   * @return void
    * @title compile
    * @description
    * @author BiJi'an
