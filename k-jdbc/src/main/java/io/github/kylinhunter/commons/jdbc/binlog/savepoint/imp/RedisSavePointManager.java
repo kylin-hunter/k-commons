@@ -15,8 +15,10 @@
  */
 package io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp;
 
+import io.github.kylinhunter.commons.io.IOUtil;
+import io.github.kylinhunter.commons.jdbc.binlog.redis.JsonRedisCodec;
+import io.github.kylinhunter.commons.jdbc.binlog.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.lettuce.core.RedisClient;
@@ -24,6 +26,7 @@ import io.lettuce.core.RedisURI;
 import io.lettuce.core.RedisURI.Builder;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.codec.RedisCodec;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import lombok.Setter;
@@ -35,9 +38,16 @@ import lombok.Setter;
  */
 public class RedisSavePointManager implements SavePointManager {
 
-  private final RedisCommands<String, String> redisCommands;
+  private RedisCommands<String, Object> redisCommands;
 
-  @Setter private String recentBinLogKey = "binlog_process";
+  private StatefulRedisConnection<String, Object> connection;
+  @Setter
+  private String recentBinLogKey = "binlog_process";
+
+  @Setter
+  private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
+
+  private final RedisURI redisUri;
 
   public RedisSavePointManager(RedisConfig redisConfig) {
     Builder builder =
@@ -48,39 +58,44 @@ public class RedisSavePointManager implements SavePointManager {
     if (redisConfig.getTimeout() > 0) {
       builder = builder.withTimeout(Duration.of(redisConfig.getTimeout(), ChronoUnit.SECONDS));
     }
-    RedisURI redisUri = builder.build();
-    RedisClient redisClient = RedisClient.create(redisUri);
-    StatefulRedisConnection<String, String> connection = redisClient.connect();
-    this.redisCommands = connection.sync();
+
+    this.redisUri = builder.build();
+
+
   }
 
   @Override
   public void reset() {
-    this.redisCommands.set(
-        recentBinLogKey, DEAFULT_SAVEPOINT.getName() + "#" + DEAFULT_SAVEPOINT.getPosition());
+    SavePoint savePoint = this.getDefaultSavePoint();
+    this.redisCommands.set(recentBinLogKey, savePoint);
   }
 
   @Override
   public void save(SavePoint savePoint) {
-    this.redisCommands.set(recentBinLogKey, savePoint.getName() + "#" + savePoint.getPosition());
+    this.redisCommands.set(recentBinLogKey, savePoint);
   }
 
   @Override
   public SavePoint getLatest() {
-    String sp = this.redisCommands.get(recentBinLogKey);
-    if (!StringUtil.isEmpty(sp)) {
-      String[] split = StringUtil.split(sp, '#');
-      return new SavePoint(split[0], Long.parseLong(split[1]));
-    }
-    return null;
+    return (SavePoint) this.redisCommands.get(recentBinLogKey);
   }
 
   @Override
   public void init() {
+    RedisClient redisClient = RedisClient.create(redisUri);
+    this.connection = redisClient.connect(this.redisCodec);
+    this.redisCommands = connection.sync();
     SavePoint savePoint = this.getLatest();
     if (savePoint == null) {
+      savePoint = this.getDefaultSavePoint();
       this.redisCommands.set(
-          recentBinLogKey, DEAFULT_SAVEPOINT.getName() + "#" + DEAFULT_SAVEPOINT.getPosition());
+          recentBinLogKey, savePoint);
     }
+  }
+
+  @Override
+  public void shutdown() {
+    IOUtil.closeQuietly(connection);
+
   }
 }

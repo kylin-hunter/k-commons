@@ -24,7 +24,6 @@ import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
  */
 public interface SavePointManager {
 
-  SavePoint DEAFULT_SAVEPOINT = new SavePoint("unknown", -1);
 
   void reset();
 
@@ -34,15 +33,10 @@ public interface SavePointManager {
 
   void init();
 
-  /**
-   * @param savePoint savePoint
-   * @return boolean
-   * @title isValid
-   * @description isValid
-   * @author BiJi'an
-   * @date 2023-12-06 20:49
-   */
-  default boolean isValid(SavePoint savePoint) {
-    return savePoint != null && !savePoint.equals(DEAFULT_SAVEPOINT);
+  default SavePoint getDefaultSavePoint() {
+    return new SavePoint("unknown", -1);
   }
+
+  void shutdown();
+
 }

@@ -36,7 +36,8 @@ public class BinLogClient {
 
   private final BinaryLogClient binaryLogClient;
 
-  @Setter private SavePointManager savePointManager;
+  @Setter
+  private SavePointManager savePointManager;
 
   public BinLogClient(String jdbcUrl, String username, String password) {
     this(JdbcUtils.parse(jdbcUrl), username, password);
@@ -94,7 +95,7 @@ public class BinLogClient {
       ThrowChecker.checkNotNull(savePointManager, "savePointManager can't be null");
       savePointManager.init();
       SavePoint savePoint = savePointManager.getLatest();
-      if (savePoint != null && savePointManager.isValid(savePoint)) {
+      if (savePoint != null && savePoint.getPosition() > 0) {
         binaryLogClient.setBinlogFilename(savePoint.getName());
         binaryLogClient.setBinlogPosition(savePoint.getPosition());
       }

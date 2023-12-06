@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean;
+package io.github.kylinhunter.commons.jdbc.binlog.redis;
 
 import lombok.Data;
 

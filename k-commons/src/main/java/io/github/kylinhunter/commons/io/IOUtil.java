@@ -89,7 +89,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
+   * @param input   input
    * @param charset charset
    * @return java.util.List<java.lang.String>
    * @title readLines
@@ -134,7 +134,7 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
+   * @param input   input
    * @param charset charset
    * @return java.lang.String
    * @title toString
@@ -150,8 +150,8 @@ public class IOUtil {
   }
 
   /**
-   * @param input input
-   * @param writer writer
+   * @param input        input
+   * @param writer       writer
    * @param inputCharset inputCharset
    * @title copy
    * @description copy
@@ -228,7 +228,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size size
+   * @param size  size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -246,7 +246,7 @@ public class IOUtil {
 
   /**
    * @param input input
-   * @param size size
+   * @param size  size
    * @return byte[]
    * @title toByteArray
    * @description toByteArray
@@ -296,7 +296,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
    * @return int
    * @title copy
@@ -313,7 +313,7 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
    * @return long
    * @title copyLarge
@@ -326,9 +326,9 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
-   * @param bufferSize bufferSize
+   * @param bufferSize   bufferSize
    * @return long
    * @title copy
    * @description copy
@@ -341,9 +341,9 @@ public class IOUtil {
   }
 
   /**
-   * @param inputStream inputStream
+   * @param inputStream  inputStream
    * @param outputStream outputStream
-   * @param buffer buffer
+   * @param buffer       buffer
    * @return long
    * @title copyLarge
    * @description copyLarge
@@ -369,7 +369,6 @@ public class IOUtil {
 
   /**
    * @param c c
-   * @return void
    * @title closeQuietly
    * @description closeQuietly
    * @author BiJi'an
@@ -385,11 +384,26 @@ public class IOUtil {
   }
 
   /**
-   * @param body body
+   * @param c c
+   * @title closeQuietly
+   * @description closeQuietly
+   * @author BiJi'an
+   * @date 2023-12-07 00:15
+   */
+  public static void closeQuietly(final AutoCloseable c) {
+    if (c != null) {
+      try {
+        c.close();
+      } catch (final Exception ignored) { // NOPMD NOSONAR
+      }
+    }
+  }
+
+  /**
+   * @param body    body
    * @param charset charset
    * @param charLen charLen
    * @return java.lang.String
-   * @throws
    * @title toString
    * @description toString
    * @author BiJi'an
@@ -428,7 +442,7 @@ public class IOUtil {
   }
 
   /**
-   * @param reader reader
+   * @param reader  reader
    * @param charLen charLen
    * @return java.lang.String
    * @throws IOException IOException

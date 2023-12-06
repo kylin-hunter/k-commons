@@ -42,8 +42,7 @@ public class MysqlSavePointManager extends AbstractDatabaseManager implements Sa
   private static final String UPDATE_SQL =
       "update   " + TABLE_NAME + "  set name=?, position=? where id=" + DEFAULT_ID;
 
-  private static final String INIT_SQL_PATH =
-      "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
+  private static final String INIT_SQL = "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
 
   private final BeanListHandler<SavePoint> beanListHandler = new BeanListHandler<>(SavePoint.class);
 
@@ -57,8 +56,9 @@ public class MysqlSavePointManager extends AbstractDatabaseManager implements Sa
 
   @Override
   public void reset() {
-    String name = DEAFULT_SAVEPOINT.getName();
-    long position = DEAFULT_SAVEPOINT.getPosition();
+    SavePoint savePoint = this.getDefaultSavePoint();
+    String name = savePoint.getName();
+    long position = savePoint.getPosition();
     this.getSqlExecutor().execute(UPDATE_SQL, name, position);
   }
 
@@ -80,14 +80,19 @@ public class MysqlSavePointManager extends AbstractDatabaseManager implements Sa
 
   @Override
   public void init() {
-    List<String> sqlLines = SqlFileReader.read(INIT_SQL_PATH);
+    List<String> sqlLines = SqlFileReader.read(INIT_SQL);
     this.getSqlExecutor().execute(sqlLines, true);
 
     SavePoint savePoint = this.getLatest();
     if (savePoint == null) {
-      this.getSqlExecutor()
-          .execute(INSERT_SQL, DEAFULT_SAVEPOINT.getName(), DEAFULT_SAVEPOINT.getPosition());
+      savePoint = this.getDefaultSavePoint();
+      this.getSqlExecutor().execute(INSERT_SQL, savePoint.getName(), savePoint.getPosition());
     }
+  }
+
+  @Override
+  public void shutdown() {
+    
   }
 
   protected DataSource getDataSource() {

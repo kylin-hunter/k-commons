@@ -12,6 +12,10 @@ dependencies {
     implementation fileTree(dir: 'lib', includes: ['*.jar'])
     implementation 'com.zendesk:mysql-binlog-connector-java:0.28.3'
     implementation 'io.lettuce:lettuce-core:6.1.10.RELEASE'
+    //   json
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
 
 
 }

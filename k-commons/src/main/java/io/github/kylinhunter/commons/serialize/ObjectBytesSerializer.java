@@ -16,6 +16,7 @@
 package io.github.kylinhunter.commons.serialize;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.exception.embed.InternalException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,7 +32,6 @@ import java.util.Base64;
  */
 public class ObjectBytesSerializer {
 
-  private static final byte[] EMPTY_BYTES = new byte[0];
 
   /**
    * @param obj obj
@@ -42,17 +42,15 @@ public class ObjectBytesSerializer {
    * @date 2022-12-16 23:23
    */
   public static byte[] serialize(Object obj) {
-    if (obj != null) {
-      try (ByteArrayOutputStream bao = new ByteArrayOutputStream();
-          ObjectOutputStream oo = new ObjectOutputStream(bao)) {
-        oo.writeObject(obj);
-        return bao.toByteArray();
-      } catch (Exception e) {
-        throw new InternalException("convert error", e);
-      }
-    } else {
-      return EMPTY_BYTES;
+    ThrowChecker.checkNotNull(obj, "obj can't be null");
+    try (ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        ObjectOutputStream oo = new ObjectOutputStream(bao)) {
+      oo.writeObject(obj);
+      return bao.toByteArray();
+    } catch (Exception e) {
+      throw new InternalException("convert error", e);
     }
+
   }
 
   /**
@@ -80,16 +78,14 @@ public class ObjectBytesSerializer {
   @SuppressFBWarnings("OBJECT_DESERIALIZATION")
   @SuppressWarnings("unchecked")
   public static <T> T deserialize(byte[] bytes) {
-
-    if (bytes != null && bytes.length > 0) {
-      try (ByteArrayInputStream bai = new ByteArrayInputStream(bytes);
-          ObjectInputStream in = new ObjectInputStream(bai)) {
-        return (T) in.readObject();
-      } catch (Exception e) {
-        throw new InternalException("convert error", e);
-      }
+    ThrowChecker.checkArgument(bytes != null && bytes.length > 0, "obj can't be empty");
+    try (ByteArrayInputStream bai = new ByteArrayInputStream(bytes);
+        ObjectInputStream in = new ObjectInputStream(bai)) {
+      return (T) in.readObject();
+    } catch (Exception e) {
+      throw new InternalException("convert error", e);
     }
-    return null;
+
   }
 
   /**
