@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.binlog.savepoint;
+package io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp;
 
 import io.github.kylinhunter.commons.collections.CollectionUtils;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
@@ -29,68 +30,50 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
  * @description
  * @date 2023-11-28 23:36
  */
-public class DefaultSavePointManager extends AbstractDatabaseManager implements SavePointManager {
+public class MysqlSavePointManager extends AbstractDatabaseManager implements SavePointManager {
 
-  public static final String TABLE_NAME = "k_jdbc_monitor_tables";
-  private static final String SELECT_SQL =
-      "select name,position from  " + TABLE_NAME + " where name=?";
+  public static final String TABLE_NAME = "k_binlog_progress";
+  public static final int DEFAULT_ID = 0;
 
-  private static final String SELECT_SQL_LATEST =
-      "select name,position from  "
-          + TABLE_NAME
-          + "  order by auto_updated desc,name desc limit 1 ";
+  private static final String SELECT_SQL = "select name,position from  "
+      + TABLE_NAME + " where id=" + DEFAULT_ID;
+  private static final String INSERT_SQL = "insert into " + TABLE_NAME
+      + "(id, name, position) values(" + DEFAULT_ID + ",?,?)";
+  private static final String UPDATE_SQL = "update   " + TABLE_NAME +
+      "  set name=?, position=? where id=" + DEFAULT_ID;
 
-  private static final String DELETE_SQL = "delete from  " + TABLE_NAME + "  where name=?";
-  private static final String UPDATE_SQL =
-      "update   " + TABLE_NAME + "  set position=? where name=?";
-  private static final String INSERT_SQL =
-      "insert into " + TABLE_NAME + "(name, position) values(?,?)";
-  private static final String INIT_SQL_PATH =
-      "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
+  private static final String INIT_SQL_PATH = "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
 
   private final BeanListHandler<SavePoint> beanListHandler = new BeanListHandler<>(SavePoint.class);
 
-  public DefaultSavePointManager() {
+  public MysqlSavePointManager() {
     this(null);
   }
 
-  public DefaultSavePointManager(DataSource dataSource) {
+  public MysqlSavePointManager(DataSource dataSource) {
     super(dataSource);
   }
 
-  @Override
-  public void delete(String fileName) {
 
-    this.getSqlExecutor().execute(DELETE_SQL, fileName);
+  @Override
+  public void reset() {
+    String name = DEAFULT_SAVEPOINT.getName();
+    long position = DEAFULT_SAVEPOINT.getPosition();
+    this.getSqlExecutor().execute(UPDATE_SQL, name, position);
   }
 
   @Override
-  public void saveOrUpdate(SavePoint savePoint) {
-
+  public void save(SavePoint savePoint) {
     String name = savePoint.getName();
-    SavePoint oldSavePoint = this.get(name);
     long position = savePoint.getPosition();
-    if (oldSavePoint != null) {
-      this.getSqlExecutor().execute(UPDATE_SQL, position, name);
-    } else {
-      this.getSqlExecutor().execute(INSERT_SQL, name, position);
-    }
+    this.getSqlExecutor().execute(UPDATE_SQL, name, position);
+
   }
 
-  @Override
-  public SavePoint get(String fileName) {
-
-    List<SavePoint> savePoints =
-        this.getSqlExecutor().query(SELECT_SQL, beanListHandler, fileName);
-    if (!CollectionUtils.isEmpty(savePoints)) {
-      return savePoints.get(0);
-    }
-    return null;
-  }
 
   @Override
   public SavePoint getLatest() {
-    List<SavePoint> savePoints = this.getSqlExecutor().query(SELECT_SQL_LATEST, beanListHandler);
+    List<SavePoint> savePoints = this.getSqlExecutor().query(SELECT_SQL, beanListHandler);
     if (!CollectionUtils.isEmpty(savePoints)) {
       return savePoints.get(0);
     }
@@ -101,10 +84,19 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
   public void init() {
     List<String> sqlLines = SqlFileReader.read(INIT_SQL_PATH);
     this.getSqlExecutor().execute(sqlLines, true);
+
+    SavePoint savePoint = this.getLatest();
+    if (savePoint == null) {
+      this.getSqlExecutor()
+          .execute(INSERT_SQL, DEAFULT_SAVEPOINT.getName(), DEAFULT_SAVEPOINT.getPosition());
+    }
   }
 
 
   protected DataSource getDataSource() {
+    if (dataSource != null) {
+      return dataSource;
+    }
 
     return dataSourceManager.getByNo(1);
   }
@@ -117,6 +109,9 @@ public class DefaultSavePointManager extends AbstractDatabaseManager implements 
    * @date 2023-12-03 15:45
    */
   protected SqlExecutor getSqlExecutor() {
+    if (sqlExecutor != null) {
+      return sqlExecutor;
+    }
     return dataSourceManager.getSqlExecutorByNo(1);
   }
 }

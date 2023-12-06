@@ -15,10 +15,10 @@ class ColumnReaderTest {
 
     ColumnReader columnReader = MetaReaderFactory.getColumnMetaReader(DbType.MYSQL);
 
-    List<ColumnMeta> columnMetas = columnReader.getColumnMetaData("", "k_jdbc_test_user");
+    List<ColumnMeta> columnMetas = columnReader.getColumnMetaData("", "k_binlog_test_user");
     if (columnMetas.size() != 19) {
       TableReaderTest.initTestSQl();
-      columnMetas = columnReader.getColumnMetaData("", "k_jdbc_test_user");
+      columnMetas = columnReader.getColumnMetaData("", "k_binlog_test_user");
     }
     Assertions.assertEquals(19, columnMetas.size());
     for (ColumnMeta columnMeta : columnMetas) {

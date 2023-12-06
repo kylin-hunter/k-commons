@@ -15,13 +15,12 @@ public class TableReaderTest {
 
   @Test
   void test() {
-
     TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
 
-    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "k_jdbc_test_role");
+    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "k_binlog_test_role");
     if (tableMetas.size() == 0) {
       initTestSQl();
-      tableMetas = tableReader.getTableMetaDatas("", "k_jdbc_test_role");
+      tableMetas = tableReader.getTableMetaDatas("", "k_binlog_test_role");
     }
     Assertions.assertEquals(1, tableMetas.size());
     TableMeta tableMeta = tableMetas.get(0);

@@ -1,13 +1,13 @@
 
 
-CREATE TABLE IF NOT EXISTS `k_jdbc_test_role`
+CREATE TABLE IF NOT EXISTS `k_binlog_test_role`
 (
     `id`   bigint(20)  NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
     `name` varchar(64) NOT NULL DEFAULT '' COMMENT 'role name',
     PRIMARY KEY (`id`)
 ) comment =' the roles';
 
-CREATE TABLE IF NOT EXISTS `k_jdbc_test_user`
+CREATE TABLE IF NOT EXISTS `k_binlog_test_user`
 (
     `id`                  bigint(20)     NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
     `name`                varchar(64)    NOT NULL DEFAULT '' COMMENT 'user name ',
@@ -29,5 +29,5 @@ CREATE TABLE IF NOT EXISTS `k_jdbc_test_user`
     `extend_2`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段2',
     `extend_3`            varchar(256)   NOT NULL DEFAULT 0 COMMENT '预留字段3',
     PRIMARY KEY (`id`),
-    constraint k_jdbc_test_user_fk foreign key (role_id) references k_jdbc_test_role (id)
+    constraint k_binlog_test_user_role_fk foreign key (role_id) references k_binlog_test_role (id)
 ) comment ='the user';

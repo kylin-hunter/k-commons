@@ -28,9 +28,9 @@ import javax.sql.DataSource;
 public class AbstractDatabaseManager {
 
   protected DbType dbType;
-  private DataSource dataSource;
+  protected DataSource dataSource;
 
-  private SqlExecutor sqlExecutor;
+  protected SqlExecutor sqlExecutor;
 
   protected static final DataSourceManager dataSourceManager = new DataSourceManager();
 

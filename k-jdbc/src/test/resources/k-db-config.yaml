@@ -21,7 +21,7 @@ datasources:
   - driverClassName: 'com.mysql.cj.jdbc.Driver'
     #oracle=> oracle.jdbc.OracleDriver
     #sqlserver=>com.microsoft.sqlserver.jdbc.SQLServerDrive
-    url: 'jdbc:mysql://localhost:3307/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
+    url: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
     #oracle=> jdbc:oracle:thin:@localhost:1521:ORACLE
     #sqlserver=> jdbc:sqlserver://localhost:1433; DatabaseName=test
     username: 'root'
