@@ -35,14 +35,15 @@ public class MysqlSavePointManager extends AbstractDatabaseManager implements Sa
   public static final String TABLE_NAME = "k_binlog_progress";
   public static final int DEFAULT_ID = 0;
 
-  private static final String SELECT_SQL = "select name,position from  "
-      + TABLE_NAME + " where id=" + DEFAULT_ID;
-  private static final String INSERT_SQL = "insert into " + TABLE_NAME
-      + "(id, name, position) values(" + DEFAULT_ID + ",?,?)";
-  private static final String UPDATE_SQL = "update   " + TABLE_NAME +
-      "  set name=?, position=? where id=" + DEFAULT_ID;
+  private static final String SELECT_SQL =
+      "select name,position from " + TABLE_NAME + " where id=" + DEFAULT_ID;
+  private static final String INSERT_SQL =
+      "insert into " + TABLE_NAME + "(id, name, position) values(" + DEFAULT_ID + ",?,?)";
+  private static final String UPDATE_SQL =
+      "update   " + TABLE_NAME + "  set name=?, position=? where id=" + DEFAULT_ID;
 
-  private static final String INIT_SQL_PATH = "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
+  private static final String INIT_SQL_PATH =
+      "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
 
   private final BeanListHandler<SavePoint> beanListHandler = new BeanListHandler<>(SavePoint.class);
 
@@ -53,7 +54,6 @@ public class MysqlSavePointManager extends AbstractDatabaseManager implements Sa
   public MysqlSavePointManager(DataSource dataSource) {
     super(dataSource);
   }
-
 
   @Override
   public void reset() {
@@ -67,9 +67,7 @@ public class MysqlSavePointManager extends AbstractDatabaseManager implements Sa
     String name = savePoint.getName();
     long position = savePoint.getPosition();
     this.getSqlExecutor().execute(UPDATE_SQL, name, position);
-
   }
-
 
   @Override
   public SavePoint getLatest() {
@@ -91,7 +89,6 @@ public class MysqlSavePointManager extends AbstractDatabaseManager implements Sa
           .execute(INSERT_SQL, DEAFULT_SAVEPOINT.getName(), DEAFULT_SAVEPOINT.getPosition());
     }
   }
-
 
   protected DataSource getDataSource() {
     if (dataSource != null) {

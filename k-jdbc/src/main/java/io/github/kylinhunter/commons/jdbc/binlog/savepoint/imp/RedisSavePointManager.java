@@ -37,13 +37,11 @@ public class RedisSavePointManager implements SavePointManager {
 
   private final RedisCommands<String, String> redisCommands;
 
-  @Setter
-  private String recentBinLogKey = "binlog_process";
+  @Setter private String recentBinLogKey = "binlog_process";
 
   public RedisSavePointManager(RedisConfig redisConfig) {
-    Builder builder = RedisURI.builder()
-        .withHost(redisConfig.getHost())
-        .withPort(redisConfig.getPort());
+    Builder builder =
+        RedisURI.builder().withHost(redisConfig.getHost()).withPort(redisConfig.getPort());
     if (!StringUtil.isEmpty(redisConfig.getPassword())) {
       builder = builder.withPassword(redisConfig.getPassword());
     }
@@ -54,21 +52,18 @@ public class RedisSavePointManager implements SavePointManager {
     RedisClient redisClient = RedisClient.create(redisUri);
     StatefulRedisConnection<String, String> connection = redisClient.connect();
     this.redisCommands = connection.sync();
-
   }
 
   @Override
   public void reset() {
-    this.redisCommands.set(recentBinLogKey,
-        DEAFULT_SAVEPOINT.getName() + "#" + DEAFULT_SAVEPOINT.getPosition());
+    this.redisCommands.set(
+        recentBinLogKey, DEAFULT_SAVEPOINT.getName() + "#" + DEAFULT_SAVEPOINT.getPosition());
   }
 
   @Override
   public void save(SavePoint savePoint) {
-    this.redisCommands.set(recentBinLogKey,
-        savePoint.getName() + "#" + savePoint.getPosition());
+    this.redisCommands.set(recentBinLogKey, savePoint.getName() + "#" + savePoint.getPosition());
   }
-
 
   @Override
   public SavePoint getLatest() {
@@ -84,9 +79,8 @@ public class RedisSavePointManager implements SavePointManager {
   public void init() {
     SavePoint savePoint = this.getLatest();
     if (savePoint == null) {
-      this.redisCommands.set(recentBinLogKey,
-          DEAFULT_SAVEPOINT.getName() + "#" + DEAFULT_SAVEPOINT.getPosition());
+      this.redisCommands.set(
+          recentBinLogKey, DEAFULT_SAVEPOINT.getName() + "#" + DEAFULT_SAVEPOINT.getPosition());
     }
-
   }
 }

@@ -26,7 +26,6 @@ public interface SavePointManager {
 
   SavePoint DEAFULT_SAVEPOINT = new SavePoint("unknown", -1);
 
-
   void reset();
 
   void save(SavePoint savePoint);
@@ -45,8 +44,5 @@ public interface SavePointManager {
    */
   default boolean isValid(SavePoint savePoint) {
     return savePoint != null && !savePoint.equals(DEAFULT_SAVEPOINT);
-
   }
-
-
 }

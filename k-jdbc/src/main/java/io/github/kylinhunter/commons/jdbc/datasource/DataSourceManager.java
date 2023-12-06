@@ -47,7 +47,6 @@ public class DataSourceManager implements AutoCloseable {
 
   private final Map<Object, SqlExecutor> allSqlExecutors = MapUtils.newHashMap();
 
-
   private volatile boolean initialized = false;
 
   public void init() {
@@ -90,7 +89,7 @@ public class DataSourceManager implements AutoCloseable {
 
         ExDataSource exDataSource =
             ObjectCreator.create(
-                clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
+                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -107,7 +106,6 @@ public class DataSourceManager implements AutoCloseable {
               SqlExecutor sqlExecutor = new SqlExecutor(exDataSource);
               allSqlExecutors.put(exDataSource.getDsNo(), sqlExecutor);
               allSqlExecutors.put(exDataSource.getDsName(), sqlExecutor);
-
             });
       }
       initialized = true;
@@ -169,7 +167,6 @@ public class DataSourceManager implements AutoCloseable {
     return exDataSource;
   }
 
-
   /**
    * @param no no
    * @return io.github.kylinhunter.commons.jdbc.datasource.ExDataSource
@@ -181,7 +178,6 @@ public class DataSourceManager implements AutoCloseable {
   public ExDataSource getByNo(int no) {
     return this.getDatasource(no);
   }
-
 
   /**
    * @param name name
@@ -203,7 +199,6 @@ public class DataSourceManager implements AutoCloseable {
    * @author BiJi'an
    * @date 2023-12-04 23:17
    */
-
   private SqlExecutor getSqlExecutor(Object dsKey) {
     SqlExecutor sqlExecutor = allSqlExecutors.get(dsKey);
     if (sqlExecutor == null) {
