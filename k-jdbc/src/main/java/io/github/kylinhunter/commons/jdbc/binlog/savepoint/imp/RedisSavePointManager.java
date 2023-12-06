@@ -41,11 +41,9 @@ public class RedisSavePointManager implements SavePointManager {
   private RedisCommands<String, Object> redisCommands;
 
   private StatefulRedisConnection<String, Object> connection;
-  @Setter
-  private String recentBinLogKey = "binlog_process";
+  @Setter private String recentBinLogKey = "binlog_process";
 
-  @Setter
-  private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
+  @Setter private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
 
   private final RedisURI redisUri;
 
@@ -60,8 +58,6 @@ public class RedisSavePointManager implements SavePointManager {
     }
 
     this.redisUri = builder.build();
-
-
   }
 
   @Override
@@ -88,14 +84,12 @@ public class RedisSavePointManager implements SavePointManager {
     SavePoint savePoint = this.getLatest();
     if (savePoint == null) {
       savePoint = this.getDefaultSavePoint();
-      this.redisCommands.set(
-          recentBinLogKey, savePoint);
+      this.redisCommands.set(recentBinLogKey, savePoint);
     }
   }
 
   @Override
   public void shutdown() {
     IOUtil.closeQuietly(connection);
-
   }
 }

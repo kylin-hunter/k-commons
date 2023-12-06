@@ -24,7 +24,6 @@ import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
  */
 public interface SavePointManager {
 
-
   void reset();
 
   void save(SavePoint savePoint);
@@ -38,5 +37,4 @@ public interface SavePointManager {
   }
 
   void shutdown();
-
 }

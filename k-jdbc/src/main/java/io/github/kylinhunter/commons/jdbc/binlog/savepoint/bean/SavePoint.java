@@ -32,5 +32,4 @@ public class SavePoint implements Serializable {
 
   private String name;
   private long position;
-  
 }

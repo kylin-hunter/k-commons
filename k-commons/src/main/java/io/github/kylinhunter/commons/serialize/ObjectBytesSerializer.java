@@ -32,7 +32,6 @@ import java.util.Base64;
  */
 public class ObjectBytesSerializer {
 
-
   /**
    * @param obj obj
    * @return byte[]
@@ -50,7 +49,6 @@ public class ObjectBytesSerializer {
     } catch (Exception e) {
       throw new InternalException("convert error", e);
     }
-
   }
 
   /**
@@ -85,7 +83,6 @@ public class ObjectBytesSerializer {
     } catch (Exception e) {
       throw new InternalException("convert error", e);
     }
-
   }
 
   /**

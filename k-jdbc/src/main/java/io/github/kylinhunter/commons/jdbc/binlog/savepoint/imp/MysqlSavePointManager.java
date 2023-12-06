@@ -91,9 +91,7 @@ public class MysqlSavePointManager extends AbstractDatabaseManager implements Sa
   }
 
   @Override
-  public void shutdown() {
-    
-  }
+  public void shutdown() {}
 
   protected DataSource getDataSource() {
     if (dataSource != null) {

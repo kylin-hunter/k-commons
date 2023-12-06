@@ -36,8 +36,7 @@ public class BinLogClient {
 
   private final BinaryLogClient binaryLogClient;
 
-  @Setter
-  private SavePointManager savePointManager;
+  @Setter private SavePointManager savePointManager;
 
   public BinLogClient(String jdbcUrl, String username, String password) {
     this(JdbcUtils.parse(jdbcUrl), username, password);
