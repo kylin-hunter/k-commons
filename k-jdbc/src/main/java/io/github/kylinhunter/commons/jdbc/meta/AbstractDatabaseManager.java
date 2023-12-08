@@ -25,10 +25,10 @@ import javax.sql.DataSource;
  * @description
  * @date 2023-11-29 00:34
  */
-public class AbstractDatabaseManager {
+public class AbstractDatabaseManager implements DatabaseManager {
 
   protected DbType dbType;
-  protected DataSource dataSource;
+  private DataSource dataSource;
 
   protected SqlExecutor sqlExecutor;
 
@@ -52,12 +52,25 @@ public class AbstractDatabaseManager {
    * @date 2023-12-03 15:45
    * @return javax.sql.DataSource
    */
-  protected DataSource getDataSource() {
+  public DataSource getDataSource() {
     if (dataSource != null) {
       return dataSource;
     }
-    return dataSourceManager.getDefaultDataSource();
+    return getDefaultDataSource();
   }
+
+  /**
+   * @return javax.sql.DataSource
+   * @title getDefaultDataSource
+   * @description getDefaultDataSource
+   * @author BiJi'an
+   * @date 2023-12-09 20:08
+   */
+  public DataSource getDefaultDataSource() {
+    return dataSourceManager.getDefaultDataSource();
+
+  }
+
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
@@ -66,10 +79,22 @@ public class AbstractDatabaseManager {
    * @author BiJi'an
    * @date 2023-12-03 15:45
    */
-  protected SqlExecutor getSqlExecutor() {
+  public SqlExecutor getSqlExecutor() {
     if (sqlExecutor != null) {
       return sqlExecutor;
     }
+    return getDefaultSqlExecutor();
+  }
+
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getDefaultSqlExecutor
+   * @description getDefaultSqlExecutor
+   * @author BiJi'an
+   * @date 2023-12-09 20:09
+   */
+  public SqlExecutor getDefaultSqlExecutor() {
     return dataSourceManager.getDefaultSqlExecutor();
+
   }
 }

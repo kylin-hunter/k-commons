@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.binlog.savepoint;
+package io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.entity;
 
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.entity.SavePoint;
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-11-25 02:51
+ * @date 2023-11-28 23:22
  */
-public interface SavePointManager {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SavePoint implements Serializable {
 
-  void reset();
-
-  void save(SavePoint savePoint);
-
-  SavePoint get();
-
-  void init(JdbcUrl jdbcUrl);
-
-  default SavePoint getDefaultSavePoint() {
-    return new SavePoint("unknown", -1);
-  }
-
-  void shutdown();
+  private String name;
+  private long position;
 }

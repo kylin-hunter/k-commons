@@ -19,7 +19,9 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
@@ -27,6 +29,7 @@ import lombok.Data;
  * @date 2023-01-18 00:08
  */
 @Data
+@NoArgsConstructor
 public class JdbcUrl implements Serializable {
 
   private DbType dbType;
@@ -34,6 +37,12 @@ public class JdbcUrl implements Serializable {
   private int port;
   private String database;
   private Map<String, String> params = MapUtils.newHashMap();
+
+  public JdbcUrl(String host, int port, String database) {
+    this.host = host;
+    this.port = port;
+    this.database = database;
+  }
 
   /**
    * @param params params
@@ -77,5 +86,22 @@ public class JdbcUrl implements Serializable {
     if (database != null) {
       this.database = database.trim();
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    JdbcUrl jdbcUrl = (JdbcUrl) o;
+    return port == jdbcUrl.port && host.equals(jdbcUrl.host);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(host, port);
   }
 }

@@ -23,12 +23,13 @@ import com.github.shyiko.mysql.binlog.event.EventHeader;
 import com.github.shyiko.mysql.binlog.event.EventHeaderV4;
 import com.github.shyiko.mysql.binlog.event.EventType;
 import com.github.shyiko.mysql.binlog.event.FormatDescriptionEventData;
+import com.github.shyiko.mysql.binlog.event.QueryEventData;
 import com.github.shyiko.mysql.binlog.event.RotateEventData;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -41,56 +42,72 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultBinLogEventListener implements EventListener {
 
-  @Setter private SavePointManager savePointManager;
+  @Setter
+  private SavePointManager savePointManager;
   private String binlogName;
 
   @Override
   public void onEvent(Event event) {
     EventHeader header = event.getHeader();
     EventData data = event.getData();
-    //    log.info("header={} \r\n data={}", header, data);
+    log.info("@event process start@ header={} , data={}", header, data);
 
     if (header instanceof EventHeaderV4) {
       EventHeaderV4 eventHeaderV4 = (EventHeaderV4) header;
       EventType eventType = eventHeaderV4.getEventType();
       long nextPosition = eventHeaderV4.getNextPosition();
       process(eventType, data);
-      if (!StringUtil.isEmpty(binlogName) && nextPosition > 0) {
+      if (!StringUtil.isEmpty(binlogName) && nextPosition >= 0) {
         savePointManager.save(new SavePoint(binlogName, nextPosition));
         log.info("save point : event={},nextPosition={}", eventType, nextPosition);
+      } else {
+        log.error("invalid save point  : binlogName={},position={}", binlogName, nextPosition);
       }
+    } else {
+      log.error("Unsupported event={}", header);
     }
+    log.info("@event process end@ header={}", header);
+
   }
 
   private void process(EventType eventType, EventData data) {
     switch (eventType) {
-      case ROTATE:
-        {
-          eventROTATE(data);
-          break;
-        }
-      case FORMAT_DESCRIPTION:
-        {
-          eventFORMAT_DESCRIPTION(data);
-          break;
-        }
-      case TABLE_MAP:
-        {
-          eventTABLE_MAP(data);
-          break;
-        }
-      case EXT_WRITE_ROWS:
-        {
-          eventEXT_WRITE_ROWS(data);
-        }
-      case EXT_DELETE_ROWS:
-        {
-          eventEXT_DELETE_ROWS(data);
-        }
-      case EXT_UPDATE_ROWS:
-        {
-          eventEXT_UPDATE_ROWS(data);
-        }
+      case ROTATE: {
+        eventROTATE(data);
+        break;
+      }
+      case FORMAT_DESCRIPTION: {
+        eventFORMAT_DESCRIPTION(data);
+        break;
+      }
+      case TABLE_MAP: {
+        eventTABLE_MAP(data);
+        break;
+      }
+      case EXT_WRITE_ROWS: {
+        eventEXT_WRITE_ROWS(data);
+      }
+      case EXT_DELETE_ROWS: {
+        eventEXT_DELETE_ROWS(data);
+      }
+      case EXT_UPDATE_ROWS: {
+        eventEXT_UPDATE_ROWS(data);
+      }
+
+      case QUERY: {
+        eventQuery(data);
+      }
+    }
+  }
+
+  private void eventQuery(EventData data) {
+    if (data instanceof QueryEventData) {
+      QueryEventData eventData = (QueryEventData) data;
+      String database = eventData.getDatabase();
+      int errorCode = eventData.getErrorCode();
+      String sql = eventData.getSql();
+
+      log.info("errorCode={},database={},sql={}", errorCode, database, sql);
     }
   }
 

@@ -19,7 +19,7 @@ import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import java.io.IOException;
@@ -35,19 +35,24 @@ import lombok.extern.slf4j.Slf4j;
 public class BinLogClient {
 
   private final BinaryLogClient binaryLogClient;
+  private final JdbcUrl jdbcUrl;
 
-  @Setter private SavePointManager savePointManager;
+  @Setter
+  private SavePointManager savePointManager;
 
   public BinLogClient(String jdbcUrl, String username, String password) {
     this(JdbcUtils.parse(jdbcUrl), username, password);
   }
 
-  public BinLogClient(JdbcUrl jdbcUrl, String username, String password) {
-    this(jdbcUrl.getHost(), jdbcUrl.getPort(), jdbcUrl.getDatabase(), username, password);
-  }
 
   public BinLogClient(String hostname, int port, String schema, String username, String password) {
-    binaryLogClient = new BinaryLogClient(hostname, port, schema, username, password);
+    this(new JdbcUrl(hostname, port, schema), username, password);
+  }
+
+  public BinLogClient(JdbcUrl jdbcUrl, String username, String password) {
+    this.jdbcUrl = jdbcUrl;
+    this.binaryLogClient = new BinaryLogClient(jdbcUrl.getHost(), jdbcUrl.getPort(),
+        jdbcUrl.getDatabase(), username, password);
   }
 
   /**
@@ -92,9 +97,10 @@ public class BinLogClient {
   public void start() {
     try {
       ThrowChecker.checkNotNull(savePointManager, "savePointManager can't be null");
-      savePointManager.init();
-      SavePoint savePoint = savePointManager.getLatest();
-      if (savePoint != null && savePoint.getPosition() > 0) {
+      savePointManager.init(this.jdbcUrl);
+
+      SavePoint savePoint = savePointManager.get();
+      if (savePoint != null && savePoint.getPosition() >= 0) {
         binaryLogClient.setBinlogFilename(savePoint.getName());
         binaryLogClient.setBinlogPosition(savePoint.getPosition());
       }

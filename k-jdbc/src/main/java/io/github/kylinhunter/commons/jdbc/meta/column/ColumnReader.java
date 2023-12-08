@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.column;
 
+import io.github.kylinhunter.commons.jdbc.meta.DatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import java.sql.Connection;
 import java.util.List;
@@ -25,10 +26,10 @@ import javax.sql.DataSource;
  * @description
  * @date 2023-01-10 11:11
  */
-public interface ColumnReader {
+public interface ColumnReader extends DatabaseManager {
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -40,8 +41,8 @@ public interface ColumnReader {
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -52,9 +53,9 @@ public interface ColumnReader {
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description

@@ -19,7 +19,8 @@ import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.jdbc.binlog.redis.JsonRedisCodec;
 import io.github.kylinhunter.commons.jdbc.binlog.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.entity.SavePoint;
+import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
@@ -41,9 +42,11 @@ public class RedisSavePointManager implements SavePointManager {
   private RedisCommands<String, Object> redisCommands;
 
   private StatefulRedisConnection<String, Object> connection;
-  @Setter private String recentBinLogKey = "binlog_process";
+  @Setter
+  private String recentBinLogKey = "binlog_process";
 
-  @Setter private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
+  @Setter
+  private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
 
   private final RedisURI redisUri;
 
@@ -62,8 +65,7 @@ public class RedisSavePointManager implements SavePointManager {
 
   @Override
   public void reset() {
-    SavePoint savePoint = this.getDefaultSavePoint();
-    this.redisCommands.set(recentBinLogKey, savePoint);
+    this.redisCommands.set(recentBinLogKey, this.getDefaultSavePoint());
   }
 
   @Override
@@ -72,16 +74,16 @@ public class RedisSavePointManager implements SavePointManager {
   }
 
   @Override
-  public SavePoint getLatest() {
+  public SavePoint get() {
     return (SavePoint) this.redisCommands.get(recentBinLogKey);
   }
 
   @Override
-  public void init() {
+  public void init(JdbcUrl jdbcUrl) {
     RedisClient redisClient = RedisClient.create(redisUri);
     this.connection = redisClient.connect(this.redisCodec);
     this.redisCommands = connection.sync();
-    SavePoint savePoint = this.getLatest();
+    SavePoint savePoint = this.get();
     if (savePoint == null) {
       savePoint = this.getDefaultSavePoint();
       this.redisCommands.set(recentBinLogKey, savePoint);

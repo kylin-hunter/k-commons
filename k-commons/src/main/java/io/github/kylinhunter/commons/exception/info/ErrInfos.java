@@ -39,6 +39,8 @@ public class ErrInfos {
 
   public static final ErrInfo CRYPT = new ErrInfo(++BASE_CODE);
 
+  public static final ErrInfo UNSUPPORTED = new ErrInfo(++BASE_CODE);
+
   private static int BIZ_CODE = 1100;
   public static final ErrInfo BIZ = new ErrInfo(++BIZ_CODE);
 }

@@ -30,6 +30,8 @@ import lombok.ToString;
 @ToString(exclude = "rawMetadatas")
 public class ColumnMeta {
 
+  private int pos;
+
   /*
    * the raw metadata of column
    */

@@ -13,23 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean;
+package io.github.kylinhunter.commons.exception.embed;
 
-import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.github.kylinhunter.commons.exception.common.KRuntimeException;
+import io.github.kylinhunter.commons.exception.info.ErrInfos;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-11-28 23:22
+ * @date 2022/1/1
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class SavePoint implements Serializable {
+public class UnsupportedException extends KRuntimeException {
 
-  private String name;
-  private long position;
+  private static final long serialVersionUID = 1L;
+
+  public UnsupportedException() {
+    this.errInfo = ErrInfos.UNSUPPORTED;
+  }
+
+  public UnsupportedException(String message) {
+    super(ErrInfos.UNSUPPORTED, message);
+  }
+
+  public UnsupportedException(String message, Throwable e) {
+    super(ErrInfos.UNSUPPORTED, message, e);
+  }
 }

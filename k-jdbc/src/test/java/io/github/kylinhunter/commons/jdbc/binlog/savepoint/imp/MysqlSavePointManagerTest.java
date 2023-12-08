@@ -7,7 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.entity.SavePoint;
+import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import org.junit.jupiter.api.Test;
 
 class MysqlSavePointManagerTest {
@@ -23,11 +24,14 @@ class MysqlSavePointManagerTest {
     HikariDataSource hikariDataSource = new HikariDataSource(hikariConfig);
     SavePointManager savePointManager = new MysqlSavePointManager(hikariDataSource);
 
-    savePointManager.init();
+    JdbcUrl jdbcUrl = new JdbcUrl();
+//    jdbcUrl.setHost("localhost");
+//    jdbcUrl.setPort(3306);
+    savePointManager.init(jdbcUrl);
 
     savePointManager.reset();
 
-    SavePoint savePoint = savePointManager.getLatest();
+    SavePoint savePoint = savePointManager.get();
     System.out.println(savePoint);
     assertNotNull(savePoint);
 
@@ -35,7 +39,7 @@ class MysqlSavePointManagerTest {
     savePointManager.save(savePoint11);
     System.out.println(savePoint11);
 
-    SavePoint savePoint12 = savePointManager.getLatest();
+    SavePoint savePoint12 = savePointManager.get();
     System.out.println(savePoint12);
     assertEquals(savePoint11, savePoint12);
 
@@ -43,7 +47,7 @@ class MysqlSavePointManagerTest {
     savePointManager.save(savePoint21);
     System.out.println(savePoint21);
 
-    SavePoint savePoint22 = savePointManager.getLatest();
+    SavePoint savePoint22 = savePointManager.get();
     System.out.println(savePoint22);
     assertNotEquals(savePoint11, savePoint22);
     assertEquals(savePoint21, savePoint22);

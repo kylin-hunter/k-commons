@@ -15,103 +15,66 @@
  */
 package io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp;
 
-import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
-import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
-import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
-import java.util.List;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.MysqlSavePointDAO;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.entity.SavePoint;
+import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
+import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import javax.sql.DataSource;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-11-28 23:36
  */
-public class MysqlSavePointManager extends AbstractDatabaseManager implements SavePointManager {
+public class MysqlSavePointManager implements SavePointManager {
 
-  public static final String TABLE_NAME = "k_binlog_progress";
-  public static final int DEFAULT_ID = 0;
-
-  private static final String SELECT_SQL =
-      "select name,position from " + TABLE_NAME + " where id=" + DEFAULT_ID;
-  private static final String INSERT_SQL =
-      "insert into " + TABLE_NAME + "(id, name, position) values(" + DEFAULT_ID + ",?,?)";
-  private static final String UPDATE_SQL =
-      "update   " + TABLE_NAME + "  set name=?, position=? where id=" + DEFAULT_ID;
-
-  private static final String INIT_SQL = "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
-
-  private final BeanListHandler<SavePoint> beanListHandler = new BeanListHandler<>(SavePoint.class);
+  private final MysqlSavePointDAO mysqlSavePointDAO;
 
   public MysqlSavePointManager() {
     this(null);
   }
 
   public MysqlSavePointManager(DataSource dataSource) {
-    super(dataSource);
+    this.mysqlSavePointDAO = new MysqlSavePointDAO(dataSource);
+
   }
 
   @Override
   public void reset() {
     SavePoint savePoint = this.getDefaultSavePoint();
-    String name = savePoint.getName();
-    long position = savePoint.getPosition();
-    this.getSqlExecutor().execute(UPDATE_SQL, name, position);
+    this.mysqlSavePointDAO.update(savePoint);
   }
 
   @Override
   public void save(SavePoint savePoint) {
-    String name = savePoint.getName();
-    long position = savePoint.getPosition();
-    this.getSqlExecutor().execute(UPDATE_SQL, name, position);
+    this.mysqlSavePointDAO.update(savePoint);
   }
 
   @Override
-  public SavePoint getLatest() {
-    List<SavePoint> savePoints = this.getSqlExecutor().query(SELECT_SQL, beanListHandler);
-    if (!CollectionUtils.isEmpty(savePoints)) {
-      return savePoints.get(0);
+  public SavePoint get() {
+    return this.mysqlSavePointDAO.get();
+  }
+
+  @Override
+  public void init(JdbcUrl jdbcUrl) {
+    JdbcUrl jdbcUrlSave = this.mysqlSavePointDAO.getJdbcUrl();
+
+    if (jdbcUrl.equals(jdbcUrlSave)) {
+      throw new JdbcException("save point jdbc can't be equal to binlog jdbc");
+
     }
-    return null;
-  }
-
-  @Override
-  public void init() {
-    List<String> sqlLines = SqlFileReader.read(INIT_SQL);
-    this.getSqlExecutor().execute(sqlLines, true);
-
-    SavePoint savePoint = this.getLatest();
+    this.mysqlSavePointDAO.ensureTableExists();
+    SavePoint savePoint = this.get();
     if (savePoint == null) {
       savePoint = this.getDefaultSavePoint();
-      this.getSqlExecutor().execute(INSERT_SQL, savePoint.getName(), savePoint.getPosition());
+      this.mysqlSavePointDAO.save(savePoint);
     }
   }
 
   @Override
-  public void shutdown() {}
-
-  protected DataSource getDataSource() {
-    if (dataSource != null) {
-      return dataSource;
-    }
-
-    return dataSourceManager.getByNo(1);
+  public void shutdown() {
   }
 
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
-   * @title getDefaultDataSource
-   * @description getSqlExecutor
-   * @author BiJi'an
-   * @date 2023-12-03 15:45
-   */
-  protected SqlExecutor getSqlExecutor() {
-    if (sqlExecutor != null) {
-      return sqlExecutor;
-    }
-    return dataSourceManager.getSqlExecutorByNo(1);
-  }
+
 }

@@ -47,7 +47,7 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
   }
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -61,8 +61,8 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -86,9 +86,9 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -104,8 +104,10 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
       ResultSet columns = metaData.getColumns(catalog, schema, tableName, null);
       ResultSetMetaData columnMetadata = columns.getMetaData();
       Map<String, Object> rawMetadata = MapUtils.newHashMap();
+      int pos = 0;
       while (columns.next()) {
         ColumnMeta columnMeta = new ColumnMeta();
+        columnMeta.setPos(pos++);
         for (int i = 0; i < columnMetadata.getColumnCount(); i++) {
           String colName = columnMetadata.getColumnName(i + 1);
           Object value = columns.getObject(colName);
@@ -126,8 +128,8 @@ public abstract class AbstractColumnReader extends AbstractDatabaseManager imple
 
   /**
    * @param columnMeta columnMeta
-   * @param colName colName
-   * @param value value
+   * @param colName    colName
+   * @param value      value
    * @title processMetadata
    * @description read cloumn metadata
    * @author BiJi'an

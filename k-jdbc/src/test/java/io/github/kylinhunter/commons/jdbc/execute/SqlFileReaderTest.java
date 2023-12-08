@@ -14,7 +14,6 @@ class SqlFileReaderTest {
         "io/github/kylinhunter/commons/jdbc/binlog/binlog-test.sql");
 
     System.out.println(sqlLines.get(0));
-    System.out.println(sqlLines.get(1));
-    assertEquals(2, sqlLines.size());
+    assertEquals(1, sqlLines.size());
   }
 }

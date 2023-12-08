@@ -48,7 +48,7 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
   }
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
    * @title getTableMetaData
@@ -64,8 +64,9 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
     return null;
   }
 
+
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -79,8 +80,8 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -104,9 +105,9 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -115,11 +116,10 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
    */
   public List<TableMeta> getTableMetaDatas(
       Connection connection, String catalog, String schema, String tableName) {
-    List<TableMeta> columnMetaDatas;
+    List<TableMeta> columnMetaDatas = ListUtils.newArrayList();
     try {
-      columnMetaDatas = ListUtils.newArrayList();
       DatabaseMetaData metaData = connection.getMetaData();
-      ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[] {"TABLE"});
+      ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[]{"TABLE"});
       ResultSetMetaData tableMetadata = tables.getMetaData();
       Map<String, Object> rawMetadata = MapUtils.newHashMap();
       while (tables.next()) {
@@ -142,9 +142,38 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
   }
 
   /**
+   * @param catalog   catalog
+   * @param tableName tableName
+   * @return boolean
+   * @title exist
+   * @description exist
+   * @author BiJi'an
+   * @date 2023-12-08 23:31
+   */
+  public boolean exist(String catalog, String tableName) {
+    return exist(this.getDataSource(), catalog, tableName);
+  }
+
+  /**
+   * @param dataSource dataSource
+   * @param catalog    catalog
+   * @param tableName  tableName
+   * @return boolean
+   * @title exist
+   * @description exist
+   * @author BiJi'an
+   * @date 2023-12-08 23:30
+   */
+  public boolean exist(DataSource dataSource, String catalog, String tableName) {
+    List<TableMeta> tableMetaDatas = getTableMetaDatas(dataSource, catalog, tableName);
+    return tableMetaDatas != null && tableMetaDatas.size() == 1;
+  }
+
+
+  /**
    * @param tableMeta tableMeta
    * @param columName columName
-   * @param value value
+   * @param value     value
    * @title processMetadata
    * @description
    * @author BiJi'an

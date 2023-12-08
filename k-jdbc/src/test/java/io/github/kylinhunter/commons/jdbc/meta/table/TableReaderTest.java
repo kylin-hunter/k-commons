@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
 import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
@@ -17,10 +16,10 @@ public class TableReaderTest {
   void test() {
     TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
 
-    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "k_binlog_test_role");
+    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "k_jdbc_test_role");
     if (tableMetas.size() == 0) {
       initTestSQl();
-      tableMetas = tableReader.getTableMetaDatas("", "k_binlog_test_role");
+      tableMetas = tableReader.getTableMetaDatas("", "k_jdbc_test_role");
     }
     Assertions.assertEquals(1, tableMetas.size());
     TableMeta tableMeta = tableMetas.get(0);
@@ -31,13 +30,14 @@ public class TableReaderTest {
   }
 
   public static void initTestSQl() {
-    DataSourceManager sourceManager = new DataSourceManager();
-    sourceManager.init();
-    SqlExecutor defaultSqlExecutor = sourceManager.getDefaultSqlExecutor();
 
-    List<String> sqlLines = SqlFileReader.read(
-        "io/github/kylinhunter/commons/jdbc/binlog/binlog-test.sql");
-    defaultSqlExecutor.execute(sqlLines, true);
-    sourceManager.close();
+    TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
+
+    if (!tableReader.exist("", "k_jdbc_test_role")) {
+      SqlExecutor sqlExecutor = tableReader.getSqlExecutor();
+      List<String> sqlLines = SqlFileReader.read(
+          "io/github/kylinhunter/commons/jdbc/binlog/binlog-test.sql");
+      sqlExecutor.execute(sqlLines, true);
+    }
   }
 }

@@ -4,9 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import io.github.kylinhunter.commons.jdbc.binlog.redis.JdkRedisCodec;
 import io.github.kylinhunter.commons.jdbc.binlog.redis.JsonRedisCodec;
 import io.github.kylinhunter.commons.jdbc.binlog.redis.RedisConfig;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.bean.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.dao.entity.SavePoint;
 import org.junit.jupiter.api.Test;
 
 class RedisSavePointManagerTest {
@@ -20,12 +21,13 @@ class RedisSavePointManagerTest {
     redisConfig.setPassword("123456");
 
     RedisSavePointManager savePointManager = new RedisSavePointManager(redisConfig);
-
-    savePointManager.init();
+    savePointManager.setRecentBinLogKey("binlog_process_jdk");
+    savePointManager.setRedisCodec(new JdkRedisCodec());
+    savePointManager.init(null);
 
     savePointManager.reset();
 
-    SavePoint savePoint = savePointManager.getLatest();
+    SavePoint savePoint = savePointManager.get();
     System.out.println(savePoint);
     assertNotNull(savePoint);
 
@@ -33,7 +35,7 @@ class RedisSavePointManagerTest {
     savePointManager.save(savePoint11);
     System.out.println(savePoint11);
 
-    SavePoint savePoint12 = savePointManager.getLatest();
+    SavePoint savePoint12 = savePointManager.get();
     System.out.println(savePoint12);
     assertEquals(savePoint11, savePoint12);
 
@@ -41,7 +43,7 @@ class RedisSavePointManagerTest {
     savePointManager.save(savePoint21);
     System.out.println(savePoint21);
 
-    SavePoint savePoint22 = savePointManager.getLatest();
+    SavePoint savePoint22 = savePointManager.get();
     System.out.println(savePoint22);
     assertNotEquals(savePoint11, savePoint22);
     assertEquals(savePoint21, savePoint22);
@@ -58,12 +60,13 @@ class RedisSavePointManagerTest {
     redisConfig.setPassword("123456");
 
     RedisSavePointManager savePointManager = new RedisSavePointManager(redisConfig);
+    savePointManager.setRecentBinLogKey("binlog_process_json");
     savePointManager.setRedisCodec(new JsonRedisCodec());
-    savePointManager.init();
+    savePointManager.init(null);
 
     savePointManager.reset();
 
-    SavePoint savePoint = savePointManager.getLatest();
+    SavePoint savePoint = savePointManager.get();
     System.out.println(savePoint);
     assertNotNull(savePoint);
 
@@ -71,7 +74,7 @@ class RedisSavePointManagerTest {
     savePointManager.save(savePoint11);
     System.out.println(savePoint11);
 
-    SavePoint savePoint12 = savePointManager.getLatest();
+    SavePoint savePoint12 = savePointManager.get();
     System.out.println(savePoint12);
     assertEquals(savePoint11, savePoint12);
 
@@ -79,7 +82,7 @@ class RedisSavePointManagerTest {
     savePointManager.save(savePoint21);
     System.out.println(savePoint21);
 
-    SavePoint savePoint22 = savePointManager.getLatest();
+    SavePoint savePoint22 = savePointManager.get();
     System.out.println(savePoint22);
     assertNotEquals(savePoint11, savePoint22);
     assertEquals(savePoint21, savePoint22);
