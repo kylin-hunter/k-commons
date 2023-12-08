@@ -25,7 +25,6 @@ import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
-import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import java.util.List;
 import javax.sql.DataSource;
@@ -83,9 +82,9 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   @Override
   public void ensureTableExists() {
 
-    List<TableMeta> tableMetaDatas = this.tableReader.getTableMetaDatas(this.getDataSource(), "",
+    boolean exist = this.tableReader.exist(this.getDataSource(), "",
         TABLE_NAME);
-    if (tableMetaDatas.size() == 0) {
+    if (!exist) {
       List<String> sqlLines = SqlFileReader.read(INIT_SQL);
       this.getSqlExecutor().execute(sqlLines, true);
     }

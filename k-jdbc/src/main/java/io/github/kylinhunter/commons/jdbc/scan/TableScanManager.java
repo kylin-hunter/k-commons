@@ -1,7 +1,9 @@
 package io.github.kylinhunter.commons.jdbc.scan;
 
+import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
+import io.github.kylinhunter.commons.jdbc.scan.bean.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.scan.dao.MysqlScanProcessDAO;
 import io.github.kylinhunter.commons.jdbc.scan.dao.ScanProcessDAO;
 import io.github.kylinhunter.commons.jdbc.scan.dao.entity.ScanProgress;
@@ -23,10 +25,13 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 @Slf4j
 public class TableScanManager {
 
-  private ScanProcessDAO scanProcessDAO;
-  private DbType dbType;
-  private BeanListHandler<ScanProgress> beanListHandler = new BeanListHandler<>(
-      ScanProgress.class);
+  private final ScanProcessDAO scanProcessDAO;
+  private final BeanListHandler<ScanRecord> beanListHandler = new BeanListHandler<>(
+      ScanRecord.class);
+
+  public TableScanManager() {
+    this(DbType.MYSQL, null);
+  }
 
   public TableScanManager(DbType dbType) {
     this(dbType, null);
@@ -35,72 +40,116 @@ public class TableScanManager {
   public TableScanManager(DbType dbType, DataSource dataSource) {
     if (dbType == DbType.MYSQL) {
       this.scanProcessDAO = new MysqlScanProcessDAO(dataSource);
+    } else {
+      throw new UnsupportedException("unsupported dbType=" + dbType);
     }
   }
 
-
+  /**
+   * @param tableName tableName
+   * @title scan
+   * @description scan
+   * @author BiJi'an
+   * @date 2023-12-09 02:03
+   */
   public void scan(String tableName) {
     scan(tableName, new ScanOption());
   }
 
   /**
-   * @param tableName tableName x   * @title init
-   * @description init
+   * @param tableName  tableName
+   * @param scanOption scanOption
+   * @title scan
+   * @description scan
    * @author BiJi'an
-   * @date 2023-12-09 20:41
+   * @date 2023-12-09 02:03
    */
   public void scan(String tableName, ScanOption scanOption) {
-
     Objects.requireNonNull(scanOption);
+    while (true) {
+      try {
+        proccessSameTime(tableName, scanOption);
+        proccessNextTime(tableName, scanOption);
+        ThreadHelper.sleep(scanOption.getScanInterval(), TimeUnit.MILLISECONDS);
+      } catch (Exception e) {
+        log.error("scan error", e);
+      }
+    }
 
-    LocalDateTime endTime = LocalDateTime.now().minus(3, ChronoUnit.SECONDS);
+  }
 
-    String sql = "select id as lastScanId ,sys_auto_updated as nextScanTime from " + tableName
-        + " where sys_auto_updated >= ?  and sys_auto_updated<? order by sys_auto_updated asc, id asc limit ?";
 
+  /**
+   * @param tableName tableName
+   * @title proccessSameData
+   * @description proccessSameData
+   * @author BiJi'an
+   * @date 2023-12-09 00:48
+   */
+  private void proccessSameTime(String tableName, ScanOption scanOption) {
     SqlExecutor sqlExecutor = this.scanProcessDAO.getSqlExecutor();
 
+    String sql = "select id as id ,sys_auto_updated as time from " + tableName
+        + " where sys_auto_updated = ? and id > ? order by sys_auto_updated asc, id asc limit 2";
+
     while (true) {
-
       ScanProgress scanProgress = this.getScanProgress(tableName, scanOption);
+      List<ScanRecord> scanRecords = sqlExecutor.query(sql, beanListHandler,
+          scanProgress.getNextScanTime(), scanProgress.getLastScanId());
 
-      LocalDateTime nextScanTime = scanProgress.getNextScanTime();
-      String lastScanId = scanProgress.getLastScanId();
+      if (scanRecords.size() > 0) {
+        scanRecords.forEach(scanRecord -> {
+          log.info(" process same time data:" + scanRecord);
+        });
 
-      List<ScanProgress> beans = sqlExecutor.query(sql, beanListHandler, nextScanTime, endTime,
-          scanOption.getScanLimit());
-
-      if (beans.size() > 0) {
-        beans.forEach(System.out::println);
-
-        ScanProgress first = beans.get(0);
-        ScanProgress last = beans.get(beans.size() - 1);
-        ScanProgress newScanProgress = new ScanProgress();
-        newScanProgress.setId(tableName);
-        newScanProgress.setNextScanTime(last.getNextScanTime());
-        newScanProgress.setLastScanId(last.getLastScanId());
-        if (first.getNextScanTime().equals(last.getNextScanTime())) {
-          proccessSameData(last.getNextScanTime(), last.getLastScanId());
-          newScanProgress.setNextScanTime(nextScanTime.plus(1, ChronoUnit.SECONDS));
-        }
-
-        this.scanProcessDAO.update(newScanProgress);
-
+        ScanRecord last = scanRecords.get(scanRecords.size() - 1);
+        ScanProgress nextScanProgress = new ScanProgress(tableName);
+        nextScanProgress.setNextScanTime(last.getTime());
+        nextScanProgress.setLastScanId(last.getId());
+        this.scanProcessDAO.update(nextScanProgress);
 
       } else {
-        log.info(" no data");
+        break;
       }
-
-      ThreadHelper.sleep(1, TimeUnit.SECONDS);
-
-
     }
 
   }
 
   /**
-   * @return void
-   * @throws
+   * @param tableName  tableName
+   * @param scanOption scanOption
+   * @title proccessNextTime
+   * @description proccessNextTime
+   * @author BiJi'an
+   * @date 2023-12-09 02:06
+   */
+  private void proccessNextTime(String tableName, ScanOption scanOption) {
+    SqlExecutor sqlExecutor = this.scanProcessDAO.getSqlExecutor();
+
+    String sql = "select id as id ,sys_auto_updated as time from " + tableName
+        + " where sys_auto_updated > ?  and sys_auto_updated<? order by sys_auto_updated asc, id asc limit ?";
+    ScanProgress scanProgress = this.getScanProgress(tableName, scanOption);
+    LocalDateTime nextScanTime = scanProgress.getNextScanTime();
+    LocalDateTime endTime = LocalDateTime.now().minus(3, ChronoUnit.SECONDS);
+
+    List<ScanRecord> scanRecords = sqlExecutor.query(sql, beanListHandler, nextScanTime, endTime,
+        scanOption.getScanLimit());
+
+    if (scanRecords.size() > 0) {
+      scanRecords.forEach(scanRecord -> {
+        log.info(" process next time data:" + scanRecord);
+      });
+      ScanRecord last = scanRecords.get(scanRecords.size() - 1);
+      ScanProgress nextScanProgress = new ScanProgress(tableName);
+      nextScanProgress.setNextScanTime(last.getTime());
+      nextScanProgress.setLastScanId(last.getId());
+      this.scanProcessDAO.update(nextScanProgress);
+
+    }
+  }
+
+
+  /**
    * @title createScanProgress
    * @description createScanProgress
    * @author BiJi'an
@@ -111,40 +160,13 @@ public class TableScanManager {
     ScanProgress progress = scanProcessDAO.findById(tableName);
     if (progress == null) {
       progress = new ScanProgress(tableName, scanOption.getSaveDestination(),
-          scanOption.getFirstScanTime(),
-          scanOption.getLastScanId());
+          scanOption.getFirstScanTime(), "");
       scanProcessDAO.save(progress);
     }
     return progress;
 
   }
 
-  private void proccessSameData(LocalDateTime nextScanTime, String lastScanId) {
-    SqlExecutor sqlExecutor = this.scanProcessDAO.getSqlExecutor();
-    final BeanListHandler<ScanProgress> beanListHandler = new BeanListHandler<>(
-        ScanProgress.class);
-
-    String sql = "select id as lastScanId ,sys_auto_updated as nextScanTime from k_jdbc_test_role"
-        + " where sys_auto_updated = ? and id > ? order by sys_auto_updated asc, id asc limit 2";
-
-    while (true) {
-      List<ScanProgress> beans = sqlExecutor.query(sql, beanListHandler, nextScanTime, lastScanId);
-
-      if (beans.size() > 0) {
-        beans.forEach(e -> {
-          System.out.println("same data:" + e);
-        });
-
-        ScanProgress last = beans.get(beans.size() - 1);
-        nextScanTime = last.getNextScanTime();
-        lastScanId = last.getLastScanId();
-
-      } else {
-        break;
-      }
-    }
-
-  }
 
   /**
    * @title init
@@ -154,7 +176,7 @@ public class TableScanManager {
    */
   public void init() {
 
-    this.scanProcessDAO.init();
+    this.scanProcessDAO.ensureTableExists();
 
   }
 

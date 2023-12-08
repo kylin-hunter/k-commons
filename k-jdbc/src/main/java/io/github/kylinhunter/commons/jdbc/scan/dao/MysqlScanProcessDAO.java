@@ -5,7 +5,6 @@ import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
-import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.jdbc.scan.dao.entity.ScanProgress;
 import java.util.List;
@@ -86,20 +85,20 @@ public class MysqlScanProcessDAO extends AbstractDatabaseManager implements
   }
 
   /**
-   * @title init
-   * @description init
+   * @title ensureTableExists
+   * @description ensureTableExists
    * @author BiJi'an
-   * @date 2023-12-09 20:19
+   * @date 2023-12-09 00:16
    */
-  public void init() {
-    List<TableMeta> tableMetaDatas = this.tableReader.getTableMetaDatas(this.getDataSource(), "",
+  @Override
+  public void ensureTableExists() {
+    boolean exist = this.tableReader.exist(this.getDataSource(), "",
         TABLE_SCAN_PROGRESS);
-    if (tableMetaDatas.size() == 0) {
+    if (!exist) {
       List<String> sqlLines = SqlFileReader.read(INIT_SQL);
       this.getSqlExecutor().execute(sqlLines, true);
     }
 
   }
-
 
 }

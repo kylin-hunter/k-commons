@@ -21,5 +21,7 @@ public class ScanProgress implements Serializable {
   private LocalDateTime nextScanTime;
   private String lastScanId;
 
-
+  public ScanProgress(String tableName) {
+    this.id = tableName;
+  }
 }

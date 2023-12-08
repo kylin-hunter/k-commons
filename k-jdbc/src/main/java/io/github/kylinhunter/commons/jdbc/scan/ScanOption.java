@@ -18,8 +18,8 @@ public class ScanOption {
 
   private String saveDestination = "k_table_scan_processor";
 
-  private String lastScanId = "-1";
-
 
   private long scanLimit = 1000;
+
+  private int scanInterval = 1000;
 }
