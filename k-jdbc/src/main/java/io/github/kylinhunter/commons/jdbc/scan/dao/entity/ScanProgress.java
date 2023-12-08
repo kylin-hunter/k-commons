@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.scan.dao.entity;
 
+import io.github.kylinhunter.commons.jdbc.scan.bean.ScanRecord;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,16 @@ public class ScanProgress implements Serializable {
   private LocalDateTime nextScanTime;
   private String lastScanId;
 
-  public ScanProgress(String tableName) {
-    this.id = tableName;
+
+  public ScanProgress(String id, LocalDateTime nextScanTime, String lastScanId) {
+    this.id = id;
+    this.nextScanTime = nextScanTime;
+    this.lastScanId = lastScanId;
+  }
+
+  public ScanProgress(String id, ScanRecord last) {
+    this.id = id;
+    this.nextScanTime = last.getTime();
+    this.lastScanId = last.getId();
   }
 }

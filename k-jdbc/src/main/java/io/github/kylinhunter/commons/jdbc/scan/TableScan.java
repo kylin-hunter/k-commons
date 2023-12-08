@@ -11,9 +11,11 @@ import lombok.Data;
  */
 
 @Data
-public class ScanOption {
+public class TableScan {
 
   private String tableName;
+  private String tableIdColName;
+  private String tableTimeColName;
   private LocalDateTime firstScanTime = LocalDateTime.now().minus(10, ChronoUnit.YEARS);
 
   private String saveDestination = "k_table_scan_processor";
@@ -22,4 +24,8 @@ public class ScanOption {
   private long scanLimit = 1000;
 
   private int scanInterval = 1000;
+
+  private int scanSameTimeInterval = 100;
+
+
 }
