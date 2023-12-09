@@ -13,16 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.url;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint;
+
+import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-01-10 11:11
+ * @date 2023-11-25 02:51
  */
-public interface JdbcUrlParser {
+public interface SavePointManager {
 
-  JdbcUrl parse(String jdbcUrl);
+  void reset();
 
-  String toString(JdbcUrl jdbcUrl);
+  void save(SavePoint savePoint);
+
+  SavePoint get();
+
+  void init(JdbcUrl jdbcUrl);
+
+  default SavePoint getDefaultSavePoint() {
+    return new SavePoint("unknown", -1);
+  }
+
+  void shutdown();
 }

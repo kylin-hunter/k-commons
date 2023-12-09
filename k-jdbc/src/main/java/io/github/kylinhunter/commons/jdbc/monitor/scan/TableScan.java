@@ -13,16 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.url;
+package io.github.kylinhunter.commons.jdbc.monitor.scan;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import lombok.Data;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-01-10 11:11
+ * @date 2023-12-10 21:22
  */
-public interface JdbcUrlParser {
+@Data
+public class TableScan {
 
-  JdbcUrl parse(String jdbcUrl);
+  private String tableName;
+  private String tableIdColName;
+  private String tableTimeColName;
+  private LocalDateTime firstScanTime = LocalDateTime.now().minus(10, ChronoUnit.YEARS);
 
-  String toString(JdbcUrl jdbcUrl);
+  private String saveDestination = "k_table_monitor_scan_task";
+
+  private long scanLimit = 1000;
+
+  private int scanInterval = 1000;
+
+  private int scanSameTimeInterval = 100;
+
+  private boolean daemon = true;
 }

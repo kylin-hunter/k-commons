@@ -21,14 +21,13 @@ import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * @author BiJi'an
  * @description JdbcUrlParserSqlServer j
- *     <p>jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd
+ * <p>jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd
  * @date 2023-01-10 11:11
  */
 public class SqlServerJdbcUrlParser implements JdbcUrlParser {
@@ -37,28 +36,44 @@ public class SqlServerJdbcUrlParser implements JdbcUrlParser {
   private static final String DATABASENAME_TAG = "DatabaseName";
 
   @Override
-  public JdbcUrl parse(String jdbcUrl) {
-    JdbcUrl jdbcUrlInfo = null;
-    Matcher matcher = pattern.matcher(jdbcUrl);
+  public JdbcUrl parse(String url) {
+    JdbcUrl jdbcUrl = null;
+    Matcher matcher = pattern.matcher(url);
 
     if (matcher.find()) {
-      jdbcUrlInfo = new JdbcUrl();
-      jdbcUrlInfo.setDbType(DbType.SQL_SERVER);
-      jdbcUrlInfo.setHost(matcher.group(1));
-      jdbcUrlInfo.setPort(Integer.parseInt(matcher.group(2)));
+      jdbcUrl = new JdbcUrl();
+      jdbcUrl.setDbType(DbType.SQL_SERVER);
+      jdbcUrl.setHost(matcher.group(1));
+      jdbcUrl.setPort(Integer.parseInt(matcher.group(2)));
       String group3 = matcher.group(3);
       Map<String, String> params = StringUtil.split(group3, ';', '=');
-      jdbcUrlInfo.setParams(params);
-      for (Entry<String, String> env : params.entrySet()) {
-        if (DATABASENAME_TAG.equalsIgnoreCase(env.getKey())) {
-          jdbcUrlInfo.setDatabase(env.getValue());
-        }
-      }
+      String removeValue = params.remove(DATABASENAME_TAG);
+      jdbcUrl.setDatabase(removeValue);
+      jdbcUrl.setParams(params);
     }
 
-    if (jdbcUrlInfo == null) {
-      throw new JdbcException("invalid jdbcUrl" + jdbcUrl);
+    if (jdbcUrl == null) {
+      throw new JdbcException("invalid url" + url);
     }
-    return jdbcUrlInfo;
+    return jdbcUrl;
+  }
+
+  @Override
+  public String toString(JdbcUrl jdbcUrl) {
+    StringBuilder builder = new StringBuilder();
+    builder.append("jdbc:sqlserver://");
+    builder.append(jdbcUrl.getHost()).append(":");
+    builder.append(jdbcUrl.getPort()).append(";");
+    builder.append(DATABASENAME_TAG + "=").append(jdbcUrl.getDatabase());
+    Map<String, String> params = jdbcUrl.getParams();
+    if (params.size() > 0) {
+      builder.append(";");
+      params.forEach((k, v) -> {
+        builder.append(k).append("=").append(v).append(";");
+      });
+      builder.setLength(builder.length() - 1);
+    }
+
+    return builder.toString();
   }
 }

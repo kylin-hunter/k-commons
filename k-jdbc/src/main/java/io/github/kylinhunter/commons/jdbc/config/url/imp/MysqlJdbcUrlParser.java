@@ -34,26 +34,47 @@ public class MysqlJdbcUrlParser implements JdbcUrlParser {
   private final Pattern pattern = Pattern.compile(".+//(.+):(\\d+)/([\\d\\w]+)([\\?]{0,1})(.*)");
 
   /**
-   * jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+   * url:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
    */
   @Override
-  public JdbcUrl parse(String jdbcUrl) {
-    JdbcUrl jdbcUrlInfo = null;
-    Matcher matcher = pattern.matcher(jdbcUrl);
+  public JdbcUrl parse(String url) {
+    JdbcUrl jdbcUrl = null;
+    Matcher matcher = pattern.matcher(url);
     if (matcher.find()) {
-      jdbcUrlInfo = new JdbcUrl();
-      jdbcUrlInfo.setDbType(DbType.MYSQL);
-      jdbcUrlInfo.setHost(matcher.group(1));
-      jdbcUrlInfo.setPort(Integer.parseInt(matcher.group(2)));
-      jdbcUrlInfo.setDatabase(matcher.group(3));
+      jdbcUrl = new JdbcUrl();
+      jdbcUrl.setDbType(DbType.MYSQL);
+      jdbcUrl.setHost(matcher.group(1));
+      jdbcUrl.setPort(Integer.parseInt(matcher.group(2)));
+      jdbcUrl.setDatabase(matcher.group(3));
       String group5 = matcher.group(5);
       Map<String, String> params = StringUtil.split(group5, '&', '=');
-      jdbcUrlInfo.setParams(params);
+      jdbcUrl.setParams(params);
     }
 
-    if (jdbcUrlInfo == null) {
-      throw new JdbcException("invalid jdbcUrl" + jdbcUrl);
+    if (jdbcUrl == null) {
+      throw new JdbcException("invalid url" + url);
     }
-    return jdbcUrlInfo;
+    return jdbcUrl;
+  }
+
+  @Override
+  public String toString(JdbcUrl jdbcUrl) {
+
+    StringBuilder builder = new StringBuilder();
+    builder.append("jdbc:mysql://");
+    builder.append(jdbcUrl.getHost()).append(":");
+    builder.append(jdbcUrl.getPort()).append("/");
+    builder.append(jdbcUrl.getDatabase());
+
+    Map<String, String> params = jdbcUrl.getParams();
+    if (params.size() > 0) {
+      builder.append("?");
+      params.forEach((k, v) -> {
+        builder.append(k).append("=").append(v).append("&");
+      });
+      builder.setLength(builder.length() - 1);
+    }
+
+    return builder.toString();
   }
 }

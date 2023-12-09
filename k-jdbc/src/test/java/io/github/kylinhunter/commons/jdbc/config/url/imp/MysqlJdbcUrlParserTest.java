@@ -20,6 +20,8 @@ class MysqlJdbcUrlParserTest {
     Assertions.assertEquals("kp", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(6, jdbcUrlInfo.getParams().size());
 
+    Assertions.assertEquals(jdbcUrl, jdbcUrlParser.toString(jdbcUrlInfo));
+
     jdbcUrl = "jdbc:mysql://localhost:3306/kp";
     jdbcUrlInfo = jdbcUrlParser.parse(jdbcUrl);
     Assertions.assertEquals(DbType.MYSQL, jdbcUrlInfo.getDbType());
@@ -27,6 +29,7 @@ class MysqlJdbcUrlParserTest {
     Assertions.assertEquals(3306, jdbcUrlInfo.getPort());
     Assertions.assertEquals("kp", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(0, jdbcUrlInfo.getParams().size());
+    Assertions.assertEquals(jdbcUrl, jdbcUrlParser.toString(jdbcUrlInfo));
   }
 
   @Test
@@ -38,6 +41,7 @@ class MysqlJdbcUrlParserTest {
     Assertions.assertEquals(3306, jdbcUrlInfo.getPort());
     Assertions.assertEquals("kp", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(6, jdbcUrlInfo.getParams().size());
+    Assertions.assertEquals(jdbcUrl, JdbcUtils.toString(jdbcUrlInfo));
 
     jdbcUrl = "jdbc:mysql://localhost:3306/kp";
     jdbcUrlInfo = JdbcUtils.parse(jdbcUrl);
@@ -46,6 +50,8 @@ class MysqlJdbcUrlParserTest {
     Assertions.assertEquals(3306, jdbcUrlInfo.getPort());
     Assertions.assertEquals("kp", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(0, jdbcUrlInfo.getParams().size());
+    Assertions.assertEquals(jdbcUrl, JdbcUtils.toString(jdbcUrlInfo));
+
   }
 
 

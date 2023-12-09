@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.url;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.redis;
+
+import lombok.Data;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-01-10 11:11
+ * @date 2023-12-05 20:26
  */
-public interface JdbcUrlParser {
+@Data
+public class RedisConfig {
 
-  JdbcUrl parse(String jdbcUrl);
-
-  String toString(JdbcUrl jdbcUrl);
+  private String host;
+  private int port;
+  private CharSequence password;
+  private long timeout;
 }

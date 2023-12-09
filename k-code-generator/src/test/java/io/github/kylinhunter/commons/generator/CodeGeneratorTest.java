@@ -27,12 +27,12 @@ class CodeGeneratorTest {
   @BeforeAll
   static void beforeAll() {
 
-    DataSourceManager dataSourceManager = new DataSourceManager();
+    DataSourceManager dataSourceManager = new DataSourceManager(true);
     dataSourceManager.init();
 
     List<String> sqls = SqlFileReader.read("io/github/kylinhunter/commons/generator/testdata.sql");
 
-    SqlExecutor defaultSqlExecutor = dataSourceManager.getDefaultSqlExecutor();
+    SqlExecutor defaultSqlExecutor = dataSourceManager.getSqlExecutor();
 
     defaultSqlExecutor.execute(sqls, true);
     dataSourceManager.close();

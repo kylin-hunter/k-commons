@@ -13,51 +13,62 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta;
+package io.github.kylinhunter.commons.jdbc.monitor.dao;
 
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import javax.sql.DataSource;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-10 23:36
+ * @date 2023-12-09 22:50
  */
-public interface DatabaseManager {
+public interface ScanProgressDAO {
 
   /**
-   * @return javax.sql.DataSource
-   * @title getDataSource
-   * @description getDataSource
+   * @param id id
+   * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress
+   * @title findById
+   * @description findById
    * @author BiJi'an
-   * @date 2023-12-10 23:37
+   * @date 2023-12-09 00:13
    */
-  DataSource getDataSource();
+  ScanProgress findById(String id);
 
   /**
-   * @return javax.sql.DataSource
-   * @title getDefaultDataSource
-   * @description getDefaultDataSource
+   * @param scanProgress scanProgress
+   * @title save
+   * @description save
    * @author BiJi'an
-   * @date 2023-12-10 23:37
+   * @date 2023-12-09 00:13
    */
-  DataSource getDefaultDataSource();
+  void save(ScanProgress scanProgress);
+
+  /**
+   * @param scanProgress scanProgress
+   * @title update
+   * @description update
+   * @author BiJi'an
+   * @date 2023-12-09 00:14
+   */
+  void update(ScanProgress scanProgress);
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
    * @title getSqlExecutor
    * @description getSqlExecutor
    * @author BiJi'an
-   * @date 2023-12-10 23:37
+   * @date 2023-12-09 00:14
    */
   SqlExecutor getSqlExecutor();
 
   /**
-   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
-   * @title getDefaultSqlExecutor
-   * @description getDefaultSqlExecutor
+   * @title ensureTableExists
+   * @description ensureTableExists
    * @author BiJi'an
-   * @date 2023-12-10 23:37
+   * @date 2023-12-09 00:16
    */
-  SqlExecutor getDefaultSqlExecutor();
+  void ensureTableExists();
+
+  void delete(String id);
 }

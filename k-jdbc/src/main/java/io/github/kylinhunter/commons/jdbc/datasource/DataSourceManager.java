@@ -24,12 +24,16 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.jdbc.config.ConfigLoader;
 import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig;
+import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
+import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -38,16 +42,25 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 00:34
  */
 @Slf4j
+@NoArgsConstructor
 public class DataSourceManager implements AutoCloseable {
 
-  private DataSource defaultDataSource;
+  private DataSource dataSource;
   private final Map<Object, ExDataSource> allDataSources = MapUtils.newHashMap();
 
-  private SqlExecutor defaultSqlExecutor;
+  private SqlExecutor sqlExecutor;
 
   private final Map<Object, SqlExecutor> allSqlExecutors = MapUtils.newHashMap();
 
   private volatile boolean initialized = false;
+
+  @Setter
+  private boolean loadFromConfigEnabled = false;
+
+
+  public DataSourceManager(boolean loadFromConfigEnabled) {
+    this.loadFromConfigEnabled = loadFromConfigEnabled;
+  }
 
   public void init() {
     init(ConfigLoader.DEFAULT_PATH);
@@ -78,6 +91,9 @@ public class DataSourceManager implements AutoCloseable {
    * @date 2023-12-03 00:57
    */
   public synchronized void init(List<ExHikariConfig> exHikariConfigs) {
+    if (!loadFromConfigEnabled) {
+      throw new InitException("can't load datasource from config file");
+    }
     if (!initialized) {
       close();
       List<ExDataSource> allExDataSources = Lists.newArrayList();
@@ -89,7 +105,7 @@ public class DataSourceManager implements AutoCloseable {
 
         ExDataSource exDataSource =
             ObjectCreator.create(
-                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
+                clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -97,8 +113,8 @@ public class DataSourceManager implements AutoCloseable {
 
       if (allExDataSources.size() > 0) {
         ExDataSource firstDatasource = allExDataSources.get(0);
-        this.defaultDataSource = firstDatasource;
-        this.defaultSqlExecutor = new SqlExecutor(firstDatasource);
+        this.dataSource = firstDatasource;
+        this.sqlExecutor = new SqlExecutor(firstDatasource);
         allExDataSources.forEach(
             exDataSource -> {
               allDataSources.put(exDataSource.getDsNo(), exDataSource);
@@ -119,14 +135,14 @@ public class DataSourceManager implements AutoCloseable {
    * @author BiJi'an
    * @date 2023-12-03 16:45
    */
-  public DataSource getDefaultDataSource() {
-    if (defaultDataSource == null) {
+  public DataSource get() {
+    if (dataSource == null) {
       init();
     }
-    if (defaultDataSource == null) {
+    if (dataSource == null) {
       throw new JdbcException("no default Datasource ");
     }
-    return defaultDataSource;
+    return dataSource;
   }
 
   /**
@@ -136,15 +152,15 @@ public class DataSourceManager implements AutoCloseable {
    * @author BiJi'an
    * @date 2023-12-03 16:53
    */
-  public SqlExecutor getDefaultSqlExecutor() {
+  public SqlExecutor getSqlExecutor() {
 
-    if (defaultSqlExecutor == null) {
+    if (sqlExecutor == null) {
       init();
     }
-    if (defaultSqlExecutor == null) {
+    if (sqlExecutor == null) {
       throw new JdbcException("no default SqlExecutor ");
     }
-    return defaultSqlExecutor;
+    return sqlExecutor;
   }
 
   /**
@@ -155,7 +171,7 @@ public class DataSourceManager implements AutoCloseable {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  private ExDataSource getDatasource(Object dsKey) {
+  private ExDataSource get(Object dsKey) {
     ExDataSource exDataSource = allDataSources.get(dsKey);
     if (exDataSource == null) {
       init();
@@ -176,7 +192,7 @@ public class DataSourceManager implements AutoCloseable {
    * @date 2023-12-03 15:32
    */
   public ExDataSource getByNo(int no) {
-    return this.getDatasource(no);
+    return this.get(no);
   }
 
   /**
@@ -188,7 +204,7 @@ public class DataSourceManager implements AutoCloseable {
    * @date 2023-01-18 12:25
    */
   public ExDataSource getByName(String name) {
-    return this.getDatasource(name);
+    return this.get(name);
   }
 
   /**
@@ -247,5 +263,37 @@ public class DataSourceManager implements AutoCloseable {
       IOUtil.closeQuietly(exDataSource);
     }
     allDataSources.clear();
+  }
+
+  /**
+   * @param jdbcUrl  jdbcUrl
+   * @param username username
+   * @param password password
+   * @return javax.sql.DataSource
+   * @title createDataSource
+   * @description createDataSource
+   * @author BiJi'an
+   * @date 2023-12-10 00:02
+   */
+  public static DataSource createDataSource(String jdbcUrl, String username, String password) {
+    HikariConfig hikariConfig = new HikariConfig();
+    hikariConfig.setJdbcUrl(jdbcUrl);
+    hikariConfig.setUsername(username);
+    hikariConfig.setPassword(password);
+    return new HikariDataSource(hikariConfig);
+  }
+
+  /**
+   * @param jdbcUrl  jdbcUrl
+   * @param username username
+   * @param password password
+   * @return javax.sql.DataSource
+   * @title createDataSource
+   * @description createDataSource
+   * @author BiJi'an
+   * @date 2023-12-10 00:44
+   */
+  public static DataSource createDataSource(JdbcUrl jdbcUrl, String username, String password) {
+    return createDataSource(JdbcUtils.toString(jdbcUrl), username, password);
   }
 }

@@ -13,16 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.url;
+package io.github.kylinhunter.commons.jdbc.monitor.dao.entity;
+
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-01-10 11:11
+ * @date 2023-11-28 23:22
  */
-public interface JdbcUrlParser {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SavePoint implements Serializable {
 
-  JdbcUrl parse(String jdbcUrl);
-
-  String toString(JdbcUrl jdbcUrl);
+  private String name;
+  private long position;
 }

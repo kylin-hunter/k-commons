@@ -13,16 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.url;
+package io.github.kylinhunter.commons.jdbc.monitor.scan.bean;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-01-10 11:11
+ * @date 2023-12-03 19:50
  */
-public interface JdbcUrlParser {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ScanRecord implements Serializable {
 
-  JdbcUrl parse(String jdbcUrl);
-
-  String toString(JdbcUrl jdbcUrl);
+  private String id;
+  private LocalDateTime time;
 }

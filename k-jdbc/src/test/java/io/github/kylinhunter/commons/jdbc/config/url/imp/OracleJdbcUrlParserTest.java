@@ -19,6 +19,7 @@ class OracleJdbcUrlParserTest {
     Assertions.assertEquals(1521, jdbcUrlInfo.getPort());
     Assertions.assertEquals("ORACLE", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(2, jdbcUrlInfo.getParams().size());
+    Assertions.assertEquals(jdbcUrl, jdbcUrlParser.toString(jdbcUrlInfo));
 
     jdbcUrl = "jdbc:oracle:thin:@localhost:1521:ORACLE";
     jdbcUrlInfo = jdbcUrlParser.parse(jdbcUrl);
@@ -27,6 +28,8 @@ class OracleJdbcUrlParserTest {
     Assertions.assertEquals(1521, jdbcUrlInfo.getPort());
     Assertions.assertEquals("ORACLE", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(0, jdbcUrlInfo.getParams().size());
+    Assertions.assertEquals(jdbcUrl, jdbcUrlParser.toString(jdbcUrlInfo));
+
   }
 
 
@@ -39,6 +42,7 @@ class OracleJdbcUrlParserTest {
     Assertions.assertEquals(1521, jdbcUrlInfo.getPort());
     Assertions.assertEquals("ORACLE", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(2, jdbcUrlInfo.getParams().size());
+    Assertions.assertEquals(jdbcUrl, JdbcUtils.toString(jdbcUrlInfo));
 
     jdbcUrl = "jdbc:oracle:thin:@localhost:1521:ORACLE";
     jdbcUrlInfo = JdbcUtils.parse(jdbcUrl);
@@ -47,5 +51,7 @@ class OracleJdbcUrlParserTest {
     Assertions.assertEquals(1521, jdbcUrlInfo.getPort());
     Assertions.assertEquals("ORACLE", jdbcUrlInfo.getDatabase());
     Assertions.assertEquals(0, jdbcUrlInfo.getParams().size());
+    Assertions.assertEquals(jdbcUrl, JdbcUtils.toString(jdbcUrlInfo));
+
   }
 }

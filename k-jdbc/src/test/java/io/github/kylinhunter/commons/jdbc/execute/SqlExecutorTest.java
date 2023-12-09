@@ -12,8 +12,8 @@ class SqlExecutorTest {
 
   @Test
   void execute() throws SQLException {
-    DataSourceManager dataSourceManager = new DataSourceManager();
-    SqlExecutor sqlExecutor = new SqlExecutor(dataSourceManager.getDefaultDataSource());
+    DataSourceManager dataSourceManager = new DataSourceManager(true);
+    SqlExecutor sqlExecutor = new SqlExecutor(dataSourceManager.get());
     List<String> sqls = SqlFileReader.read(
         "io/github/kylinhunter/commons/jdbc/execute/execute.sql");
 

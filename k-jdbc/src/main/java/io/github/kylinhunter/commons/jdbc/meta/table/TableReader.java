@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 public interface TableReader extends DatabaseManager {
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
    * @title getTableMetaData
@@ -35,7 +35,19 @@ public interface TableReader extends DatabaseManager {
   TableMeta getTableMetaData(String catalog, String tableName);
 
   /**
-   * @param catalog catalog
+   * @param dataSource dataSource
+   * @param catalog    catalog
+   * @param tableName  tableName
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
+   * @title getTableMetaData
+   * @description getTableMetaData
+   * @author BiJi'an
+   * @date 2023-12-10 00:53
+   */
+  TableMeta getTableMetaData(DataSource dataSource, String catalog, String tableName);
+
+  /**
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -47,8 +59,8 @@ public interface TableReader extends DatabaseManager {
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -59,9 +71,9 @@ public interface TableReader extends DatabaseManager {
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -72,25 +84,25 @@ public interface TableReader extends DatabaseManager {
       Connection connection, String catalog, String schema, String tableName);
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return boolean
    * @title exist
    * @description exist
    * @author BiJi'an
-   * @date 2023-12-08 23:34
+   * @date 2023-12-10 23:34
    */
   boolean exist(String catalog, String tableName);
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return boolean
    * @title exist
    * @description exist
    * @author BiJi'an
-   * @date 2023-12-08 23:34
+   * @date 2023-12-10 23:34
    */
   boolean exist(DataSource dataSource, String catalog, String tableName);
 }

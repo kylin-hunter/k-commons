@@ -31,14 +31,13 @@ import java.util.Objects;
  */
 public class JdbcUtils {
 
-  private static JdbcUrlParser mysqlJdbcUrlParser = new MysqlJdbcUrlParser();
-  private static OracleJdbcUrlParser oracleJdbcUrlParser = new OracleJdbcUrlParser();
-  private static SqlServerJdbcUrlParser sqlServerJdbcUrlParser = new SqlServerJdbcUrlParser();
+  private static final JdbcUrlParser mysqlJdbcUrlParser = new MysqlJdbcUrlParser();
+  private static final OracleJdbcUrlParser oracleJdbcUrlParser = new OracleJdbcUrlParser();
+  private static final SqlServerJdbcUrlParser sqlServerJdbcUrlParser = new SqlServerJdbcUrlParser();
 
   /**
    * @param jdbcUrl jdbcUrl
    * @return io.github.kylinhunter.commons.jdbc.config.JdbcUrlInfo
-   * @throws
    * @title parse
    * @description parse
    * @author BiJi'an
@@ -53,6 +52,27 @@ public class JdbcUtils {
         return oracleJdbcUrlParser.parse(jdbcUrl);
       case SQL_SERVER:
         return sqlServerJdbcUrlParser.parse(jdbcUrl);
+    }
+    throw new JdbcException("UnSupported dbType" + dbType);
+  }
+
+  /**
+   * @param jdbcUrl jdbcUrl
+   * @return io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl
+   * @title parse
+   * @description parse
+   * @author BiJi'an
+   * @date 2023-12-10 00:33
+   */
+  public static String toString(JdbcUrl jdbcUrl) {
+    DbType dbType = jdbcUrl.getDbType();
+    switch (dbType) {
+      case MYSQL:
+        return mysqlJdbcUrlParser.toString(jdbcUrl);
+      case ORACLE:
+        return oracleJdbcUrlParser.toString(jdbcUrl);
+      case SQL_SERVER:
+        return sqlServerJdbcUrlParser.toString(jdbcUrl);
     }
     throw new JdbcException("UnSupported dbType" + dbType);
   }

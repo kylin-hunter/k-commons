@@ -43,7 +43,7 @@ public class StringUtil {
   }
 
   /**
-   * @param str str
+   * @param str        str
    * @param defaultStr defaultStr
    * @return T
    * @title defaultIfEmpty
@@ -77,7 +77,7 @@ public class StringUtil {
   }
 
   /**
-   * @param str str
+   * @param str        str
    * @param defaultStr defaultStr
    * @return T
    * @title defaultIfBlank
@@ -114,7 +114,7 @@ public class StringUtil {
   }
 
   /**
-   * @param str str
+   * @param str        str
    * @param defaultStr defaultStr
    * @return java.lang.String
    * @title defaultString
@@ -127,7 +127,7 @@ public class StringUtil {
   }
 
   /**
-   * @param str str
+   * @param str   str
    * @param start start
    * @return java.lang.String
    * @title substring
@@ -156,9 +156,9 @@ public class StringUtil {
   }
 
   /**
-   * @param str str
+   * @param str   str
    * @param start start
-   * @param end end
+   * @param end   end
    * @return java.lang.String
    * @title substring
    * @description substring
@@ -199,7 +199,7 @@ public class StringUtil {
   }
 
   /**
-   * @param str str
+   * @param str           str
    * @param separatorChar separatorChar
    * @return java.lang.String[]
    * @title split
@@ -212,8 +212,8 @@ public class StringUtil {
   }
 
   /**
-   * @param str str
-   * @param separatorChar separatorChar
+   * @param str               str
+   * @param separatorChar     separatorChar
    * @param preserveAllTokens preserveAllTokens
    * @return java.lang.String[]
    * @title splitWorker
@@ -258,7 +258,7 @@ public class StringUtil {
   }
 
   /**
-   * @param str str
+   * @param str        str
    * @param splitchar1 splitchar1
    * @param splitchar2 splitchar2
    * @return java.util.Map<java.lang.String, java.lang.String>
@@ -269,7 +269,7 @@ public class StringUtil {
    */
   public static Map<String, String> split(
       final String str, final char splitchar1, final char splitchar2) {
-    Map<String, String> result = MapUtils.newHashMap();
+    Map<String, String> result = MapUtils.newLinkedHashMap();
     if (str != null && str.length() > 0) {
 
       String[] split1s = split(str, splitchar1);

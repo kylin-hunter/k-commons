@@ -32,7 +32,7 @@ public class AbstractDatabaseManager implements DatabaseManager {
 
   protected SqlExecutor sqlExecutor;
 
-  protected static final DataSourceManager dataSourceManager = new DataSourceManager();
+  protected static final DataSourceManager dataSourceManager = new DataSourceManager(true);
 
   public AbstractDatabaseManager() {
     this(null);
@@ -67,7 +67,7 @@ public class AbstractDatabaseManager implements DatabaseManager {
    * @date 2023-12-09 20:08
    */
   public DataSource getDefaultDataSource() {
-    return dataSourceManager.getDefaultDataSource();
+    return dataSourceManager.get();
   }
 
   /**
@@ -92,6 +92,6 @@ public class AbstractDatabaseManager implements DatabaseManager {
    * @date 2023-12-09 20:09
    */
   public SqlExecutor getDefaultSqlExecutor() {
-    return dataSourceManager.getDefaultSqlExecutor();
+    return dataSourceManager.getSqlExecutor();
   }
 }
