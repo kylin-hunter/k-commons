@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.config.datasource;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -23,7 +24,7 @@ import lombok.Data;
  * @date 2023-01-08 20:09
  */
 @Data
-public class PoolInfo {
+public class PoolInfo implements Serializable {
 
   private int poolName; //  Default: auto-generated
 

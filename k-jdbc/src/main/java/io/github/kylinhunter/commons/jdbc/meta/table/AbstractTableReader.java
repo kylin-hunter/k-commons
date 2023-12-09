@@ -18,7 +18,6 @@ package io.github.kylinhunter.commons.jdbc.meta.table;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
@@ -40,8 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public abstract class AbstractTableReader extends AbstractDatabaseManager implements TableReader {
-
-  protected DbType dbType;
 
   public AbstractTableReader(DataSource dataSource) {
     super(dataSource);

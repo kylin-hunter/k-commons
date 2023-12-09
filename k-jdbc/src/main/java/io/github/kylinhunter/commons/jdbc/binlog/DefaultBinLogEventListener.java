@@ -88,19 +88,27 @@ public class DefaultBinLogEventListener implements EventListener {
       case EXT_WRITE_ROWS:
         {
           eventEXT_WRITE_ROWS(data);
+          break;
         }
       case EXT_DELETE_ROWS:
         {
           eventEXT_DELETE_ROWS(data);
+          break;
         }
       case EXT_UPDATE_ROWS:
         {
           eventEXT_UPDATE_ROWS(data);
+          break;
         }
 
       case QUERY:
         {
           eventQuery(data);
+          break;
+        }
+      default:
+        {
+          log.info("skip event={}", eventType);
         }
     }
   }
