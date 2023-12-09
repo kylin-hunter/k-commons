@@ -1,25 +1,25 @@
-package io.github.kylinhunter.commons.jdbc.scan.dao;
+package io.github.kylinhunter.commons.jdbc.scan.dao.imp;
 
-import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
+import io.github.kylinhunter.commons.jdbc.scan.dao.ScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.scan.dao.entity.ScanProgress;
 import java.util.List;
 import javax.sql.DataSource;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-12-03 19:50
  */
-public class MysqlScanProcessDAO extends AbstractDatabaseManager implements
-    ScanProcessDAO {
+public class MysqlScanProgressDAO extends AbstractDatabaseManager implements
+    ScanProgressDAO {
 
-  private static final String INIT_SQL = "io/github/kylinhunter/commons/jdbc/scan/scan-mysql.sql";
+  private static final String INIT_SQL = "io/github/kylinhunter/commons/jdbc/scan/scan-mysql-scan_progress.sql";
   private static final String TABLE_SCAN_PROGRESS = "k_table_scan_progress";
 
   private static final String INSERT_SQL = "insert into " + TABLE_SCAN_PROGRESS
@@ -33,17 +33,16 @@ public class MysqlScanProcessDAO extends AbstractDatabaseManager implements
   private static final String SELECT_SQL = "select  id, save_destination saveDestination, "
       + " next_scan_time nextScanTime,last_scan_id lastScanId  from " + TABLE_SCAN_PROGRESS
       + " where id=?";
-  private final BeanListHandler<ScanProgress> beanListHandler = new BeanListHandler<>(
-      ScanProgress.class);
+  private final BeanHandler<ScanProgress> beanHandler = new BeanHandler<>(ScanProgress.class);
 
   private final TableReader tableReader;
 
-  public MysqlScanProcessDAO() {
+  public MysqlScanProgressDAO() {
     this(null);
 
   }
 
-  public MysqlScanProcessDAO(DataSource dataSource) {
+  public MysqlScanProgressDAO(DataSource dataSource) {
     super(dataSource);
     this.dbType = DbType.MYSQL;
     this.tableReader = MetaReaderFactory.getTableMetaReader(this.dbType);
@@ -74,12 +73,7 @@ public class MysqlScanProcessDAO extends AbstractDatabaseManager implements
    */
   public ScanProgress findById(String id) {
 
-    List<ScanProgress> scanProgresses = this.getSqlExecutor()
-        .query(SELECT_SQL, beanListHandler, id);
-    if (!CollectionUtils.isEmpty(scanProgresses)) {
-      return scanProgresses.get(0);
-    }
-    return null;
+    return this.getSqlExecutor().query(SELECT_SQL, beanHandler, id);
 
 
   }

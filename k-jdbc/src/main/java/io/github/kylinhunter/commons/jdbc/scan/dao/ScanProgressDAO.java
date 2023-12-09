@@ -8,7 +8,7 @@ import io.github.kylinhunter.commons.jdbc.scan.dao.entity.ScanProgress;
  * @description
  * @date 2023-12-09 22:50
  */
-public interface ScanProcessDAO {
+public interface ScanProgressDAO {
 
   /**
    * @param id id
@@ -55,4 +55,6 @@ public interface ScanProcessDAO {
    * @date 2023-12-09 00:16
    */
   void ensureTableExists();
+
+
 }
