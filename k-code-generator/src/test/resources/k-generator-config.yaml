@@ -20,7 +20,7 @@ modules:
       context:
         'module_custom_propery': 'module_custom_propery_value'  # a global variable
       table:
-        name: "test_user"
+        name: "k_junit_code_user"
         skip_columns: # optional , skip some columns
           - 'extend_1'
           - 'extend_2'
@@ -29,7 +29,7 @@ modules:
           "role_id": "java.lang.Integer"  # role_id  is specially marked as type java.lang.Integer
     - name: 'Role'
       table:
-        name: 'test_role'
+        name: 'k_junit_code_role'
 templates:
   context:
     'author': 'bijian'  # a global variable

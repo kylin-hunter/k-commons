@@ -16,10 +16,10 @@ public class TableReaderTest {
   void test() {
     TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
 
-    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "k_jdbc_test_role");
+    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "k_junit_jdbc_role");
     if (tableMetas.size() == 0) {
       initTestSQl();
-      tableMetas = tableReader.getTableMetaDatas("", "k_jdbc_test_role");
+      tableMetas = tableReader.getTableMetaDatas("", "k_junit_jdbc_role");
     }
     Assertions.assertEquals(1, tableMetas.size());
     TableMeta tableMeta = tableMetas.get(0);
@@ -33,7 +33,7 @@ public class TableReaderTest {
 
     TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
 
-    if (!tableReader.exist("", "k_jdbc_test_role")) {
+    if (!tableReader.exist("", "k_junit_jdbc_role")) {
       SqlExecutor sqlExecutor = tableReader.getSqlExecutor();
       List<String> sqlLines = SqlFileReader.read(
           "io/github/kylinhunter/commons/jdbc/binlog/binlog-test.sql");

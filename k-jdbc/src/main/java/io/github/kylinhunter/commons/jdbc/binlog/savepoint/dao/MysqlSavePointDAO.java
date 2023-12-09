@@ -53,7 +53,6 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   private final TableReader tableReader;
   private final DatabaseMetaReader databaseMetaReader;
 
-
   public MysqlSavePointDAO() {
     this(null);
   }
@@ -63,9 +62,7 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
     this.dbType = DbType.MYSQL;
     this.tableReader = MetaReaderFactory.getTableMetaReader(this.dbType);
     this.databaseMetaReader = CF.get(DatabaseMetaReader.class);
-
   }
-
 
   @Override
   public void update(SavePoint savePoint) {
@@ -82,13 +79,11 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   @Override
   public void ensureTableExists() {
 
-    boolean exist = this.tableReader.exist(this.getDataSource(), "",
-        TABLE_NAME);
+    boolean exist = this.tableReader.exist(this.getDataSource(), "", TABLE_NAME);
     if (!exist) {
       List<String> sqlLines = SqlFileReader.read(INIT_SQL);
       this.getSqlExecutor().execute(sqlLines, true);
     }
-
   }
 
   @Override
@@ -102,7 +97,6 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   public SavePoint get() {
     return this.getSqlExecutor().query(SELECT_SQL, beanHandler);
   }
-
 
   /**
    * @return javax.sql.DataSource

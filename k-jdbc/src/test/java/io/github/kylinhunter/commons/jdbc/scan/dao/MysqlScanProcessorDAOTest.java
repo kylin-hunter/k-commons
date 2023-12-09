@@ -10,7 +10,7 @@ class MysqlScanProcessorDAOTest {
   @Test
   void test() {
     MysqlScanProcessorDAO scanProcessorDAO = new MysqlScanProcessorDAO();
-    String tableName = "k_table_xxx";
+    String tableName = "k_junit_scan_processor";
     String bizTable = "bizTable_xxx";
 
     scanProcessorDAO.ensureTableExists(tableName);

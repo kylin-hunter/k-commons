@@ -37,7 +37,6 @@ public class MysqlSavePointManager implements SavePointManager {
 
   public MysqlSavePointManager(DataSource dataSource) {
     this.mysqlSavePointDAO = new MysqlSavePointDAO(dataSource);
-
   }
 
   @Override
@@ -62,7 +61,6 @@ public class MysqlSavePointManager implements SavePointManager {
 
     if (jdbcUrl.equals(jdbcUrlSave)) {
       throw new JdbcException("save point jdbc can't be equal to binlog jdbc");
-
     }
     this.mysqlSavePointDAO.ensureTableExists();
     SavePoint savePoint = this.get();
@@ -73,8 +71,5 @@ public class MysqlSavePointManager implements SavePointManager {
   }
 
   @Override
-  public void shutdown() {
-  }
-
-
+  public void shutdown() {}
 }

@@ -68,9 +68,7 @@ public class AbstractDatabaseManager implements DatabaseManager {
    */
   public DataSource getDefaultDataSource() {
     return dataSourceManager.getDefaultDataSource();
-
   }
-
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
@@ -95,6 +93,5 @@ public class AbstractDatabaseManager implements DatabaseManager {
    */
   public SqlExecutor getDefaultSqlExecutor() {
     return dataSourceManager.getDefaultSqlExecutor();
-
   }
 }

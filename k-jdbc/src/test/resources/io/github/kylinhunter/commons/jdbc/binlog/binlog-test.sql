@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `k_jdbc_test_role`
+CREATE TABLE IF NOT EXISTS `k_junit_jdbc_role`
 (
     `id`                    varchar(64)  NOT NULL COMMENT '主键',
     `sys_tenant_id`         varchar(64)  NOT NULL DEFAULT '' COMMENT '租户ID',
@@ -19,3 +19,12 @@ CREATE TABLE IF NOT EXISTS `k_jdbc_test_role`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uniq_role_code` (`code`) COMMENT '唯一的code'
 );
+
+
+INSERT INTO k_junit_jdbc_role (id, sys_tenant_id, sys_auto_updated, sys_created_user_id, sys_created_user_name, sys_created_time, sys_update_user_id, sys_update_user_name, sys_update_time, sys_delete_flag, sys_op_lock, code, name, type, status, description) VALUES ('1', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:19:45', '0', '', '2023-12-09 15:19:45', 0, 0, '1', '1', 0, 0, '');
+INSERT INTO k_junit_jdbc_role (id, sys_tenant_id, sys_auto_updated, sys_created_user_id, sys_created_user_name, sys_created_time, sys_update_user_id, sys_update_user_name, sys_update_time, sys_delete_flag, sys_op_lock, code, name, type, status, description) VALUES ('2', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', 0, 0, '2', '2', 0, 0, '');
+INSERT INTO k_junit_jdbc_role (id, sys_tenant_id, sys_auto_updated, sys_created_user_id, sys_created_user_name, sys_created_time, sys_update_user_id, sys_update_user_name, sys_update_time, sys_delete_flag, sys_op_lock, code, name, type, status, description) VALUES ('3', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', 0, 0, '3', '3', 0, 0, '');
+INSERT INTO k_junit_jdbc_role (id, sys_tenant_id, sys_auto_updated, sys_created_user_id, sys_created_user_name, sys_created_time, sys_update_user_id, sys_update_user_name, sys_update_time, sys_delete_flag, sys_op_lock, code, name, type, status, description) VALUES ('4', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', 0, 0, '4', '4', 0, 0, '');
+INSERT INTO k_junit_jdbc_role (id, sys_tenant_id, sys_auto_updated, sys_created_user_id, sys_created_user_name, sys_created_time, sys_update_user_id, sys_update_user_name, sys_update_time, sys_delete_flag, sys_op_lock, code, name, type, status, description) VALUES ('5', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', 0, 0, '5', '5', 0, 0, '');
+INSERT INTO k_junit_jdbc_role (id, sys_tenant_id, sys_auto_updated, sys_created_user_id, sys_created_user_name, sys_created_time, sys_update_user_id, sys_update_user_name, sys_update_time, sys_delete_flag, sys_op_lock, code, name, type, status, description) VALUES ('6', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', 0, 0, '6', '6', 0, 0, '');
+INSERT INTO k_junit_jdbc_role (id, sys_tenant_id, sys_auto_updated, sys_created_user_id, sys_created_user_name, sys_created_time, sys_update_user_id, sys_update_user_name, sys_update_time, sys_delete_flag, sys_op_lock, code, name, type, status, description) VALUES ('7', '', '2023-12-09 15:20:02', '0', '', '2023-12-09 15:21:02', '0', '', '2023-12-09 15:21:02', 0, 0, '7', '7', 0, 0, '');

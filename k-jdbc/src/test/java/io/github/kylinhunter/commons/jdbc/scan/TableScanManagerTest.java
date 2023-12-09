@@ -1,8 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.scan;
 
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReaderTest;
-import io.github.kylinhunter.commons.util.ThreadHelper;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 
 class TableScanManagerTest {
@@ -11,16 +9,20 @@ class TableScanManagerTest {
   void init() {
     TableReaderTest.initTestSQl();
     TableScanManager manager = new TableScanManager();
-    manager.init();
+
     TableScan tableScan = new TableScan();
-    tableScan.setTableName("k_jdbc_test_role");
+    tableScan.setTableName("k_junit_jdbc_role");
     tableScan.setTableIdColName("id");
     tableScan.setTableTimeColName("sys_auto_updated");
-    tableScan.setScanLimit(1);
+    tableScan.setSaveDestination("k_junit_scan_processor");
+    tableScan.setScanLimit(7);
     tableScan.setScanInterval(1000);
     tableScan.setScanSameTimeInterval(100);
+    tableScan.setDaemon(false);
+    manager.init(tableScan);
+    manager.clean(tableScan);
     manager.scan(tableScan);
 
-    ThreadHelper.sleep(100, TimeUnit.SECONDS);
+
   }
 }

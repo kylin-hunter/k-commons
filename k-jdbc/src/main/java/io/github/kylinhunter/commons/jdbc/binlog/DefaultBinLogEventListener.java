@@ -42,8 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultBinLogEventListener implements EventListener {
 
-  @Setter
-  private SavePointManager savePointManager;
+  @Setter private SavePointManager savePointManager;
   private String binlogName;
 
   @Override
@@ -67,36 +66,42 @@ public class DefaultBinLogEventListener implements EventListener {
       log.error("Unsupported event={}", header);
     }
     log.info("@event process end@ header={}", header);
-
   }
 
   private void process(EventType eventType, EventData data) {
     switch (eventType) {
-      case ROTATE: {
-        eventROTATE(data);
-        break;
-      }
-      case FORMAT_DESCRIPTION: {
-        eventFORMAT_DESCRIPTION(data);
-        break;
-      }
-      case TABLE_MAP: {
-        eventTABLE_MAP(data);
-        break;
-      }
-      case EXT_WRITE_ROWS: {
-        eventEXT_WRITE_ROWS(data);
-      }
-      case EXT_DELETE_ROWS: {
-        eventEXT_DELETE_ROWS(data);
-      }
-      case EXT_UPDATE_ROWS: {
-        eventEXT_UPDATE_ROWS(data);
-      }
+      case ROTATE:
+        {
+          eventROTATE(data);
+          break;
+        }
+      case FORMAT_DESCRIPTION:
+        {
+          eventFORMAT_DESCRIPTION(data);
+          break;
+        }
+      case TABLE_MAP:
+        {
+          eventTABLE_MAP(data);
+          break;
+        }
+      case EXT_WRITE_ROWS:
+        {
+          eventEXT_WRITE_ROWS(data);
+        }
+      case EXT_DELETE_ROWS:
+        {
+          eventEXT_DELETE_ROWS(data);
+        }
+      case EXT_UPDATE_ROWS:
+        {
+          eventEXT_UPDATE_ROWS(data);
+        }
 
-      case QUERY: {
-        eventQuery(data);
-      }
+      case QUERY:
+        {
+          eventQuery(data);
+        }
     }
   }
 
