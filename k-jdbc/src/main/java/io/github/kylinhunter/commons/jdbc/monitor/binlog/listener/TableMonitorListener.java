@@ -47,7 +47,7 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
   @Override
   public void init(DataSource dataSource) {
     this.dataSource = dataSource;
-    this.scanProcessorDAO = new MysqlScanProcessorDAO(dataSource);
+    this.scanProcessorDAO = new MysqlScanProcessorDAO(dataSource, false);
     this.scanProcessorDAO.ensureTableExists(destination);
   }
 

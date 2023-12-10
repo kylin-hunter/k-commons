@@ -15,9 +15,15 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta;
 
-import io.github.kylinhunter.commons.component.CF;
+import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.column.imp.MysqlColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.column.imp.OracleColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.column.imp.SqlServerColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.OracleTableReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.SqlServerTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 
 /**
@@ -35,8 +41,24 @@ public class MetaReaderFactory {
    * @author BiJi'an
    * @date 2023-11-27 01:05
    */
-  public static TableReader getTableMetaReader(DbType dbType) {
-    return CF.get(dbType.getPrefix() + "TableReader");
+  public static TableReader getTableMetaReader(DbType dbType, boolean dbConfigEnabled) {
+    switch (dbType) {
+      case MYSQL: {
+        return new MysqlTableReader(dbConfigEnabled);
+
+      }
+      case ORACLE: {
+        return new OracleTableReader(dbConfigEnabled);
+
+      }
+      case SQL_SERVER: {
+        return new SqlServerTableReader(dbConfigEnabled);
+
+      }
+      default: {
+        throw new UnsupportedException("unsupported dbType:" + dbType);
+      }
+    }
   }
 
   /**
@@ -47,7 +69,20 @@ public class MetaReaderFactory {
    * @author BiJi'an
    * @date 2023-11-27 01:06
    */
-  public static ColumnReader getColumnMetaReader(DbType dbType) {
-    return CF.get(dbType.getPrefix() + "ColumnReader");
+  public static ColumnReader getColumnMetaReader(DbType dbType, boolean dbConfigEnabled) {
+    switch (dbType) {
+      case MYSQL: {
+        return new MysqlColumnReader(dbConfigEnabled);
+      }
+      case ORACLE: {
+        return new OracleColumnReader(dbConfigEnabled);
+      }
+      case SQL_SERVER: {
+        return new SqlServerColumnReader(dbConfigEnabled);
+      }
+      default: {
+        throw new UnsupportedException("unsupported dbType:" + dbType);
+      }
+    }
   }
 }

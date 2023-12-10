@@ -58,17 +58,18 @@ public class TableScanManager {
           + " where %s > ?  and %s<? order by %s asc, %s asc limit ?";
 
   public TableScanManager() {
-    this(DbType.MYSQL, null);
+    this(DbType.MYSQL, null, true);
   }
 
-  public TableScanManager(DbType dbType) {
-    this(dbType, null);
+  public TableScanManager(DbType dbType, boolean dbConfigEnabled) {
+    this(dbType, null, dbConfigEnabled);
   }
 
-  public TableScanManager(DbType dbType, DataSource dataSource) {
+  public TableScanManager(DbType dbType, DataSource dataSource, boolean dbConfigEnabled) {
+
     if (dbType == DbType.MYSQL) {
-      this.scanProgressDAO = new MysqlScanProgressDAO(dataSource);
-      this.scanProcessorDAO = new MysqlScanProcessorDAO(dataSource);
+      this.scanProgressDAO = new MysqlScanProgressDAO(dataSource, dbConfigEnabled);
+      this.scanProcessorDAO = new MysqlScanProcessorDAO(dataSource, dbConfigEnabled);
     } else {
       throw new UnsupportedException("unsupported dbType=" + dbType);
     }

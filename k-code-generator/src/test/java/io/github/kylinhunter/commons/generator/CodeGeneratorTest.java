@@ -8,7 +8,7 @@ import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
+import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.File;
@@ -27,10 +27,10 @@ class CodeGeneratorTest {
   @BeforeAll
   static void beforeAll() {
 
-    DataSourceManager dataSourceManager = new DataSourceManager(true);
+    DataSourceManager dataSourceManager = new DataSourceManager();
     dataSourceManager.init();
 
-    List<String> sqls = SqlFileReader.read("io/github/kylinhunter/commons/generator/testdata.sql");
+    List<String> sqls = SqlReader.read("io/github/kylinhunter/commons/generator/testdata.sql");
 
     SqlExecutor defaultSqlExecutor = dataSourceManager.getSqlExecutor();
 
@@ -44,6 +44,7 @@ class CodeGeneratorTest {
     FileUtil.cleanDirectoryQuietly(compileOutputDir);
 
     CodeGenerator codeGenerator = new CodeGenerator();
+
     codeGenerator.execute();
     ExClassLoaderUtil.addClassPath(compileOutputDir.toPath());
 

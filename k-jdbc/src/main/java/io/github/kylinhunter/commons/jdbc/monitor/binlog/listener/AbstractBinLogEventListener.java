@@ -28,11 +28,11 @@ import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.column.imp.MysqlColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
@@ -60,12 +60,14 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
   private final Map<Long, String> tables;
   private final Map<String, TableMeta> tableMetas = MapUtils.newHashMap();
   private final Map<String, List<ColumnMeta>> columnMetas = MapUtils.newHashMap();
-  private final TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
-  private final ColumnReader columnReader = MetaReaderFactory.getColumnMetaReader(DbType.MYSQL);
+  private final TableReader tableReader;
+  private final ColumnReader columnReader;
   private final Pattern PATTERN_ALTER_TABLE_NAME = Pattern.compile("alter table \\s*(\\S+)\\s*");
 
   protected AbstractBinLogEventListener() {
     tables = MapUtils.newHashMap();
+    tableReader = new MysqlTableReader(false);
+    columnReader = new MysqlColumnReader(false);
   }
 
   /**

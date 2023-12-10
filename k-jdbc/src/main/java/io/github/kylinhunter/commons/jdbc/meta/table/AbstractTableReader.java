@@ -18,6 +18,7 @@ package io.github.kylinhunter.commons.jdbc.meta.table;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
@@ -28,7 +29,6 @@ import java.sql.ResultSetMetaData;
 import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,11 +37,11 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-@RequiredArgsConstructor
 public abstract class AbstractTableReader extends AbstractDatabaseManager implements TableReader {
 
-  public AbstractTableReader(DataSource dataSource) {
-    super(dataSource);
+  public AbstractTableReader(DbType dbType,
+      DataSource dataSource, boolean dbConfigEnabled) {
+    super(dbType, dataSource, dbConfigEnabled);
   }
 
   /**
@@ -92,8 +92,8 @@ public abstract class AbstractTableReader extends AbstractDatabaseManager implem
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  public List<TableMeta> getTableMetaDatas(
-      DataSource dataSource, String catalog, String tableName) {
+  public List<TableMeta> getTableMetaDatas(DataSource dataSource, String catalog,
+      String tableName) {
     ThrowChecker.checkNotNull(dataSource, "datasource can't be null");
 
     try (Connection connection = dataSource.getConnection()) {

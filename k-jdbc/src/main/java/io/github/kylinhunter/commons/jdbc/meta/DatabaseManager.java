@@ -34,14 +34,6 @@ public interface DatabaseManager {
    */
   DataSource getDataSource();
 
-  /**
-   * @return javax.sql.DataSource
-   * @title getDefaultDataSource
-   * @description getDefaultDataSource
-   * @author BiJi'an
-   * @date 2023-12-10 23:37
-   */
-  DataSource getDefaultDataSource();
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
@@ -51,13 +43,4 @@ public interface DatabaseManager {
    * @date 2023-12-10 23:37
    */
   SqlExecutor getSqlExecutor();
-
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
-   * @title getDefaultSqlExecutor
-   * @description getDefaultSqlExecutor
-   * @author BiJi'an
-   * @date 2023-12-10 23:37
-   */
-  SqlExecutor getDefaultSqlExecutor();
 }

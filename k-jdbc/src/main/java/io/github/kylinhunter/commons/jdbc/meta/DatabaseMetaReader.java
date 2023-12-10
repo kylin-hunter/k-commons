@@ -15,10 +15,11 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta;
 
-import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
+import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import javax.sql.DataSource;
@@ -30,8 +31,17 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-@C
 public class DatabaseMetaReader extends AbstractDatabaseManager {
+
+  public DatabaseMetaReader(boolean dbConfigEnabled) {
+    this(null, dbConfigEnabled);
+  }
+
+  public DatabaseMetaReader(DataSource dataSource, boolean dbConfigEnabled) {
+    super(null, dataSource, dbConfigEnabled);
+    DatabaseMeta metaData = this.getMetaData();
+    this.dbType = metaData.getDbType();
+  }
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
@@ -85,4 +95,27 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
       throw new JdbcException("getDatabaseMetaData error", e);
     }
   }
+
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.meta.table.TableReader
+   * @title getTableMetaReader
+   * @description getTableMetaReader
+   * @author BiJi'an
+   * @date 2023-12-11 00:44
+   */
+  public TableReader getTableMetaReader() {
+    return MetaReaderFactory.getTableMetaReader(this.dbType, true);
+  }
+
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader
+   * @title getColumnMetaReader
+   * @description getColumnMetaReader
+   * @author BiJi'an
+   * @date 2023-12-11 00:45
+   */
+  public ColumnReader getColumnMetaReader() {
+    return MetaReaderFactory.getColumnMetaReader(this.dbType, true);
+  }
+
 }

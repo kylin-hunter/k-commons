@@ -28,7 +28,7 @@ import java.util.List;
  * @description
  * @date 2023-11-29 00:27
  */
-public class SqlFileReader {
+public class SqlReader {
 
   /**
    * @param path path

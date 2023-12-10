@@ -16,9 +16,9 @@
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
+import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
-import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
+import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
@@ -56,14 +56,14 @@ public class MysqlScanProgressDAO extends AbstractDatabaseManager implements Sca
 
   private final TableReader tableReader;
 
-  public MysqlScanProgressDAO() {
-    this(null);
+  public MysqlScanProgressDAO(boolean dbConfigEnabled) {
+
+    this(null, dbConfigEnabled);
   }
 
-  public MysqlScanProgressDAO(DataSource dataSource) {
-    super(dataSource);
-    this.dbType = DbType.MYSQL;
-    this.tableReader = MetaReaderFactory.getTableMetaReader(this.dbType);
+  public MysqlScanProgressDAO(DataSource dataSource, boolean dbConfigEnabled) {
+    super(DbType.MYSQL, dataSource, dbConfigEnabled);
+    this.tableReader = new MysqlTableReader(dataSource, dbConfigEnabled);
   }
 
   public void save(ScanProgress scanProgress) {
@@ -110,7 +110,7 @@ public class MysqlScanProgressDAO extends AbstractDatabaseManager implements Sca
   public void ensureTableExists() {
     boolean exist = this.tableReader.exist(this.getDataSource(), "", TABLE_SCAN_PROGRESS);
     if (!exist) {
-      List<String> sqlLines = SqlFileReader.read(INIT_SQL);
+      List<String> sqlLines = SqlReader.read(INIT_SQL);
       this.getSqlExecutor().execute(sqlLines, true);
     }
   }

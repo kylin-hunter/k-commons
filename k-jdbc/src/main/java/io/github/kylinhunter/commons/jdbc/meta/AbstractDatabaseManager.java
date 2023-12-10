@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import javax.sql.DataSource;
+import lombok.Setter;
 
 /**
  * @author BiJi'an
@@ -32,18 +33,25 @@ public class AbstractDatabaseManager implements DatabaseManager {
 
   protected SqlExecutor sqlExecutor;
 
-  protected static final DataSourceManager dataSourceManager = new DataSourceManager(true);
+  @Setter
+  private boolean dbConfigEnabled;
+  protected static final DataSourceManager dataSourceManager = new DataSourceManager();
 
-  public AbstractDatabaseManager() {
-    this(null);
+  public AbstractDatabaseManager(DataSource dataSource, boolean dbConfigEnabled) {
+    this.dataSource = dataSource;
+    this.dbConfigEnabled = dbConfigEnabled;
   }
 
-  public AbstractDatabaseManager(DataSource dataSource) {
+  public AbstractDatabaseManager(DbType dbType, DataSource dataSource,
+      boolean dbConfigEnabled) {
+    this.dbType = dbType;
     if (dataSource != null) {
       this.dataSource = dataSource;
       this.sqlExecutor = new SqlExecutor(dataSource);
     }
+    this.dbConfigEnabled = dbConfigEnabled;
   }
+
 
   /***
    * @title getDataSource
@@ -56,19 +64,12 @@ public class AbstractDatabaseManager implements DatabaseManager {
     if (dataSource != null) {
       return dataSource;
     }
-    return getDefaultDataSource();
+    if (dbConfigEnabled) {
+      return dataSourceManager.get();
+    }
+    return null;
   }
 
-  /**
-   * @return javax.sql.DataSource
-   * @title getDefaultDataSource
-   * @description getDefaultDataSource
-   * @author BiJi'an
-   * @date 2023-12-09 20:08
-   */
-  public DataSource getDefaultDataSource() {
-    return dataSourceManager.get();
-  }
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
@@ -81,17 +82,11 @@ public class AbstractDatabaseManager implements DatabaseManager {
     if (sqlExecutor != null) {
       return sqlExecutor;
     }
-    return getDefaultSqlExecutor();
+
+    if (dbConfigEnabled) {
+      return dataSourceManager.getSqlExecutor();
+    }
+    return null;
   }
 
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
-   * @title getDefaultSqlExecutor
-   * @description getDefaultSqlExecutor
-   * @author BiJi'an
-   * @date 2023-12-09 20:09
-   */
-  public SqlExecutor getDefaultSqlExecutor() {
-    return dataSourceManager.getSqlExecutor();
-  }
 }

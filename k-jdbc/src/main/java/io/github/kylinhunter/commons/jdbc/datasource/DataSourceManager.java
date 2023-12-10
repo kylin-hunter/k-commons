@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -54,13 +53,6 @@ public class DataSourceManager implements AutoCloseable {
 
   private volatile boolean initialized = false;
 
-  @Setter
-  private boolean loadFromConfigEnabled = false;
-
-
-  public DataSourceManager(boolean loadFromConfigEnabled) {
-    this.loadFromConfigEnabled = loadFromConfigEnabled;
-  }
 
   public void init() {
     init(DSConfigLoader.DEFAULT_PATH);
@@ -91,9 +83,7 @@ public class DataSourceManager implements AutoCloseable {
    * @date 2023-12-03 00:57
    */
   public synchronized void init(List<ExHikariConfig> exHikariConfigs) {
-    if (!loadFromConfigEnabled) {
-      throw new InitException("can't load datasource from config file");
-    }
+   
     if (!initialized) {
       close();
       List<ExDataSource> allExDataSources = Lists.newArrayList();

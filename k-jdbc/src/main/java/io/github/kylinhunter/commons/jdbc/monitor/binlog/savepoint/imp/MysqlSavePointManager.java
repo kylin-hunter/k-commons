@@ -36,7 +36,7 @@ public class MysqlSavePointManager implements SavePointManager {
   }
 
   public MysqlSavePointManager(DataSource dataSource) {
-    this.mysqlSavePointDAO = new MysqlSavePointDAO(dataSource);
+    this.mysqlSavePointDAO = new MysqlSavePointDAO(dataSource, false);
   }
 
   @Override

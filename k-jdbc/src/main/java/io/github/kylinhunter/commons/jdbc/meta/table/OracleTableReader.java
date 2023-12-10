@@ -15,10 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.component.CM;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -27,16 +24,15 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-@C
 public class OracleTableReader extends MysqlTableReader {
 
-  @CM
-  public OracleTableReader() {
-    this.dbType = DbType.ORACLE;
+  public OracleTableReader(boolean dbConfigEnabled) {
+    super(DbType.ORACLE, null, dbConfigEnabled);
   }
 
-  public OracleTableReader(DataSource dataSource) {
-    super(dataSource);
-    this.dbType = DbType.ORACLE;
+  public OracleTableReader() {
+    super(DbType.ORACLE, null, false);
+
   }
+
 }

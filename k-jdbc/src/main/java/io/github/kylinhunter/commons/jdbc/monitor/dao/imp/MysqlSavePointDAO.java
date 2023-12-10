@@ -15,14 +15,12 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
-import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
+import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
-import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
+import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.SavePointDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
@@ -54,15 +52,15 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   private final TableReader tableReader;
   private final DatabaseMetaReader databaseMetaReader;
 
-  public MysqlSavePointDAO() {
-    this(null);
+  public MysqlSavePointDAO(boolean dbConfigEnabled) {
+
+    this(null, dbConfigEnabled);
   }
 
-  public MysqlSavePointDAO(DataSource dataSource) {
-    super(dataSource);
-    this.dbType = DbType.MYSQL;
-    this.tableReader = MetaReaderFactory.getTableMetaReader(this.dbType);
-    this.databaseMetaReader = CF.get(DatabaseMetaReader.class);
+  public MysqlSavePointDAO(DataSource dataSource, boolean dbConfigEnabled) {
+    super(DbType.MYSQL, dataSource, dbConfigEnabled);
+    this.tableReader = new MysqlTableReader(dataSource, dbConfigEnabled);
+    this.databaseMetaReader = new DatabaseMetaReader(dataSource, dbConfigEnabled);
   }
 
   @Override
@@ -82,7 +80,7 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
 
     boolean exist = this.tableReader.exist(this.getDataSource(), "", TABLE_NAME);
     if (!exist) {
-      List<String> sqlLines = SqlFileReader.read(INIT_SQL);
+      List<String> sqlLines = SqlReader.read(INIT_SQL);
       this.getSqlExecutor().execute(sqlLines, true);
     }
   }
@@ -99,29 +97,6 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
     return this.getSqlExecutor().query(SELECT_SQL, beanHandler);
   }
 
-  /**
-   * @return javax.sql.DataSource
-   * @title getDefaultDataSource
-   * @description getDefaultDataSource
-   * @author BiJi'an
-   * @date 2023-12-09 20:10
-   */
-  @Override
-  public DataSource getDefaultDataSource() {
-    return dataSourceManager.getByNo(1);
-  }
-
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
-   * @title getDefaultDataSource
-   * @description getSqlExecutor
-   * @author BiJi'an
-   * @date 2023-12-03 15:45
-   */
-  @Override
-  public SqlExecutor getDefaultSqlExecutor() {
-    return dataSourceManager.getSqlExecutorByNo(1);
-  }
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta

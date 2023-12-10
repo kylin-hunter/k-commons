@@ -1,9 +1,7 @@
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
-import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
+import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +12,7 @@ public class TableReaderTest {
 
   @Test
   void test() {
-    TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
+    TableReader tableReader = new MysqlTableReader(true);
 
     List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", "k_junit_jdbc_role");
     if (tableMetas.size() == 0) {
@@ -31,11 +29,11 @@ public class TableReaderTest {
 
   public static void initTestSQl() {
 
-    TableReader tableReader = MetaReaderFactory.getTableMetaReader(DbType.MYSQL);
+    TableReader tableReader = new MysqlTableReader(true);
 
     if (!tableReader.exist("", "k_junit_jdbc_role")) {
       SqlExecutor sqlExecutor = tableReader.getSqlExecutor();
-      List<String> sqlLines = SqlFileReader.read(
+      List<String> sqlLines = SqlReader.read(
           "io/github/kylinhunter/commons/jdbc/binlog/binlog-test.sql");
       sqlExecutor.execute(sqlLines, true);
     }

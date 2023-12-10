@@ -15,8 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.component.CM;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.util.ObjectValues;
@@ -29,23 +27,30 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-@C
 public class MysqlTableReader extends AbstractTableReader {
 
-  @CM
   public MysqlTableReader() {
-    this.dbType = DbType.MYSQL;
+    super(DbType.MYSQL, null, false);
+
   }
 
-  public MysqlTableReader(DataSource dataSource) {
-    super(dataSource);
-    this.dbType = DbType.MYSQL;
+  public MysqlTableReader(boolean dbConfigEnabled) {
+    super(DbType.MYSQL, null, dbConfigEnabled);
+  }
+
+  public MysqlTableReader(DataSource dataSource, boolean dbConfigEnabled) {
+    super(DbType.MYSQL, dataSource, dbConfigEnabled);
+  }
+
+  protected MysqlTableReader(DbType dbType, DataSource dataSource,
+      boolean dbConfigEnabled) {
+    super(dbType, dataSource, dbConfigEnabled);
   }
 
   /**
    * @param tableMeta tableMeta
    * @param columName columName
-   * @param value value
+   * @param value     value
    * @title processMetadata
    * @description
    * @author BiJi'an

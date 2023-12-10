@@ -16,9 +16,9 @@
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.execute.SqlFileReader;
+import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
-import io.github.kylinhunter.commons.jdbc.meta.MetaReaderFactory;
+import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProcessorDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor;
@@ -49,14 +49,13 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
 
   private final TableReader tableReader;
 
-  public MysqlScanProcessorDAO() {
-    this(null);
+  public MysqlScanProcessorDAO(boolean dbConfigEnabled) {
+    this(null, dbConfigEnabled);
   }
 
-  public MysqlScanProcessorDAO(DataSource dataSource) {
-    super(dataSource);
-    this.dbType = DbType.MYSQL;
-    this.tableReader = MetaReaderFactory.getTableMetaReader(this.dbType);
+  public MysqlScanProcessorDAO(DataSource dataSource, boolean dbConfigEnabled) {
+    super(DbType.MYSQL, dataSource, dbConfigEnabled);
+    this.tableReader = new MysqlTableReader(dbConfigEnabled);
   }
 
   /**
@@ -139,7 +138,7 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
   public void ensureTableExists(String tableName) {
     boolean exist = this.tableReader.exist(this.getDataSource(), "", tableName);
     if (!exist) {
-      List<String> sqlLines = SqlFileReader.read(INIT_SQL);
+      List<String> sqlLines = SqlReader.read(INIT_SQL);
       String sql = sqlLines.get(0);
       sql = String.format(sql, tableName);
       this.getSqlExecutor().execute(sql);
