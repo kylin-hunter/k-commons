@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.column.imp;
 
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.AbstractColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnParser;
@@ -30,27 +29,25 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-
 public class MysqlColumnReader extends AbstractColumnReader {
 
-
   public MysqlColumnReader(boolean dbConfigEnabled) {
-    super(DbType.MYSQL, null, dbConfigEnabled, new MysqlColumnParser());
+    super(null, dbConfigEnabled, new MysqlColumnParser());
   }
 
   public MysqlColumnReader(DataSource dataSource) {
-    super(DbType.MYSQL, dataSource, false, new MysqlColumnParser());
+    super(dataSource, false, new MysqlColumnParser());
   }
 
-  public MysqlColumnReader(DbType dbType, DataSource dataSource, boolean dbConfigEnabled,
-      ColumnParser columnParser) {
-    super(dbType, dataSource, dbConfigEnabled, columnParser);
+  public MysqlColumnReader(
+      DataSource dataSource, boolean dbConfigEnabled, ColumnParser columnParser) {
+    super(dataSource, dbConfigEnabled, columnParser);
   }
 
   /**
    * @param columnMeta columnMeta
-   * @param columName  columName
-   * @param value      value
+   * @param columName columName
+   * @param value value
    * @title processMetadata
    * @description
    * @author BiJi'an

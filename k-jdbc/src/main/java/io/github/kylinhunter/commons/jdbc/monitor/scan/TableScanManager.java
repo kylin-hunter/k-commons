@@ -57,8 +57,8 @@ public class TableScanManager {
       "select %s as id ,%s as time from %s "
           + " where %s > ?  and %s<? order by %s asc, %s asc limit ?";
 
-  public TableScanManager() {
-    this(DbType.MYSQL, null, true);
+  public TableScanManager(boolean dbConfigEnabled) {
+    this(DbType.MYSQL, null, dbConfigEnabled);
   }
 
   public TableScanManager(DbType dbType, boolean dbConfigEnabled) {
@@ -96,8 +96,8 @@ public class TableScanManager {
           }
         };
     if (tableScan.isDaemon()) {
-      scheduledExecutorService.scheduleWithFixedDelay(run, 1, tableScan.getScanInterval(),
-          TimeUnit.MILLISECONDS);
+      scheduledExecutorService.scheduleWithFixedDelay(
+          run, 1, tableScan.getScanInterval(), TimeUnit.MILLISECONDS);
     } else {
       run.run();
     }
@@ -113,15 +113,16 @@ public class TableScanManager {
     SqlExecutor sqlExecutor = this.scanProcessorDAO.getSqlExecutor();
 
     while (true) {
-      String sql = String.format(
-          SAME_SQL,
-          tableScan.getTableIdColName(),
-          tableScan.getTableTimeColName(),
-          tableScan.getTableName(),
-          tableScan.getTableTimeColName(),
-          tableScan.getTableIdColName(),
-          tableScan.getTableTimeColName(),
-          tableScan.getTableIdColName());
+      String sql =
+          String.format(
+              SAME_SQL,
+              tableScan.getTableIdColName(),
+              tableScan.getTableTimeColName(),
+              tableScan.getTableName(),
+              tableScan.getTableTimeColName(),
+              tableScan.getTableIdColName(),
+              tableScan.getTableTimeColName(),
+              tableScan.getTableIdColName());
       ScanProgress scanProgress = this.getLatestScanProgress(tableScan);
       List<ScanRecord> scanRecords =
           sqlExecutor.query(
@@ -148,7 +149,7 @@ public class TableScanManager {
   }
 
   /**
-   * @param tableScan  tableScan
+   * @param tableScan tableScan
    * @param scanRecord scanRecord
    * @title processScanRecord
    * @description processScanRecord

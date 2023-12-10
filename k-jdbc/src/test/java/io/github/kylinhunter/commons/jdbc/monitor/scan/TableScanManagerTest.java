@@ -8,7 +8,7 @@ class TableScanManagerTest {
   @Test
   void init() {
     TableReaderTest.initTestSQl();
-    TableScanManager manager = new TableScanManager();
+    TableScanManager manager = new TableScanManager(true);
 
     TableScan tableScan = new TableScan();
     tableScan.setTableName("k_junit_jdbc_role");

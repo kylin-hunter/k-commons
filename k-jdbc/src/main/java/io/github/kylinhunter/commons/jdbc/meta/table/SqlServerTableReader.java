@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -27,10 +26,10 @@ import lombok.extern.slf4j.Slf4j;
 public class SqlServerTableReader extends MysqlTableReader {
 
   public SqlServerTableReader(boolean dbConfigEnabled) {
-    super(DbType.SQL_SERVER, null, dbConfigEnabled);
+    super(null, dbConfigEnabled);
   }
 
   public SqlServerTableReader() {
-    super(DbType.SQL_SERVER, null, false);
+    super(null, false);
   }
 }

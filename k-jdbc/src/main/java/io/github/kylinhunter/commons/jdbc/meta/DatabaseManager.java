@@ -34,7 +34,6 @@ public interface DatabaseManager {
    */
   DataSource getDataSource();
 
-
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
    * @title getSqlExecutor

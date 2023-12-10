@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
@@ -62,7 +61,7 @@ public class MysqlScanProgressDAO extends AbstractDatabaseManager implements Sca
   }
 
   public MysqlScanProgressDAO(DataSource dataSource, boolean dbConfigEnabled) {
-    super(DbType.MYSQL, dataSource, dbConfigEnabled);
+    super(dataSource, dbConfigEnabled);
     this.tableReader = new MysqlTableReader(dataSource, dbConfigEnabled);
   }
 

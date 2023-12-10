@@ -15,11 +15,15 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta;
 
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
+import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
+import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import javax.sql.DataSource;
-import lombok.Setter;
 
 /**
  * @author BiJi'an
@@ -33,25 +37,21 @@ public class AbstractDatabaseManager implements DatabaseManager {
 
   protected SqlExecutor sqlExecutor;
 
-  @Setter
-  private boolean dbConfigEnabled;
+  protected boolean dbConfigEnabled;
   protected static final DataSourceManager dataSourceManager = new DataSourceManager();
 
   public AbstractDatabaseManager(DataSource dataSource, boolean dbConfigEnabled) {
-    this.dataSource = dataSource;
-    this.dbConfigEnabled = dbConfigEnabled;
-  }
-
-  public AbstractDatabaseManager(DbType dbType, DataSource dataSource,
-      boolean dbConfigEnabled) {
-    this.dbType = dbType;
     if (dataSource != null) {
       this.dataSource = dataSource;
       this.sqlExecutor = new SqlExecutor(dataSource);
     }
     this.dbConfigEnabled = dbConfigEnabled;
+    if (this.dbConfigEnabled) {
+      dataSourceManager.init();
+    }
+    DatabaseMeta metaData = this.getMetaData();
+    this.dbType = metaData.getDbType();
   }
-
 
   /***
    * @title getDataSource
@@ -69,7 +69,6 @@ public class AbstractDatabaseManager implements DatabaseManager {
     }
     return null;
   }
-
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
@@ -89,4 +88,56 @@ public class AbstractDatabaseManager implements DatabaseManager {
     return null;
   }
 
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
+   * @title getMetaData
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-18 12:41
+   */
+  public DatabaseMeta getMetaData() {
+    return this.getMetaData(this.getDataSource());
+  }
+
+  /**
+   * @param dataSource dataSource
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
+   * @title getMetaData
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-18 12:41
+   */
+  public DatabaseMeta getMetaData(DataSource dataSource) {
+    ThrowChecker.checkNotNull(dataSource, "datasource can't be null");
+
+    try (Connection connection = dataSource.getConnection()) {
+      return getMetaData(connection);
+    } catch (Exception e) {
+      throw new JdbcException("getDatabaseMetaData error", e);
+    }
+  }
+
+  /**
+   * @param connection connection
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
+   * @title getMetaData
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-18 12:41
+   */
+  public DatabaseMeta getMetaData(Connection connection) {
+    try {
+
+      DatabaseMetaData metaData = connection.getMetaData();
+      DatabaseMeta databaseMeta = new DatabaseMeta();
+      databaseMeta.setUrl(metaData.getURL());
+      databaseMeta.setProductName(metaData.getDatabaseProductName());
+      databaseMeta.setVersion(metaData.getDatabaseProductVersion());
+      databaseMeta.setDriverName(metaData.getDriverName());
+
+      return databaseMeta;
+    } catch (Exception e) {
+      throw new JdbcException("getDatabaseMetaData error", e);
+    }
+  }
 }

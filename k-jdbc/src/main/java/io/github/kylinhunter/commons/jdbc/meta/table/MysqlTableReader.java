@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.util.ObjectValues;
 import javax.sql.DataSource;
@@ -30,27 +29,21 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlTableReader extends AbstractTableReader {
 
   public MysqlTableReader() {
-    super(DbType.MYSQL, null, false);
-
+    super(null, false);
   }
 
   public MysqlTableReader(boolean dbConfigEnabled) {
-    super(DbType.MYSQL, null, dbConfigEnabled);
+    super(null, dbConfigEnabled);
   }
 
   public MysqlTableReader(DataSource dataSource, boolean dbConfigEnabled) {
-    super(DbType.MYSQL, dataSource, dbConfigEnabled);
-  }
-
-  protected MysqlTableReader(DbType dbType, DataSource dataSource,
-      boolean dbConfigEnabled) {
-    super(dbType, dataSource, dbConfigEnabled);
+    super(dataSource, dbConfigEnabled);
   }
 
   /**
    * @param tableMeta tableMeta
    * @param columName columName
-   * @param value     value
+   * @param value value
    * @title processMetadata
    * @description
    * @author BiJi'an

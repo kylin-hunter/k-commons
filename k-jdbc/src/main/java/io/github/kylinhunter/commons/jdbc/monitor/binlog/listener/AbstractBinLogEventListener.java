@@ -53,8 +53,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractBinLogEventListener implements BinLogEventListener {
 
-  @Setter
-  private SavePointManager savePointManager;
+  @Setter private SavePointManager savePointManager;
   protected DataSource dataSource;
   private String currentBinlogName;
   private final Map<Long, String> tables;
@@ -66,13 +65,13 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
 
   protected AbstractBinLogEventListener() {
     tables = MapUtils.newHashMap();
-    tableReader = new MysqlTableReader(false);
-    columnReader = new MysqlColumnReader(false);
+    tableReader = new MysqlTableReader(true);
+    columnReader = new MysqlColumnReader(true);
   }
 
   /**
-   * @param tableId     tableId
-   * @param tableName   tableName
+   * @param tableId tableId
+   * @param tableName tableName
    * @param forceUpdate forceUpdate
    * @title addTable
    * @description addTable
@@ -85,14 +84,13 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
   }
 
   /**
-   * @param tableName   tableName
+   * @param tableName tableName
    * @param forceUpdate forceUpdate
    * @title updateTableMeta
    * @description updateTableMeta
    * @author BiJi'an
    * @date 2023-12-09 23:29
    */
-
   public void updateTableCache(String tableName, boolean forceUpdate) {
 
     TableMeta tableMeta = tableMetas.get(tableName);
@@ -112,8 +110,6 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
         log.info("############# updateColumnMeta={}", columnMetas);
       }
     }
-
-
   }
 
   /**
@@ -150,7 +146,7 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
 
   /**
    * @param eventHeaderV4 eventHeaderV4
-   * @param data          data
+   * @param data data
    * @title process
    * @description process
    * @author BiJi'an
@@ -160,40 +156,47 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
     EventType eventType = eventHeaderV4.getEventType();
 
     switch (eventType) {
-      case ROTATE: {
-        processEventRotate(data);
-        break;
-      }
-      case FORMAT_DESCRIPTION: {
-        procssEventFormatDescription(data);
-        break;
-      }
-      case TABLE_MAP: {
-        processEventTableMap(data);
-        break;
-      }
-      case EXT_WRITE_ROWS: {
-        processEventExtWriteRows(data);
-        break;
-      }
-      case EXT_DELETE_ROWS: {
-        processEventExtDeleteRows(data);
-        break;
-      }
-      case EXT_UPDATE_ROWS: {
-        processEventExtUpdateRows(data);
-        break;
-      }
-      case QUERY: {
-        processEventQuery(data);
-        break;
-      }
-      default: {
-        log.info("skip event={}", eventType);
-      }
+      case ROTATE:
+        {
+          processEventRotate(data);
+          break;
+        }
+      case FORMAT_DESCRIPTION:
+        {
+          procssEventFormatDescription(data);
+          break;
+        }
+      case TABLE_MAP:
+        {
+          processEventTableMap(data);
+          break;
+        }
+      case EXT_WRITE_ROWS:
+        {
+          processEventExtWriteRows(data);
+          break;
+        }
+      case EXT_DELETE_ROWS:
+        {
+          processEventExtDeleteRows(data);
+          break;
+        }
+      case EXT_UPDATE_ROWS:
+        {
+          processEventExtUpdateRows(data);
+          break;
+        }
+      case QUERY:
+        {
+          processEventQuery(data);
+          break;
+        }
+      default:
+        {
+          log.info("skip event={}", eventType);
+        }
     }
   }
-
 
   /**
    * @param sql sql
@@ -241,7 +244,6 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
    * @author BiJi'an
    * @date 2023-12-10 01:07
    */
-
   private void processEventRotate(EventData data) {
     if (data instanceof RotateEventData) {
       RotateEventData eventData = (RotateEventData) data;
@@ -303,17 +305,20 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
   }
 
   /**
-   * @param tableName          tableName
+   * @param tableName tableName
    * @param writeRowsEventData writeRowsEventData
-   * @param tableMeta          tableMeta
-   * @param columnMetas        columnMetas
+   * @param tableMeta tableMeta
+   * @param columnMetas columnMetas
    * @title insertEvent
    * @description insertEvent
    * @author BiJi'an
    * @date 2023-12-10 01:08
    */
-  protected abstract void insertDataRecord(String tableName, WriteRowsEventData writeRowsEventData,
-      TableMeta tableMeta, List<ColumnMeta> columnMetas);
+  protected abstract void insertDataRecord(
+      String tableName,
+      WriteRowsEventData writeRowsEventData,
+      TableMeta tableMeta,
+      List<ColumnMeta> columnMetas);
 
   private void processEventExtDeleteRows(EventData data) {
     if (data instanceof DeleteRowsEventData) {
@@ -321,23 +326,24 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
       log.info("DeleteRowsEventData={}", eventData);
       String tableName = tables.get(eventData.getTableId());
       deleteDataRecord(tableName, eventData, tableMetas.get(tableName), columnMetas.get(tableName));
-
     }
   }
 
   /**
-   * @param tableName   tableName
-   * @param eventData   eventData
-   * @param tableMeta   tableMeta
+   * @param tableName tableName
+   * @param eventData eventData
+   * @param tableMeta tableMeta
    * @param columnMetas columnMetas
    * @title deleteEvent
    * @description deleteEvent
    * @author BiJi'an
    * @date 2023-12-10 01:08
    */
-
-  protected abstract void deleteDataRecord(String tableName, DeleteRowsEventData eventData,
-      TableMeta tableMeta, List<ColumnMeta> columnMetas);
+  protected abstract void deleteDataRecord(
+      String tableName,
+      DeleteRowsEventData eventData,
+      TableMeta tableMeta,
+      List<ColumnMeta> columnMetas);
 
   /**
    * @param data data
@@ -356,17 +362,20 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
   }
 
   /**
-   * @param tableName   tableName
-   * @param eventData   eventData
-   * @param tableMeta   tableMeta
+   * @param tableName tableName
+   * @param eventData eventData
+   * @param tableMeta tableMeta
    * @param columnMetas columnMetas
    * @title updateEvent
    * @description updateEvent
    * @author BiJi'an
    * @date 2023-12-10 01:08
    */
-  protected abstract void updateDataRecord(String tableName, UpdateRowsEventData eventData,
-      TableMeta tableMeta, List<ColumnMeta> columnMetas);
+  protected abstract void updateDataRecord(
+      String tableName,
+      UpdateRowsEventData eventData,
+      TableMeta tableMeta,
+      List<ColumnMeta> columnMetas);
 
   /**
    * @param dataSource dataSource
@@ -376,5 +385,4 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
    * @date 2023-12-10 01:34
    */
   public abstract void init(DataSource dataSource);
-
 }

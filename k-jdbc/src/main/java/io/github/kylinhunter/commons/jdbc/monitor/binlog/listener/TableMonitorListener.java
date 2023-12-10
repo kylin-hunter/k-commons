@@ -39,10 +39,8 @@ import lombok.extern.slf4j.Slf4j;
 public class TableMonitorListener extends AbstractBinLogEventListener {
 
   private ScanProcessorDAO scanProcessorDAO;
-  @Setter
-  private String destination = "k_table_monitor_binlog_task";
-  @Setter
-  private String tableName;
+  @Setter private String destination = "k_table_monitor_binlog_task";
+  @Setter private String tableName;
 
   @Override
   public void init(DataSource dataSource) {
@@ -51,10 +49,12 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
     this.scanProcessorDAO.ensureTableExists(destination);
   }
 
-
   @Override
-  protected void insertDataRecord(String tableName, WriteRowsEventData eventData,
-      TableMeta tableMeta, List<ColumnMeta> columnMetas) {
+  protected void insertDataRecord(
+      String tableName,
+      WriteRowsEventData eventData,
+      TableMeta tableMeta,
+      List<ColumnMeta> columnMetas) {
     if (this.tableName.equals(tableName)) {
       List<Serializable[]> rows = eventData.getRows();
       for (Serializable[] row : rows) {
@@ -64,7 +64,9 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
   }
 
   @Override
-  protected void updateDataRecord(String tableName, UpdateRowsEventData eventData,
+  protected void updateDataRecord(
+      String tableName,
+      UpdateRowsEventData eventData,
       TableMeta tableMeta,
       List<ColumnMeta> columnMetas) {
     if (this.tableName.equals(tableName)) {
@@ -75,9 +77,10 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
     }
   }
 
-
   @Override
-  protected void deleteDataRecord(String tableName, DeleteRowsEventData eventData,
+  protected void deleteDataRecord(
+      String tableName,
+      DeleteRowsEventData eventData,
       TableMeta tableMeta,
       List<ColumnMeta> columnMetas) {
     if (this.tableName.equals(tableName)) {
@@ -87,7 +90,6 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
       }
     }
   }
-
 
   private void processScanRecord(String id, int op) {
     ScanProcessor scanProcessor = this.scanProcessorDAO.findById(destination, tableName, id);

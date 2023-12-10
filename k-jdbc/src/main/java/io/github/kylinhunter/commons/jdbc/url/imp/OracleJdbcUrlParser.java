@@ -27,16 +27,14 @@ import java.util.regex.Pattern;
 /**
  * @author BiJi'an
  * @description parse
- * <p>jdbc:oracle:thin:@localhost:1521:ORACLE?user=your_username&password=your_password
+ *     <p>jdbc:oracle:thin:@localhost:1521:ORACLE?user=your_username&password=your_password
  * @date 2023-01-10 11:11
  */
 public class OracleJdbcUrlParser implements JdbcUrlParser {
 
   private final Pattern pattern = Pattern.compile(".+@(.+):(\\d+):([\\d\\w]+)([\\?]{0,1})(.*)");
 
-  /**
-   *
-   */
+  /** */
   @Override
   public JdbcUrl parse(String url) {
     JdbcUrl jdbcUrl = null;

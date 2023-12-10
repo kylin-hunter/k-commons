@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
@@ -54,12 +53,12 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
   }
 
   public MysqlScanProcessorDAO(DataSource dataSource, boolean dbConfigEnabled) {
-    super(DbType.MYSQL, dataSource, dbConfigEnabled);
+    super(dataSource, dbConfigEnabled);
     this.tableReader = new MysqlTableReader(dbConfigEnabled);
   }
 
   /**
-   * @param tableName     tableName
+   * @param tableName tableName
    * @param scanProcessor scanProcessor
    * @title save
    * @description save
@@ -78,7 +77,7 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
   }
 
   /**
-   * @param tableName    bizTableName
+   * @param tableName bizTableName
    * @param bizTableName scanProcessor
    * @title clean
    * @description clean
@@ -112,9 +111,9 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
   }
 
   /**
-   * @param tableName    tableName
+   * @param tableName tableName
    * @param bizTableName bizTableName
-   * @param dataId       dataId
+   * @param dataId dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById

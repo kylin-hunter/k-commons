@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
-import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
@@ -58,7 +57,7 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   }
 
   public MysqlSavePointDAO(DataSource dataSource, boolean dbConfigEnabled) {
-    super(DbType.MYSQL, dataSource, dbConfigEnabled);
+    super(dataSource, dbConfigEnabled);
     this.tableReader = new MysqlTableReader(dataSource, dbConfigEnabled);
     this.databaseMetaReader = new DatabaseMetaReader(dataSource, dbConfigEnabled);
   }
@@ -96,7 +95,6 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   public SavePoint get() {
     return this.getSqlExecutor().query(SELECT_SQL, beanHandler);
   }
-
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta

@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 /**
  * @author BiJi'an
  * @description JdbcUrlParserSqlServer j
- * <p>jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd
+ *     <p>jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd
  * @date 2023-01-10 11:11
  */
 public class SqlServerJdbcUrlParser implements JdbcUrlParser {

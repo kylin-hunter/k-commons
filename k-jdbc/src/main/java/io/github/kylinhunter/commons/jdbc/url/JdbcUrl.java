@@ -38,7 +38,6 @@ public class JdbcUrl implements Serializable {
   private String database;
   private Map<String, String> params = MapUtils.newLinkedHashMap();
 
-
   public JdbcUrl(String host, int port, String database) {
     this.host = host;
     this.port = port;
@@ -105,5 +104,4 @@ public class JdbcUrl implements Serializable {
   public int hashCode() {
     return Objects.hash(host, port);
   }
-
 }

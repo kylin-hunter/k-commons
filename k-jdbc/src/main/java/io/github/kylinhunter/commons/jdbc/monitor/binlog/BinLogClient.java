@@ -42,13 +42,11 @@ public class BinLogClient {
   private final BinaryLogClient binaryLogClient;
   private final JdbcUrl jdbcUrl;
 
-  @Setter
-  private SavePointManager savePointManager;
+  @Setter private SavePointManager savePointManager;
 
   private final DataSource dataSource;
 
   private final List<BinLogEventListener> eventListeners = ListUtils.newArrayList();
-
 
   public BinLogClient(String jdbcUrl, String username, String password) {
     this(JdbcUtils.parse(jdbcUrl), username, password);
@@ -56,13 +54,13 @@ public class BinLogClient {
 
   public BinLogClient(String hostname, int port, String schema, String username, String password) {
     this(new JdbcUrl(hostname, port, schema), username, password);
-
   }
 
   public BinLogClient(JdbcUrl jdbcUrl, String username, String password) {
     this.jdbcUrl = jdbcUrl;
-    this.binaryLogClient = new BinaryLogClient(jdbcUrl.getHost(), jdbcUrl.getPort(),
-        jdbcUrl.getDatabase(), username, password);
+    this.binaryLogClient =
+        new BinaryLogClient(
+            jdbcUrl.getHost(), jdbcUrl.getPort(), jdbcUrl.getDatabase(), username, password);
     this.dataSource = DataSourceManager.createDataSource(jdbcUrl, username, password);
   }
 

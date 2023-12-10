@@ -71,6 +71,5 @@ public class MysqlSavePointManager implements SavePointManager {
   }
 
   @Override
-  public void shutdown() {
-  }
+  public void shutdown() {}
 }

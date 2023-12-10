@@ -15,13 +15,19 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta;
 
-import io.github.kylinhunter.commons.exception.check.ThrowChecker;
-import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
+import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.column.imp.MysqlColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.column.imp.OracleColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.column.imp.SqlServerColumnReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.OracleTableReader;
+import io.github.kylinhunter.commons.jdbc.meta.table.SqlServerTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
+import java.util.Map;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,67 +39,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DatabaseMetaReader extends AbstractDatabaseManager {
 
+  private static final Map<String, Object> META_SERVICES = MapUtils.newHashMap();
+
   public DatabaseMetaReader(boolean dbConfigEnabled) {
     this(null, dbConfigEnabled);
   }
 
   public DatabaseMetaReader(DataSource dataSource, boolean dbConfigEnabled) {
-    super(null, dataSource, dbConfigEnabled);
+    super(dataSource, dbConfigEnabled);
     DatabaseMeta metaData = this.getMetaData();
     this.dbType = metaData.getDbType();
-  }
-
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title getMetaData
-   * @description
-   * @author BiJi'an
-   * @date 2023-01-18 12:41
-   */
-  public DatabaseMeta getMetaData() {
-    return this.getMetaData(this.getDataSource());
-  }
-
-  /**
-   * @param dataSource dataSource
-   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title getMetaData
-   * @description
-   * @author BiJi'an
-   * @date 2023-01-18 12:41
-   */
-  public DatabaseMeta getMetaData(DataSource dataSource) {
-    ThrowChecker.checkNotNull(dataSource, "datasource can't be null");
-
-    try (Connection connection = dataSource.getConnection()) {
-      return getMetaData(connection);
-    } catch (Exception e) {
-      throw new JdbcException("getDatabaseMetaData error", e);
-    }
-  }
-
-  /**
-   * @param connection connection
-   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title getMetaData
-   * @description
-   * @author BiJi'an
-   * @date 2023-01-18 12:41
-   */
-  public DatabaseMeta getMetaData(Connection connection) {
-    try {
-
-      DatabaseMetaData metaData = connection.getMetaData();
-      DatabaseMeta databaseMeta = new DatabaseMeta();
-      databaseMeta.setUrl(metaData.getURL());
-      databaseMeta.setProductName(metaData.getDatabaseProductName());
-      databaseMeta.setVersion(metaData.getDatabaseProductVersion());
-      databaseMeta.setDriverName(metaData.getDriverName());
-
-      return databaseMeta;
-    } catch (Exception e) {
-      throw new JdbcException("getDatabaseMetaData error", e);
-    }
   }
 
   /**
@@ -104,7 +59,7 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @date 2023-12-11 00:44
    */
   public TableReader getTableMetaReader() {
-    return MetaReaderFactory.getTableMetaReader(this.dbType, true);
+    return this.getTableMetaReader(this.dbType, this.dbConfigEnabled);
   }
 
   /**
@@ -115,7 +70,84 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @date 2023-12-11 00:45
    */
   public ColumnReader getColumnMetaReader() {
-    return MetaReaderFactory.getColumnMetaReader(this.dbType, true);
+    return this.getColumnMetaReader(this.dbType, this.dbConfigEnabled);
   }
 
+  /**
+   * @param dbType dbType
+   * @return io.github.kylinhunter.commons.jdbc.meta.table.TableReader
+   * @title getTableMetaReader
+   * @description getTableMetaReader
+   * @author BiJi'an
+   * @date 2023-11-27 01:05
+   */
+  private synchronized TableReader getTableMetaReader(DbType dbType, boolean dbConfigEnabled) {
+    String key = dbType.toString() + dbConfigEnabled;
+    return (TableReader)
+        META_SERVICES.compute(
+            key,
+            (k, v) -> {
+              switch (dbType) {
+                case MYSQL:
+                  {
+                    v = new MysqlTableReader(dbConfigEnabled);
+                    break;
+                  }
+                case ORACLE:
+                  {
+                    v = new OracleTableReader(dbConfigEnabled);
+                    break;
+                  }
+                case SQL_SERVER:
+                  {
+                    v = new SqlServerTableReader(dbConfigEnabled);
+                    break;
+                  }
+                default:
+                  {
+                    throw new UnsupportedException("unsupported dbType:" + dbType);
+                  }
+              }
+              return v;
+            });
+  }
+
+  /**
+   * @param dbType dbType
+   * @return io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader
+   * @title getColumnMetaReader
+   * @description getColumnMetaReader
+   * @author BiJi'an
+   * @date 2023-11-27 01:06
+   */
+  private synchronized ColumnReader getColumnMetaReader(DbType dbType, boolean dbConfigEnabled) {
+    String key = dbType.toString() + dbConfigEnabled;
+    return (ColumnReader)
+        META_SERVICES.compute(
+            key,
+            (k, v) -> {
+              switch (dbType) {
+                case MYSQL:
+                  {
+                    v = new MysqlColumnReader(dbConfigEnabled);
+                    break;
+                  }
+                case ORACLE:
+                  {
+                    v = new OracleColumnReader(dbConfigEnabled);
+                    break;
+                  }
+                case SQL_SERVER:
+                  {
+                    v = new SqlServerColumnReader(dbConfigEnabled);
+                    break;
+                  }
+                default:
+                  {
+                    throw new UnsupportedException("unsupported dbType:" + dbType);
+                  }
+              }
+              return v;
+            });
+  }
 }
