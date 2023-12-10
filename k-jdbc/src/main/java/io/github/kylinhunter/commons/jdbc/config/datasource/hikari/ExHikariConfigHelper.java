@@ -17,7 +17,7 @@ package io.github.kylinhunter.commons.jdbc.config.datasource.hikari;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.jdbc.config.datasource.DSConfig;
+import io.github.kylinhunter.commons.jdbc.config.DSConfig;
 import io.github.kylinhunter.commons.jdbc.config.datasource.DSInfo;
 import io.github.kylinhunter.commons.jdbc.config.datasource.PoolInfo;
 import java.util.List;

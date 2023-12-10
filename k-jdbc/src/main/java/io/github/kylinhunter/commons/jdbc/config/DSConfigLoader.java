@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.jdbc.config;
 
-import io.github.kylinhunter.commons.jdbc.config.datasource.DSConfig;
 import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig;
 import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfigHelper;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;

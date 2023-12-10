@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.datasource;
+package io.github.kylinhunter.commons.jdbc.config;
 
+import io.github.kylinhunter.commons.jdbc.config.datasource.DSInfo;
 import java.util.List;
 import lombok.Data;
 
