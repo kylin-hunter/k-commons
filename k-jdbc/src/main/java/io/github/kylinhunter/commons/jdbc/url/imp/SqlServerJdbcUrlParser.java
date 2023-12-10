@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.url.imp;
+package io.github.kylinhunter.commons.jdbc.url.imp;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrlParser;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -26,31 +26,29 @@ import java.util.regex.Pattern;
 
 /**
  * @author BiJi'an
- * @description parse
- * <p>jdbc:oracle:thin:@localhost:1521:ORACLE?user=your_username&password=your_password
+ * @description JdbcUrlParserSqlServer j
+ * <p>jdbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd
  * @date 2023-01-10 11:11
  */
-public class OracleJdbcUrlParser implements JdbcUrlParser {
+public class SqlServerJdbcUrlParser implements JdbcUrlParser {
 
-  private final Pattern pattern = Pattern.compile(".+@(.+):(\\d+):([\\d\\w]+)([\\?]{0,1})(.*)");
+  private final Pattern pattern = Pattern.compile(".+//(.+):(\\d+);(.*)");
+  private static final String DATABASENAME_TAG = "DatabaseName";
 
-  /**
-   *
-   */
   @Override
   public JdbcUrl parse(String url) {
     JdbcUrl jdbcUrl = null;
     Matcher matcher = pattern.matcher(url);
 
     if (matcher.find()) {
-
       jdbcUrl = new JdbcUrl();
-      jdbcUrl.setDbType(DbType.ORACLE);
+      jdbcUrl.setDbType(DbType.SQL_SERVER);
       jdbcUrl.setHost(matcher.group(1));
       jdbcUrl.setPort(Integer.parseInt(matcher.group(2)));
-      jdbcUrl.setDatabase(matcher.group(3));
-      String group5 = matcher.group(5);
-      Map<String, String> params = StringUtil.split(group5, '&', '=');
+      String group3 = matcher.group(3);
+      Map<String, String> params = StringUtil.split(group3, ';', '=');
+      String removeValue = params.remove(DATABASENAME_TAG);
+      jdbcUrl.setDatabase(removeValue);
       jdbcUrl.setParams(params);
     }
 
@@ -63,17 +61,14 @@ public class OracleJdbcUrlParser implements JdbcUrlParser {
   @Override
   public String toString(JdbcUrl jdbcUrl) {
     StringBuilder builder = new StringBuilder();
-    builder.append("jdbc:oracle:thin:@");
+    builder.append("jdbc:sqlserver://");
     builder.append(jdbcUrl.getHost()).append(":");
-    builder.append(jdbcUrl.getPort()).append(":");
-    builder.append(jdbcUrl.getDatabase());
-
+    builder.append(jdbcUrl.getPort()).append(";");
+    builder.append(DATABASENAME_TAG + "=").append(jdbcUrl.getDatabase());
     Map<String, String> params = jdbcUrl.getParams();
     if (params.size() > 0) {
-      builder.append("?");
-      params.forEach((k, v) -> {
-        builder.append(k).append("=").append(v).append("&");
-      });
+      builder.append(";");
+      params.forEach((k, v) -> builder.append(k).append("=").append(v).append(";"));
       builder.setLength(builder.length() - 1);
     }
 

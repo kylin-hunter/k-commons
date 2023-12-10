@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.url;
+package io.github.kylinhunter.commons.jdbc.url;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;

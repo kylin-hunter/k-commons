@@ -15,8 +15,8 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.bean;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import lombok.Data;
 

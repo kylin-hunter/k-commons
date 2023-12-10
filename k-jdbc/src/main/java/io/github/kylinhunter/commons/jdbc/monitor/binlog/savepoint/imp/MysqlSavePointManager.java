@@ -15,11 +15,11 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.imp;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlSavePointDAO;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import javax.sql.DataSource;
 
 /**

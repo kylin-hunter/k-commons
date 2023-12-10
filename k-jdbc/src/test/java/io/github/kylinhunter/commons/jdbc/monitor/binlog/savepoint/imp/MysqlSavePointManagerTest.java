@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 

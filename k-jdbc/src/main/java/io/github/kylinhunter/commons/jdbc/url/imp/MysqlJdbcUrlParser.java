@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.config.url.imp;
+package io.github.kylinhunter.commons.jdbc.url.imp;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrlParser;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -69,9 +69,7 @@ public class MysqlJdbcUrlParser implements JdbcUrlParser {
     Map<String, String> params = jdbcUrl.getParams();
     if (params.size() > 0) {
       builder.append("?");
-      params.forEach((k, v) -> {
-        builder.append(k).append("=").append(v).append("&");
-      });
+      params.forEach((k, v) -> builder.append(k).append("=").append(v).append("&"));
       builder.setLength(builder.length() - 1);
     }
 

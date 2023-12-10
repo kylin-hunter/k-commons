@@ -1,8 +1,9 @@
 package io.github.kylinhunter.commons.jdbc.config.url.imp;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.url.imp.MysqlJdbcUrlParser;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

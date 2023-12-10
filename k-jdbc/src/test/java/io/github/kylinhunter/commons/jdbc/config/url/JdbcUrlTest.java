@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.config.url;
 
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

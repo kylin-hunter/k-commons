@@ -15,13 +15,13 @@
  */
 package io.github.kylinhunter.commons.jdbc.utils;
 
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
-import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrlParser;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.MysqlJdbcUrlParser;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.OracleJdbcUrlParser;
-import io.github.kylinhunter.commons.jdbc.config.url.imp.SqlServerJdbcUrlParser;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
+import io.github.kylinhunter.commons.jdbc.url.JdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.url.imp.MysqlJdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.url.imp.OracleJdbcUrlParser;
+import io.github.kylinhunter.commons.jdbc.url.imp.SqlServerJdbcUrlParser;
 import java.util.Objects;
 
 /**
