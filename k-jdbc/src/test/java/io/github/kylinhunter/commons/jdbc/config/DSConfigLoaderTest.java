@@ -5,16 +5,17 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class ConfigLoaderTest {
+class DSConfigLoaderTest {
 
   @Test
   void load() {
 
-    ConfigLoader configLoader = new ConfigLoader();
+    DSConfigLoader DSConfigLoader = new DSConfigLoader();
 
-    List<ExHikariConfig> exHikariConfigs = configLoader.load();
+    List<ExHikariConfig> exHikariConfigs = DSConfigLoader.load();
     Assertions.assertEquals(2, exHikariConfigs.size());
-    exHikariConfigs.get(0).getJdbcUrl();
+    String jdbcUrl = exHikariConfigs.get(0).getJdbcUrl();
+    Assertions.assertNotNull(jdbcUrl);
 
   }
 }

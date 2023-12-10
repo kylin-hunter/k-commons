@@ -17,8 +17,8 @@ package io.github.kylinhunter.commons.jdbc.config.datasource.hikari;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.jdbc.config.datasource.DataSourceConfig;
-import io.github.kylinhunter.commons.jdbc.config.datasource.DataSourceInfo;
+import io.github.kylinhunter.commons.jdbc.config.datasource.DSConfig;
+import io.github.kylinhunter.commons.jdbc.config.datasource.DSInfo;
 import io.github.kylinhunter.commons.jdbc.config.datasource.PoolInfo;
 import java.util.List;
 import java.util.Map;
@@ -31,22 +31,22 @@ import java.util.Map;
 public class ExHikariConfigHelper {
 
   /**
-   * @param dataSourceConfig dataSourceConfig
+   * @param DSConfig dataSourceConfig
    * @return com.zaxxer.hikari.HikariConfig
    * @title buildConfig
    * @description
    * @author BiJi'an
    * @date 2023-01-17 22:27
    */
-  public static List<ExHikariConfig> parse(DataSourceConfig dataSourceConfig) {
+  public static List<ExHikariConfig> parse(DSConfig DSConfig) {
 
-    List<DataSourceInfo> dataSourceInfos = dataSourceConfig.getDatasources();
+    List<DSInfo> DSInfos = DSConfig.getDatasources();
 
     List<ExHikariConfig> exHikariConfigs = ListUtils.newArrayList();
 
-    for (int i = 0; i < dataSourceInfos.size(); i++) {
+    for (int i = 0; i < DSInfos.size(); i++) {
 
-      DataSourceInfo datasourceInfo = dataSourceInfos.get(i);
+      DSInfo datasourceInfo = DSInfos.get(i);
       PoolInfo poolInfo = datasourceInfo.getPool();
       Map<String, String> dataSourceProperties = datasourceInfo.getProperties();
 

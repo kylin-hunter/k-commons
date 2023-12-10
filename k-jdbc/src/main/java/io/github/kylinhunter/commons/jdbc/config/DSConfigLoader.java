@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.config;
 
-import io.github.kylinhunter.commons.jdbc.config.datasource.DataSourceConfig;
+import io.github.kylinhunter.commons.jdbc.config.datasource.DSConfig;
 import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig;
 import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfigHelper;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Getter
 @Slf4j
-public class ConfigLoader {
+public class DSConfigLoader {
 
   public static final String DEFAULT_PATH = "k-db-config.yaml";
 
@@ -46,14 +46,12 @@ public class ConfigLoader {
    */
   public List<ExHikariConfig> load(String path) {
     path = StringUtil.defaultString(path, DEFAULT_PATH);
-    DataSourceConfig dataSourceConfig =
-        YamlHelper.loadFromPath(DataSourceConfig.class, path, NameRule.CAMEL_LOW);
-    return ExHikariConfigHelper.parse(dataSourceConfig);
+    DSConfig DSConfig = YamlHelper.loadFromPath(DSConfig.class, path, NameRule.CAMEL_LOW);
+    return ExHikariConfigHelper.parse(DSConfig);
   }
 
   /**
-   * @return
-   *     java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
+   * @return java.util.List<io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig>
    * @title load
    * @description load
    * @author BiJi'an

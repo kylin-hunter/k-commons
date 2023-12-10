@@ -22,7 +22,7 @@ import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.io.IOUtil;
-import io.github.kylinhunter.commons.jdbc.config.ConfigLoader;
+import io.github.kylinhunter.commons.jdbc.config.DSConfigLoader;
 import io.github.kylinhunter.commons.jdbc.config.datasource.hikari.ExHikariConfig;
 import io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
@@ -63,7 +63,7 @@ public class DataSourceManager implements AutoCloseable {
   }
 
   public void init() {
-    init(ConfigLoader.DEFAULT_PATH);
+    init(DSConfigLoader.DEFAULT_PATH);
   }
 
   /**
@@ -75,8 +75,8 @@ public class DataSourceManager implements AutoCloseable {
    */
   public void init(String path) {
     try {
-      ConfigLoader configLoader = new ConfigLoader();
-      List<ExHikariConfig> exHikariConfigs = configLoader.load(path);
+      DSConfigLoader DSConfigLoader = new DSConfigLoader();
+      List<ExHikariConfig> exHikariConfigs = DSConfigLoader.load(path);
       init(exHikariConfigs);
     } catch (Exception e) {
       throw new InitException("init error", e);

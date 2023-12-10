@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DataSourceInfo extends JdbcInfo {
+public class DSInfo extends JdbcInfo {
 
   private String name;
   private boolean primary;

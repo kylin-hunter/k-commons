@@ -24,7 +24,7 @@ import lombok.Data;
  * @date 2023-01-08 20:09
  */
 @Data
-public class DataSourceConfig {
+public class DSConfig {
 
-  private List<DataSourceInfo> datasources;
+  private List<DSInfo> datasources;
 }
