@@ -158,7 +158,7 @@ public class TableScanManager {
   }
 
   /**
-   * @param tableScan  tableScan
+   * @param tableScan tableScan
    * @param scanRecord scanRecord
    * @title processScanRecord
    * @description processScanRecord

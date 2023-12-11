@@ -30,8 +30,7 @@ import lombok.Setter;
  */
 public class RedisSavePointManager implements SavePointManager {
 
-  @Setter
-  private String recentBinLogKey = "binlog_process";
+  @Setter private String recentBinLogKey = "binlog_process";
   private final RedisExecutor redisExecutor;
 
   public RedisSavePointManager(RedisConfig redisConfig) {
@@ -61,5 +60,4 @@ public class RedisSavePointManager implements SavePointManager {
       this.redisExecutor.set(recentBinLogKey, this.getDefaultSavePoint());
     }
   }
-
 }

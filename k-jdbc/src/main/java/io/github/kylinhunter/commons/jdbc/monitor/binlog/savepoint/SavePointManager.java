@@ -36,6 +36,4 @@ public interface SavePointManager {
   default SavePoint getDefaultSavePoint() {
     return new SavePoint("unknown", -1);
   }
-
-  
 }

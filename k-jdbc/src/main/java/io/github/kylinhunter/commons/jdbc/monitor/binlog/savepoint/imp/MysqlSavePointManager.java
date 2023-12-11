@@ -70,5 +70,4 @@ public class MysqlSavePointManager implements SavePointManager {
       this.mysqlSavePointDAO.save(this.getDefaultSavePoint());
     }
   }
-
 }

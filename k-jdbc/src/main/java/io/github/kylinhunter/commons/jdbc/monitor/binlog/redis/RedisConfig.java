@@ -32,5 +32,4 @@ public class RedisConfig {
   private long timeout;
 
   private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
-
 }

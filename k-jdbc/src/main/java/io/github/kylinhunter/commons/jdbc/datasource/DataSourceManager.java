@@ -99,7 +99,7 @@ public class DataSourceManager implements AutoCloseable {
 
         ExDataSource exDataSource =
             ObjectCreator.create(
-                clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
+                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -269,7 +269,7 @@ public class DataSourceManager implements AutoCloseable {
   }
 
   /**
-   * @param jdbcUrl  jdbcUrl
+   * @param jdbcUrl jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource
@@ -287,7 +287,7 @@ public class DataSourceManager implements AutoCloseable {
   }
 
   /**
-   * @param jdbcUrl  jdbcUrl
+   * @param jdbcUrl jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource
