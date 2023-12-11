@@ -6,6 +6,7 @@ import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
+import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ class StringToCamelTest {
     moduleInfo.setName("hello_the_word");
     TableInfo tableInfo = new TableInfo();
     TableMeta tableMeta = new TableMeta();
-    tableMeta.setName("tableName");
+    tableMeta.setTableId(new TableId("kp", "tableName"));
     tableInfo.setTableMeta(tableMeta);
 
     List<ColumnMeta> columns = ListUtils.newArrayList();

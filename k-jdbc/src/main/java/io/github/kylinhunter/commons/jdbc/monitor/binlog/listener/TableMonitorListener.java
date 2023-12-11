@@ -19,7 +19,8 @@ import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
-import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
+import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
+import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.TableMonitorTaskDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlTableMonitorTaskDAO;
@@ -40,7 +41,8 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
 
   private TableMonitorTaskDAO tableMonitorTaskDAO;
   @Setter private String destination = "k_table_monitor_binlog_task";
-  @Setter private String tableName;
+  @Setter private TableId tableId;
+  @Setter private String tablePrimaryKey;
 
   @Override
   public void init(DataSource dataSource) {
@@ -50,53 +52,74 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
   }
 
   @Override
-  protected void insertDataRecord(
-      String tableName,
-      WriteRowsEventData eventData,
-      TableMeta tableMeta,
-      List<ColumnMeta> columnMetas) {
-    if (this.tableName.equals(tableName)) {
-      List<Serializable[]> rows = eventData.getRows();
-      for (Serializable[] row : rows) {
-        processScanRecord((String) row[0], 1);
+  protected void insertDataRecord(TableId tableId, WriteRowsEventData eventData) {
+    if (this.tableId.equals(tableId)) {
+      ColumnMetas columnMetas = this.columnMetas.get(tableId);
+      if (columnMetas != null) {
+        ColumnMeta columnMeta = columnMetas.getByName(tablePrimaryKey);
+
+        List<Serializable[]> rows = eventData.getRows();
+        for (Serializable[] row : rows) {
+
+          if (columnMeta != null && columnMeta.getPos() < rows.get(0).length) {
+
+            processScanRecord((String) row[columnMeta.getPos()], 1);
+          }
+        }
       }
     }
   }
 
   @Override
-  protected void updateDataRecord(
-      String tableName,
-      UpdateRowsEventData eventData,
-      TableMeta tableMeta,
-      List<ColumnMeta> columnMetas) {
-    if (this.tableName.equals(tableName)) {
-      List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
-      for (Entry<Serializable[], Serializable[]> row : rows) {
-        processScanRecord((String) row.getValue()[0], 2);
+  protected void updateDataRecord(TableId tableId, UpdateRowsEventData eventData) {
+
+    if (this.tableId.equals(tableId)) {
+      ColumnMetas columnMetas = this.columnMetas.get(tableId);
+      if (columnMetas != null) {
+        ColumnMeta columnMeta = columnMetas.getByName(tablePrimaryKey);
+        List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
+        for (Entry<Serializable[], Serializable[]> row : rows) {
+          if (columnMeta != null && columnMeta.getPos() < row.getValue().length) {
+            processScanRecord((String) row.getValue()[columnMeta.getPos()], 2);
+          }
+        }
       }
     }
   }
 
   @Override
-  protected void deleteDataRecord(
-      String tableName,
-      DeleteRowsEventData eventData,
-      TableMeta tableMeta,
-      List<ColumnMeta> columnMetas) {
-    if (this.tableName.equals(tableName)) {
-      List<Serializable[]> rows = eventData.getRows();
-      for (Serializable[] row : rows) {
-        processScanRecord((String) row[0], 3);
+  protected void deleteDataRecord(TableId tableId, DeleteRowsEventData eventData) {
+    if (this.tableId.equals(tableId)) {
+      ColumnMetas columnMetas = this.columnMetas.get(tableId);
+      if (columnMetas != null) {
+        ColumnMeta columnMeta = columnMetas.getByName(tablePrimaryKey);
+
+        List<Serializable[]> rows = eventData.getRows();
+        for (Serializable[] row : rows) {
+
+          if (columnMeta != null && columnMeta.getPos() < rows.get(0).length) {
+
+            processScanRecord((String) row[columnMeta.getPos()], 3);
+          }
+        }
       }
     }
   }
 
+  /**
+   * @param id id
+   * @param op op
+   * @title processScanRecord
+   * @description processScanRecord
+   * @author BiJi'an
+   * @date 2023-12-12 00:23
+   */
   private void processScanRecord(String id, int op) {
     TableMonitorTask tableMonitorTask =
-        this.tableMonitorTaskDAO.findById(destination, tableName, id);
+        this.tableMonitorTaskDAO.findById(destination, tableId.getName(), id);
     if (tableMonitorTask == null) {
       tableMonitorTask = new TableMonitorTask();
-      tableMonitorTask.setId(tableName);
+      tableMonitorTask.setId(tableId.getName());
       tableMonitorTask.setDataId(id);
       tableMonitorTask.setStatus(0);
       tableMonitorTask.setOp(op);

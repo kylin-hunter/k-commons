@@ -54,10 +54,13 @@ public class MysqlTableReader extends AbstractTableReader {
     //        log.info(columName + ":" + value);
     switch (columName) {
       case "TABLE_NAME":
-        tableMeta.setName(ObjectValues.getString(value));
+        tableMeta.setTableName(ObjectValues.getString(value));
         break;
       case "REMARKS":
         tableMeta.setRemarks(ObjectValues.getString(value));
+        break;
+      case "TABLE_CAT":
+        tableMeta.setDatabase(ObjectValues.getString(value));
         break;
       default:
     }

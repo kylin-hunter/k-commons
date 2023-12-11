@@ -18,6 +18,8 @@ package io.github.kylinhunter.commons.jdbc.meta.bean;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import java.util.Map;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode.Include;
 import lombok.ToString;
 
 /**
@@ -27,14 +29,43 @@ import lombok.ToString;
  */
 @Data
 @ToString(exclude = "rawMetadatas")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TableMeta {
+
+  @Include private TableId tableId;
 
   /*
    * the raw metadata of table
    */
   private Map<String, Object> rawMetadatas = MapUtils.newHashMap();
 
-  private String name; // column name
-
   private String remarks; // column remarks
+
+  /**
+   * @param tableName tableName
+   * @title setTableName
+   * @description setTableName
+   * @author BiJi'an
+   * @date 2023-12-12 01:02
+   */
+  public void setTableName(String tableName) {
+    if (tableId == null) {
+      tableId = new TableId();
+    }
+    tableId.setName(tableName);
+  }
+
+  /**
+   * @param database database
+   * @title setDatabase
+   * @description setDatabase
+   * @author BiJi'an
+   * @date 2023-12-12 01:02
+   */
+  public void setDatabase(String database) {
+    if (tableId == null) {
+      tableId = new TableId();
+    }
+    tableId.setDatabase(database);
+  }
 }

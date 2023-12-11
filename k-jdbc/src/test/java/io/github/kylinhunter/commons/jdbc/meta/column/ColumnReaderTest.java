@@ -2,8 +2,8 @@ package io.github.kylinhunter.commons.jdbc.meta.column;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
+import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import io.github.kylinhunter.commons.jdbc.meta.column.imp.MysqlColumnReader;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,13 +14,13 @@ class ColumnReaderTest {
 
     ColumnReader columnReader = new MysqlColumnReader();
 
-    List<ColumnMeta> columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE);
+    ColumnMetas columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE);
     if (columnMetas.size() != 19) {
       TestHelper.initTestSQl();
       columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE);
     }
     Assertions.assertEquals(16, columnMetas.size());
-    for (ColumnMeta columnMeta : columnMetas) {
+    for (ColumnMeta columnMeta : columnMetas.getColumns()) {
       System.out.println("################" + columnMeta.getColumnName() + "###############");
       System.out.println(columnMeta);
       Assertions.assertNotNull(columnMeta.getJavaClass());

@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class TestHelper {
 
+  public static String DATABASE = "kp";
+
   public static String TEST_TABLE = "k_junit_jdbc_role";
   public static String MONITOR_SCAN_TASK = "k_junit_table_monitor_scan_task";
   public static String MONITOR_BINLOG_TASK = "k_junit_table_monitor_binlog_task";

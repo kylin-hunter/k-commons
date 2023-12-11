@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.generator.context;
 
-import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.generator.config.bean.Database;
@@ -77,8 +76,8 @@ public class ModuleInfoReader {
 
     List<String> skipColumns = table.getSkipColumns();
     List<ColumnMeta> columnMetas =
-        columnMetaReader.getColumnMetaData(databaseName, table.getName());
-    if (CollectionUtils.isEmpty(columnMetas)) {
+        columnMetaReader.getColumnMetaData(databaseName, table.getName()).getColumns();
+    if (columnMetas == null) {
       throw new CodeException("no column from table=>" + table);
     } else {
       columnMetas =

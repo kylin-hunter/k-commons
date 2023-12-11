@@ -36,7 +36,7 @@ public class BasicDAO extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param tableName     tableName
+   * @param tableName tableName
    * @param creatTableSql creatTableSql
    * @title ensureTableExists
    * @description ensureTableExists

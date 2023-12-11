@@ -21,6 +21,7 @@ import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.jdbc.dao.AbstractDatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
+import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -47,7 +48,7 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
   }
 
   /**
-   * @param catalog   catalog
+   * @param catalog catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -55,22 +56,21 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  public List<ColumnMeta> getColumnMetaData(String catalog, String tableName) {
+  public ColumnMetas getColumnMetaData(String catalog, String tableName) {
     return getColumnMetaData(this.getDataSource(), catalog, tableName);
   }
 
   /**
    * @param dataSource dataSource
-   * @param catalog    catalog
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  public List<ColumnMeta> getColumnMetaData(
-      DataSource dataSource, String catalog, String tableName) {
+  public ColumnMetas getColumnMetaData(DataSource dataSource, String catalog, String tableName) {
     ThrowChecker.checkNotNull(dataSource, "datasource can't be null");
 
     try (Connection connection = dataSource.getConnection()) {
@@ -86,16 +86,16 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
 
   /**
    * @param connection connection
-   * @param catalog    catalog
-   * @param schema     schema
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param schema schema
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  public List<ColumnMeta> getColumnMetaData(
+  public ColumnMetas getColumnMetaData(
       Connection connection, String catalog, String schema, String tableName) {
     List<ColumnMeta> columnMetaDatas;
     try {
@@ -123,13 +123,13 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
       throw new JdbcException("getColumnMetaData error", e);
     }
 
-    return columnMetaDatas;
+    return new ColumnMetas(columnMetaDatas);
   }
 
   /**
    * @param columnMeta columnMeta
-   * @param colName    colName
-   * @param value      value
+   * @param colName colName
+   * @param value value
    * @title processMetadata
    * @description read cloumn metadata
    * @author BiJi'an

@@ -29,14 +29,14 @@ import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
-import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
+import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
+import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,9 +55,9 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
   @Setter private SavePointManager savePointManager;
   protected DataSource dataSource;
   private String currentBinlogName;
-  private final Map<Long, String> tables = MapUtils.newHashMap();
-  private final Map<String, TableMeta> tableMetas = MapUtils.newHashMap();
-  private final Map<String, List<ColumnMeta>> columnMetas = MapUtils.newHashMap();
+  protected final Map<Long, TableId> tables = MapUtils.newHashMap();
+  protected final Map<TableId, TableMeta> tableMetas = MapUtils.newHashMap();
+  protected final Map<TableId, ColumnMetas> columnMetas = MapUtils.newHashMap();
 
   protected DatabaseMetaReader databaseMetaReader;
   private TableReader tableReader;
@@ -73,35 +73,39 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
    * @author BiJi'an
    * @date 2023-12-09 23:27
    */
-  public void updateTableCache(Long tableId, String tableName, boolean forceUpdate) {
-    tables.put(tableId, tableName);
-    updateTableCache(tableName, forceUpdate);
+  public void updateTableCache(
+      Long tableId, String database, String tableName, boolean forceUpdate) {
+    TableId tableKey = new TableId(database, tableName);
+    tables.put(tableId, tableKey);
+    updateTableCache(tableKey, forceUpdate);
   }
 
   /**
-   * @param tableName tableName
+   * @param tableId tableKey
    * @param forceUpdate forceUpdate
    * @title updateTableMeta
    * @description updateTableMeta
    * @author BiJi'an
    * @date 2023-12-09 23:29
    */
-  public void updateTableCache(String tableName, boolean forceUpdate) {
+  public void updateTableCache(TableId tableId, boolean forceUpdate) {
 
-    TableMeta tableMeta = tableMetas.get(tableName);
+    TableMeta tableMeta = tableMetas.get(tableId);
     if (tableMeta == null || forceUpdate) {
-      tableMeta = tableReader.getTableMetaData(this.dataSource, "", tableName);
+      tableMeta =
+          tableReader.getTableMetaData(this.dataSource, tableId.getDatabase(), tableId.getName());
       if (tableMeta != null) {
-        tableMetas.put(tableName, tableMeta);
+        tableMetas.put(tableId, tableMeta);
         log.info("############# updateTableMeta={}", tableMeta);
       }
     }
 
-    List<ColumnMeta> columnMetas = this.columnMetas.get(tableName);
+    ColumnMetas columnMetas = this.columnMetas.get(tableId);
     if (columnMetas == null || forceUpdate) {
-      columnMetas = columnReader.getColumnMetaData(this.dataSource, "", tableName);
+      columnMetas =
+          columnReader.getColumnMetaData(this.dataSource, tableId.getDatabase(), tableId.getName());
       if (columnMetas != null) {
-        this.columnMetas.put(tableName, columnMetas);
+        this.columnMetas.put(tableId, columnMetas);
         log.info("############# updateColumnMeta={}", columnMetas);
       }
     }
@@ -222,10 +226,11 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
       String database = eventData.getDatabase();
       int errorCode = eventData.getErrorCode();
       String sql = eventData.getSql();
+
       if (!StringUtil.isEmpty(sql) && sql.trim().contains("alter")) {
         String tableName = getAlterTableName(sql);
         if (!StringUtil.isEmpty(tableName)) {
-          updateTableCache(tableName, true);
+          updateTableCache(new TableId(database, tableName), true);
         }
       }
       log.info("errorCode={},database={},sql={}", errorCode, database, sql);
@@ -279,7 +284,7 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
       long tableId = eventData.getTableId();
       String table = eventData.getTable();
       log.info("table={}/{}/{}", database, tableId, table);
-      updateTableCache(tableId, table, false);
+      updateTableCache(tableId, database, table, false);
     }
   }
 
@@ -294,51 +299,39 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
     if (data instanceof WriteRowsEventData) {
       WriteRowsEventData eventData = (WriteRowsEventData) data;
       log.info("WriteRowsEventData={}", eventData);
-      String tableName = tables.get(eventData.getTableId());
-      insertDataRecord(tableName, eventData, tableMetas.get(tableName), columnMetas.get(tableName));
+      TableId tableId = tables.get(eventData.getTableId());
+      insertDataRecord(tableId, eventData);
     }
   }
 
   /**
-   * @param tableName tableName
+   * @param tableId tableKey
    * @param writeRowsEventData writeRowsEventData
-   * @param tableMeta tableMeta
-   * @param columnMetas columnMetas
    * @title insertEvent
    * @description insertEvent
    * @author BiJi'an
    * @date 2023-12-10 01:08
    */
-  protected abstract void insertDataRecord(
-      String tableName,
-      WriteRowsEventData writeRowsEventData,
-      TableMeta tableMeta,
-      List<ColumnMeta> columnMetas);
+  protected abstract void insertDataRecord(TableId tableId, WriteRowsEventData writeRowsEventData);
 
   private void processEventExtDeleteRows(EventData data) {
     if (data instanceof DeleteRowsEventData) {
       DeleteRowsEventData eventData = (DeleteRowsEventData) data;
       log.info("DeleteRowsEventData={}", eventData);
-      String tableName = tables.get(eventData.getTableId());
-      deleteDataRecord(tableName, eventData, tableMetas.get(tableName), columnMetas.get(tableName));
+      TableId tableId = tables.get(eventData.getTableId());
+      deleteDataRecord(tableId, eventData);
     }
   }
 
   /**
-   * @param tableName tableName
+   * @param tableId tableKey
    * @param eventData eventData
-   * @param tableMeta tableMeta
-   * @param columnMetas columnMetas
    * @title deleteEvent
    * @description deleteEvent
    * @author BiJi'an
    * @date 2023-12-10 01:08
    */
-  protected abstract void deleteDataRecord(
-      String tableName,
-      DeleteRowsEventData eventData,
-      TableMeta tableMeta,
-      List<ColumnMeta> columnMetas);
+  protected abstract void deleteDataRecord(TableId tableId, DeleteRowsEventData eventData);
 
   /**
    * @param data data
@@ -351,26 +344,20 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
     if (data instanceof UpdateRowsEventData) {
       UpdateRowsEventData eventData = (UpdateRowsEventData) data;
       log.info("UpdateRowsEventData={}", eventData);
-      String tableName = tables.get(eventData.getTableId());
-      updateDataRecord(tableName, eventData, tableMetas.get(tableName), columnMetas.get(tableName));
+      TableId tableId = tables.get(eventData.getTableId());
+      updateDataRecord(tableId, eventData);
     }
   }
 
   /**
-   * @param tableName tableName
+   * @param tableId tableKey
    * @param eventData eventData
-   * @param tableMeta tableMeta
-   * @param columnMetas columnMetas
    * @title updateEvent
    * @description updateEvent
    * @author BiJi'an
    * @date 2023-12-10 01:08
    */
-  protected abstract void updateDataRecord(
-      String tableName,
-      UpdateRowsEventData eventData,
-      TableMeta tableMeta,
-      List<ColumnMeta> columnMetas);
+  protected abstract void updateDataRecord(TableId tableId, UpdateRowsEventData eventData);
 
   /**
    * @param dataSource dataSource

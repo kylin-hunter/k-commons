@@ -3,9 +3,7 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
 import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
-import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
-import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
-import java.util.List;
+import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,26 +15,23 @@ class AbstractBinLogEventListenerTest {
     AbstractBinLogEventListener envenListener = new AbstractBinLogEventListener() {
 
       @Override
-      protected void insertDataRecord(String tableName, WriteRowsEventData writeRowsEventData,
-          TableMeta tableMeta, List<ColumnMeta> columnMetas) {
+      protected void insertDataRecord(TableId tableKey, WriteRowsEventData writeRowsEventData) {
 
       }
 
       @Override
-      protected void deleteDataRecord(String tableName, DeleteRowsEventData eventData,
-          TableMeta tableMeta, List<ColumnMeta> columnMetas) {
+      protected void deleteDataRecord(TableId tableKey, DeleteRowsEventData eventData) {
 
       }
 
       @Override
-      protected void updateDataRecord(String tableName, UpdateRowsEventData eventData,
-          TableMeta tableMeta, List<ColumnMeta> columnMetas) {
+      protected void updateDataRecord(TableId tableKey, UpdateRowsEventData eventData) {
 
       }
 
       @Override
       public void init(DataSource dataSource) {
-        
+
       }
     };
 

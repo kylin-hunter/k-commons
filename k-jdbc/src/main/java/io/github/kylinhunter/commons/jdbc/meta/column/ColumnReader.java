@@ -16,9 +16,8 @@
 package io.github.kylinhunter.commons.jdbc.meta.column;
 
 import io.github.kylinhunter.commons.jdbc.dao.DatabaseVisitor;
-import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
+import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import java.sql.Connection;
-import java.util.List;
 import javax.sql.DataSource;
 
 /**
@@ -29,7 +28,7 @@ import javax.sql.DataSource;
 public interface ColumnReader extends DatabaseVisitor {
 
   /**
-   * @param catalog   catalog
+   * @param catalog catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -37,31 +36,31 @@ public interface ColumnReader extends DatabaseVisitor {
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  List<ColumnMeta> getColumnMetaData(String catalog, String tableName);
+  ColumnMetas getColumnMetaData(String catalog, String tableName);
 
   /**
    * @param dataSource dataSource
-   * @param catalog    catalog
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  List<ColumnMeta> getColumnMetaData(DataSource dataSource, String catalog, String tableName);
+  ColumnMetas getColumnMetaData(DataSource dataSource, String catalog, String tableName);
 
   /**
    * @param connection connection
-   * @param catalog    catalog
-   * @param schema     schema
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param schema schema
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
    * @author BiJi'an
    * @date 2023-01-18 12:42
    */
-  List<ColumnMeta> getColumnMetaData(
+  ColumnMetas getColumnMetaData(
       Connection connection, String catalog, String schema, String tableName);
 }

@@ -53,7 +53,7 @@ public class MysqlTableMonitorTaskDAO extends BasicDAO implements TableMonitorTa
   }
 
   /**
-   * @param tableName        tableName
+   * @param tableName tableName
    * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
@@ -72,7 +72,7 @@ public class MysqlTableMonitorTaskDAO extends BasicDAO implements TableMonitorTa
   }
 
   /**
-   * @param tableName    bizTableName
+   * @param tableName bizTableName
    * @param bizTableName scanProcessor
    * @title clean
    * @description clean
@@ -106,9 +106,9 @@ public class MysqlTableMonitorTaskDAO extends BasicDAO implements TableMonitorTa
   }
 
   /**
-   * @param tableName    tableName
+   * @param tableName tableName
    * @param bizTableName bizTableName
-   * @param dataId       dataId
+   * @param dataId dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById
