@@ -48,14 +48,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TemplateContextBuilder {
 
-  @CSet
-  private Config config;
-  @CSet
-  private ModuleInfoReader moduleInfoReader;
-  @CSet
-  private ExpressionExecutor expressionExecutor;
-  @CSet
-  private FieldInfoConvertor fieldInfoConvertor;
+  @CSet private Config config;
+  @CSet private ModuleInfoReader moduleInfoReader;
+  @CSet private ExpressionExecutor expressionExecutor;
+  @CSet private FieldInfoConvertor fieldInfoConvertor;
 
   public List<TemplateContext> calculateContext() {
     List<TemplateContext> templateContexts = ListUtils.newArrayList();

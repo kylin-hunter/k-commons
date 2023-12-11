@@ -20,6 +20,8 @@ import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.TableMonitorTaskDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.MonitorStatus;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanProgressDAO;
@@ -173,12 +175,12 @@ public class TableScanManager {
       tableMonitorTask = new TableMonitorTask();
       tableMonitorTask.setId(tableScan.getTableName());
       tableMonitorTask.setDataId(scanRecord.getId());
-      tableMonitorTask.setStatus(0);
-      tableMonitorTask.setOp(1);
+      tableMonitorTask.setStatus(MonitorStatus.WAIT.getCode());
+      tableMonitorTask.setOp(RowOP.UPDATE.getCode());
       this.tableMonitorTaskDAO.save(tableScan.getDestination(), tableMonitorTask);
     } else {
-      tableMonitorTask.setStatus(0);
-      tableMonitorTask.setOp(1);
+      tableMonitorTask.setStatus(MonitorStatus.WAIT.getCode());
+      tableMonitorTask.setOp(RowOP.UPDATE.getCode());
       this.tableMonitorTaskDAO.update(tableScan.getDestination(), tableMonitorTask);
     }
   }

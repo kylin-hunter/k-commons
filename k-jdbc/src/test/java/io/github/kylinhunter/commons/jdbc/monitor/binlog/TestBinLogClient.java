@@ -18,15 +18,15 @@ class TestBinLogClient {
     String jdbcUrl = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
     BinLogClient binLogClient = new BinLogClient(jdbcUrl, "root", "root");
     RedisSavePointManager redisSavePointManager = getRedisSavePointManager1();
-    redisSavePointManager.reset();
+//    redisSavePointManager.reset();
     binLogClient.setSavePointManager(redisSavePointManager);
     binLogClient.setBinlogFilename("binlog.000029");
     binLogClient.setBinlogPosition(1776364);
     binLogClient.setServerId(2);
     TableMonitorListener tableMonitorListener = new TableMonitorListener();
-    tableMonitorListener.setTableId(new TableId(TestHelper.DATABASE, TestHelper.TEST_TABLE));
+    tableMonitorListener.setTargetTableId(new TableId(TestHelper.DATABASE, TestHelper.TEST_TABLE));
     tableMonitorListener.setDestination(TestHelper.MONITOR_BINLOG_TASK);
-    tableMonitorListener.setTablePrimaryKey("id");
+    tableMonitorListener.setTargetTablePK("id");
     binLogClient.addBinLogEventListener(tableMonitorListener);
 
     binLogClient.start();
