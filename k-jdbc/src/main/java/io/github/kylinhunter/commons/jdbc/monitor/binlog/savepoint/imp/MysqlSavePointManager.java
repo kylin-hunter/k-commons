@@ -20,6 +20,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointMana
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlSavePointDAO;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
+import java.util.Objects;
 import javax.sql.DataSource;
 
 /**
@@ -32,7 +33,7 @@ public class MysqlSavePointManager implements SavePointManager {
   private final MysqlSavePointDAO mysqlSavePointDAO;
 
   public MysqlSavePointManager() {
-    this(null);
+    this.mysqlSavePointDAO = new MysqlSavePointDAO(null, true);
   }
 
   public MysqlSavePointManager(DataSource dataSource) {
@@ -41,8 +42,7 @@ public class MysqlSavePointManager implements SavePointManager {
 
   @Override
   public void reset() {
-    SavePoint savePoint = this.getDefaultSavePoint();
-    this.mysqlSavePointDAO.update(savePoint);
+    this.mysqlSavePointDAO.update(this.getDefaultSavePoint());
   }
 
   @Override
@@ -56,20 +56,19 @@ public class MysqlSavePointManager implements SavePointManager {
   }
 
   @Override
-  public void init(JdbcUrl jdbcUrl) {
-    JdbcUrl jdbcUrlSave = this.mysqlSavePointDAO.getJdbcUrl();
+  public void init(JdbcUrl jdbcUrlBinLog) {
+    JdbcUrl jdbcUrlSavePoint = this.mysqlSavePointDAO.getJdbcUrl();
+    Objects.requireNonNull(jdbcUrlBinLog);
+    Objects.requireNonNull(jdbcUrlSavePoint);
 
-    if (jdbcUrl.equals(jdbcUrlSave)) {
+    if (jdbcUrlBinLog.equals(jdbcUrlSavePoint)) {
       throw new JdbcException("save point jdbc can't be equal to binlog jdbc");
     }
     this.mysqlSavePointDAO.ensureTableExists();
     SavePoint savePoint = this.get();
     if (savePoint == null) {
-      savePoint = this.getDefaultSavePoint();
-      this.mysqlSavePointDAO.save(savePoint);
+      this.mysqlSavePointDAO.save(this.getDefaultSavePoint());
     }
   }
 
-  @Override
-  public void shutdown() {}
 }

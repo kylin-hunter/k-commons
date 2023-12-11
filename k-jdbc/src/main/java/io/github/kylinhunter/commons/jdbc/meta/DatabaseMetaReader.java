@@ -18,7 +18,6 @@ package io.github.kylinhunter.commons.jdbc.meta;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
-import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.column.imp.MysqlColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.column.imp.OracleColumnReader;
@@ -37,18 +36,20 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-public class DatabaseMetaReader extends AbstractDatabaseManager {
+public class DatabaseMetaReader extends AbstractDatabaseVisitor {
 
   private static final Map<String, Object> META_SERVICES = MapUtils.newHashMap();
 
-  public DatabaseMetaReader(boolean dbConfigEnabled) {
-    this(null, dbConfigEnabled);
+  public DatabaseMetaReader() {
+    this(null, true);
+  }
+
+  public DatabaseMetaReader(DataSource dataSource) {
+    super(dataSource, false);
   }
 
   public DatabaseMetaReader(DataSource dataSource, boolean dbConfigEnabled) {
     super(dataSource, dbConfigEnabled);
-    DatabaseMeta metaData = this.getMetaData();
-    this.dbType = metaData.getDbType();
   }
 
   /**
@@ -56,10 +57,10 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @title getTableMetaReader
    * @description getTableMetaReader
    * @author BiJi'an
-   * @date 2023-12-11 00:44
+   * @date 2023-12-10 00:44
    */
-  public TableReader getTableMetaReader() {
-    return this.getTableMetaReader(this.dbType, this.dbConfigEnabled);
+  public TableReader getTableReader() {
+    return this.getTableReader(this.dbType);
   }
 
   /**
@@ -67,10 +68,10 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @title getColumnMetaReader
    * @description getColumnMetaReader
    * @author BiJi'an
-   * @date 2023-12-11 00:45
+   * @date 2023-12-10 00:45
    */
-  public ColumnReader getColumnMetaReader() {
-    return this.getColumnMetaReader(this.dbType, this.dbConfigEnabled);
+  public ColumnReader getColumnReader() {
+    return this.getColumnReader(this.dbType);
   }
 
   /**
@@ -81,7 +82,7 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @author BiJi'an
    * @date 2023-11-27 01:05
    */
-  private synchronized TableReader getTableMetaReader(DbType dbType, boolean dbConfigEnabled) {
+  private synchronized TableReader getTableReader(DbType dbType) {
     String key = dbType.toString() + dbConfigEnabled;
     return (TableReader)
         META_SERVICES.compute(
@@ -90,17 +91,17 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
               switch (dbType) {
                 case MYSQL:
                   {
-                    v = new MysqlTableReader(dbConfigEnabled);
+                    v = new MysqlTableReader(this.getDataSource());
                     break;
                   }
                 case ORACLE:
                   {
-                    v = new OracleTableReader(dbConfigEnabled);
+                    v = new OracleTableReader(this.getDataSource());
                     break;
                   }
                 case SQL_SERVER:
                   {
-                    v = new SqlServerTableReader(dbConfigEnabled);
+                    v = new SqlServerTableReader(this.getDataSource());
                     break;
                   }
                 default:
@@ -120,7 +121,7 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
    * @author BiJi'an
    * @date 2023-11-27 01:06
    */
-  private synchronized ColumnReader getColumnMetaReader(DbType dbType, boolean dbConfigEnabled) {
+  private synchronized ColumnReader getColumnReader(DbType dbType) {
     String key = dbType.toString() + dbConfigEnabled;
     return (ColumnReader)
         META_SERVICES.compute(
@@ -129,17 +130,17 @@ public class DatabaseMetaReader extends AbstractDatabaseManager {
               switch (dbType) {
                 case MYSQL:
                   {
-                    v = new MysqlColumnReader(dbConfigEnabled);
+                    v = new MysqlColumnReader(this.getDataSource());
                     break;
                   }
                 case ORACLE:
                   {
-                    v = new OracleColumnReader(dbConfigEnabled);
+                    v = new OracleColumnReader(this.getDataSource());
                     break;
                   }
                 case SQL_SERVER:
                   {
-                    v = new SqlServerColumnReader(dbConfigEnabled);
+                    v = new SqlServerColumnReader(this.getDataSource());
                     break;
                   }
                 default:

@@ -37,5 +37,5 @@ public interface SavePointManager {
     return new SavePoint("unknown", -1);
   }
 
-  void shutdown();
+  
 }

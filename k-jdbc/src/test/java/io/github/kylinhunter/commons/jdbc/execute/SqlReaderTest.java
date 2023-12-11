@@ -10,8 +10,8 @@ class SqlReaderTest {
   @Test
   void read() {
 
-    List<String> sqlLines = SqlReader.read(
-        "io/github/kylinhunter/commons/jdbc/binlog/binlog-test.sql");
+    List<String> sqlLines = SqlReader.readSqls(
+        "io/github/kylinhunter/commons/jdbc/test.sql");
 
     System.out.println(sqlLines.get(0));
     assertEquals(8, sqlLines.size());

@@ -16,15 +16,10 @@
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
-import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
-import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
-import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
-import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
-import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.BasicDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.SavePointDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
-import java.util.List;
 import javax.sql.DataSource;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 
@@ -33,7 +28,7 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
  * @description
  * @date 2023-11-28 23:36
  */
-public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePointDAO {
+public class MysqlSavePointDAO extends BasicDAO implements SavePointDAO {
 
   public static final String TABLE_NAME = "k_binlog_progress";
   public static final int DEFAULT_ID = 0;
@@ -48,18 +43,14 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   private static final String INIT_SQL = "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
 
   private final BeanHandler<SavePoint> beanHandler = new BeanHandler<>(SavePoint.class);
-  private final TableReader tableReader;
-  private final DatabaseMetaReader databaseMetaReader;
 
-  public MysqlSavePointDAO(boolean dbConfigEnabled) {
+  public MysqlSavePointDAO() {
 
-    this(null, dbConfigEnabled);
+    this(null, true);
   }
 
   public MysqlSavePointDAO(DataSource dataSource, boolean dbConfigEnabled) {
     super(dataSource, dbConfigEnabled);
-    this.tableReader = new MysqlTableReader(dataSource, dbConfigEnabled);
-    this.databaseMetaReader = new DatabaseMetaReader(dataSource, dbConfigEnabled);
   }
 
   @Override
@@ -71,17 +62,12 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
 
   @Override
   public JdbcUrl getJdbcUrl() {
-    return this.databaseMetaReader.getMetaData(this.getDataSource()).getJdbcUrl();
+    return this.getDBMetaData().getJdbcUrl();
   }
 
   @Override
   public void ensureTableExists() {
-
-    boolean exist = this.tableReader.exist(this.getDataSource(), "", TABLE_NAME);
-    if (!exist) {
-      List<String> sqlLines = SqlReader.read(INIT_SQL);
-      this.getSqlExecutor().execute(sqlLines, true);
-    }
+    super.ensureTableExists(TABLE_NAME, SqlReader.readSql(INIT_SQL));
   }
 
   @Override
@@ -94,16 +80,5 @@ public class MysqlSavePointDAO extends AbstractDatabaseManager implements SavePo
   @Override
   public SavePoint get() {
     return this.getSqlExecutor().query(SELECT_SQL, beanHandler);
-  }
-
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta
-   * @title getDBMetaData
-   * @description getDBMetaData
-   * @author BiJi'an
-   * @date 2023-12-09 15:22
-   */
-  public DatabaseMeta getDBMetaData() {
-    return databaseMetaReader.getMetaData(this.getDataSource());
   }
 }

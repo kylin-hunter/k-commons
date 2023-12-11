@@ -16,12 +16,9 @@
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
-import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
-import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
-import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProcessorDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor;
-import java.util.List;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.BasicDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.TableMonitorTaskDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
 import javax.sql.DataSource;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 
@@ -30,10 +27,10 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
  * @description
  * @date 2023-12-03 19:50
  */
-public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements ScanProcessorDAO {
+public class MysqlTableMonitorTaskDAO extends BasicDAO implements TableMonitorTaskDAO {
 
   private static final String INIT_SQL =
-      "io/github/kylinhunter/commons/jdbc/scan/scan-mysql-scan_processor.sql";
+      "io/github/kylinhunter/commons/jdbc/monitor/table-monitor-task.sql";
 
   private static final String INSERT_SQL =
       "insert into %s" + " (id, data_id, op,status) values(?,?,?,?)";
@@ -44,36 +41,34 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
 
   private static final String SELECT_SQL =
       "select  id,  data_id as dataId, op ,status from %s" + " where id=? and data_id=?";
-  private final BeanHandler<ScanProcessor> beanHandler = new BeanHandler<>(ScanProcessor.class);
+  private final BeanHandler<TableMonitorTask> beanHandler =
+      new BeanHandler<>(TableMonitorTask.class);
 
-  private final TableReader tableReader;
-
-  public MysqlScanProcessorDAO(boolean dbConfigEnabled) {
-    this(null, dbConfigEnabled);
+  public MysqlTableMonitorTaskDAO() {
+    this(null, true);
   }
 
-  public MysqlScanProcessorDAO(DataSource dataSource, boolean dbConfigEnabled) {
+  public MysqlTableMonitorTaskDAO(DataSource dataSource, boolean dbConfigEnabled) {
     super(dataSource, dbConfigEnabled);
-    this.tableReader = new MysqlTableReader(dbConfigEnabled);
   }
 
   /**
    * @param tableName tableName
-   * @param scanProcessor scanProcessor
+   * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
    * @author BiJi'an
    * @date 2023-12-09 14:24
    */
-  public void save(String tableName, ScanProcessor scanProcessor) {
+  public void save(String tableName, TableMonitorTask tableMonitorTask) {
     String sql = String.format(INSERT_SQL, tableName);
     this.getSqlExecutor()
         .execute(
             sql,
-            scanProcessor.getId(),
-            scanProcessor.getDataId(),
-            scanProcessor.getOp(),
-            scanProcessor.getStatus());
+            tableMonitorTask.getId(),
+            tableMonitorTask.getDataId(),
+            tableMonitorTask.getOp(),
+            tableMonitorTask.getStatus());
   }
 
   /**
@@ -91,23 +86,23 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
   }
 
   /**
-   * @param scanProcessor scanProcessor
+   * @param tableMonitorTask scanProcessor
    * @title update
    * @description update
    * @author BiJi'an
    * @date 2023-12-09 14:24
    */
   @Override
-  public void update(String tableName, ScanProcessor scanProcessor) {
+  public void update(String tableName, TableMonitorTask tableMonitorTask) {
     String sql = String.format(UPDATE_SQL, tableName);
 
     this.getSqlExecutor()
         .execute(
             sql,
-            scanProcessor.getOp(),
-            scanProcessor.getStatus(),
-            scanProcessor.getId(),
-            scanProcessor.getDataId());
+            tableMonitorTask.getOp(),
+            tableMonitorTask.getStatus(),
+            tableMonitorTask.getId(),
+            tableMonitorTask.getDataId());
   }
 
   /**
@@ -120,7 +115,7 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
    * @author BiJi'an
    * @date 2023-12-09 14:25
    */
-  public ScanProcessor findById(String tableName, String bizTableName, String dataId) {
+  public TableMonitorTask findById(String tableName, String bizTableName, String dataId) {
     String sql = String.format(SELECT_SQL, tableName);
 
     return this.getSqlExecutor().query(sql, beanHandler, bizTableName, dataId);
@@ -135,12 +130,8 @@ public class MysqlScanProcessorDAO extends AbstractDatabaseManager implements Sc
    */
   @Override
   public void ensureTableExists(String tableName) {
-    boolean exist = this.tableReader.exist(this.getDataSource(), "", tableName);
-    if (!exist) {
-      List<String> sqlLines = SqlReader.read(INIT_SQL);
-      String sql = sqlLines.get(0);
-      sql = String.format(sql, tableName);
-      this.getSqlExecutor().execute(sql);
-    }
+    String creatTableSql = SqlReader.readSql(INIT_SQL);
+    creatTableSql = String.format(creatTableSql, tableName);
+    super.ensureTableExists(tableName, creatTableSql);
   }
 }

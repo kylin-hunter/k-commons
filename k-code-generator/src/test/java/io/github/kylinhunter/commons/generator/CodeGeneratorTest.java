@@ -30,11 +30,11 @@ class CodeGeneratorTest {
     DataSourceManager dataSourceManager = new DataSourceManager();
     dataSourceManager.init();
 
-    List<String> sqls = SqlReader.read("io/github/kylinhunter/commons/generator/testdata.sql");
+    List<String> sqls = SqlReader.readSqls("io/github/kylinhunter/commons/generator/testdata.sql");
 
     SqlExecutor defaultSqlExecutor = dataSourceManager.getSqlExecutor();
 
-    defaultSqlExecutor.execute(sqls, true);
+    defaultSqlExecutor.executeBatch(sqls, true);
     dataSourceManager.close();
 
   }

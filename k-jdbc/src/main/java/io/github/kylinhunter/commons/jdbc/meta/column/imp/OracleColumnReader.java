@@ -26,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OracleColumnReader extends MysqlColumnReader {
 
-  public OracleColumnReader(boolean dbConfigEnabled) {
-    super(null, dbConfigEnabled, new OracleColumnParser());
+  public OracleColumnReader() {
+    super(null, true, new OracleColumnParser());
   }
 
   public OracleColumnReader(DataSource dataSource) {

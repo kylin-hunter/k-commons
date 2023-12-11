@@ -98,7 +98,7 @@ public class SqlExecutor {
    * @author BiJi'an
    * @date 2023-11-29 00:45
    */
-  public void execute(List<String> sqlLines, boolean isTransaction) {
+  public void executeBatch(List<String> sqlLines, boolean isTransaction) {
     try {
       if (isTransaction) {
 

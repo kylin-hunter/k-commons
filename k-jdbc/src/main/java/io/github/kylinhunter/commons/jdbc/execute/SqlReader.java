@@ -38,7 +38,7 @@ public class SqlReader {
    * @author BiJi'an
    * @date 2023-11-29 00:30
    */
-  public static List<String> read(String path) {
+  public static List<String> readSqls(String path) {
     List<String> sqlLines = ListUtils.newArrayList();
     List<String> lines = ResourceHelper.readLines(path, PathType.CLASSPATH, Charsets.UTF_8);
     if (!CollectionUtils.isEmpty(lines)) {
@@ -57,5 +57,21 @@ public class SqlReader {
       }
     }
     return sqlLines;
+  }
+
+  /**
+   * @param path path
+   * @return java.lang.String
+   * @title readFirst
+   * @description readFirst
+   * @author BiJi'an
+   * @date 2023-12-10 16:39
+   */
+  public static String readSql(String path) {
+    List<String> sqls = readSqls(path);
+    if (!CollectionUtils.isEmpty(sqls)) {
+      return sqls.get(0);
+    }
+    return StringUtil.EMPTY;
   }
 }

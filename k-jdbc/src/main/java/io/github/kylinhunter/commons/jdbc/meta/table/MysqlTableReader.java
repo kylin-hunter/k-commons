@@ -29,11 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlTableReader extends AbstractTableReader {
 
   public MysqlTableReader() {
-    super(null, false);
+    super(null, true);
   }
 
-  public MysqlTableReader(boolean dbConfigEnabled) {
-    super(null, dbConfigEnabled);
+  public MysqlTableReader(DataSource dataSource) {
+    super(dataSource, false);
   }
 
   public MysqlTableReader(DataSource dataSource, boolean dbConfigEnabled) {

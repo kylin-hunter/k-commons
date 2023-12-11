@@ -30,7 +30,7 @@ import javax.sql.DataSource;
  * @description
  * @date 2023-11-29 00:34
  */
-public class AbstractDatabaseManager implements DatabaseManager {
+public class AbstractDatabaseVisitor implements DatabaseVisitor {
 
   protected DbType dbType;
   private DataSource dataSource;
@@ -40,16 +40,22 @@ public class AbstractDatabaseManager implements DatabaseManager {
   protected boolean dbConfigEnabled;
   protected static final DataSourceManager dataSourceManager = new DataSourceManager();
 
-  public AbstractDatabaseManager(DataSource dataSource, boolean dbConfigEnabled) {
+  public AbstractDatabaseVisitor(DataSource dataSource, boolean dbConfigEnabled) {
     if (dataSource != null) {
       this.dataSource = dataSource;
       this.sqlExecutor = new SqlExecutor(dataSource);
     }
     this.dbConfigEnabled = dbConfigEnabled;
-    if (this.dbConfigEnabled) {
+
+    if (this.dataSource == null && this.dbConfigEnabled) {
       dataSourceManager.init();
+      this.dataSource = dataSourceManager.get();
     }
-    DatabaseMeta metaData = this.getMetaData();
+
+    if (this.dataSource == null) {
+      throw new JdbcException("datasource can't be null");
+    }
+    DatabaseMeta metaData = this.getDBMetaData();
     this.dbType = metaData.getDbType();
   }
 
@@ -67,7 +73,7 @@ public class AbstractDatabaseManager implements DatabaseManager {
     if (dbConfigEnabled) {
       return dataSourceManager.get();
     }
-    return null;
+    throw new JdbcException("datasource is null");
   }
 
   /**
@@ -95,8 +101,8 @@ public class AbstractDatabaseManager implements DatabaseManager {
    * @author BiJi'an
    * @date 2023-01-18 12:41
    */
-  public DatabaseMeta getMetaData() {
-    return this.getMetaData(this.getDataSource());
+  public DatabaseMeta getDBMetaData() {
+    return this.getDBMetaData(this.getDataSource());
   }
 
   /**
@@ -107,11 +113,11 @@ public class AbstractDatabaseManager implements DatabaseManager {
    * @author BiJi'an
    * @date 2023-01-18 12:41
    */
-  public DatabaseMeta getMetaData(DataSource dataSource) {
+  public DatabaseMeta getDBMetaData(DataSource dataSource) {
     ThrowChecker.checkNotNull(dataSource, "datasource can't be null");
 
     try (Connection connection = dataSource.getConnection()) {
-      return getMetaData(connection);
+      return getDBMetaData(connection);
     } catch (Exception e) {
       throw new JdbcException("getDatabaseMetaData error", e);
     }
@@ -125,7 +131,7 @@ public class AbstractDatabaseManager implements DatabaseManager {
    * @author BiJi'an
    * @date 2023-01-18 12:41
    */
-  public DatabaseMeta getMetaData(Connection connection) {
+  public DatabaseMeta getDBMetaData(Connection connection) {
     try {
 
       DatabaseMetaData metaData = connection.getMetaData();

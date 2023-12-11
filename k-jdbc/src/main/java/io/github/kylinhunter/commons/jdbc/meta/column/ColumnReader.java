@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.column;
 
-import io.github.kylinhunter.commons.jdbc.meta.DatabaseManager;
+import io.github.kylinhunter.commons.jdbc.meta.DatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import java.sql.Connection;
 import java.util.List;
@@ -26,7 +26,7 @@ import javax.sql.DataSource;
  * @description
  * @date 2023-01-10 11:11
  */
-public interface ColumnReader extends DatabaseManager {
+public interface ColumnReader extends DatabaseVisitor {
 
   /**
    * @param catalog catalog

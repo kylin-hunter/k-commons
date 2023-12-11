@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorListener;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.redis.JdkRedisCodec;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.redis.RedisConfig;
@@ -20,8 +21,8 @@ class TestBinLogClient {
     binLogClient.setBinlogPosition(19166811);
     binLogClient.setServerId(2);
     TableMonitorListener tableMonitorListener = new TableMonitorListener();
-    tableMonitorListener.setTableName("k_junit_jdbc_role");
-//    tableMonitorListener.setDestination("k_junit_table_monitor_binlog_task");
+    tableMonitorListener.setTableName(TestHelper.TEST_TABLE);
+//    tableMonitorListener.setDestination(JdbcTestHelper.MONITOR_BINLOG_TASK);
     binLogClient.addBinLogEventListener(tableMonitorListener);
 
     binLogClient.start();
@@ -30,18 +31,16 @@ class TestBinLogClient {
 
 
   public static RedisSavePointManager getRedisSavePointManager1() {
-    RedisConfig redisConfig = new RedisConfig();
-    redisConfig.setHost("127.0.0.1");
-    redisConfig.setPort(6379);
-    redisConfig.setPassword("123456");
+    RedisConfig redisConfig = TestHelper.getRedisConfig();
     return new RedisSavePointManager(redisConfig);
   }
 
 
   public static SavePointManager getRedisSavePointManager2() {
-    RedisSavePointManager redisSavePointManager = getRedisSavePointManager1();
-    redisSavePointManager.setRedisCodec(new JdkRedisCodec());
-    return redisSavePointManager;
+    RedisConfig redisConfig = TestHelper.getRedisConfig();
+    redisConfig.setRedisCodec(new JdkRedisCodec());
+    return new RedisSavePointManager(redisConfig);
+
   }
 
 

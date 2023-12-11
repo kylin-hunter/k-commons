@@ -18,12 +18,12 @@ package io.github.kylinhunter.commons.jdbc.monitor.scan;
 import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProcessorDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.TableMonitorTaskDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanProcessorDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanProgressDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlTableMonitorTaskDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanRecord;
 import io.github.kylinhunter.commons.util.ThreadHelper;
 import java.time.LocalDateTime;
@@ -46,30 +46,30 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 public class TableScanManager {
 
   private final ScanProgressDAO scanProgressDAO;
-  private final ScanProcessorDAO scanProcessorDAO;
+  private final TableMonitorTaskDAO tableMonitorTaskDAO;
   private final BeanListHandler<ScanRecord> beanHandler = new BeanListHandler<>(ScanRecord.class);
   private final ScheduledExecutorService scheduledExecutorService;
   private static final String SAME_SQL =
       "select %s as id ,%s as time from  %s "
-          + " where %s = ? and %s > ? order by %s asc, %s asc limit ?";
+          + " where %s = ? and %s<? and %s > ? order by %s asc, %s asc limit ?";
 
   private static final String NEXT_SQL =
       "select %s as id ,%s as time from %s "
           + " where %s > ?  and %s<? order by %s asc, %s asc limit ?";
 
-  public TableScanManager(boolean dbConfigEnabled) {
-    this(DbType.MYSQL, null, dbConfigEnabled);
+  public TableScanManager() {
+    this(DbType.MYSQL, null, true);
   }
 
-  public TableScanManager(DbType dbType, boolean dbConfigEnabled) {
-    this(dbType, null, dbConfigEnabled);
+  public TableScanManager(DbType dbType, DataSource dataSourced) {
+    this(DbType.MYSQL, dataSourced, false);
   }
 
   public TableScanManager(DbType dbType, DataSource dataSource, boolean dbConfigEnabled) {
 
     if (dbType == DbType.MYSQL) {
       this.scanProgressDAO = new MysqlScanProgressDAO(dataSource, dbConfigEnabled);
-      this.scanProcessorDAO = new MysqlScanProcessorDAO(dataSource, dbConfigEnabled);
+      this.tableMonitorTaskDAO = new MysqlTableMonitorTaskDAO(dataSource, dbConfigEnabled);
     } else {
       throw new UnsupportedException("unsupported dbType=" + dbType);
     }
@@ -95,9 +95,15 @@ public class TableScanManager {
             log.error("scan error", e);
           }
         };
-    if (tableScan.isDaemon()) {
-      scheduledExecutorService.scheduleWithFixedDelay(
-          run, 1, tableScan.getScanInterval(), TimeUnit.MILLISECONDS);
+    if (tableScan.getScanInterval() > 0) {
+      while (true) {
+        try {
+          run.run();
+        } catch (Exception e) {
+          log.error("run error", e);
+        }
+        ThreadHelper.sleep(tableScan.getScanInterval(), TimeUnit.MILLISECONDS);
+      }
     } else {
       run.run();
     }
@@ -110,37 +116,40 @@ public class TableScanManager {
    * @date 2023-12-09 00:48
    */
   private void processSameTime(TableScan tableScan) {
-    SqlExecutor sqlExecutor = this.scanProcessorDAO.getSqlExecutor();
+    SqlExecutor sqlExecutor = this.tableMonitorTaskDAO.getSqlExecutor();
+
+    String sql =
+        String.format(
+            SAME_SQL,
+            tableScan.getTableIdColName(),
+            tableScan.getTableTimeColName(),
+            tableScan.getTableName(),
+            tableScan.getTableTimeColName(),
+            tableScan.getTableTimeColName(),
+            tableScan.getTableIdColName(),
+            tableScan.getTableTimeColName(),
+            tableScan.getTableIdColName());
 
     while (true) {
-      String sql =
-          String.format(
-              SAME_SQL,
-              tableScan.getTableIdColName(),
-              tableScan.getTableTimeColName(),
-              tableScan.getTableName(),
-              tableScan.getTableTimeColName(),
-              tableScan.getTableIdColName(),
-              tableScan.getTableTimeColName(),
-              tableScan.getTableIdColName());
+      LocalDateTime endTime = LocalDateTime.now().minus(3, ChronoUnit.SECONDS);
+
       ScanProgress scanProgress = this.getLatestScanProgress(tableScan);
       List<ScanRecord> scanRecords =
           sqlExecutor.query(
               sql,
               beanHandler,
               scanProgress.getNextScanTime(),
+              endTime,
               scanProgress.getLastScanId(),
               tableScan.getScanLimit());
 
       if (scanRecords.size() > 0) {
         scanRecords.forEach(scanRecord -> log.info(" process same time data:" + scanRecord));
-
-        ScanRecord last = scanRecords.get(scanRecords.size() - 1);
-        ScanProgress nextScanProgress = new ScanProgress(tableScan.getTableName(), last);
         for (ScanRecord scanRecord : scanRecords) {
           processScanRecord(tableScan, scanRecord);
         }
-        this.scanProgressDAO.update(nextScanProgress);
+        ScanRecord last = scanRecords.get(scanRecords.size() - 1);
+        this.scanProgressDAO.update(new ScanProgress(tableScan.getTableName(), last));
       } else {
         break;
       }
@@ -149,7 +158,7 @@ public class TableScanManager {
   }
 
   /**
-   * @param tableScan tableScan
+   * @param tableScan  tableScan
    * @param scanRecord scanRecord
    * @title processScanRecord
    * @description processScanRecord
@@ -157,20 +166,20 @@ public class TableScanManager {
    * @date 2023-12-09 15:13
    */
   private void processScanRecord(TableScan tableScan, ScanRecord scanRecord) {
-    ScanProcessor scanProcessor =
-        this.scanProcessorDAO.findById(
-            tableScan.getSaveDestination(), tableScan.getTableName(), scanRecord.getId());
-    if (scanProcessor == null) {
-      scanProcessor = new ScanProcessor();
-      scanProcessor.setId(tableScan.getTableName());
-      scanProcessor.setDataId(scanRecord.getId());
-      scanProcessor.setStatus(0);
-      scanProcessor.setOp(1);
-      this.scanProcessorDAO.save(tableScan.getSaveDestination(), scanProcessor);
+    TableMonitorTask tableMonitorTask =
+        this.tableMonitorTaskDAO.findById(
+            tableScan.getDestination(), tableScan.getTableName(), scanRecord.getId());
+    if (tableMonitorTask == null) {
+      tableMonitorTask = new TableMonitorTask();
+      tableMonitorTask.setId(tableScan.getTableName());
+      tableMonitorTask.setDataId(scanRecord.getId());
+      tableMonitorTask.setStatus(0);
+      tableMonitorTask.setOp(1);
+      this.tableMonitorTaskDAO.save(tableScan.getDestination(), tableMonitorTask);
     } else {
-      scanProcessor.setStatus(0);
-      scanProcessor.setOp(1);
-      this.scanProcessorDAO.update(tableScan.getSaveDestination(), scanProcessor);
+      tableMonitorTask.setStatus(0);
+      tableMonitorTask.setOp(1);
+      this.tableMonitorTaskDAO.update(tableScan.getDestination(), tableMonitorTask);
     }
   }
 
@@ -182,7 +191,7 @@ public class TableScanManager {
    * @date 2023-12-09 02:06
    */
   private void processNextTime(TableScan tableScan) {
-    SqlExecutor sqlExecutor = this.scanProcessorDAO.getSqlExecutor();
+    SqlExecutor sqlExecutor = this.tableMonitorTaskDAO.getSqlExecutor();
 
     ScanProgress scanProgress = this.getLatestScanProgress(tableScan);
     LocalDateTime nextScanTime = scanProgress.getNextScanTime();
@@ -225,7 +234,7 @@ public class TableScanManager {
       progress =
           new ScanProgress(
               tableScan.getTableName(),
-              tableScan.getSaveDestination(),
+              tableScan.getDestination(),
               tableScan.getFirstScanTime(),
               "");
       this.scanProgressDAO.save(progress);
@@ -242,7 +251,7 @@ public class TableScanManager {
    */
   public void init(TableScan tableScan) {
     this.scanProgressDAO.ensureTableExists();
-    this.scanProcessorDAO.ensureTableExists(tableScan.getSaveDestination());
+    this.tableMonitorTaskDAO.ensureTableExists(tableScan.getDestination());
   }
 
   public void shutdown() {
@@ -251,6 +260,6 @@ public class TableScanManager {
 
   public void clean(TableScan tableScan) {
     this.scanProgressDAO.delete(tableScan.getTableName());
-    this.scanProcessorDAO.clean(tableScan.getSaveDestination(), tableScan.getTableName());
+    this.tableMonitorTaskDAO.clean(tableScan.getDestination(), tableScan.getTableName());
   }
 }

@@ -62,9 +62,9 @@ public class ModuleInfoReader {
    * @date 2023-03-19 22:36
    */
   private TableInfo toTable(Module module) {
-    DatabaseMetaReader databaseMetaReader = new DatabaseMetaReader(true);
-    TableReader tableMetaReader = databaseMetaReader.getTableMetaReader();
-    ColumnReader columnMetaReader = databaseMetaReader.getColumnMetaReader();
+    DatabaseMetaReader databaseMetaReader = new DatabaseMetaReader();
+    TableReader tableMetaReader = databaseMetaReader.getTableReader();
+    ColumnReader columnMetaReader = databaseMetaReader.getColumnReader();
 
     Table table = module.getTable();
 

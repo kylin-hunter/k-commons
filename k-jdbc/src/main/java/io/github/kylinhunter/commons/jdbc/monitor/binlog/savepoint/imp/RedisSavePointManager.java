@@ -15,21 +15,12 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.imp;
 
-import io.github.kylinhunter.commons.io.IOUtil;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.redis.JsonRedisCodec;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.redis.RedisConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.redis.RedisExecutor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
-import io.github.kylinhunter.commons.lang.strings.StringUtil;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
-import io.lettuce.core.RedisURI.Builder;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
-import io.lettuce.core.codec.RedisCodec;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import lombok.Setter;
 
 /**
@@ -39,57 +30,36 @@ import lombok.Setter;
  */
 public class RedisSavePointManager implements SavePointManager {
 
-  private RedisCommands<String, Object> redisCommands;
-
-  private StatefulRedisConnection<String, Object> connection;
-  @Setter private String recentBinLogKey = "binlog_process";
-
-  @Setter private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
-
-  private final RedisURI redisUri;
+  @Setter
+  private String recentBinLogKey = "binlog_process";
+  private final RedisExecutor redisExecutor;
 
   public RedisSavePointManager(RedisConfig redisConfig) {
-    Builder builder =
-        RedisURI.builder().withHost(redisConfig.getHost()).withPort(redisConfig.getPort());
-    if (!StringUtil.isEmpty(redisConfig.getPassword())) {
-      builder = builder.withPassword(redisConfig.getPassword());
-    }
-    if (redisConfig.getTimeout() > 0) {
-      builder = builder.withTimeout(Duration.of(redisConfig.getTimeout(), ChronoUnit.SECONDS));
-    }
-
-    this.redisUri = builder.build();
+    redisExecutor = new RedisExecutor(redisConfig);
   }
 
   @Override
   public void reset() {
-    this.redisCommands.set(recentBinLogKey, this.getDefaultSavePoint());
+    this.redisExecutor.set(recentBinLogKey, this.getDefaultSavePoint());
   }
 
   @Override
   public void save(SavePoint savePoint) {
-    this.redisCommands.set(recentBinLogKey, savePoint);
+    this.redisExecutor.set(recentBinLogKey, savePoint);
   }
 
   @Override
   public SavePoint get() {
-    return (SavePoint) this.redisCommands.get(recentBinLogKey);
+    return this.redisExecutor.get(recentBinLogKey);
   }
 
   @Override
   public void init(JdbcUrl jdbcUrl) {
-    RedisClient redisClient = RedisClient.create(redisUri);
-    this.connection = redisClient.connect(this.redisCodec);
-    this.redisCommands = connection.sync();
+    Objects.requireNonNull(jdbcUrl);
     SavePoint savePoint = this.get();
     if (savePoint == null) {
-      savePoint = this.getDefaultSavePoint();
-      this.redisCommands.set(recentBinLogKey, savePoint);
+      this.redisExecutor.set(recentBinLogKey, this.getDefaultSavePoint());
     }
   }
 
-  @Override
-  public void shutdown() {
-    IOUtil.closeQuietly(connection);
-  }
 }

@@ -32,13 +32,11 @@ public class TableScan {
   private String tableTimeColName;
   private LocalDateTime firstScanTime = LocalDateTime.now().minus(10, ChronoUnit.YEARS);
 
-  private String saveDestination = "k_table_monitor_scan_task";
+  private String destination = "k_table_monitor_scan_task";
 
-  private long scanLimit = 1000;
+  private long scanLimit = 3000;
 
   private int scanInterval = 1000;
 
   private int scanSameTimeInterval = 100;
-
-  private boolean daemon = true;
 }

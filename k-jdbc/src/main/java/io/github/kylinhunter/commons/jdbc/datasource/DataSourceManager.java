@@ -20,6 +20,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.jdbc.config.DSConfigLoader;
@@ -28,6 +29,7 @@ import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +55,11 @@ public class DataSourceManager implements AutoCloseable {
 
   private volatile boolean initialized = false;
 
+  private String dbConfigPath;
+
   public void init() {
-    init(DSConfigLoader.DEFAULT_PATH);
+    dbConfigPath = StringUtil.defaultString(dbConfigPath, DSConfigLoader.DEFAULT_PATH);
+    init(dbConfigPath);
   }
 
   /**
@@ -64,7 +69,7 @@ public class DataSourceManager implements AutoCloseable {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  public void init(String path) {
+  private void init(String path) {
     try {
       DSConfigLoader DSConfigLoader = new DSConfigLoader();
       List<ExHikariConfig> exHikariConfigs = DSConfigLoader.load(path);
@@ -94,7 +99,7 @@ public class DataSourceManager implements AutoCloseable {
 
         ExDataSource exDataSource =
             ObjectCreator.create(
-                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
+                clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -104,17 +109,46 @@ public class DataSourceManager implements AutoCloseable {
         ExDataSource firstDatasource = allExDataSources.get(0);
         this.dataSource = firstDatasource;
         this.sqlExecutor = new SqlExecutor(firstDatasource);
-        allExDataSources.forEach(
-            exDataSource -> {
-              allDataSources.put(exDataSource.getDsNo(), exDataSource);
-              allDataSources.put(exDataSource.getDsName(), exDataSource);
-              SqlExecutor sqlExecutor = new SqlExecutor(exDataSource);
-              allSqlExecutors.put(exDataSource.getDsNo(), sqlExecutor);
-              allSqlExecutors.put(exDataSource.getDsName(), sqlExecutor);
-            });
+        allExDataSources.forEach(this::addDatasource);
       }
       initialized = true;
     }
+  }
+
+  /**
+   * @param exDataSource exDataSource
+   * @title addDatasource
+   * @description addDatasource
+   * @author BiJi'an
+   * @date 2023-12-10 00:20
+   */
+  private void addDatasource(ExDataSource exDataSource) {
+    allDataSources.put(exDataSource.getDsNo(), exDataSource);
+    allDataSources.put(exDataSource.getDsName(), exDataSource);
+    SqlExecutor sqlExecutor = new SqlExecutor(exDataSource);
+    allSqlExecutors.put(exDataSource.getDsNo(), sqlExecutor);
+    allSqlExecutors.put(exDataSource.getDsName(), sqlExecutor);
+  }
+
+  /**
+   * @param dsKey dsKey
+   * @return io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx
+   * @title getByNo
+   * @description
+   * @author BiJi'an
+   * @date 2023-01-18 12:25
+   */
+  private ExDataSource get(Object dsKey) {
+    ThrowChecker.checkNotNull(dsKey, "dsKey can't be null");
+    ExDataSource exDataSource = allDataSources.get(dsKey);
+    if (exDataSource == null) {
+      init();
+    }
+    exDataSource = allDataSources.get(dsKey);
+    if (exDataSource == null) {
+      throw new JdbcException("no  Datasource for:" + dsKey);
+    }
+    return exDataSource;
   }
 
   /**
@@ -132,44 +166,6 @@ public class DataSourceManager implements AutoCloseable {
       throw new JdbcException("no default Datasource ");
     }
     return dataSource;
-  }
-
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
-   * @title getDefaultSqlExecutor
-   * @description getDefaultSqlExecutor
-   * @author BiJi'an
-   * @date 2023-12-03 16:53
-   */
-  public SqlExecutor getSqlExecutor() {
-
-    if (sqlExecutor == null) {
-      init();
-    }
-    if (sqlExecutor == null) {
-      throw new JdbcException("no default SqlExecutor ");
-    }
-    return sqlExecutor;
-  }
-
-  /**
-   * @param dsKey dsKey
-   * @return io.github.kylinhunter.commons.jdbc.datasource.DataSourceEx
-   * @title getByNo
-   * @description
-   * @author BiJi'an
-   * @date 2023-01-18 12:25
-   */
-  private ExDataSource get(Object dsKey) {
-    ExDataSource exDataSource = allDataSources.get(dsKey);
-    if (exDataSource == null) {
-      init();
-    }
-    exDataSource = allDataSources.get(dsKey);
-    if (exDataSource == null) {
-      throw new JdbcException("no  Datasource for:" + dsKey);
-    }
-    return exDataSource;
   }
 
   /**
@@ -217,6 +213,24 @@ public class DataSourceManager implements AutoCloseable {
   }
 
   /**
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getDefaultSqlExecutor
+   * @description getDefaultSqlExecutor
+   * @author BiJi'an
+   * @date 2023-12-03 16:53
+   */
+  public SqlExecutor getSqlExecutor() {
+
+    if (sqlExecutor == null) {
+      init();
+    }
+    if (sqlExecutor == null) {
+      throw new JdbcException("no default SqlExecutor ");
+    }
+    return sqlExecutor;
+  }
+
+  /**
    * @param no no
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
    * @title getSqlExecutorByNo
@@ -255,7 +269,7 @@ public class DataSourceManager implements AutoCloseable {
   }
 
   /**
-   * @param jdbcUrl jdbcUrl
+   * @param jdbcUrl  jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource
@@ -273,7 +287,7 @@ public class DataSourceManager implements AutoCloseable {
   }
 
   /**
-   * @param jdbcUrl jdbcUrl
+   * @param jdbcUrl  jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource

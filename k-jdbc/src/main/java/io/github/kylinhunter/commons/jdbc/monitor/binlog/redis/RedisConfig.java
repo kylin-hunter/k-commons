@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.redis;
 
+import io.lettuce.core.codec.RedisCodec;
 import lombok.Data;
 
 /**
@@ -29,4 +30,7 @@ public class RedisConfig {
   private int port;
   private CharSequence password;
   private long timeout;
+
+  private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
+
 }

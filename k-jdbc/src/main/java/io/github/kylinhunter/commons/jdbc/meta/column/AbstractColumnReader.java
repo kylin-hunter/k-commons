@@ -19,7 +19,7 @@ import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
-import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseManager;
+import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-01-10 11:11
  */
 @Slf4j
-public abstract class AbstractColumnReader extends AbstractDatabaseManager implements ColumnReader {
+public abstract class AbstractColumnReader extends AbstractDatabaseVisitor implements ColumnReader {
 
   protected ColumnParser columnParser;
 

@@ -9,8 +9,8 @@ class DatabaseMetaReaderTest {
 
   @Test
   void test() {
-    DatabaseMetaReader databaseMetaReader = new DatabaseMetaReader(true);
-    DatabaseMeta databaseMeta = databaseMetaReader.getMetaData();
+    DatabaseMetaReader databaseMetaReader = new DatabaseMetaReader();
+    DatabaseMeta databaseMeta = databaseMetaReader.getDBMetaData();
     System.out.println(databaseMeta);
     Assertions.assertEquals(DbType.MYSQL, databaseMeta.getDbType());
   }

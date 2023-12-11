@@ -20,9 +20,9 @@ import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProcessorDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanProcessorDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.TableMonitorTaskDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlTableMonitorTaskDAO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map.Entry;
@@ -38,15 +38,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TableMonitorListener extends AbstractBinLogEventListener {
 
-  private ScanProcessorDAO scanProcessorDAO;
+  private TableMonitorTaskDAO tableMonitorTaskDAO;
   @Setter private String destination = "k_table_monitor_binlog_task";
   @Setter private String tableName;
 
   @Override
   public void init(DataSource dataSource) {
-    this.dataSource = dataSource;
-    this.scanProcessorDAO = new MysqlScanProcessorDAO(dataSource, false);
-    this.scanProcessorDAO.ensureTableExists(destination);
+    super.init(dataSource);
+    this.tableMonitorTaskDAO = new MysqlTableMonitorTaskDAO(dataSource, false);
+    this.tableMonitorTaskDAO.ensureTableExists(destination);
   }
 
   @Override
@@ -92,18 +92,19 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
   }
 
   private void processScanRecord(String id, int op) {
-    ScanProcessor scanProcessor = this.scanProcessorDAO.findById(destination, tableName, id);
-    if (scanProcessor == null) {
-      scanProcessor = new ScanProcessor();
-      scanProcessor.setId(tableName);
-      scanProcessor.setDataId(id);
-      scanProcessor.setStatus(0);
-      scanProcessor.setOp(op);
-      this.scanProcessorDAO.save(destination, scanProcessor);
+    TableMonitorTask tableMonitorTask =
+        this.tableMonitorTaskDAO.findById(destination, tableName, id);
+    if (tableMonitorTask == null) {
+      tableMonitorTask = new TableMonitorTask();
+      tableMonitorTask.setId(tableName);
+      tableMonitorTask.setDataId(id);
+      tableMonitorTask.setStatus(0);
+      tableMonitorTask.setOp(op);
+      this.tableMonitorTaskDAO.save(destination, tableMonitorTask);
     } else {
-      scanProcessor.setStatus(0);
-      scanProcessor.setOp(op);
-      this.scanProcessorDAO.update(destination, scanProcessor);
+      tableMonitorTask.setStatus(0);
+      tableMonitorTask.setOp(op);
+      this.tableMonitorTaskDAO.update(destination, tableMonitorTask);
     }
   }
 }

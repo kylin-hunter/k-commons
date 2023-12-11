@@ -13,25 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao.entity;
+package io.github.kylinhunter.commons.jdbc.meta;
 
-import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
+import javax.sql.DataSource;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-03 19:50
+ * @date 2023-12-10 23:36
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ScanProcessor implements Serializable {
+public interface DatabaseVisitor {
 
-  private String id;
-  private String dataId;
-  private int op;
-  private int status;
+  /**
+   * @return javax.sql.DataSource
+   * @title getDataSource
+   * @description getDataSource
+   * @author BiJi'an
+   * @date 2023-12-10 23:37
+   */
+  DataSource getDataSource();
+
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
+   * @title getSqlExecutor
+   * @description getSqlExecutor
+   * @author BiJi'an
+   * @date 2023-12-10 23:37
+   */
+  SqlExecutor getSqlExecutor();
 }

@@ -16,14 +16,14 @@
 package io.github.kylinhunter.commons.jdbc.monitor.dao;
 
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-12-09 22:50
  */
-public interface ScanProcessorDAO {
+public interface TableMonitorTaskDAO {
 
   /**
    * @param tableName tableName
@@ -33,25 +33,25 @@ public interface ScanProcessorDAO {
    * @author BiJi'an
    * @date 2023-12-09 00:13
    */
-  ScanProcessor findById(String tableName, String bizTable, String dataId);
+  TableMonitorTask findById(String tableName, String bizTable, String dataId);
 
   /**
-   * @param scanProcessor scanProcessor
+   * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
    * @author BiJi'an
    * @date 2023-12-09 00:13
    */
-  void save(String tableName, ScanProcessor scanProcessor);
+  void save(String tableName, TableMonitorTask tableMonitorTask);
 
   /**
-   * @param scanProcessor scanProcessor
+   * @param tableMonitorTask scanProcessor
    * @title update
    * @description update
    * @author BiJi'an
    * @date 2023-12-09 00:14
    */
-  void update(String tableName, ScanProcessor scanProcessor);
+  void update(String tableName, TableMonitorTask tableMonitorTask);
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor

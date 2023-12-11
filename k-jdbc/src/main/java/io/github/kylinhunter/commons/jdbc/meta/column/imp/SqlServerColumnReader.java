@@ -26,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SqlServerColumnReader extends MysqlColumnReader {
 
-  public SqlServerColumnReader(boolean dbConfigEnabled) {
-    super(null, dbConfigEnabled, new SqlServerColumnParser());
+  public SqlServerColumnReader() {
+    super(null, true, new SqlServerColumnParser());
   }
 
   public SqlServerColumnReader(DataSource dataSource) {

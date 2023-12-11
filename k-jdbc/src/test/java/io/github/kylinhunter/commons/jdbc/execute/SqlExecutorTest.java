@@ -14,12 +14,12 @@ class SqlExecutorTest {
   void execute() throws SQLException {
     DataSourceManager dataSourceManager = new DataSourceManager();
     SqlExecutor sqlExecutor = new SqlExecutor(dataSourceManager.get());
-    List<String> sqls = SqlReader.read(
+    List<String> sqls = SqlReader.readSqls(
         "io/github/kylinhunter/commons/jdbc/execute/execute.sql");
 
-    sqlExecutor.execute(sqls, false);
+    sqlExecutor.executeBatch(sqls, false);
 
-    sqlExecutor.execute(sqls, true);
+    sqlExecutor.executeBatch(sqls, true);
 
     Connection connection = sqlExecutor.getConnection();
     Assertions.assertFalse(connection.isClosed());

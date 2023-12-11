@@ -10,7 +10,7 @@ class TestDatabaseMetaReader {
   public static void main(String[] args) {
 
     DatabaseMetaReader databaseMetaReader = CF.get(DatabaseMetaReader.class);
-    DatabaseMeta databaseMeta = databaseMetaReader.getMetaData();
+    DatabaseMeta databaseMeta = databaseMetaReader.getDBMetaData();
     System.out.println(databaseMeta);
     Assertions.assertEquals(DbType.MYSQL, databaseMeta.getDbType());
   }

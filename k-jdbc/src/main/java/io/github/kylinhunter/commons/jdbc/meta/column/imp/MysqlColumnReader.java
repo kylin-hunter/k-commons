@@ -31,8 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MysqlColumnReader extends AbstractColumnReader {
 
-  public MysqlColumnReader(boolean dbConfigEnabled) {
-    super(null, dbConfigEnabled, new MysqlColumnParser());
+  public MysqlColumnReader() {
+    super(null, true, new MysqlColumnParser());
   }
 
   public MysqlColumnReader(DataSource dataSource) {

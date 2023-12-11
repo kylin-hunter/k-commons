@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -25,11 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OracleTableReader extends MysqlTableReader {
 
-  public OracleTableReader(boolean dbConfigEnabled) {
-    super(null, dbConfigEnabled);
+  public OracleTableReader() {
+    super(null, true);
   }
 
-  public OracleTableReader() {
-    super(null, false);
+  public OracleTableReader(DataSource dataSource) {
+    super(dataSource, false);
   }
 }

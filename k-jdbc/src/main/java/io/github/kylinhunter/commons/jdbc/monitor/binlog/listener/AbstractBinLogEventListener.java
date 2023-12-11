@@ -28,11 +28,10 @@ import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.collections.MapUtils;
+import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
-import io.github.kylinhunter.commons.jdbc.meta.column.imp.MysqlColumnReader;
-import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
@@ -56,18 +55,14 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
   @Setter private SavePointManager savePointManager;
   protected DataSource dataSource;
   private String currentBinlogName;
-  private final Map<Long, String> tables;
+  private final Map<Long, String> tables = MapUtils.newHashMap();
   private final Map<String, TableMeta> tableMetas = MapUtils.newHashMap();
   private final Map<String, List<ColumnMeta>> columnMetas = MapUtils.newHashMap();
-  private final TableReader tableReader;
-  private final ColumnReader columnReader;
-  private final Pattern PATTERN_ALTER_TABLE_NAME = Pattern.compile("alter table \\s*(\\S+)\\s*");
 
-  protected AbstractBinLogEventListener() {
-    tables = MapUtils.newHashMap();
-    tableReader = new MysqlTableReader(true);
-    columnReader = new MysqlColumnReader(true);
-  }
+  protected DatabaseMetaReader databaseMetaReader;
+  private TableReader tableReader;
+  private ColumnReader columnReader;
+  private final Pattern PATTERN_ALTER_TABLE_NAME = Pattern.compile("alter table \\s*(\\S+)\\s*");
 
   /**
    * @param tableId tableId
@@ -384,5 +379,10 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
    * @author BiJi'an
    * @date 2023-12-10 01:34
    */
-  public abstract void init(DataSource dataSource);
+  public void init(DataSource dataSource) {
+    this.dataSource = dataSource;
+    this.databaseMetaReader = new DatabaseMetaReader(dataSource);
+    this.tableReader = this.databaseMetaReader.getTableReader();
+    this.columnReader = this.databaseMetaReader.getColumnReader();
+  }
 }

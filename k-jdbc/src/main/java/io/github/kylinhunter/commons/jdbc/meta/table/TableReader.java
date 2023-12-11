@@ -15,13 +15,13 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.jdbc.meta.DatabaseManager;
+import io.github.kylinhunter.commons.jdbc.meta.DatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.sql.Connection;
 import java.util.List;
 import javax.sql.DataSource;
 
-public interface TableReader extends DatabaseManager {
+public interface TableReader extends DatabaseVisitor {
 
   /**
    * @param catalog catalog
