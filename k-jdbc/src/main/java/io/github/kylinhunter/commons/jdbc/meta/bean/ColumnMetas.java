@@ -36,8 +36,7 @@ public class ColumnMetas {
   public ColumnMetas(List<ColumnMeta> columns) {
     Objects.requireNonNull(columns);
     this.columns = columns;
-    this.columns.forEach(
-        columnMeta -> nameColumns.put(columnMeta.getColumnName(), columnMeta));
+    this.columns.forEach(columnMeta -> nameColumns.put(columnMeta.getColumnName(), columnMeta));
   }
 
   /**

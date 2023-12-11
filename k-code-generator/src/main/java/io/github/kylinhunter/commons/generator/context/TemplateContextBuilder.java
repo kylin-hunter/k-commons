@@ -48,10 +48,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TemplateContextBuilder {
 
-  @CSet private Config config;
-  @CSet private ModuleInfoReader moduleInfoReader;
-  @CSet private ExpressionExecutor expressionExecutor;
-  @CSet private FieldInfoConvertor fieldInfoConvertor;
+  @CSet
+  private Config config;
+  @CSet
+  private ModuleInfoReader moduleInfoReader;
+  @CSet
+  private ExpressionExecutor expressionExecutor;
+  @CSet
+  private FieldInfoConvertor fieldInfoConvertor;
 
   public List<TemplateContext> calculateContext() {
     List<TemplateContext> templateContexts = ListUtils.newArrayList();
@@ -73,11 +77,10 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return io.github.kylinhunter.commons.generator.context.bean.TemplateContext
-   * @title toTemplateContext
-   * @description
+   * @title calculateContext
+   * @description calculateContext
    * @author BiJi'an
-   * @date 2023-02-19 00:23
+   * @date 2023-12-12 01:10
    */
   private void calculateContext(TemplateContext templateContext) {
     templateContext.putContext(ContextConsts.CLASS, templateContext.getClassInfo());
@@ -94,7 +97,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processFields
    * @description
    * @author BiJi'an
@@ -118,7 +120,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processPackageName
    * @description
    * @author BiJi'an
@@ -134,7 +135,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processClassName
    * @description
    * @author BiJi'an
@@ -150,7 +150,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processSuperClass
    * @description
    * @author BiJi'an
@@ -164,7 +163,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processSerilizeable
    * @description
    * @author BiJi'an
@@ -178,7 +176,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processComment
    * @description
    * @author BiJi'an
@@ -188,6 +185,7 @@ public class TemplateContextBuilder {
     ModuleInfo moduleInfo = templateContext.getModuleInfo();
     ClassInfo classInfo = templateContext.getClassInfo();
     TableMeta tableMeta = moduleInfo.getTableInfo().getTableMeta();
-    classInfo.setComment(StringUtil.defaultString(tableMeta.getRemarks(), tableMeta.getName()));
+    classInfo.setComment(
+        StringUtil.defaultString(tableMeta.getRemarks(), tableMeta.getTableId().getName()));
   }
 }
