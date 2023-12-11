@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.jdbc.meta.DatabaseVisitor;
+import io.github.kylinhunter.commons.jdbc.dao.DatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.sql.Connection;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 public interface TableReader extends DatabaseVisitor {
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
    * @title getTableMetaData
@@ -36,8 +36,8 @@ public interface TableReader extends DatabaseVisitor {
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
    * @title getTableMetaData
    * @description getTableMetaData
@@ -47,7 +47,7 @@ public interface TableReader extends DatabaseVisitor {
   TableMeta getTableMetaData(DataSource dataSource, String catalog, String tableName);
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -59,8 +59,8 @@ public interface TableReader extends DatabaseVisitor {
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -71,9 +71,9 @@ public interface TableReader extends DatabaseVisitor {
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -84,7 +84,7 @@ public interface TableReader extends DatabaseVisitor {
       Connection connection, String catalog, String schema, String tableName);
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return boolean
    * @title exist
@@ -96,8 +96,8 @@ public interface TableReader extends DatabaseVisitor {
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return boolean
    * @title exist
    * @description exist

@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao;
+package io.github.kylinhunter.commons.jdbc.dao;
 
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
-import io.github.kylinhunter.commons.jdbc.meta.AbstractDatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
@@ -37,7 +36,7 @@ public class BasicDAO extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param tableName tableName
+   * @param tableName     tableName
    * @param creatTableSql creatTableSql
    * @title ensureTableExists
    * @description ensureTableExists

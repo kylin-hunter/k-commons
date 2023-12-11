@@ -18,6 +18,7 @@ package io.github.kylinhunter.commons.jdbc.meta;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.dao.AbstractDatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.column.imp.MysqlColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.column.imp.OracleColumnReader;
@@ -89,25 +90,21 @@ public class DatabaseMetaReader extends AbstractDatabaseVisitor {
             key,
             (k, v) -> {
               switch (dbType) {
-                case MYSQL:
-                  {
-                    v = new MysqlTableReader(this.getDataSource());
-                    break;
-                  }
-                case ORACLE:
-                  {
-                    v = new OracleTableReader(this.getDataSource());
-                    break;
-                  }
-                case SQL_SERVER:
-                  {
-                    v = new SqlServerTableReader(this.getDataSource());
-                    break;
-                  }
-                default:
-                  {
-                    throw new UnsupportedException("unsupported dbType:" + dbType);
-                  }
+                case MYSQL: {
+                  v = new MysqlTableReader(this.getDataSource());
+                  break;
+                }
+                case ORACLE: {
+                  v = new OracleTableReader(this.getDataSource());
+                  break;
+                }
+                case SQL_SERVER: {
+                  v = new SqlServerTableReader(this.getDataSource());
+                  break;
+                }
+                default: {
+                  throw new UnsupportedException("unsupported dbType:" + dbType);
+                }
               }
               return v;
             });
@@ -128,25 +125,21 @@ public class DatabaseMetaReader extends AbstractDatabaseVisitor {
             key,
             (k, v) -> {
               switch (dbType) {
-                case MYSQL:
-                  {
-                    v = new MysqlColumnReader(this.getDataSource());
-                    break;
-                  }
-                case ORACLE:
-                  {
-                    v = new OracleColumnReader(this.getDataSource());
-                    break;
-                  }
-                case SQL_SERVER:
-                  {
-                    v = new SqlServerColumnReader(this.getDataSource());
-                    break;
-                  }
-                default:
-                  {
-                    throw new UnsupportedException("unsupported dbType:" + dbType);
-                  }
+                case MYSQL: {
+                  v = new MysqlColumnReader(this.getDataSource());
+                  break;
+                }
+                case ORACLE: {
+                  v = new OracleColumnReader(this.getDataSource());
+                  break;
+                }
+                case SQL_SERVER: {
+                  v = new SqlServerColumnReader(this.getDataSource());
+                  break;
+                }
+                default: {
+                  throw new UnsupportedException("unsupported dbType:" + dbType);
+                }
               }
               return v;
             });

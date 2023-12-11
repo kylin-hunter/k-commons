@@ -15,8 +15,8 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
+import io.github.kylinhunter.commons.jdbc.dao.BasicDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.BasicDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import javax.sql.DataSource;
