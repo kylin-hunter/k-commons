@@ -13,10 +13,10 @@ public class TableReaderTest {
   void test() {
     TableReader tableReader = new MysqlTableReader();
 
-    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", TestHelper.TEST_TABLE);
+    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", TestHelper.TEST_TABLE_ROLE);
     if (tableMetas.size() == 0) {
       TestHelper.initTestSQl();
-      tableMetas = tableReader.getTableMetaDatas("", TestHelper.TEST_TABLE);
+      tableMetas = tableReader.getTableMetaDatas("", TestHelper.TEST_TABLE_ROLE);
     }
     Assertions.assertEquals(1, tableMetas.size());
     TableMeta tableMeta = tableMetas.get(0);

@@ -24,6 +24,8 @@ import io.github.kylinhunter.commons.jdbc.meta.bean.DatabaseMeta;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import javax.sql.DataSource;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author BiJi'an
@@ -32,13 +34,15 @@ import javax.sql.DataSource;
  */
 public class AbstractDatabaseVisitor implements DatabaseVisitor {
 
+  @Getter
   protected DbType dbType;
   private DataSource dataSource;
 
   protected SqlExecutor sqlExecutor;
 
   protected boolean dbConfigEnabled;
-  protected static final DataSourceManager dataSourceManager = new DataSourceManager();
+  @Setter
+  protected DataSourceManager dataSourceManager = new DataSourceManager();
 
   public AbstractDatabaseVisitor(DataSource dataSource, boolean dbConfigEnabled) {
     if (dataSource != null) {

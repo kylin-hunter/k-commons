@@ -14,10 +14,10 @@ class ColumnReaderTest {
 
     ColumnReader columnReader = new MysqlColumnReader();
 
-    ColumnMetas columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE);
+    ColumnMetas columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE);
     if (columnMetas.size() != 19) {
       TestHelper.initTestSQl();
-      columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE);
+      columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE);
     }
     Assertions.assertEquals(16, columnMetas.size());
     for (ColumnMeta columnMeta : columnMetas.getColumns()) {
@@ -27,5 +27,8 @@ class ColumnReaderTest {
       System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
       columnMeta.getRawMetadatas().forEach((k, v) -> System.out.println(k + ":" + v));
     }
+
+    ColumnMeta columnMeta = columnMetas.getByIndex(0);
+    Assertions.assertEquals("id", columnMeta.getColumnName());
   }
 }

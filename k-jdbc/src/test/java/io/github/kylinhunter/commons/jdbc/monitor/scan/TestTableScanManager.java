@@ -12,7 +12,7 @@ class TestTableScanManager {
     TableScanManager manager = new TableScanManager();
 
     TableScan tableScan = new TableScan();
-    tableScan.setTableName(TestHelper.TEST_TABLE);
+    tableScan.setTableName(TestHelper.TEST_TABLE_ROLE);
     tableScan.setTableIdColName("id");
     tableScan.setTableTimeColName("sys_auto_updated");
     tableScan.setScanLimit(1);

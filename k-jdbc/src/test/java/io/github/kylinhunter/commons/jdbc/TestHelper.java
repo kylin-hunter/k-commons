@@ -14,9 +14,17 @@ import java.util.List;
  */
 public class TestHelper {
 
+  public static String MYSQL_JDBC_URL = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+  public static String MYSQL_JDBC_URL2 = "jdbc:mysql://localhost:3307/kp?useUnicode=true"
+      + "&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+  public static String ORACLE_JDBC_URL = "jdbc:oracle:thin:@localhost:1521:ORACLE?user=your_username&password=your_password";
+  public static String SQLSERVER_JDBC_URL = "dbc:sqlserver://localhost:1433;DatabaseName=test;username=sa; password=passwd";
+
   public static String DATABASE = "kp";
 
-  public static String TEST_TABLE = "k_junit_jdbc_role";
+  public static String TEST_TABLE_ROLE = "k_junit_jdbc_role";
+
+  public static String TEST_TABLE_TMP = "k_junit_tmp";
   public static String MONITOR_SCAN_TASK = "k_junit_table_monitor_scan_task";
   public static String MONITOR_BINLOG_TASK = "k_junit_table_monitor_binlog_task";
 
@@ -24,7 +32,7 @@ public class TestHelper {
 
     TableReader tableReader = new MysqlTableReader();
 
-    if (!tableReader.exist("", TestHelper.TEST_TABLE)) {
+    if (!tableReader.exist("", TestHelper.TEST_TABLE_ROLE)) {
       SqlExecutor sqlExecutor = tableReader.getSqlExecutor();
       List<String> sqlLines = SqlReader.readSqls(
           "io/github/kylinhunter/commons/jdbc/test.sql");

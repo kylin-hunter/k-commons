@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
@@ -15,7 +16,7 @@ class MysqlSavePointManagerTest {
 
   @Test
   void test() {
-    String jdbcUrlStr = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+    String jdbcUrlStr = TestHelper.MYSQL_JDBC_URL;
     DataSource dataSource = DataSourceManager.createDataSource(jdbcUrlStr, "root", "root");
 
     SavePointManager savePointManager = new MysqlSavePointManager(dataSource);

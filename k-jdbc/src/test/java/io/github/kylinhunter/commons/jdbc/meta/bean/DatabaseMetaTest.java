@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.meta.bean;
 
+import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import org.junit.jupiter.api.Assertions;
@@ -9,10 +10,8 @@ class DatabaseMetaTest {
 
   @Test
   void calDbType() {
-    DatabaseMeta databaseMeta = new DatabaseMeta();
 
-    String jdbcUrl =
-        "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+    String jdbcUrl = TestHelper.MYSQL_JDBC_URL;
     DbType dbType = JdbcUtils.calDbType(jdbcUrl);
     Assertions.assertEquals(DbType.MYSQL, dbType);
 

@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.config.url;
 
+import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import org.junit.jupiter.api.Assertions;
@@ -10,7 +11,7 @@ class JdbcUrlTest {
   @Test
   void test() {
 
-    String jdbcUrlStr = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+    String jdbcUrlStr = TestHelper.MYSQL_JDBC_URL;
 
     JdbcUrl jdbcUrl = JdbcUtils.parse(jdbcUrlStr);
     Assertions.assertNotNull(jdbcUrl);

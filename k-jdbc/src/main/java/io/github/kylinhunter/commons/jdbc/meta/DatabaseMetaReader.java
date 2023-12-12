@@ -72,7 +72,7 @@ public class DatabaseMetaReader extends AbstractDatabaseVisitor {
    * @date 2023-12-10 00:45
    */
   public ColumnReader getColumnReader() {
-    return this.getColumnReader(this.dbType);
+    return this.getColumnReader(this.getDbType());
   }
 
   /**
@@ -90,25 +90,21 @@ public class DatabaseMetaReader extends AbstractDatabaseVisitor {
             key,
             (k, v) -> {
               switch (dbType) {
-                case MYSQL:
-                  {
-                    v = new MysqlTableReader(this.getDataSource());
-                    break;
-                  }
-                case ORACLE:
-                  {
-                    v = new OracleTableReader(this.getDataSource());
-                    break;
-                  }
-                case SQL_SERVER:
-                  {
-                    v = new SqlServerTableReader(this.getDataSource());
-                    break;
-                  }
-                default:
-                  {
-                    throw new UnsupportedException("unsupported dbType:" + dbType);
-                  }
+                case MYSQL: {
+                  v = new MysqlTableReader(this.getDataSource());
+                  break;
+                }
+                case ORACLE: {
+                  v = new OracleTableReader(this.getDataSource());
+                  break;
+                }
+                case SQL_SERVER: {
+                  v = new SqlServerTableReader(this.getDataSource());
+                  break;
+                }
+                default: {
+                  throw new UnsupportedException("unsupported dbType:" + dbType);
+                }
               }
               return v;
             });
@@ -129,25 +125,21 @@ public class DatabaseMetaReader extends AbstractDatabaseVisitor {
             key,
             (k, v) -> {
               switch (dbType) {
-                case MYSQL:
-                  {
-                    v = new MysqlColumnReader(this.getDataSource());
-                    break;
-                  }
-                case ORACLE:
-                  {
-                    v = new OracleColumnReader(this.getDataSource());
-                    break;
-                  }
-                case SQL_SERVER:
-                  {
-                    v = new SqlServerColumnReader(this.getDataSource());
-                    break;
-                  }
-                default:
-                  {
-                    throw new UnsupportedException("unsupported dbType:" + dbType);
-                  }
+                case MYSQL: {
+                  v = new MysqlColumnReader(this.getDataSource());
+                  break;
+                }
+                case ORACLE: {
+                  v = new OracleColumnReader(this.getDataSource());
+                  break;
+                }
+                case SQL_SERVER: {
+                  v = new SqlServerColumnReader(this.getDataSource());
+                  break;
+                }
+                default: {
+                  throw new UnsupportedException("unsupported dbType:" + dbType);
+                }
               }
               return v;
             });

@@ -28,6 +28,8 @@ import javax.sql.DataSource;
  */
 public class BasicDAO extends AbstractDatabaseVisitor {
 
+  private static final String DROP_TABLE_SQL = "DROP TABLE IF EXISTS %s ";
+
   protected DatabaseMetaReader databaseMetaReader;
 
   public BasicDAO(DataSource dataSource, boolean dbConfigEnabled) {
@@ -36,7 +38,7 @@ public class BasicDAO extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param tableName tableName
+   * @param tableName     tableName
    * @param creatTableSql creatTableSql
    * @title ensureTableExists
    * @description ensureTableExists
@@ -54,4 +56,18 @@ public class BasicDAO extends AbstractDatabaseVisitor {
       this.getSqlExecutor().execute(creatTableSql);
     }
   }
+
+  /**
+   * @param tableName tableName
+   * @title dropTable
+   * @description dropTable
+   * @author BiJi'an
+   * @date 2023-12-12 23:49
+   */
+  public void dropTable(String tableName) {
+    String sql = String.format(DROP_TABLE_SQL, tableName);
+    this.getSqlExecutor().execute(sql);
+  }
+
+
 }

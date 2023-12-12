@@ -15,8 +15,7 @@ class TestBinLogClient {
 
   public static void main(String[] args) {
 
-    String jdbcUrl = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
-    BinLogClient binLogClient = new BinLogClient(jdbcUrl, "root", "root");
+    BinLogClient binLogClient = new BinLogClient(TestHelper.MYSQL_JDBC_URL, "root", "root");
     RedisSavePointManager redisSavePointManager = getRedisSavePointManager1();
 //    redisSavePointManager.reset();
     binLogClient.setSavePointManager(redisSavePointManager);
@@ -24,7 +23,8 @@ class TestBinLogClient {
     binLogClient.setBinlogPosition(1776364);
     binLogClient.setServerId(2);
     TableMonitorListener tableMonitorListener = new TableMonitorListener();
-    tableMonitorListener.setTargetTableId(new TableId(TestHelper.DATABASE, TestHelper.TEST_TABLE));
+    tableMonitorListener.setTargetTableId(
+        new TableId(TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE));
     tableMonitorListener.setDestination(TestHelper.MONITOR_BINLOG_TASK);
     tableMonitorListener.setTargetTablePK("id");
     binLogClient.addBinLogEventListener(tableMonitorListener);
@@ -51,8 +51,7 @@ class TestBinLogClient {
   public static SavePointManager getMysqlSavePointManager() {
 
     HikariConfig hikariConfig = new HikariConfig();
-    hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3307/kp?"
-        + "useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai");
+    hikariConfig.setJdbcUrl(TestHelper.MYSQL_JDBC_URL2);
     hikariConfig.setUsername("root");
     hikariConfig.setPassword("root");
     HikariDataSource hikariDataSource = new HikariDataSource(hikariConfig);

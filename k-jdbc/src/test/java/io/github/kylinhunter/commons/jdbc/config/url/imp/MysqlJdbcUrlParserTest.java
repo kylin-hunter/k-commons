@@ -1,5 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.config.url.imp;
 
+import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrlParser;
@@ -12,7 +13,7 @@ class MysqlJdbcUrlParserTest {
 
   @Test
   void parse() {
-    String jdbcUrl = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+    String jdbcUrl = TestHelper.MYSQL_JDBC_URL;
     JdbcUrlParser jdbcUrlParser = new MysqlJdbcUrlParser();
     JdbcUrl jdbcUrlInfo = jdbcUrlParser.parse(jdbcUrl);
     Assertions.assertEquals(DbType.MYSQL, jdbcUrlInfo.getDbType());
@@ -35,7 +36,7 @@ class MysqlJdbcUrlParserTest {
 
   @Test
   void parse2() {
-    String jdbcUrl = "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai";
+    String jdbcUrl = TestHelper.MYSQL_JDBC_URL;
     JdbcUrl jdbcUrlInfo = JdbcUtils.parse(jdbcUrl);
     Assertions.assertEquals(DbType.MYSQL, jdbcUrlInfo.getDbType());
     Assertions.assertEquals("localhost", jdbcUrlInfo.getHost());

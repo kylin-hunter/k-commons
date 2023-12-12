@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.dao;
 
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import javax.sql.DataSource;
 
@@ -42,4 +43,6 @@ public interface DatabaseVisitor {
    * @date 2023-12-10 23:37
    */
   SqlExecutor getSqlExecutor();
+
+  DbType getDbType();
 }
