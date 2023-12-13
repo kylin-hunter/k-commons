@@ -5,11 +5,11 @@ import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorListener;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.redis.JdkRedisCodec;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.imp.MysqlSavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.imp.RedisSavePointManager;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.JdkRedisCodec;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.RedisConfig;
 
 class TestBinLogClient {
 
@@ -30,7 +30,7 @@ class TestBinLogClient {
     binLogClient.addBinLogEventListener(tableMonitorListener);
 
     binLogClient.start();
-//    binLogClient.disconnect();
+    binLogClient.disconnect();
   }
 
 

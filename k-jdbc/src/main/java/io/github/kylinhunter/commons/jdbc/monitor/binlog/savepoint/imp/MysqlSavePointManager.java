@@ -62,7 +62,7 @@ public class MysqlSavePointManager extends AbstractDatabaseVisitor implements Sa
 
   @Override
   public void init(JdbcUrl jdbcUrlBinLog) {
-    JdbcUrl jdbcUrlSavePoint = this.mysqlSavePointDAO.getJdbcUrl();
+    JdbcUrl jdbcUrlSavePoint = this.mysqlSavePointDAO.getDBMetaData().getJdbcUrl();
     Objects.requireNonNull(jdbcUrlBinLog);
     Objects.requireNonNull(jdbcUrlSavePoint);
 

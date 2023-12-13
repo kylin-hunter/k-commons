@@ -36,18 +36,18 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
   private static final String INSERT_SQL =
       "insert into "
           + TABLE_NAME
-          + " (table_name, save_destination, next_scan_time,last_scan_id) values(?,?,?,?)";
+          + " (id,table_name, save_destination, next_scan_time,last_scan_id) values(?,?,?,?,?)";
 
   private static final String UPDATE_SQL =
-      "update " + TABLE_NAME + " set next_scan_time=?,last_scan_id=? where table_name=?";
+      "update " + TABLE_NAME + " set next_scan_time=?,last_scan_id=? where  id=?";
 
-  private static final String DELETE_SQL = "delete from " + TABLE_NAME + " where table_name=?";
+  private static final String DELETE_SQL = "delete from " + TABLE_NAME + " where id=?";
 
   private static final String SELECT_SQL =
-      "select  table_name as tableName, save_destination as saveDestination, "
+      "select id, table_name as tableName, save_destination as saveDestination, "
           + " next_scan_time as nextScanTime,last_scan_id lastScanId  from "
           + TABLE_NAME
-          + " where table_name=?";
+          + " where id=?";
   private final BeanHandler<ScanProgress> beanHandler = new BeanHandler<>(ScanProgress.class);
 
   public MysqlScanProgressDAO() {
@@ -66,6 +66,7 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
 
     this.getSqlExecutor().execute(
         INSERT_SQL,
+        scanProgress.getId(),
         scanProgress.getTableName(),
         scanProgress.getSaveDestination(),
         scanProgress.getNextScanTime(),
@@ -79,7 +80,7 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
             UPDATE_SQL,
             scanProgress.getNextScanTime(),
             scanProgress.getLastScanId(),
-            scanProgress.getTableName());
+            scanProgress.getId());
   }
 
   /**

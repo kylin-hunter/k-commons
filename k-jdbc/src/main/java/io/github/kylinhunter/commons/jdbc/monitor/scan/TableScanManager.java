@@ -116,7 +116,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
           tableMonitorTaskManager.saveOrUpdate(tableScanConfig, scanRecord);
         }
         ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
-        this.scanProgressManager.update(tableScanConfig.getTableName(), lastRecord);
+        this.scanProgressManager.update(tableScanConfig.getId(), lastRecord);
       } else {
         break;
       }
@@ -143,7 +143,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
       for (ScanRecord scanRecord : scanRecords) {
         tableMonitorTaskManager.saveOrUpdate(tableScanConfig, scanRecord);
       }
-      this.scanProgressManager.update(tableScanConfig.getTableName(), lastRecord);
+      this.scanProgressManager.update(tableScanConfig.getId(), lastRecord);
     }
   }
 
@@ -168,7 +168,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @date 2023-12-13 23:51
    */
   public void clean(TableScanConfig config) {
-    this.scanProgressManager.delete(config.getTableName());
+    this.scanProgressManager.delete(config.getId());
     this.tableMonitorTaskManager.clean(config.getDestination(), config.getTableName());
   }
 }

@@ -19,7 +19,6 @@ import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.SavePointDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
-import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import javax.sql.DataSource;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 
@@ -73,10 +72,6 @@ public class MysqlSavePointDAO extends AbsctractBasicDAO implements SavePointDAO
     return this.getSqlExecutor().query(SELECT_SQL, beanHandler, DEFAULT_ID);
   }
 
-  @Override
-  public JdbcUrl getJdbcUrl() {
-    return this.getDBMetaData().getJdbcUrl();
-  }
 
   @Override
   public void ensureTableExists() {

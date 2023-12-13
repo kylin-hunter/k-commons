@@ -14,6 +14,7 @@ class TableScanManagerTest {
     TableScanManager manager = new TableScanManager(dataSource);
 
     TableScanConfig tableScanConfig = new TableScanConfig();
+    tableScanConfig.setId("2");
     tableScanConfig.setTableName(TestHelper.TEST_TABLE_ROLE);
     tableScanConfig.setTableIdColName("id");
     tableScanConfig.setTableTimeColName("sys_auto_updated");

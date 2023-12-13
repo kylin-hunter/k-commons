@@ -27,10 +27,14 @@ import lombok.Data;
 @Data
 public class TableScanConfig {
 
+  private String id = "1";
   private String tableName;
   private String tableIdColName;
   private String tableTimeColName;
   private LocalDateTime firstScanTime = LocalDateTime.now().minus(10, ChronoUnit.YEARS);
+
+  private String scanId = "k_table_monitor_scan_task";
+
   private String destination = "k_table_monitor_scan_task";
 
   private long scanLimit = 3000;

@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS `k_table_scan_progress`
 (
+    `id`               varchar(64) NOT NULL COMMENT 'id',
     `table_name`               varchar(64) NOT NULL COMMENT 'table-name',
     `sys_auto_updated` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'sys update time',
     `save_destination` varchar(64) NOT NULL DEFAULT '' COMMENT 'table-name',

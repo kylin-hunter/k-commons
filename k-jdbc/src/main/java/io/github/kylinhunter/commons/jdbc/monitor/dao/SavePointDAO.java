@@ -16,7 +16,6 @@
 package io.github.kylinhunter.commons.jdbc.monitor.dao;
 
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
-import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 
 public interface SavePointDAO {
 
@@ -46,15 +45,6 @@ public interface SavePointDAO {
    * @date 2023-12-09 00:14
    */
   void update(SavePoint savePoint);
-
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.config.url.JdbcUrl
-   * @title getJdbcUrl
-   * @description getJdbcUrl
-   * @author BiJi'an
-   * @date 2023-12-09 00:14
-   */
-  JdbcUrl getJdbcUrl();
 
   /**
    * @title ensureTableExists

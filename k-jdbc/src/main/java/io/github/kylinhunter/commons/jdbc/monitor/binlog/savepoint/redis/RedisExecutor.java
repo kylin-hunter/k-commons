@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.redis;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis;
 
 import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
@@ -52,7 +52,7 @@ public class RedisExecutor {
   }
 
   /**
-   * @param key key
+   * @param key   key
    * @param value value
    * @return java.lang.String
    * @title set

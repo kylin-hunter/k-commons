@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.redis;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
+import io.github.kylinhunter.commons.serialize.ObjectBytesSerializer;
 import io.lettuce.core.codec.RedisCodec;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -31,10 +27,9 @@ import java.nio.charset.StandardCharsets;
  * @description
  * @date 2023-12-03 00:38
  */
-public class JsonRedisCodec implements RedisCodec<String, Object> {
+public class JdkRedisCodec implements RedisCodec<String, Object> {
 
   private final Charset charset = StandardCharsets.UTF_8;
-  private final ObjectMapper objectMapper = createObjectMapper();
 
   @Override
   public ByteBuffer encodeKey(String key) {
@@ -49,7 +44,7 @@ public class JsonRedisCodec implements RedisCodec<String, Object> {
   @Override
   public ByteBuffer encodeValue(Object value) {
     try {
-      byte[] bytes = objectMapper.writeValueAsBytes(value);
+      byte[] bytes = ObjectBytesSerializer.serialize(value);
       return ByteBuffer.wrap(bytes);
     } catch (Exception e) {
       throw new GeneralException("encodeValue error", e);
@@ -61,27 +56,10 @@ public class JsonRedisCodec implements RedisCodec<String, Object> {
     try {
       byte[] array = new byte[bytes.remaining()];
       bytes.get(array);
-      return objectMapper.readValue(array, Object.class);
+      return ObjectBytesSerializer.deserialize(array);
 
     } catch (Exception e) {
       throw new GeneralException("decodeValue error", e);
     }
-  }
-
-  /**
-   * @return com.fasterxml.jackson.databind.ObjectMapper
-   * @title createObjectMapper
-   * @description createObjectMapper
-   * @author BiJi'an
-   * @date 2023-12-03 02:11
-   */
-  public ObjectMapper createObjectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-    objectMapper.activateDefaultTyping(
-        LaissezFaireSubTypeValidator.instance,
-        ObjectMapper.DefaultTyping.NON_FINAL,
-        JsonTypeInfo.As.WRAPPER_ARRAY);
-    return objectMapper;
   }
 }
