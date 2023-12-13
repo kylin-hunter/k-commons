@@ -18,6 +18,5 @@ class AbstractBinLogEventListenerTest {
 
     String sql = "alter table aaa add colum";
 
-//    Assertions.assertEquals("aaa", envenListener.getAlterTableName(sql));
   }
 }
