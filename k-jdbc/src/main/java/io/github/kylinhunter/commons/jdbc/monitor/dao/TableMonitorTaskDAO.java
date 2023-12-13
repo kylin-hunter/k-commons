@@ -68,7 +68,7 @@ public interface TableMonitorTaskDAO {
    * @author BiJi'an
    * @date 2023-12-09 00:16
    */
-  void ensureTableExists(String tableName);
+  void ensureDestinationExists(String tableName);
 
   /**
    * @param tableName tableName

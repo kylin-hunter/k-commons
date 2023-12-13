@@ -44,5 +44,12 @@ public interface DatabaseVisitor {
    */
   SqlExecutor getSqlExecutor();
 
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.constant.DbType
+   * @title getDbType
+   * @description getDbType
+   * @author BiJi'an
+   * @date 2023-12-13 20:17
+   */
   DbType getDbType();
 }

@@ -16,7 +16,7 @@ class TestBinLogClient {
   public static void main(String[] args) {
 
     BinLogClient binLogClient = new BinLogClient(TestHelper.MYSQL_JDBC_URL, "root", "root");
-    RedisSavePointManager redisSavePointManager = getRedisSavePointManager1();
+    SavePointManager redisSavePointManager = getRedisSavePointManager1();
 //    redisSavePointManager.reset();
     binLogClient.setSavePointManager(redisSavePointManager);
     binLogClient.setBinlogFilename("binlog.000029");

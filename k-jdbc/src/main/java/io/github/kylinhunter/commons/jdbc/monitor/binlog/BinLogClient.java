@@ -42,7 +42,8 @@ public class BinLogClient {
   private final BinaryLogClient binaryLogClient;
   private final JdbcUrl jdbcUrl;
 
-  @Setter private SavePointManager savePointManager;
+  @Setter
+  private SavePointManager savePointManager;
 
   private final DataSource dataSource;
 

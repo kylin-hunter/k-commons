@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao;
 
+import io.github.kylinhunter.commons.jdbc.dao.BaseDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 
@@ -23,7 +24,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
  * @description
  * @date 2023-12-09 22:50
  */
-public interface ScanProgressDAO {
+public interface ScanProgressDAO extends BaseDAO {
 
   /**
    * @param id id

@@ -12,7 +12,7 @@ class SqlExecutorTest {
 
   @Test
   void execute() throws SQLException {
-    DataSourceManager dataSourceManager = new DataSourceManager();
+    DataSourceManager dataSourceManager = new DataSourceManager(true);
     SqlExecutor sqlExecutor = new SqlExecutor(dataSourceManager.get());
     List<String> sqls = SqlReader.readSqls(
         "io/github/kylinhunter/commons/jdbc/execute/execute.sql");

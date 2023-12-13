@@ -43,7 +43,7 @@ public class MysqlTableReader extends AbstractTableReader {
   /**
    * @param tableMeta tableMeta
    * @param columName columName
-   * @param value value
+   * @param value     value
    * @title processMetadata
    * @description
    * @author BiJi'an

@@ -84,7 +84,7 @@ public class DatabaseMetaReader extends AbstractDatabaseVisitor {
    * @date 2023-11-27 01:05
    */
   private synchronized TableReader getTableReader(DbType dbType) {
-    String key = dbType.toString() + dbConfigEnabled;
+    String key = dbType.toString();
     return (TableReader)
         META_SERVICES.compute(
             key,
@@ -119,7 +119,7 @@ public class DatabaseMetaReader extends AbstractDatabaseVisitor {
    * @date 2023-11-27 01:06
    */
   private synchronized ColumnReader getColumnReader(DbType dbType) {
-    String key = dbType.toString() + dbConfigEnabled;
+    String key = dbType.toString();
     return (ColumnReader)
         META_SERVICES.compute(
             key,

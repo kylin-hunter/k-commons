@@ -15,6 +15,9 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.imp;
 
+import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
+import io.github.kylinhunter.commons.jdbc.constant.DbType;
+import io.github.kylinhunter.commons.jdbc.dao.AbstractDatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.exception.JdbcException;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
@@ -28,16 +31,18 @@ import javax.sql.DataSource;
  * @description
  * @date 2023-11-28 23:36
  */
-public class MysqlSavePointManager implements SavePointManager {
+public class MysqlSavePointManager extends AbstractDatabaseVisitor implements SavePointManager {
 
   private final MysqlSavePointDAO mysqlSavePointDAO;
 
-  public MysqlSavePointManager() {
-    this.mysqlSavePointDAO = new MysqlSavePointDAO(null, true);
-  }
 
   public MysqlSavePointManager(DataSource dataSource) {
-    this.mysqlSavePointDAO = new MysqlSavePointDAO(dataSource, false);
+    super(dataSource, false);
+    if (this.dbType == DbType.MYSQL) {
+      this.mysqlSavePointDAO = new MysqlSavePointDAO(dataSource);
+    } else {
+      throw new UnsupportedException("unsupported dbType=" + dbType);
+    }
   }
 
   @Override

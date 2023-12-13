@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
+package io.github.kylinhunter.commons.jdbc.monitor.dao.entity;
 
-import com.github.shyiko.mysql.binlog.BinaryLogClient.EventListener;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
-import javax.sql.DataSource;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-09 21:54
+ * @date 2023-12-03 19:50
  */
-public interface BinLogEventListener extends EventListener {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ScanRecord implements Serializable {
 
-  void setSavePointManager(SavePointManager savePointManager);
-
-  void init(DataSource dataSource);
-
+  private String id;
+  private LocalDateTime time;
 }

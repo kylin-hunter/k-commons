@@ -26,13 +26,13 @@ import javax.sql.DataSource;
  * @description
  * @date 2023-12-10 00:17
  */
-public class BasicDAO extends AbstractDatabaseVisitor {
+public class AbsctractBasicDAO extends AbstractDatabaseVisitor implements BaseDAO {
 
   private static final String DROP_TABLE_SQL = "DROP TABLE IF EXISTS %s ";
 
   protected DatabaseMetaReader databaseMetaReader;
 
-  public BasicDAO(DataSource dataSource, boolean dbConfigEnabled) {
+  public AbsctractBasicDAO(DataSource dataSource, boolean dbConfigEnabled) {
     super(dataSource, dbConfigEnabled);
     databaseMetaReader = new DatabaseMetaReader(dataSource, dbConfigEnabled);
   }

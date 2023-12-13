@@ -44,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @NoArgsConstructor
-public class DataSourceManager implements AutoCloseable {
+public class DataSourceManager {
 
   private DataSource dataSource;
   private final Map<Object, ExDataSource> allDataSources = MapUtils.newHashMap();
@@ -56,6 +56,18 @@ public class DataSourceManager implements AutoCloseable {
   private volatile boolean initialized = false;
 
   private String dbConfigPath;
+
+  public DataSourceManager(boolean dbConfigEnabled) {
+    if (dbConfigEnabled) {
+      init(DSConfigLoader.DEFAULT_PATH);
+    }
+  }
+
+  public DataSourceManager(boolean dbConfigEnabled, String dbConfigPath) {
+    if (dbConfigEnabled) {
+      init(dbConfigPath);
+    }
+  }
 
   public void init() {
     dbConfigPath = StringUtil.defaultString(dbConfigPath, DSConfigLoader.DEFAULT_PATH);
@@ -69,7 +81,7 @@ public class DataSourceManager implements AutoCloseable {
    * @author BiJi'an
    * @date 2023-01-18 12:25
    */
-  private void init(String path) {
+  public void init(String path) {
     try {
       DSConfigLoader DSConfigLoader = new DSConfigLoader();
       List<ExHikariConfig> exHikariConfigs = DSConfigLoader.load(path);
@@ -99,7 +111,7 @@ public class DataSourceManager implements AutoCloseable {
 
         ExDataSource exDataSource =
             ObjectCreator.create(
-                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
+                clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -142,10 +154,6 @@ public class DataSourceManager implements AutoCloseable {
     ThrowChecker.checkNotNull(dsKey, "dsKey can't be null");
     ExDataSource exDataSource = allDataSources.get(dsKey);
     if (exDataSource == null) {
-      init();
-    }
-    exDataSource = allDataSources.get(dsKey);
-    if (exDataSource == null) {
       throw new JdbcException("no  Datasource for:" + dsKey);
     }
     return exDataSource;
@@ -159,9 +167,6 @@ public class DataSourceManager implements AutoCloseable {
    * @date 2023-12-03 16:45
    */
   public DataSource get() {
-    if (dataSource == null) {
-      init();
-    }
     if (dataSource == null) {
       throw new JdbcException("no default Datasource ");
     }
@@ -203,10 +208,6 @@ public class DataSourceManager implements AutoCloseable {
   private SqlExecutor getSqlExecutor(Object dsKey) {
     SqlExecutor sqlExecutor = allSqlExecutors.get(dsKey);
     if (sqlExecutor == null) {
-      init();
-    }
-    sqlExecutor = allSqlExecutors.get(dsKey);
-    if (sqlExecutor == null) {
       throw new JdbcException("no  SqlExecutor for:" + dsKey);
     }
     return sqlExecutor;
@@ -221,9 +222,6 @@ public class DataSourceManager implements AutoCloseable {
    */
   public SqlExecutor getSqlExecutor() {
 
-    if (sqlExecutor == null) {
-      init();
-    }
     if (sqlExecutor == null) {
       throw new JdbcException("no default SqlExecutor ");
     }
@@ -260,7 +258,7 @@ public class DataSourceManager implements AutoCloseable {
    * @author BiJi'an
    * @date 2023-12-03 16:54
    */
-  @Override
+
   public void close() {
     for (ExDataSource exDataSource : allDataSources.values()) {
       IOUtil.closeQuietly(exDataSource);
@@ -269,7 +267,7 @@ public class DataSourceManager implements AutoCloseable {
   }
 
   /**
-   * @param jdbcUrl jdbcUrl
+   * @param jdbcUrl  jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource
@@ -287,7 +285,7 @@ public class DataSourceManager implements AutoCloseable {
   }
 
   /**
-   * @param jdbcUrl jdbcUrl
+   * @param jdbcUrl  jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource

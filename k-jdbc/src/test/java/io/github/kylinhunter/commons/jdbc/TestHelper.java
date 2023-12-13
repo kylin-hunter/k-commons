@@ -6,6 +6,7 @@ import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.redis.RedisConfig;
 import java.util.List;
+import javax.sql.DataSource;
 
 /**
  * @author BiJi'an
@@ -30,7 +31,13 @@ public class TestHelper {
 
   public static void initTestSQl() {
 
-    TableReader tableReader = new MysqlTableReader();
+    initTestSQl(null);
+  }
+
+  public static void initTestSQl(DataSource dataSource) {
+
+    TableReader tableReader = dataSource != null ? new MysqlTableReader(dataSource) :
+        new MysqlTableReader();
 
     if (!tableReader.exist("", TestHelper.TEST_TABLE_ROLE)) {
       SqlExecutor sqlExecutor = tableReader.getSqlExecutor();

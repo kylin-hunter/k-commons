@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
-import io.github.kylinhunter.commons.jdbc.dao.BasicDAO;
+import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.SavePointDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
@@ -28,17 +28,17 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
  * @description
  * @date 2023-11-28 23:36
  */
-public class MysqlSavePointDAO extends BasicDAO implements SavePointDAO {
+public class MysqlSavePointDAO extends AbsctractBasicDAO implements SavePointDAO {
 
   public static final String TABLE_NAME = "k_binlog_progress";
   public static final int DEFAULT_ID = 0;
 
   private static final String SELECT_SQL =
-      "select name,position from " + TABLE_NAME + " where id=" + DEFAULT_ID;
+      "select name,position from " + TABLE_NAME + " where id=?";
   private static final String INSERT_SQL =
-      "insert into " + TABLE_NAME + "(id, name, position) values(" + DEFAULT_ID + ",?,?)";
+      "insert into " + TABLE_NAME + "(id, name, position) values(?,?,?)";
   private static final String UPDATE_SQL =
-      "update   " + TABLE_NAME + "  set name=?, position=? where id=" + DEFAULT_ID;
+      "update   " + TABLE_NAME + "  set name=?, position=? where id=?";
 
   private static final String INIT_SQL = "io/github/kylinhunter/commons/jdbc/binlog/binlog.sql";
 
@@ -46,18 +46,31 @@ public class MysqlSavePointDAO extends BasicDAO implements SavePointDAO {
 
   public MysqlSavePointDAO() {
 
-    this(null, true);
+    super(null, true);
   }
 
-  public MysqlSavePointDAO(DataSource dataSource, boolean dbConfigEnabled) {
-    super(dataSource, dbConfigEnabled);
+  public MysqlSavePointDAO(DataSource dataSource) {
+    super(dataSource, false);
+  }
+
+
+  @Override
+  public void save(SavePoint savePoint) {
+    String name = savePoint.getName();
+    long position = savePoint.getPosition();
+    this.getSqlExecutor().execute(INSERT_SQL, DEFAULT_ID, name, position);
   }
 
   @Override
   public void update(SavePoint savePoint) {
     String name = savePoint.getName();
     long position = savePoint.getPosition();
-    this.getSqlExecutor().execute(UPDATE_SQL, name, position);
+    this.getSqlExecutor().execute(UPDATE_SQL, name, position, DEFAULT_ID);
+  }
+
+  @Override
+  public SavePoint get() {
+    return this.getSqlExecutor().query(SELECT_SQL, beanHandler, DEFAULT_ID);
   }
 
   @Override
@@ -70,15 +83,5 @@ public class MysqlSavePointDAO extends BasicDAO implements SavePointDAO {
     super.ensureTableExists(TABLE_NAME, SqlReader.readSql(INIT_SQL));
   }
 
-  @Override
-  public void save(SavePoint savePoint) {
-    String name = savePoint.getName();
-    long position = savePoint.getPosition();
-    this.getSqlExecutor().execute(INSERT_SQL, name, position);
-  }
 
-  @Override
-  public SavePoint get() {
-    return this.getSqlExecutor().query(SELECT_SQL, beanHandler);
-  }
 }

@@ -14,7 +14,7 @@ class MysqlTableMonitorTaskDAOTest {
     String tableName = TestHelper.MONITOR_SCAN_TASK;
     String bizTable = "bizTable_xxx";
 
-    scanProcessorDAO.ensureTableExists(tableName);
+    scanProcessorDAO.ensureDestinationExists(tableName);
 
     scanProcessorDAO.clean(tableName, bizTable);
 
@@ -22,7 +22,7 @@ class MysqlTableMonitorTaskDAOTest {
     Assertions.assertNull(tableMonitorTask1);
 
     tableMonitorTask1 = new TableMonitorTask();
-    tableMonitorTask1.setId(bizTable);
+    tableMonitorTask1.setTableName(bizTable);
     tableMonitorTask1.setDataId("dataId-1");
     tableMonitorTask1.setOp(1);
     tableMonitorTask1.setStatus(2);
@@ -36,7 +36,7 @@ class MysqlTableMonitorTaskDAOTest {
     Assertions.assertNotNull(tableMonitorTask2);
     Assertions.assertEquals(tableMonitorTask1, tableMonitorTask2);
 
-    tableMonitorTask2.setId(bizTable);
+    tableMonitorTask2.setTableName(bizTable);
     tableMonitorTask2.setDataId("dataId-1");
     tableMonitorTask2.setOp(11);
     tableMonitorTask2.setStatus(21);

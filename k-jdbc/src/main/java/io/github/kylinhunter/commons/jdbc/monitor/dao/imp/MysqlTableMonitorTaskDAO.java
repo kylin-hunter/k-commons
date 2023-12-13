@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
-import io.github.kylinhunter.commons.jdbc.dao.BasicDAO;
+import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.TableMonitorTaskDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
@@ -27,25 +27,30 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
  * @description
  * @date 2023-12-03 19:50
  */
-public class MysqlTableMonitorTaskDAO extends BasicDAO implements TableMonitorTaskDAO {
+public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements TableMonitorTaskDAO {
 
   private static final String INIT_SQL =
       "io/github/kylinhunter/commons/jdbc/monitor/table-monitor-task.sql";
 
   private static final String INSERT_SQL =
-      "insert into %s" + " (id, data_id, op,status) values(?,?,?,?)";
+      "insert into %s" + " (table_name, data_id, op,status) values(?,?,?,?)";
 
-  private static final String DELETE_SQL = "delete from %s  where id=?";
+  private static final String DELETE_SQL = "delete from %s  where table_name=?";
   private static final String UPDATE_SQL =
-      "update %s" + " set op=?,status=? where id=? and data_id=?";
+      "update %s" + " set op=?,status=? where table_name=? and data_id=?";
 
   private static final String SELECT_SQL =
-      "select  id,  data_id as dataId, op ,status from %s" + " where id=? and data_id=?";
-  private final BeanHandler<TableMonitorTask> beanHandler =
-      new BeanHandler<>(TableMonitorTask.class);
+      "select  table_name as tableName,  data_id as dataId, op ,status from %s" + " where "
+          + "table_name=? " + "and data_id=?";
+  private final BeanHandler<TableMonitorTask> beanHandler = new BeanHandler<>(
+      TableMonitorTask.class);
 
   public MysqlTableMonitorTaskDAO() {
     this(null, true);
+  }
+
+  public MysqlTableMonitorTaskDAO(DataSource dataSource) {
+    super(dataSource, false);
   }
 
   public MysqlTableMonitorTaskDAO(DataSource dataSource, boolean dbConfigEnabled) {
@@ -53,36 +58,36 @@ public class MysqlTableMonitorTaskDAO extends BasicDAO implements TableMonitorTa
   }
 
   /**
-   * @param tableName tableName
+   * @param destination      destination
    * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
    * @author BiJi'an
    * @date 2023-12-09 14:24
    */
-  public void save(String tableName, TableMonitorTask tableMonitorTask) {
-    String sql = String.format(INSERT_SQL, tableName);
+  public void save(String destination, TableMonitorTask tableMonitorTask) {
+    String sql = String.format(INSERT_SQL, destination);
     this.getSqlExecutor()
         .execute(
             sql,
-            tableMonitorTask.getId(),
+            tableMonitorTask.getTableName(),
             tableMonitorTask.getDataId(),
             tableMonitorTask.getOp(),
             tableMonitorTask.getStatus());
   }
 
   /**
-   * @param tableName bizTableName
-   * @param bizTableName scanProcessor
+   * @param destination destination
+   * @param tableName   tableName
    * @title clean
    * @description clean
    * @author BiJi'an
    * @date 2023-12-09 14:44
    */
   @Override
-  public void clean(String tableName, String bizTableName) {
-    String sql = String.format(DELETE_SQL, tableName);
-    this.getSqlExecutor().execute(sql, bizTableName);
+  public void clean(String destination, String tableName) {
+    String sql = String.format(DELETE_SQL, destination);
+    this.getSqlExecutor().execute(sql, tableName);
   }
 
   /**
@@ -93,22 +98,22 @@ public class MysqlTableMonitorTaskDAO extends BasicDAO implements TableMonitorTa
    * @date 2023-12-09 14:24
    */
   @Override
-  public void update(String tableName, TableMonitorTask tableMonitorTask) {
-    String sql = String.format(UPDATE_SQL, tableName);
+  public void update(String destination, TableMonitorTask tableMonitorTask) {
+    String sql = String.format(UPDATE_SQL, destination);
 
     this.getSqlExecutor()
         .execute(
             sql,
             tableMonitorTask.getOp(),
             tableMonitorTask.getStatus(),
-            tableMonitorTask.getId(),
+            tableMonitorTask.getTableName(),
             tableMonitorTask.getDataId());
   }
 
   /**
-   * @param tableName tableName
+   * @param tableName    tableName
    * @param bizTableName bizTableName
-   * @param dataId dataId
+   * @param dataId       dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById
@@ -129,7 +134,7 @@ public class MysqlTableMonitorTaskDAO extends BasicDAO implements TableMonitorTa
    * @date 2023-12-09 14:22
    */
   @Override
-  public void ensureTableExists(String tableName) {
+  public void ensureDestinationExists(String tableName) {
     String creatTableSql = SqlReader.readSql(INIT_SQL);
     creatTableSql = String.format(creatTableSql, tableName);
     super.ensureTableExists(tableName, creatTableSql);

@@ -36,11 +36,11 @@ public class AbstractDatabaseVisitor implements DatabaseVisitor {
 
   @Getter
   protected DbType dbType;
-  private DataSource dataSource;
-
+  @Getter
+  protected DataSource dataSource;
+  @Getter
   protected SqlExecutor sqlExecutor;
 
-  protected boolean dbConfigEnabled;
   @Setter
   protected DataSourceManager dataSourceManager = new DataSourceManager();
 
@@ -48,12 +48,13 @@ public class AbstractDatabaseVisitor implements DatabaseVisitor {
     if (dataSource != null) {
       this.dataSource = dataSource;
       this.sqlExecutor = new SqlExecutor(dataSource);
-    }
-    this.dbConfigEnabled = dbConfigEnabled;
+    } else {
+      if (dbConfigEnabled) {
+        dataSourceManager.init();
+        this.dataSource = dataSourceManager.get();
+        this.sqlExecutor = dataSourceManager.getSqlExecutor();
 
-    if (this.dataSource == null && this.dbConfigEnabled) {
-      dataSourceManager.init();
-      this.dataSource = dataSourceManager.get();
+      }
     }
 
     if (this.dataSource == null) {
@@ -61,41 +62,6 @@ public class AbstractDatabaseVisitor implements DatabaseVisitor {
     }
     DatabaseMeta metaData = this.getDBMetaData();
     this.dbType = metaData.getDbType();
-  }
-
-  /***
-   * @title getDataSource
-   * @description getDataSource
-   * @author BiJi'an
-   * @date 2023-12-03 15:45
-   * @return javax.sql.DataSource
-   */
-  public DataSource getDataSource() {
-    if (dataSource != null) {
-      return dataSource;
-    }
-    if (dbConfigEnabled) {
-      return dataSourceManager.get();
-    }
-    throw new JdbcException("datasource is null");
-  }
-
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
-   * @title getDefaultDataSource
-   * @description getSqlExecutor
-   * @author BiJi'an
-   * @date 2023-12-03 15:45
-   */
-  public SqlExecutor getSqlExecutor() {
-    if (sqlExecutor != null) {
-      return sqlExecutor;
-    }
-
-    if (dbConfigEnabled) {
-      return dataSourceManager.getSqlExecutor();
-    }
-    return null;
   }
 
   /**
@@ -149,5 +115,16 @@ public class AbstractDatabaseVisitor implements DatabaseVisitor {
     } catch (Exception e) {
       throw new JdbcException("getDatabaseMetaData error", e);
     }
+  }
+
+  /**
+   * @title close
+   * @description close
+   * @author BiJi'an
+   * @date 2023-12-14 00:28
+   */
+  public void close() {
+
+    this.dataSourceManager.close();
   }
 }

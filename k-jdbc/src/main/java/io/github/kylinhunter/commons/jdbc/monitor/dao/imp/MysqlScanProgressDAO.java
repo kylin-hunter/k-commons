@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
-import io.github.kylinhunter.commons.jdbc.dao.BasicDAO;
+import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
@@ -27,7 +27,7 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
  * @description
  * @date 2023-12-03 19:50
  */
-public class MysqlScanProgressDAO extends BasicDAO implements ScanProgressDAO {
+public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgressDAO {
 
   private static final String INIT_SQL =
       "io/github/kylinhunter/commons/jdbc/scan/table-scan-progress.sql";
@@ -36,23 +36,26 @@ public class MysqlScanProgressDAO extends BasicDAO implements ScanProgressDAO {
   private static final String INSERT_SQL =
       "insert into "
           + TABLE_NAME
-          + " (id, save_destination, next_scan_time,last_scan_id) values(?,?,?,?)";
+          + " (table_name, save_destination, next_scan_time,last_scan_id) values(?,?,?,?)";
 
   private static final String UPDATE_SQL =
-      "update " + TABLE_NAME + " set next_scan_time=?,last_scan_id=? where id=?";
+      "update " + TABLE_NAME + " set next_scan_time=?,last_scan_id=? where table_name=?";
 
-  private static final String DELETE_SQL = "delete from " + TABLE_NAME + " where id=?";
+  private static final String DELETE_SQL = "delete from " + TABLE_NAME + " where table_name=?";
 
   private static final String SELECT_SQL =
-      "select  id, save_destination saveDestination, "
-          + " next_scan_time nextScanTime,last_scan_id lastScanId  from "
+      "select  table_name as tableName, save_destination as saveDestination, "
+          + " next_scan_time as nextScanTime,last_scan_id lastScanId  from "
           + TABLE_NAME
-          + " where id=?";
+          + " where table_name=?";
   private final BeanHandler<ScanProgress> beanHandler = new BeanHandler<>(ScanProgress.class);
 
   public MysqlScanProgressDAO() {
-
     this(null, true);
+  }
+
+  public MysqlScanProgressDAO(DataSource dataSource) {
+    super(dataSource, false);
   }
 
   public MysqlScanProgressDAO(DataSource dataSource, boolean dbConfigEnabled) {
@@ -61,13 +64,12 @@ public class MysqlScanProgressDAO extends BasicDAO implements ScanProgressDAO {
 
   public void save(ScanProgress scanProgress) {
 
-    this.getSqlExecutor()
-        .execute(
-            INSERT_SQL,
-            scanProgress.getId(),
-            scanProgress.getSaveDestination(),
-            scanProgress.getNextScanTime(),
-            scanProgress.getLastScanId());
+    this.getSqlExecutor().execute(
+        INSERT_SQL,
+        scanProgress.getTableName(),
+        scanProgress.getSaveDestination(),
+        scanProgress.getNextScanTime(),
+        scanProgress.getLastScanId());
   }
 
   @Override
@@ -77,7 +79,7 @@ public class MysqlScanProgressDAO extends BasicDAO implements ScanProgressDAO {
             UPDATE_SQL,
             scanProgress.getNextScanTime(),
             scanProgress.getLastScanId(),
-            scanProgress.getId());
+            scanProgress.getTableName());
   }
 
   /**

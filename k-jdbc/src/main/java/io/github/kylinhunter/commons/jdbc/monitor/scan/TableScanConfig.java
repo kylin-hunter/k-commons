@@ -25,18 +25,17 @@ import lombok.Data;
  * @date 2023-12-10 21:22
  */
 @Data
-public class TableScan {
+public class TableScanConfig {
 
   private String tableName;
   private String tableIdColName;
   private String tableTimeColName;
   private LocalDateTime firstScanTime = LocalDateTime.now().minus(10, ChronoUnit.YEARS);
-
   private String destination = "k_table_monitor_scan_task";
 
   private long scanLimit = 3000;
 
-  private int scanInterval = 1000;
+  private int scanInterval = 3000;
 
   private int scanSameTimeInterval = 100;
 }

@@ -1,26 +1,29 @@
 package io.github.kylinhunter.commons.jdbc.monitor.scan;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
+import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 
 class TableScanManagerTest {
 
   @Test
   void init() {
-    TestHelper.initTestSQl();
-    TableScanManager manager = new TableScanManager();
+    DataSource dataSource = new DataSourceManager(true).get();
+    TestHelper.initTestSQl(dataSource);
+    TableScanManager manager = new TableScanManager(dataSource);
 
-    TableScan tableScan = new TableScan();
-    tableScan.setTableName(TestHelper.TEST_TABLE_ROLE);
-    tableScan.setTableIdColName("id");
-    tableScan.setTableTimeColName("sys_auto_updated");
-    tableScan.setDestination(TestHelper.MONITOR_SCAN_TASK);
-    tableScan.setScanLimit(100);
-    tableScan.setScanInterval(-1);
-    tableScan.setScanSameTimeInterval(100);
-    manager.init(tableScan);
-    manager.clean(tableScan);
-    manager.scan(tableScan);
+    TableScanConfig tableScanConfig = new TableScanConfig();
+    tableScanConfig.setTableName(TestHelper.TEST_TABLE_ROLE);
+    tableScanConfig.setTableIdColName("id");
+    tableScanConfig.setTableTimeColName("sys_auto_updated");
+    tableScanConfig.setDestination(TestHelper.MONITOR_SCAN_TASK);
+    tableScanConfig.setScanLimit(100);
+    tableScanConfig.setScanInterval(-1);
+    tableScanConfig.setScanSameTimeInterval(100);
+    manager.init(tableScanConfig);
+    manager.clean(tableScanConfig);
+    manager.scan(tableScanConfig);
 
 
   }
