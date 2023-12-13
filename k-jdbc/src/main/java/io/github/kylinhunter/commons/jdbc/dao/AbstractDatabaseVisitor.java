@@ -34,15 +34,11 @@ import lombok.Setter;
  */
 public class AbstractDatabaseVisitor implements DatabaseVisitor {
 
-  @Getter
-  protected DbType dbType;
-  @Getter
-  protected DataSource dataSource;
-  @Getter
-  protected SqlExecutor sqlExecutor;
+  @Getter protected DbType dbType;
+  @Getter protected DataSource dataSource;
+  @Getter protected SqlExecutor sqlExecutor;
 
-  @Setter
-  protected DataSourceManager dataSourceManager = new DataSourceManager();
+  @Setter protected DataSourceManager dataSourceManager = new DataSourceManager();
 
   public AbstractDatabaseVisitor(DataSource dataSource, boolean dbConfigEnabled) {
     if (dataSource != null) {
@@ -53,7 +49,6 @@ public class AbstractDatabaseVisitor implements DatabaseVisitor {
         dataSourceManager.init();
         this.dataSource = dataSourceManager.get();
         this.sqlExecutor = dataSourceManager.getSqlExecutor();
-
       }
     }
 

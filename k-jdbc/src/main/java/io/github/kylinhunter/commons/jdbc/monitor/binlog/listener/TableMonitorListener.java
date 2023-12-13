@@ -31,12 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 public class TableMonitorListener extends AbstractBinLogEventListener {
 
   private TableMonitorTaskDAO tableMonitorTaskDAO;
-  @Setter
-  private String destination = "k_table_monitor_binlog_task";
-  @Setter
-  private TableId targetTableId;
-  @Setter
-  private String targetTablePK;
+  @Setter private String destination = "k_table_monitor_binlog_task";
+  @Setter private TableId targetTableId;
+  @Setter private String targetTablePK;
 
   @Override
   public void init(DataSource dataSource) {
@@ -44,6 +41,4 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
     this.tableMonitorTaskDAO = new MysqlTableMonitorTaskDAO(dataSource, false);
     this.tableMonitorTaskDAO.ensureDestinationExists(destination);
   }
-
-
 }

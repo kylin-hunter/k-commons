@@ -47,8 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractBinLogEventListener implements BinLogEventListener {
 
-  @Setter
-  private SavePointManager savePointManager;
+  @Setter private SavePointManager savePointManager;
 
   private Context context;
 
@@ -73,15 +72,12 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
     addEventProcessor(EventType.FORMAT_DESCRIPTION, new FormatDescriptionEventDataProcessor());
     addEventProcessor(EventType.QUERY, new QueryEventDataProcessor());
     this.context = new Context();
-
-
   }
 
   public void addEventProcessor(EventType eventType, BasicEventProcessor eventProcessor) {
 
     eventProcessor.setDatabaseMetaCache(databaseMetaCache);
     processors.put(eventType, eventProcessor);
-
   }
 
   /**
@@ -113,10 +109,9 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
     log.info("@event process end@ header={}", header);
   }
 
-
   /**
    * @param eventHeaderV4 eventHeaderV4
-   * @param data          data
+   * @param data data
    * @title process
    * @description process
    * @author BiJi'an
@@ -131,5 +126,4 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
       log.info("skip event={}", eventType);
     }
   }
-
 }

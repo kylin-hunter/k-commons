@@ -52,7 +52,7 @@ public class RedisExecutor {
   }
 
   /**
-   * @param key   key
+   * @param key key
    * @param value value
    * @return java.lang.String
    * @title set

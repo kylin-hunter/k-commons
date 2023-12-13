@@ -40,10 +40,12 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
       "update %s" + " set op=?,status=? where table_name=? and data_id=?";
 
   private static final String SELECT_SQL =
-      "select  table_name as tableName,  data_id as dataId, op ,status from %s" + " where "
-          + "table_name=? " + "and data_id=?";
-  private final BeanHandler<TableMonitorTask> beanHandler = new BeanHandler<>(
-      TableMonitorTask.class);
+      "select  table_name as tableName,  data_id as dataId, op ,status from %s"
+          + " where "
+          + "table_name=? "
+          + "and data_id=?";
+  private final BeanHandler<TableMonitorTask> beanHandler =
+      new BeanHandler<>(TableMonitorTask.class);
 
   public MysqlTableMonitorTaskDAO() {
     this(null, true);
@@ -58,7 +60,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination      destination
+   * @param destination destination
    * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
@@ -78,7 +80,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param tableName   tableName
+   * @param tableName tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -111,9 +113,9 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param tableName    tableName
+   * @param tableName tableName
    * @param bizTableName bizTableName
-   * @param dataId       dataId
+   * @param dataId dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById

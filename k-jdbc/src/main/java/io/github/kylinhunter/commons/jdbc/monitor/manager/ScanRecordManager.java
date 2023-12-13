@@ -38,7 +38,6 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
 
   private ScanRecordDAO scanRecordDAO;
 
-
   public ScanRecordManager() {
     super(null, true);
     init();
@@ -63,9 +62,8 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
     }
   }
 
-
   /**
-   * @param config       config
+   * @param config config
    * @param scanProgress scanProgress
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanSameTime
@@ -79,7 +77,7 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
 
   /**
    * @param tableScanConfig tableScanConfig
-   * @param startTime       startTime
+   * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime
    * @description scanNextTime
@@ -89,5 +87,4 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
   public List<ScanRecord> scanNextTime(TableScanConfig tableScanConfig, LocalDateTime startTime) {
     return this.scanRecordDAO.scanNextTime(tableScanConfig, startTime);
   }
-
 }

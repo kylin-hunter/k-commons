@@ -38,7 +38,7 @@ public class AbsctractBasicDAO extends AbstractDatabaseVisitor implements BaseDA
   }
 
   /**
-   * @param tableName     tableName
+   * @param tableName tableName
    * @param creatTableSql creatTableSql
    * @title ensureTableExists
    * @description ensureTableExists
@@ -68,6 +68,4 @@ public class AbsctractBasicDAO extends AbstractDatabaseVisitor implements BaseDA
     String sql = String.format(DROP_TABLE_SQL, tableName);
     this.getSqlExecutor().execute(sql);
   }
-
-
 }

@@ -32,8 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RedisSavePointManager implements SavePointManager {
 
-  @Setter
-  private String recentBinLogKey = "binlog_process";
+  @Setter private String recentBinLogKey = "binlog_process";
   private final RedisExecutor redisExecutor;
 
   public RedisSavePointManager(RedisConfig redisConfig) {
@@ -49,7 +48,6 @@ public class RedisSavePointManager implements SavePointManager {
   public void save(SavePoint savePoint) {
     this.redisExecutor.set(recentBinLogKey, savePoint);
     log.info("save point : {}/{}", savePoint.getName(), savePoint.getPosition());
-
   }
 
   @Override

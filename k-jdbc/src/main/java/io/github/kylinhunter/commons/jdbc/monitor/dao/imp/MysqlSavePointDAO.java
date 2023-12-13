@@ -52,7 +52,6 @@ public class MysqlSavePointDAO extends AbsctractBasicDAO implements SavePointDAO
     super(dataSource, false);
   }
 
-
   @Override
   public void save(SavePoint savePoint) {
     String name = savePoint.getName();
@@ -72,11 +71,8 @@ public class MysqlSavePointDAO extends AbsctractBasicDAO implements SavePointDAO
     return this.getSqlExecutor().query(SELECT_SQL, beanHandler, DEFAULT_ID);
   }
 
-
   @Override
   public void ensureTableExists() {
     super.ensureTableExists(TABLE_NAME, SqlReader.readSql(INIT_SQL));
   }
-
-
 }

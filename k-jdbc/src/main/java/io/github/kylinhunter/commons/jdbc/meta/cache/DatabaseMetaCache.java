@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.jdbc.meta.cache;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
@@ -48,8 +63,8 @@ public class DatabaseMetaCache {
   }
 
   /**
-   * @param tableId     tableId
-   * @param tableName   tableName
+   * @param tableId tableId
+   * @param tableName tableName
    * @param forceUpdate forceUpdate
    * @title addTable
    * @description addTable
@@ -64,7 +79,7 @@ public class DatabaseMetaCache {
   }
 
   /**
-   * @param tableId     tableKey
+   * @param tableId tableKey
    * @param forceUpdate forceUpdate
    * @title updateTableMeta
    * @description updateTableMeta
@@ -104,8 +119,5 @@ public class DatabaseMetaCache {
    */
   public ColumnMetas getColumnMetas(TableId tableId) {
     return this.allColumnMetas.get(tableId);
-
   }
-
-
 }

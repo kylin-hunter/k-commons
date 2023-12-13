@@ -46,7 +46,6 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
     super(dataSource, false);
   }
 
-
   public List<ScanRecord> scanSameTime(TableScanConfig config, ScanProgress scanProgress) {
     String sql =
         String.format(
@@ -69,7 +68,7 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
 
   /**
    * @param tableScanConfig tableScanConfig
-   * @param startTime       startTime
+   * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime
    * @description scanNextTime

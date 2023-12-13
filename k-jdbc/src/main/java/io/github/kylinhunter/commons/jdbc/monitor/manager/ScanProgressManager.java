@@ -34,19 +34,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ScanProgressManager extends AbstractDatabaseVisitor {
 
-
   private ScanProgressDAO scanProgressDAO;
 
   public ScanProgressManager() {
     super(null, true);
     init();
-
   }
 
   public ScanProgressManager(DataSource dataSource) {
     super(dataSource, false);
     init();
-
   }
 
   /**
@@ -63,7 +60,6 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
     }
   }
 
-
   /**
    * @title createScanProgress
    * @description createScanProgress
@@ -74,16 +70,20 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
 
     ScanProgress progress = this.scanProgressDAO.findById(config.getId());
     if (progress == null) {
-      progress = new ScanProgress(config.getId(), config.getTableName(),
-          config.getDestination(),
-          config.getFirstScanTime(), "");
+      progress =
+          new ScanProgress(
+              config.getId(),
+              config.getTableName(),
+              config.getDestination(),
+              config.getFirstScanTime(),
+              "");
       this.scanProgressDAO.save(progress);
     }
     return progress;
   }
 
   /**
-   * @param id   id
+   * @param id id
    * @param last last
    * @title update
    * @description update
@@ -94,7 +94,6 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
     ScanProgress scanProgress = new ScanProgress(id, "", last.getTime(), last.getId());
     this.scanProgressDAO.update(scanProgress);
   }
-
 
   /**
    * @title ensureTableExists

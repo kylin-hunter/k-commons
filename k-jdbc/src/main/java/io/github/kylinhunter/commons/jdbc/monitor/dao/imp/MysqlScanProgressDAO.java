@@ -64,13 +64,14 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
 
   public void save(ScanProgress scanProgress) {
 
-    this.getSqlExecutor().execute(
-        INSERT_SQL,
-        scanProgress.getId(),
-        scanProgress.getTableName(),
-        scanProgress.getSaveDestination(),
-        scanProgress.getNextScanTime(),
-        scanProgress.getLastScanId());
+    this.getSqlExecutor()
+        .execute(
+            INSERT_SQL,
+            scanProgress.getId(),
+            scanProgress.getTableName(),
+            scanProgress.getSaveDestination(),
+            scanProgress.getNextScanTime(),
+            scanProgress.getLastScanId());
   }
 
   @Override

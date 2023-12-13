@@ -35,7 +35,6 @@ public class MysqlSavePointManager extends AbstractDatabaseVisitor implements Sa
 
   private final MysqlSavePointDAO mysqlSavePointDAO;
 
-
   public MysqlSavePointManager(DataSource dataSource) {
     super(dataSource, false);
     if (this.dbType == DbType.MYSQL) {

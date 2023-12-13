@@ -32,5 +32,4 @@ public interface ScanRecordDAO extends BaseDAO {
   List<ScanRecord> scanSameTime(TableScanConfig config, ScanProgress scanProgress);
 
   List<ScanRecord> scanNextTime(TableScanConfig tableScanConfig, LocalDateTime startTime);
-
 }

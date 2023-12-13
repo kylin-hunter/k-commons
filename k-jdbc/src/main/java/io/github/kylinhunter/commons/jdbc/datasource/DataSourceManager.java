@@ -111,7 +111,7 @@ public class DataSourceManager {
 
         ExDataSource exDataSource =
             ObjectCreator.create(
-                clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
+                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -258,7 +258,6 @@ public class DataSourceManager {
    * @author BiJi'an
    * @date 2023-12-03 16:54
    */
-
   public void close() {
     for (ExDataSource exDataSource : allDataSources.values()) {
       IOUtil.closeQuietly(exDataSource);
@@ -267,7 +266,7 @@ public class DataSourceManager {
   }
 
   /**
-   * @param jdbcUrl  jdbcUrl
+   * @param jdbcUrl jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource
@@ -285,7 +284,7 @@ public class DataSourceManager {
   }
 
   /**
-   * @param jdbcUrl  jdbcUrl
+   * @param jdbcUrl jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource

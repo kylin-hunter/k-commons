@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event.ex;
 
 import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
@@ -20,12 +35,9 @@ import lombok.Setter;
 public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProcessor {
 
   private TableMonitorTaskManager tableMonitorTaskManager;
-  @Setter
-  private String destination = "k_table_monitor_binlog_task";
-  @Setter
-  private TableId targetTableId;
-  @Setter
-  private String targetTablePK;
+  @Setter private String destination = "k_table_monitor_binlog_task";
+  @Setter private TableId targetTableId;
+  @Setter private String targetTablePK;
 
   @Override
   protected void deleteDataRecord(TableId tableId, DeleteRowsEventData eventData, Context context) {
@@ -59,7 +71,7 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
   }
 
   /**
-   * @param row          row
+   * @param row row
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord
@@ -68,9 +80,11 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
    */
   private void processScanRecord(Serializable[] row, ColumnMeta pkColumnMeta) {
     if (pkColumnMeta.getPos() < row.length) {
-      tableMonitorTaskManager.saveOrUpdate(destination, targetTableId.getName(),
-          String.valueOf(row[pkColumnMeta.getPos()]), RowOP.DELETE);
+      tableMonitorTaskManager.saveOrUpdate(
+          destination,
+          targetTableId.getName(),
+          String.valueOf(row[pkColumnMeta.getPos()]),
+          RowOP.DELETE);
     }
   }
-
 }

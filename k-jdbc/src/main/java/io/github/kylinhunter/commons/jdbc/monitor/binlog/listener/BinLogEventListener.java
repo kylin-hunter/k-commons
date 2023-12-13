@@ -29,5 +29,4 @@ public interface BinLogEventListener extends EventListener {
   void setSavePointManager(SavePointManager savePointManager);
 
   void init(DataSource dataSource);
-
 }

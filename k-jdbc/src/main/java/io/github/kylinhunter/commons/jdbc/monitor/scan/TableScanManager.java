@@ -37,7 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TableScanManager extends AbstractDatabaseVisitor {
 
-
   private ScanProgressManager scanProgressManager;
   private TableMonitorTaskManager tableMonitorTaskManager;
 
@@ -46,13 +45,11 @@ public class TableScanManager extends AbstractDatabaseVisitor {
   public TableScanManager() {
     super(null, true);
     init();
-
   }
 
   public TableScanManager(DataSource dataSource) {
     super(dataSource, false);
     init();
-
   }
 
   private void init() {
@@ -115,7 +112,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
         for (ScanRecord scanRecord : scanRecords) {
           tableMonitorTaskManager.saveOrUpdate(tableScanConfig, scanRecord);
         }
-        
+
         ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
         this.scanProgressManager.update(tableScanConfig.getId(), lastRecord);
       } else {
@@ -124,7 +121,6 @@ public class TableScanManager extends AbstractDatabaseVisitor {
       ThreadHelper.sleep(tableScanConfig.getScanSameTimeInterval(), TimeUnit.MILLISECONDS);
     }
   }
-
 
   /**
    * @param tableScanConfig tableScanConfig
@@ -147,7 +143,6 @@ public class TableScanManager extends AbstractDatabaseVisitor {
       this.scanProgressManager.update(tableScanConfig.getId(), lastRecord);
     }
   }
-
 
   /**
    * @param config config
