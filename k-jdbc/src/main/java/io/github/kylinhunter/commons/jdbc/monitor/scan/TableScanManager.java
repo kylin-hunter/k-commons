@@ -115,6 +115,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
         for (ScanRecord scanRecord : scanRecords) {
           tableMonitorTaskManager.saveOrUpdate(tableScanConfig, scanRecord);
         }
+        
         ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
         this.scanProgressManager.update(tableScanConfig.getId(), lastRecord);
       } else {
