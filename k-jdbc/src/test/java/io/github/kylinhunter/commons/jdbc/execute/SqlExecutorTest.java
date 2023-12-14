@@ -17,9 +17,9 @@ class SqlExecutorTest {
     List<String> sqls = SqlReader.readSqls(
         "io/github/kylinhunter/commons/jdbc/execute/execute.sql");
 
-    sqlExecutor.executeBatch(sqls, false);
+    sqlExecutor.executeBatch(false, sqls);
 
-    sqlExecutor.executeBatch(sqls, true);
+    sqlExecutor.executeBatch(true, sqls);
 
     Connection connection = sqlExecutor.getConnection();
     Assertions.assertFalse(connection.isClosed());

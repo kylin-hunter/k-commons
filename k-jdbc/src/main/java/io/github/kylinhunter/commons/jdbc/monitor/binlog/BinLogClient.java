@@ -17,18 +17,15 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import io.github.kylinhunter.commons.collections.ListUtils;
-import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.BinLogEventListener;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
-import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
 import java.io.IOException;
 import java.util.List;
 import javax.sql.DataSource;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -42,41 +39,23 @@ public class BinLogClient {
   private final BinaryLogClient binaryLogClient;
   private final JdbcUrl jdbcUrl;
 
-  @Setter private SavePointManager savePointManager;
-
   private final DataSource dataSource;
-
+  private final BinLogConfig binLogConfig;
   private final List<BinLogEventListener> eventListeners = ListUtils.newArrayList();
 
-  public BinLogClient(String jdbcUrl, String username, String password) {
-    this(JdbcUtils.parse(jdbcUrl), username, password);
-  }
 
-  public BinLogClient(String hostname, int port, String schema, String username, String password) {
-    this(new JdbcUrl(hostname, port, schema), username, password);
-  }
-
-  public BinLogClient(JdbcUrl jdbcUrl, String username, String password) {
-    this.jdbcUrl = jdbcUrl;
-    this.binaryLogClient =
-        new BinaryLogClient(
-            jdbcUrl.getHost(), jdbcUrl.getPort(), jdbcUrl.getDatabase(), username, password);
-    this.dataSource = DataSourceManager.createDataSource(jdbcUrl, username, password);
+  public BinLogClient(BinLogConfig config) {
+    this.binLogConfig = config;
+    this.jdbcUrl = config.getJdbcUrl();
+    String username = config.getUsername();
+    String password = config.getPassword();
+    this.binaryLogClient = new BinaryLogClient(jdbcUrl.getHost(), jdbcUrl.getPort(),
+        jdbcUrl.getDatabase(), username, password);
+    this.dataSource = DataSourceManager.createDataSource(config.getUrl(), username, password);
   }
 
   public void addBinLogEventListener(BinLogEventListener binLogEventListener) {
     this.eventListeners.add(binLogEventListener);
-  }
-
-  /**
-   * @param binlogFilename binlogFilename
-   * @title setBinlogFilename
-   * @description setBinlogFilename
-   * @author BiJi'an
-   * @date 2023-11-28 23:24
-   */
-  public void setBinlogFilename(String binlogFilename) {
-    this.binaryLogClient.setBinlogFilename(binlogFilename);
   }
 
   /**
@@ -91,17 +70,6 @@ public class BinLogClient {
   }
 
   /**
-   * @param serverId serverId
-   * @title setServerId
-   * @description setServerId
-   * @author BiJi'an
-   * @date 2023-11-28 23:24
-   */
-  public void setServerId(long serverId) {
-    this.binaryLogClient.setServerId(serverId);
-  }
-
-  /**
    * @title start
    * @description start
    * @author BiJi'an
@@ -109,9 +77,10 @@ public class BinLogClient {
    */
   public void start() {
     try {
-      ThrowChecker.checkNotNull(savePointManager, "savePointManager can't be null");
+      SavePointManager savePointManager = binLogConfig.getSavePointManager();
       savePointManager.init(this.jdbcUrl);
-
+      binaryLogClient.setBinlogFilename(binLogConfig.getBinlogFilename());
+      binaryLogClient.setBinlogPosition(binLogConfig.getBinlogPosition());
       SavePoint savePoint = savePointManager.get();
       if (savePoint != null && savePoint.getPosition() >= 0) {
         binaryLogClient.setBinlogFilename(savePoint.getName());

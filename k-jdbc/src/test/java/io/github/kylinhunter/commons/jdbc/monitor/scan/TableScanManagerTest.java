@@ -16,12 +16,11 @@ class TableScanManagerTest {
     TableScanConfig tableScanConfig = new TableScanConfig();
     tableScanConfig.setId("2");
     tableScanConfig.setTableName(TestHelper.TEST_TABLE_ROLE);
-    tableScanConfig.setTableIdColName("id");
-    tableScanConfig.setTableTimeColName("sys_auto_updated");
+    tableScanConfig.setTablePkName("id");
+    tableScanConfig.setTableTimeName("sys_auto_updated");
     tableScanConfig.setDestination(TestHelper.MONITOR_SCAN_TASK);
     tableScanConfig.setScanLimit(100);
     tableScanConfig.setScanInterval(-1);
-    tableScanConfig.setScanSameTimeInterval(100);
     manager.init(tableScanConfig);
     manager.clean(tableScanConfig);
     manager.scan(tableScanConfig);

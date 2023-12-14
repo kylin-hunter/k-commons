@@ -47,7 +47,7 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param tableName tableName
+   * @param tableName   tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -69,20 +69,20 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param id id
-   * @param rowOP rowOP
+   * @param dataId      dataId
+   * @param rowOP       rowOP
    * @title saveOrUpdate
    * @description saveOrUpdate
    * @author BiJi'an
    * @date 2023-12-12 01:43
    */
-  public void saveOrUpdate(String destination, String targetTable, String id, RowOP rowOP) {
+  public void saveOrUpdate(String destination, String targetTable, String dataId, RowOP rowOP) {
     TableMonitorTask tableMonitorTask =
-        this.tableMonitorTaskDAO.findById(destination, targetTable, id);
+        this.tableMonitorTaskDAO.findById(destination, targetTable, dataId);
     if (tableMonitorTask == null) {
       tableMonitorTask = new TableMonitorTask();
       tableMonitorTask.setTableName(targetTable);
-      tableMonitorTask.setDataId(id);
+      tableMonitorTask.setDataId(dataId);
       tableMonitorTask.setStatus(MonitorStatus.WAIT.getCode());
       tableMonitorTask.setOp(rowOP.getCode());
       this.tableMonitorTaskDAO.save(destination, tableMonitorTask);
@@ -95,7 +95,7 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param tableScanConfig tableScanConfig
-   * @param scanRecord scanRecord
+   * @param scanRecord      scanRecord
    * @title saveOrUpdate
    * @description saveOrUpdate
    * @author BiJi'an

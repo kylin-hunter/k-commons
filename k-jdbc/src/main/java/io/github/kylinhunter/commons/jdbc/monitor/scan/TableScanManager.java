@@ -107,7 +107,9 @@ public class TableScanManager extends AbstractDatabaseVisitor {
 
       ScanProgress scanProgress = scanProgressManager.getLatestScanProgress(tableScanConfig);
       List<ScanRecord> scanRecords = scanRecordManager.scanSameTime(tableScanConfig, scanProgress);
-      if (scanRecords.size() > 0) {
+      if (scanRecords.size() == 0) {
+        break;
+      } else {
         scanRecords.forEach(scanRecord -> log.info(" process same time data:" + scanRecord));
         for (ScanRecord scanRecord : scanRecords) {
           tableMonitorTaskManager.saveOrUpdate(tableScanConfig, scanRecord);
@@ -115,10 +117,8 @@ public class TableScanManager extends AbstractDatabaseVisitor {
 
         ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
         this.scanProgressManager.update(tableScanConfig.getId(), lastRecord);
-      } else {
-        break;
       }
-      ThreadHelper.sleep(tableScanConfig.getScanSameTimeInterval(), TimeUnit.MILLISECONDS);
+      ThreadHelper.sleep(tableScanConfig.getScanInterval(), TimeUnit.MILLISECONDS);
     }
   }
 

@@ -41,7 +41,7 @@ public class RotateEventDataProcessor extends BasicEventProcessor {
       RotateEventData eventData = (RotateEventData) data;
       String binlogFilename = eventData.getBinlogFilename();
       long binlogPosition = eventData.getBinlogPosition();
-      context.setBinLogName(binlogFilename);
+      context.setBinLogFilename(binlogFilename);
       log.info("binlog={},position={}", binlogFilename, binlogPosition);
     }
   }

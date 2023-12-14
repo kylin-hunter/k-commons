@@ -75,15 +75,15 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
               config.getId(),
               config.getTableName(),
               config.getDestination(),
-              config.getFirstScanTime(),
-              "");
+              config.getInitScanTime(),
+              config.getInitScanId());
       this.scanProgressDAO.save(progress);
     }
     return progress;
   }
 
   /**
-   * @param id id
+   * @param id   id
    * @param last last
    * @title update
    * @description update

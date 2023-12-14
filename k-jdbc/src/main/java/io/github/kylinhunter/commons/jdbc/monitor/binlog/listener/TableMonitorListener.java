@@ -15,9 +15,12 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
 
-import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.TableMonitorTaskDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlTableMonitorTaskDAO;
+import com.github.shyiko.mysql.binlog.event.EventType;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event.ex.MonitorDeleteRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event.ex.MonitorUpdateRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event.ex.MonitorWriteRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
 import javax.sql.DataSource;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,17 +31,26 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-11-25 02:56
  */
 @Slf4j
-public class TableMonitorListener extends AbstractBinLogEventListener {
+public class TableMonitorListener extends AbstractBinLogEventListener<TableMonitorContext> {
 
-  private TableMonitorTaskDAO tableMonitorTaskDAO;
-  @Setter private String destination = "k_table_monitor_binlog_task";
-  @Setter private TableId targetTableId;
-  @Setter private String targetTablePK;
+  @Setter
+  private TableMonitorConfig tableBinlogConfig;
 
   @Override
   public void init(DataSource dataSource) {
     super.init(dataSource);
-    this.tableMonitorTaskDAO = new MysqlTableMonitorTaskDAO(dataSource, false);
-    this.tableMonitorTaskDAO.ensureDestinationExists(destination);
+    TableMonitorTaskManager tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
+    this.context = new TableMonitorContext();
+    this.context.setTableMonitorTaskManager(tableMonitorTaskManager);
+    this.context.setTableMonitorConfig(tableBinlogConfig);
+
+    tableMonitorTaskManager.ensureDestinationExists(tableBinlogConfig.getDestination());
+
+    addEventProcessor(EventType.EXT_WRITE_ROWS, new MonitorWriteRowsEventDataProcessor());
+    addEventProcessor(EventType.EXT_DELETE_ROWS, new MonitorDeleteRowsEventDataProcessor());
+    addEventProcessor(EventType.EXT_UPDATE_ROWS, new MonitorUpdateRowsEventDataProcessor());
+
   }
+
+
 }

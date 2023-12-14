@@ -11,7 +11,7 @@ class SqlReaderTest {
   void read() {
 
     List<String> sqlLines = SqlReader.readSqls(
-        "io/github/kylinhunter/commons/jdbc/test.sql");
+        "io/github/kylinhunter/commons/jdbc/test_data.sql");
 
     System.out.println(sqlLines.get(0));
     assertEquals(8, sqlLines.size());

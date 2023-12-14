@@ -50,14 +50,14 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
     String sql =
         String.format(
             SAME_SQL,
-            config.getTableIdColName(),
-            config.getTableTimeColName(),
+            config.getTablePkName(),
+            config.getTableTimeName(),
             config.getTableName(),
-            config.getTableTimeColName(),
-            config.getTableTimeColName(),
-            config.getTableIdColName(),
-            config.getTableTimeColName(),
-            config.getTableIdColName());
+            config.getTableTimeName(),
+            config.getTableTimeName(),
+            config.getTablePkName(),
+            config.getTableTimeName(),
+            config.getTablePkName());
     LocalDateTime endTime = LocalDateTime.now().minus(3, ChronoUnit.SECONDS);
 
     LocalDateTime nextScanTime = scanProgress.getNextScanTime();
@@ -67,7 +67,7 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
   }
 
   /**
-   * @param tableScanConfig tableScanConfig
+   * @param config    config
    * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime
@@ -75,19 +75,20 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
    * @author BiJi'an
    * @date 2023-12-13 22:49
    */
-  public List<ScanRecord> scanNextTime(TableScanConfig tableScanConfig, LocalDateTime startTime) {
+  public List<ScanRecord> scanNextTime(TableScanConfig config, LocalDateTime startTime) {
+
     String sql =
         String.format(
             NEXT_SQL,
-            tableScanConfig.getTableIdColName(),
-            tableScanConfig.getTableTimeColName(),
-            tableScanConfig.getTableName(),
-            tableScanConfig.getTableTimeColName(),
-            tableScanConfig.getTableTimeColName(),
-            tableScanConfig.getTableTimeColName(),
-            tableScanConfig.getTableIdColName());
+            config.getTablePkName(),
+            config.getTableTimeName(),
+            config.getTableName(),
+            config.getTableTimeName(),
+            config.getTableTimeName(),
+            config.getTableTimeName(),
+            config.getTablePkName());
     LocalDateTime endTime = LocalDateTime.now().minus(3, ChronoUnit.SECONDS);
 
-    return sqlExecutor.query(sql, beanHandler, startTime, endTime, tableScanConfig.getScanLimit());
+    return sqlExecutor.query(sql, beanHandler, startTime, endTime, config.getScanLimit());
   }
 }

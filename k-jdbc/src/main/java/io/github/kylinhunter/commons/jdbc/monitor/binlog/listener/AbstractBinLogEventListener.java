@@ -45,11 +45,13 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-11-25 02:56
  */
 @Slf4j
-public abstract class AbstractBinLogEventListener implements BinLogEventListener {
+public abstract class AbstractBinLogEventListener<T extends Context> implements
+    BinLogEventListener {
 
-  @Setter private SavePointManager savePointManager;
+  @Setter
+  private SavePointManager savePointManager;
 
-  private Context context;
+  protected T context;
 
   private final Map<EventType, EventProcessor> processors = MapUtils.newHashMap();
 
@@ -66,12 +68,12 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
     this.databaseMetaCache = new DatabaseMetaCache(dataSource);
     addEventProcessor(EventType.ROTATE, new RotateEventDataProcessor());
     addEventProcessor(EventType.TABLE_MAP, new TableMapEventDataProcessor());
-    addEventProcessor(EventType.WRITE_ROWS, new WriteRowsEventDataProcessor());
-    addEventProcessor(EventType.DELETE_ROWS, new DeleteRowsEventDataProcessor());
-    addEventProcessor(EventType.UPDATE_ROWS, new UpdateRowsEventDataProcessor());
+    addEventProcessor(EventType.EXT_WRITE_ROWS, new WriteRowsEventDataProcessor());
+    addEventProcessor(EventType.EXT_DELETE_ROWS, new DeleteRowsEventDataProcessor());
+    addEventProcessor(EventType.EXT_UPDATE_ROWS, new UpdateRowsEventDataProcessor());
     addEventProcessor(EventType.FORMAT_DESCRIPTION, new FormatDescriptionEventDataProcessor());
     addEventProcessor(EventType.QUERY, new QueryEventDataProcessor());
-    this.context = new Context();
+
   }
 
   public void addEventProcessor(EventType eventType, BasicEventProcessor eventProcessor) {
@@ -97,7 +99,7 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
       EventHeaderV4 headerV4 = (EventHeaderV4) header;
       long nextPosition = headerV4.getNextPosition();
       processEvent(headerV4, data);
-      String binLogName = context.getBinLogName();
+      String binLogName = context.getBinLogFilename();
       if (!StringUtil.isEmpty(binLogName) && nextPosition >= 0) {
         savePointManager.save(new SavePoint(binLogName, nextPosition));
       } else {
@@ -111,7 +113,7 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
 
   /**
    * @param eventHeaderV4 eventHeaderV4
-   * @param data data
+   * @param data          data
    * @title process
    * @description process
    * @author BiJi'an

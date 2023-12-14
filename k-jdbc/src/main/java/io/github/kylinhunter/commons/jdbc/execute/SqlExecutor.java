@@ -33,7 +33,8 @@ import org.apache.commons.dbutils.ResultSetHandler;
 @RequiredArgsConstructor
 public class SqlExecutor {
 
-  @Getter private QueryRunner queryRunner;
+  @Getter
+  private QueryRunner queryRunner;
   private DataSource dataSource;
 
   public SqlExecutor(DataSource dataSource) {
@@ -42,7 +43,7 @@ public class SqlExecutor {
   }
 
   /**
-   * @param sql sql
+   * @param sql    sql
    * @param params params
    * @return int
    * @title execute
@@ -59,8 +60,8 @@ public class SqlExecutor {
   }
 
   /**
-   * @param sql sql
-   * @param rsh rsh
+   * @param sql    sql
+   * @param rsh    rsh
    * @param params params
    * @return T
    * @title query
@@ -98,9 +99,9 @@ public class SqlExecutor {
    * @author BiJi'an
    * @date 2023-11-29 00:45
    */
-  public void executeBatch(List<String> sqlLines, boolean isTransaction) {
+  public void executeBatch(boolean transaction, List<String> sqlLines) {
     try {
-      if (isTransaction) {
+      if (transaction) {
 
         try (Connection connection = this.getConnection()) {
           connection.setAutoCommit(false);

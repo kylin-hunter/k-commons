@@ -47,7 +47,7 @@ public class WriteRowsEventDataProcessor extends BasicEventProcessor {
   }
 
   /**
-   * @param tableId tableKey
+   * @param tableId            tableKey
    * @param writeRowsEventData writeRowsEventData
    * @title insertEvent
    * @description insertEvent
@@ -55,5 +55,6 @@ public class WriteRowsEventDataProcessor extends BasicEventProcessor {
    * @date 2023-12-10 01:08
    */
   protected void insertDataRecord(
-      TableId tableId, WriteRowsEventData writeRowsEventData, Context context) {}
+      TableId tableId, WriteRowsEventData writeRowsEventData, Context context) {
+  }
 }

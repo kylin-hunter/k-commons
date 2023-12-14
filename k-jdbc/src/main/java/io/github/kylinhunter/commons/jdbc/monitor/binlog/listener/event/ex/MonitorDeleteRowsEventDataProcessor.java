@@ -19,13 +19,14 @@ import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.Context;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorContext;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event.DeleteRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
 import java.io.Serializable;
 import java.util.List;
-import lombok.Setter;
 
 /**
  * @author BiJi'an
@@ -34,24 +35,22 @@ import lombok.Setter;
  */
 public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProcessor {
 
-  private TableMonitorTaskManager tableMonitorTaskManager;
-  @Setter private String destination = "k_table_monitor_binlog_task";
-  @Setter private TableId targetTableId;
-  @Setter private String targetTablePK;
 
   @Override
   protected void deleteDataRecord(TableId tableId, DeleteRowsEventData eventData, Context context) {
-    if (!this.targetTableId.equals(tableId)) {
+    TableMonitorContext tableMonitorContext = (TableMonitorContext) context;
+    String tableName = tableMonitorContext.getTableMonitorConfig().getTableName();
+    if (!tableName.equals(tableId.getName())) {
       return;
     }
 
-    ColumnMeta pkColumnMeta = getPkColumnMeta(context);
+    ColumnMeta pkColumnMeta = getPkColumnMeta(tableMonitorContext);
     if (pkColumnMeta == null) {
       return;
     }
     List<Serializable[]> rows = eventData.getRows();
     for (Serializable[] row : rows) {
-      processScanRecord(row, pkColumnMeta);
+      processScanRecord(tableMonitorContext, row, pkColumnMeta);
     }
   }
 
@@ -62,27 +61,35 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
    * @author BiJi'an
    * @date 2023-12-12 01:18
    */
-  private ColumnMeta getPkColumnMeta(Context context) {
-    ColumnMetas columnMetas = databaseMetaCache.getColumnMetas(targetTableId);
+  private ColumnMeta getPkColumnMeta(TableMonitorContext context) {
+    TableMonitorConfig tableMonitorConfig = context.getTableMonitorConfig();
+    String database = tableMonitorConfig.getDatabase();
+    String tableName = tableMonitorConfig.getTableName();
+    String tablePkName = tableMonitorConfig.getTablePkName();
+    TableId tableId = new TableId(database, tableName);
+    ColumnMetas columnMetas = databaseMetaCache.getColumnMetas(tableId);
     if (columnMetas != null) {
-      return columnMetas.getByName(targetTablePK);
+      return columnMetas.getByName(tablePkName);
     }
     return null;
   }
 
   /**
-   * @param row row
+   * @param row          row
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord
    * @author BiJi'an
    * @date 2023-12-12 01:42
    */
-  private void processScanRecord(Serializable[] row, ColumnMeta pkColumnMeta) {
+  private void processScanRecord(TableMonitorContext tableMonitorContext, Serializable[] row,
+      ColumnMeta pkColumnMeta) {
+    TableMonitorTaskManager tableMonitorTaskManager = tableMonitorContext.getTableMonitorTaskManager();
+    TableMonitorConfig tableMonitorConfig = tableMonitorContext.getTableMonitorConfig();
     if (pkColumnMeta.getPos() < row.length) {
       tableMonitorTaskManager.saveOrUpdate(
-          destination,
-          targetTableId.getName(),
+          tableMonitorConfig.getDestination(),
+          tableMonitorConfig.getTableName(),
           String.valueOf(row[pkColumnMeta.getPos()]),
           RowOP.DELETE);
     }

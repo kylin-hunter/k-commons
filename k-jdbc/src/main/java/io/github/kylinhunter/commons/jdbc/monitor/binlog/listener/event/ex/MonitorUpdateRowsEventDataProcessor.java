@@ -19,14 +19,15 @@ import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.Context;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorContext;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event.UpdateRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map.Entry;
-import lombok.Setter;
 
 /**
  * @author BiJi'an
@@ -35,24 +36,23 @@ import lombok.Setter;
  */
 public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProcessor {
 
-  private TableMonitorTaskManager tableMonitorTaskManager;
-  @Setter private String destination = "k_table_monitor_binlog_task";
-  @Setter private TableId targetTableId;
-  @Setter private String targetTablePK;
 
   @Override
   protected void updateDataRecord(TableId tableId, UpdateRowsEventData eventData, Context context) {
-    if (!this.targetTableId.equals(tableId)) {
+    TableMonitorContext tableMonitorContext = (TableMonitorContext) context;
+    TableMonitorConfig tableMonitorConfig = tableMonitorContext.getTableMonitorConfig();
+    String tableName = tableMonitorConfig.getTableName();
+    if (!tableName.equals(tableId.getName())) {
       return;
     }
 
-    ColumnMeta pkColumnMeta = getPkColumnMeta(context);
+    ColumnMeta pkColumnMeta = getPkColumnMeta(tableMonitorContext);
     if (pkColumnMeta == null) {
       return;
     }
     List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
     for (Entry<Serializable[], Serializable[]> row : rows) {
-      processScanRecord(row.getValue(), pkColumnMeta);
+      processScanRecord(tableMonitorContext, row.getValue(), pkColumnMeta);
     }
   }
 
@@ -63,27 +63,35 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
    * @author BiJi'an
    * @date 2023-12-12 01:18
    */
-  private ColumnMeta getPkColumnMeta(Context context) {
-    ColumnMetas columnMetas = databaseMetaCache.getColumnMetas(targetTableId);
+  private ColumnMeta getPkColumnMeta(TableMonitorContext context) {
+    TableMonitorConfig tableMonitorConfig = context.getTableMonitorConfig();
+    String database = tableMonitorConfig.getDatabase();
+    String tableName = tableMonitorConfig.getTableName();
+    String tablePkName = tableMonitorConfig.getTablePkName();
+    TableId tableId = new TableId(database, tableName);
+    ColumnMetas columnMetas = databaseMetaCache.getColumnMetas(tableId);
     if (columnMetas != null) {
-      return columnMetas.getByName(targetTablePK);
+      return columnMetas.getByName(tablePkName);
     }
     return null;
   }
 
   /**
-   * @param row row
+   * @param row          row
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord
    * @author BiJi'an
    * @date 2023-12-12 01:42
    */
-  private void processScanRecord(Serializable[] row, ColumnMeta pkColumnMeta) {
+  private void processScanRecord(TableMonitorContext context, Serializable[] row,
+      ColumnMeta pkColumnMeta) {
+    TableMonitorTaskManager tableMonitorTaskManager = context.getTableMonitorTaskManager();
+    TableMonitorConfig tableMonitorConfig = context.getTableMonitorConfig();
     if (pkColumnMeta.getPos() < row.length) {
       tableMonitorTaskManager.saveOrUpdate(
-          destination,
-          targetTableId.getName(),
+          tableMonitorConfig.getDestination(),
+          tableMonitorConfig.getTableName(),
           String.valueOf(row[pkColumnMeta.getPos()]),
           RowOP.UPDATE);
     }

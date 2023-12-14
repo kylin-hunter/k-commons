@@ -34,7 +34,7 @@ class CodeGeneratorTest {
 
     SqlExecutor defaultSqlExecutor = dataSourceManager.getSqlExecutor();
 
-    defaultSqlExecutor.executeBatch(sqls, true);
+    defaultSqlExecutor.executeBatch(true, sqls);
     dataSourceManager.close();
 
   }

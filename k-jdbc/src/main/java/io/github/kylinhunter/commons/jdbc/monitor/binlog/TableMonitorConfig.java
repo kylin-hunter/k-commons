@@ -13,17 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import lombok.Data;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-13 00:51
+ * @date 2023-12-10 21:22
  */
 @Data
-public class Context {
+public class TableMonitorConfig {
 
-  private String binLogFilename;
+  private String id = "1";
+  private String database;
+  private String tableName;
+  private String tablePkName;
+  private String destination = "k_table_monitor_binlog_task";
+
+
 }
