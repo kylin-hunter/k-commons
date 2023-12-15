@@ -24,6 +24,7 @@ public class TableReaderTest {
     Map<String, Object> rawMetadatas = tableMeta.getRawMetadatas();
     rawMetadatas.forEach((k, v) -> System.out.println(k + ":" + v));
 
+    Assertions.assertTrue(tableMeta.equals(TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE));
   }
 
 

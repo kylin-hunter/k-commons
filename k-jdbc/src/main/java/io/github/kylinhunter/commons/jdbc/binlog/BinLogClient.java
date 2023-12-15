@@ -58,7 +58,6 @@ public class BinLogClient {
     this.eventListeners.add(binLogEventListener);
   }
 
-
   /**
    * @title start
    * @description start

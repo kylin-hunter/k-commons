@@ -50,7 +50,7 @@ public abstract class AbstractBinLogEventListener<T extends Context>
 
   @Setter private SavePointManager savePointManager;
 
-  protected T context;
+  @Setter protected T context;
 
   private final Map<EventType, EventProcessor> processors = MapUtils.newHashMap();
 
