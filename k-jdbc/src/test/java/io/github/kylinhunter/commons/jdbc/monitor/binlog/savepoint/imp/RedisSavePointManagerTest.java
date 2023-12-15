@@ -5,10 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.JdkRedisCodec;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.JsonRedisCodec;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.RedisConfig;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.dao.entity.SavePoint;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JsonRedisCodec;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import org.junit.jupiter.api.Test;
 

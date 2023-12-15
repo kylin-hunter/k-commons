@@ -30,7 +30,7 @@ import javax.sql.DataSource;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-13 16:06
+ * @date 2023-12-16 16:06
  */
 public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
@@ -47,11 +47,11 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param tableName   tableName
+   * @param tableName tableName
    * @title clean
    * @description clean
    * @author BiJi'an
-   * @date 2023-12-13 16:15
+   * @date 2023-12-16 16:15
    */
   public void clean(String destination, String tableName) {
     tableMonitorTaskDAO.clean(destination, tableName);
@@ -69,8 +69,8 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param dataId      dataId
-   * @param rowOP       rowOP
+   * @param dataId dataId
+   * @param rowOP rowOP
    * @title saveOrUpdate
    * @description saveOrUpdate
    * @author BiJi'an
@@ -95,11 +95,11 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param tableScanConfig tableScanConfig
-   * @param scanRecord      scanRecord
+   * @param scanRecord scanRecord
    * @title saveOrUpdate
    * @description saveOrUpdate
    * @author BiJi'an
-   * @date 2023-12-13 23:44
+   * @date 2023-12-16 23:44
    */
   public void saveOrUpdate(TableScanConfig tableScanConfig, ScanRecord scanRecord) {
     this.saveOrUpdate(

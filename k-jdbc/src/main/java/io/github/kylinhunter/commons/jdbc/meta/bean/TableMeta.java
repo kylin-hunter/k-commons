@@ -32,8 +32,9 @@ import lombok.ToString;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TableMeta {
 
-  @Include private TableId tableId;
+  @Include private String database; // column name
 
+  @Include String name; // c1olumn name
   /*
    * the raw metadata of table
    */
@@ -41,31 +42,22 @@ public class TableMeta {
 
   private String remarks; // column remarks
 
-  /**
-   * @param tableName tableName
-   * @title setTableName
-   * @description setTableName
-   * @author BiJi'an
-   * @date 2023-12-12 01:02
-   */
-  public void setTableName(String tableName) {
-    if (tableId == null) {
-      tableId = new TableId();
-    }
-    tableId.setName(tableName);
+  public Map<String, Object> getRawMetadatas() {
+    return rawMetadatas != null ? rawMetadatas : MapUtils.newHashMap();
   }
 
   /**
    * @param database database
-   * @title setDatabase
-   * @description setDatabase
+   * @param name name
+   * @title equals
+   * @description equals
    * @author BiJi'an
-   * @date 2023-12-12 01:02
+   * @date 2023-12-15 22:40
    */
-  public void setDatabase(String database) {
-    if (tableId == null) {
-      tableId = new TableId();
-    }
-    tableId.setDatabase(database);
+  public boolean equals(String database, String name) {
+    return this.database != null
+        && this.name != null
+        && this.database.equals(database)
+        && this.name.equals(name);
   }
 }

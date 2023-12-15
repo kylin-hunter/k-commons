@@ -1,8 +1,8 @@
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.redis;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.RedisConfig;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.RedisExecutor;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
 import org.junit.jupiter.api.Test;
 
 class RedisExecutorTest {

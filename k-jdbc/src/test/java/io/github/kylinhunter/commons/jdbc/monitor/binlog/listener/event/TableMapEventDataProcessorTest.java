@@ -2,6 +2,7 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event;
 
 import com.github.shyiko.mysql.binlog.event.EventData;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.event.TableMapEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.meta.cache.DatabaseMetaCache;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

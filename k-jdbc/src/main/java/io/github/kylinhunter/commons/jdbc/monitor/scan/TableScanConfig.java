@@ -38,5 +38,4 @@ public class TableScanConfig {
 
   private long scanLimit = 3000;
   private int scanInterval = 1000;
-
 }

@@ -264,7 +264,8 @@ subprojects {
 //            importOrder()
 //            removeUnusedImports()
             googleJavaFormat()
-            licenseHeaderFile "$rootProject.rootDir/spotless.license-java"
+//            formatAnnotations()
+            licenseHeaderFile "$rootProject.rootDir/script/spotless/spotless.license-java"
         }
     }
 

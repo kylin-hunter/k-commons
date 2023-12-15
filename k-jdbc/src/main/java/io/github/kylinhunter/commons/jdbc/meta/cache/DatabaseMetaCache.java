@@ -17,8 +17,8 @@ package io.github.kylinhunter.commons.jdbc.meta.cache;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
+import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
-import io.github.kylinhunter.commons.jdbc.meta.bean.TableId;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
@@ -29,14 +29,13 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-13 00:06
+ * @date 2023-12-16 00:06
  */
 @Slf4j
 public class DatabaseMetaCache {
 
-  protected final Map<Long, TableId> tables = MapUtils.newHashMap();
-  protected final Map<TableId, TableMeta> tableMetas = MapUtils.newHashMap();
-  protected final Map<TableId, ColumnMetas> allColumnMetas = MapUtils.newHashMap();
+  protected final Map<Long, TableMeta> tableMetas = MapUtils.newHashMap();
+  protected final Map<Long, ColumnMetas> tableColumnMetas = MapUtils.newHashMap();
   protected DatabaseMetaReader databaseMetaReader;
   private final TableReader tableReader;
   private final ColumnReader columnReader;
@@ -51,18 +50,6 @@ public class DatabaseMetaCache {
   }
 
   /**
-   * @param id id
-   * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableId
-   * @title get
-   * @description get
-   * @author BiJi'an
-   * @date 2023-12-13 00:16
-   */
-  public TableId get(long id) {
-    return tables.get(id);
-  }
-
-  /**
    * @param tableId tableId
    * @param tableName tableName
    * @param forceUpdate forceUpdate
@@ -73,40 +60,36 @@ public class DatabaseMetaCache {
    */
   public void updateTableCache(
       Long tableId, String database, String tableName, boolean forceUpdate) {
-    TableId tableKey = new TableId(database, tableName);
-    tables.put(tableId, tableKey);
-    updateTableCache(tableKey, forceUpdate);
-  }
-
-  /**
-   * @param tableId tableKey
-   * @param forceUpdate forceUpdate
-   * @title updateTableMeta
-   * @description updateTableMeta
-   * @author BiJi'an
-   * @date 2023-12-09 23:29
-   */
-  public void updateTableCache(TableId tableId, boolean forceUpdate) {
 
     TableMeta tableMeta = tableMetas.get(tableId);
     if (tableMeta == null || forceUpdate) {
-      tableMeta =
-          tableReader.getTableMetaData(this.dataSource, tableId.getDatabase(), tableId.getName());
+      tableMeta = tableReader.getTableMetaData(this.dataSource, database, tableName);
       if (tableMeta != null) {
         tableMetas.put(tableId, tableMeta);
         log.info("############# updateTableMeta={}", tableMeta);
       }
     }
 
-    ColumnMetas columnMetas = this.allColumnMetas.get(tableId);
+    ColumnMetas columnMetas = this.tableColumnMetas.get(tableId);
     if (columnMetas == null || forceUpdate) {
-      columnMetas =
-          columnReader.getColumnMetaData(this.dataSource, tableId.getDatabase(), tableId.getName());
+      columnMetas = columnReader.getColumnMetaData(this.dataSource, database, tableName);
       if (columnMetas != null) {
-        this.allColumnMetas.put(tableId, columnMetas);
+        this.tableColumnMetas.put(tableId, columnMetas);
         log.info("############# updateColumnMeta={}", columnMetas);
       }
     }
+  }
+
+  /**
+   * @param tableId tableId
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
+   * @title getTableMeta
+   * @description getTableMeta
+   * @author BiJi'an
+   * @date 2023-12-15 21:10
+   */
+  public TableMeta getTableMeta(long tableId) {
+    return this.tableMetas.get(tableId);
   }
 
   /**
@@ -115,9 +98,34 @@ public class DatabaseMetaCache {
    * @title getColumnMetas
    * @description getColumnMetas
    * @author BiJi'an
-   * @date 2023-12-13 00:57
+   * @date 2023-12-16 00:57
    */
-  public ColumnMetas getColumnMetas(TableId tableId) {
-    return this.allColumnMetas.get(tableId);
+  public ColumnMetas getColumnMetas(long tableId) {
+    return this.tableColumnMetas.get(tableId);
+  }
+
+  /**
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta
+   * @title getPkColumnMeta
+   * @description getPkColumnMeta
+   * @author BiJi'an
+   * @date 2023-12-16 14:24
+   */
+  public ColumnMeta getPkColumnMeta(
+      long tableId, String database, String tableName, String tablePkName) {
+
+    TableMeta tableMeta = this.getTableMeta(tableId);
+    if (tableMeta == null) {
+      return null;
+    }
+    if (!tableMeta.equals(database, tableName)) {
+      return null;
+    }
+
+    ColumnMetas columnMetas = this.getColumnMetas(tableId);
+    if (columnMetas != null) {
+      return columnMetas.getByName(tablePkName);
+    }
+    return null;
   }
 }

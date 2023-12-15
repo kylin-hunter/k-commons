@@ -50,7 +50,7 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
    * @title init
    * @description init
    * @author BiJi'an
-   * @date 2023-12-14 00:11
+   * @date 2023-12-16 00:11
    */
   private void init() {
     if (this.dbType == DbType.MYSQL) {
@@ -83,12 +83,12 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param id   id
+   * @param id id
    * @param last last
    * @title update
    * @description update
    * @author BiJi'an
-   * @date 2023-12-13 20:39
+   * @date 2023-12-16 20:39
    */
   public void update(String id, ScanRecord last) {
     ScanProgress scanProgress = new ScanProgress(id, "", last.getTime(), last.getId());
@@ -110,7 +110,7 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
    * @title delete
    * @description delete
    * @author BiJi'an
-   * @date 2023-12-13 20:41
+   * @date 2023-12-16 20:41
    */
   public void delete(String id) {
     this.scanProgressDAO.delete(id);

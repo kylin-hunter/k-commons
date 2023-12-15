@@ -67,13 +67,13 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
   }
 
   /**
-   * @param config    config
+   * @param config config
    * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime
    * @description scanNextTime
    * @author BiJi'an
-   * @date 2023-12-13 22:49
+   * @date 2023-12-16 22:49
    */
   public List<ScanRecord> scanNextTime(TableScanConfig config, LocalDateTime startTime) {
 

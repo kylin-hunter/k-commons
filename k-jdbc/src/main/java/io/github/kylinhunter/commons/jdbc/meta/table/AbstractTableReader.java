@@ -127,8 +127,8 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
       while (tables.next()) {
 
         TableMeta tableMeta = new TableMeta();
-        for (int i = 0; i < tableMetadata.getColumnCount(); i++) {
-          String colName = tableMetadata.getColumnName(i + 1);
+        for (int i = 1; i <= tableMetadata.getColumnCount(); i++) {
+          String colName = tableMetadata.getColumnName(i);
           Object value = tables.getObject(colName);
           rawMetadata.put(colName, value);
           processMetadata(tableMeta, colName, value);

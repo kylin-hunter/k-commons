@@ -3,12 +3,13 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorListener;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.imp.MysqlSavePointManager;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.imp.RedisSavePointManager;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.JdkRedisCodec;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.RedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.BinLogClient;
+import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.MysqlSavePointManager;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
 
 class TestBinLogClient {
 
@@ -19,19 +20,19 @@ class TestBinLogClient {
     redisSavePointManager.reset();
 
     TableMonitorListener tableMonitorListener = new TableMonitorListener();
-    TableMonitorConfig tableMonitorConfig = getTableMonitorConfig();
-    tableMonitorListener.setTableBinlogConfig(tableMonitorConfig);
+    MonitorTable monitorTable = getTableMonitorConfig();
+    tableMonitorListener.setMonitorTable(monitorTable);
     binLogClient.addBinLogEventListener(tableMonitorListener);
 
     binLogClient.start();
     binLogClient.disconnect();
   }
 
-  public static TableMonitorConfig getTableMonitorConfig() {
-    TableMonitorConfig tableBinlogConfig = new TableMonitorConfig();
+  public static MonitorTable getTableMonitorConfig() {
+    MonitorTable tableBinlogConfig = new MonitorTable();
     tableBinlogConfig.setTablePkName("id");
     tableBinlogConfig.setDatabase(TestHelper.DATABASE);
-    tableBinlogConfig.setTableName(TestHelper.TEST_TABLE_ROLE);
+    tableBinlogConfig.setName(TestHelper.TEST_TABLE_ROLE);
     return tableBinlogConfig;
   }
 

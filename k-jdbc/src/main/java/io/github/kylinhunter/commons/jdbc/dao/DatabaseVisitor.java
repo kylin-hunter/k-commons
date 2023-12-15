@@ -49,7 +49,7 @@ public interface DatabaseVisitor {
    * @title getDbType
    * @description getDbType
    * @author BiJi'an
-   * @date 2023-12-13 20:17
+   * @date 2023-12-16 20:17
    */
   DbType getDbType();
 }

@@ -181,7 +181,6 @@ public class TemplateContextBuilder {
     ModuleInfo moduleInfo = templateContext.getModuleInfo();
     ClassInfo classInfo = templateContext.getClassInfo();
     TableMeta tableMeta = moduleInfo.getTableInfo().getTableMeta();
-    classInfo.setComment(
-        StringUtil.defaultString(tableMeta.getRemarks(), tableMeta.getTableId().getName()));
+    classInfo.setComment(StringUtil.defaultString(tableMeta.getRemarks(), tableMeta.getName()));
   }
 }

@@ -52,7 +52,7 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
    * @title init
    * @description init
    * @author BiJi'an
-   * @date 2023-12-14 00:11
+   * @date 2023-12-16 00:11
    */
   private void init() {
     if (this.dbType == DbType.MYSQL) {
@@ -69,7 +69,7 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
    * @title scanSameTime
    * @description scanSameTime
    * @author BiJi'an
-   * @date 2023-12-13 23:59
+   * @date 2023-12-16 23:59
    */
   public List<ScanRecord> scanSameTime(TableScanConfig config, ScanProgress scanProgress) {
     return this.scanRecordDAO.scanSameTime(config, scanProgress);
@@ -82,7 +82,7 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
    * @title scanNextTime
    * @description scanNextTime
    * @author BiJi'an
-   * @date 2023-12-13 22:49
+   * @date 2023-12-16 22:49
    */
   public List<ScanRecord> scanNextTime(TableScanConfig tableScanConfig, LocalDateTime startTime) {
     return this.scanRecordDAO.scanNextTime(tableScanConfig, startTime);

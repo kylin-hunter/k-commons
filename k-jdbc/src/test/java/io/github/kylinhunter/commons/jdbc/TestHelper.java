@@ -1,10 +1,10 @@
 package io.github.kylinhunter.commons.jdbc;
 
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.redis.RedisConfig;
 import java.util.List;
 import javax.sql.DataSource;
 

@@ -87,7 +87,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @title run
    * @description run
    * @author BiJi'an
-   * @date 2023-12-13 22:50
+   * @date 2023-12-16 22:50
    */
   private void run(TableScanConfig tableScanConfig) {
     processSameTime(tableScanConfig);
@@ -99,7 +99,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @title processSameTime
    * @description processSameTime
    * @author BiJi'an
-   * @date 2023-12-13 23:06
+   * @date 2023-12-16 23:06
    */
   private void processSameTime(TableScanConfig tableScanConfig) {
 
@@ -161,7 +161,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @title clean
    * @description clean
    * @author BiJi'an
-   * @date 2023-12-13 23:51
+   * @date 2023-12-16 23:51
    */
   public void clean(TableScanConfig config) {
     this.scanProgressManager.delete(config.getId());
