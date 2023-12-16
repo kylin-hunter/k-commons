@@ -50,8 +50,8 @@ public class DatabaseMetaCache {
   }
 
   /**
-   * @param tableId     tableId
-   * @param tableName   tableName
+   * @param tableId tableId
+   * @param tableName tableName
    * @param forceUpdate forceUpdate
    * @title addTable
    * @description addTable

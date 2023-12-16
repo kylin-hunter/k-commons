@@ -32,11 +32,9 @@ import lombok.ToString;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TableMeta {
 
-  @Include
-  private String database; // column name
+  @Include private String database; // column name
 
-  @Include
-  String name; // c1olumn name
+  @Include String name; // c1olumn name
   /*
    * the raw metadata of table
    */
@@ -50,7 +48,7 @@ public class TableMeta {
 
   /**
    * @param database database
-   * @param name     name
+   * @param name name
    * @title equals
    * @description equals
    * @author BiJi'an
