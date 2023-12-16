@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event;
+package io.github.kylinhunter.commons.jdbc.binlog.listener;
 
 import com.github.shyiko.mysql.binlog.event.EventData;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;

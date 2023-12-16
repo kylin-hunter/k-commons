@@ -50,8 +50,8 @@ public class DatabaseMetaCache {
   }
 
   /**
-   * @param tableId tableId
-   * @param tableName tableName
+   * @param tableId     tableId
+   * @param tableName   tableName
    * @param forceUpdate forceUpdate
    * @title addTable
    * @description addTable
@@ -86,7 +86,7 @@ public class DatabaseMetaCache {
    * @title getTableMeta
    * @description getTableMeta
    * @author BiJi'an
-   * @date 2023-12-15 21:10
+   * @date 2023-12-16 21:10
    */
   public TableMeta getTableMeta(long tableId) {
     return this.tableMetas.get(tableId);

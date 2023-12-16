@@ -1,15 +1,15 @@
-package io.github.kylinhunter.commons.jdbc.monitor.binlog;
+package io.github.kylinhunter.commons.jdbc.binlog;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.binlog.BinLogClient;
-import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.MysqlSavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.MonitorTable;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorListener;
 
 class TestBinLogClient {
 

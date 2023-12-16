@@ -1,12 +1,13 @@
-package io.github.kylinhunter.commons.jdbc.monitor.binlog;
+package io.github.kylinhunter.commons.jdbc.binlog;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.binlog.BinLogClient;
-import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.MonitorTable;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorListener;
+import org.junit.jupiter.api.Test;
 
 class BinLogClientTest {
 
-  //  @Test
+  @Test
   void init() {
 
     BinLogConfig binLogConfig = TestBinLogClient.getBinLogConfig();

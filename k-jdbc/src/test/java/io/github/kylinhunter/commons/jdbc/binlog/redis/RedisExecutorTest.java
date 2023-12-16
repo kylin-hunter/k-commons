@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.redis;
+package io.github.kylinhunter.commons.jdbc.binlog.redis;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;

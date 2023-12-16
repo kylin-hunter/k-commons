@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.savepoint.imp;
+package io.github.kylinhunter.commons.jdbc.binlog.imp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

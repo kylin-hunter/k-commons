@@ -25,36 +25,15 @@ import io.github.kylinhunter.commons.exception.info.ErrInfo;
  */
 public class ToRetryException extends KRuntimeException {
 
-  public ToRetryException() {
-    this.errInfo = UtilsErrInfos.RETRY;
-  }
-
-  public ToRetryException(String message, Throwable cause) {
-    this(UtilsErrInfos.RETRY, message, cause);
-  }
 
   public ToRetryException(String message) {
     this(UtilsErrInfos.RETRY, message);
   }
 
-  public ToRetryException(Throwable cause) {
-    this(UtilsErrInfos.RETRY, cause);
-  }
-
-  public ToRetryException(ErrInfo errInfo, String message, Throwable cause) {
-    super(errInfo, message, cause);
-  }
 
   public ToRetryException(ErrInfo errInfo, String message) {
     super(errInfo, message);
   }
 
-  public ToRetryException(ErrInfo errInfo, Object extra) {
-    super(errInfo, "");
-    this.setExtra(extra);
-  }
 
-  public ToRetryException(ErrInfo errInfo, Throwable cause) {
-    super(errInfo, cause);
-  }
 }

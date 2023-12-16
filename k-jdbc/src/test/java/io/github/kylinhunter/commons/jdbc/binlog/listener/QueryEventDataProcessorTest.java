@@ -1,7 +1,6 @@
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event;
+package io.github.kylinhunter.commons.jdbc.binlog.listener;
 
 import com.github.shyiko.mysql.binlog.event.QueryEventData;
-import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.QueryEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.meta.cache.DatabaseMetaCache;
 import org.junit.jupiter.api.Test;
