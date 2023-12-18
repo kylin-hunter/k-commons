@@ -22,7 +22,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanRecordDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanRecordDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.TableScanConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.sql.DataSource;
@@ -71,12 +71,12 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-16 23:59
    */
-  public List<ScanRecord> scanSameTime(TableScanConfig config, ScanProgress scanProgress) {
+  public List<ScanRecord> scanSameTime(ScanTable config, ScanProgress scanProgress) {
     return this.scanRecordDAO.scanSameTime(config, scanProgress);
   }
 
   /**
-   * @param tableScanConfig tableScanConfig
+   * @param scanTable tableScanConfig
    * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime
@@ -84,7 +84,7 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-16 22:49
    */
-  public List<ScanRecord> scanNextTime(TableScanConfig tableScanConfig, LocalDateTime startTime) {
-    return this.scanRecordDAO.scanNextTime(tableScanConfig, startTime);
+  public List<ScanRecord> scanNextTime(ScanTable scanTable, LocalDateTime startTime) {
+    return this.scanRecordDAO.scanNextTime(scanTable, startTime);
   }
 }

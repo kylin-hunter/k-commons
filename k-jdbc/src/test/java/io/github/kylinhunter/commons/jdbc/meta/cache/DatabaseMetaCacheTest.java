@@ -17,13 +17,13 @@ class DatabaseMetaCacheTest {
     DataSourceManager dataSourceManager = new DataSourceManager(true);
     DataSource dataSource = dataSourceManager.get();
     DatabaseMetaCache cache = new DatabaseMetaCache(dataSource);
-    cache.updateTableCache(1L, TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE, true);
+    cache.updateTableCache(1L, TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE1, true);
     TableMeta tableMeta = cache.getTableMeta(1L);
     Assertions.assertEquals(TestHelper.DATABASE, tableMeta.getDatabase());
     ColumnMetas columnMetas = cache.getColumnMetas(1L);
     Assertions.assertNotNull(columnMetas);
     ColumnMeta columnMeta = cache.getPkColumnMeta(1L, TestHelper.DATABASE,
-        TestHelper.TEST_TABLE_ROLE, "id");
+        TestHelper.TEST_TABLE_ROLE1, "id");
     Assertions.assertNotNull(columnMeta);
 
     dataSourceManager.close();

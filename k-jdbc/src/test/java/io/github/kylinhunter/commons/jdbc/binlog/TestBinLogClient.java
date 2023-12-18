@@ -32,7 +32,7 @@ class TestBinLogClient {
     MonitorTable tableBinlogConfig = new MonitorTable();
     tableBinlogConfig.setTablePkName("id");
     tableBinlogConfig.setDatabase(TestHelper.DATABASE);
-    tableBinlogConfig.setName(TestHelper.TEST_TABLE_ROLE);
+    tableBinlogConfig.setName(TestHelper.TEST_TABLE_ROLE1);
     return tableBinlogConfig;
   }
 

@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.binlog.imp;
+package io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.MysqlSavePointManager;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import javax.sql.DataSource;

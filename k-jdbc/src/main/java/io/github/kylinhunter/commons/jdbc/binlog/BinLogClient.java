@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BinLogClient {
 
-  private final BinaryLogClient binaryLogClient;
+  private BinaryLogClient binaryLogClient;
   private final JdbcUrl jdbcUrl;
 
   private final DataSource dataSource;

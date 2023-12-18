@@ -14,6 +14,6 @@ class SqlReaderTest {
         "io/github/kylinhunter/commons/jdbc/test_data.sql");
 
     System.out.println(sqlLines.get(0));
-    assertEquals(8, sqlLines.size());
+    assertEquals(16, sqlLines.size());
   }
 }

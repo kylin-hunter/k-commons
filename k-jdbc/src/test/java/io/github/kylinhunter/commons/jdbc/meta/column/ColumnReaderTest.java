@@ -14,10 +14,10 @@ class ColumnReaderTest {
 
     ColumnReader columnReader = new MysqlColumnReader();
 
-    ColumnMetas columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE);
+    ColumnMetas columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE1);
     if (columnMetas.size() != 19) {
       TestHelper.initTestSQl();
-      columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE);
+      columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE1);
     }
     Assertions.assertEquals(16, columnMetas.size());
     for (ColumnMeta columnMeta : columnMetas.getColumns()) {

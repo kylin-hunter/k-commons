@@ -42,6 +42,8 @@ public class TableScanManager extends AbstractDatabaseVisitor {
 
   private ScanRecordManager scanRecordManager;
 
+  private TableScanConfig tableScanConfig;
+
   public TableScanManager() {
     super(null, true);
     init();
@@ -58,89 +60,95 @@ public class TableScanManager extends AbstractDatabaseVisitor {
     this.scanRecordManager = new ScanRecordManager(dataSource);
   }
 
-  /**
-   * @param tableScanConfig scanOption
-   * @title scan
-   * @description scan
-   * @author BiJi'an
-   * @date 2023-12-09 02:03
-   */
-  public void scan(TableScanConfig tableScanConfig) {
-    Objects.requireNonNull(tableScanConfig);
-
-    if (tableScanConfig.getScanInterval() > 0) {
-      while (true) {
-        try {
-          run(tableScanConfig);
-        } catch (Exception e) {
-          log.error("scan error", e);
-        }
-        ThreadHelper.sleep(tableScanConfig.getScanInterval(), TimeUnit.MILLISECONDS);
-      }
-    } else {
-      run(tableScanConfig);
+  public void start() {
+    for (ScanTable scanTable : tableScanConfig.getScanTables()) {
+      scanTable.setConfig(tableScanConfig);
+      scan(scanTable);
     }
   }
 
   /**
-   * @param tableScanConfig tableScanConfig
+   * @param scanTable scanTable
+   * @title scan
+   * @description scan
+   * @author BiJi'an
+   * @date 2023-12-18 20:19
+   */
+  private void scan(ScanTable scanTable) {
+
+    if (scanTable.getScanInterval() > 0) {
+      while (true) {
+        try {
+          run(scanTable);
+        } catch (Exception e) {
+          log.error("scan error", e);
+        }
+        ThreadHelper.sleep(scanTable.getScanInterval(), TimeUnit.MILLISECONDS);
+      }
+    } else {
+      run(scanTable);
+    }
+  }
+
+  /**
+   * @param scanTable tableScanConfig
    * @title run
    * @description run
    * @author BiJi'an
    * @date 2023-12-16 22:50
    */
-  private void run(TableScanConfig tableScanConfig) {
-    processSameTime(tableScanConfig);
-    processNextTime(tableScanConfig);
+  private void run(ScanTable scanTable) {
+    processSameTime(scanTable);
+    processNextTime(scanTable);
   }
 
   /**
-   * @param tableScanConfig tableScanConfig
+   * @param scanTable tableScanConfig
    * @title processSameTime
    * @description processSameTime
    * @author BiJi'an
    * @date 2023-12-16 23:06
    */
-  private void processSameTime(TableScanConfig tableScanConfig) {
+  private void processSameTime(ScanTable scanTable) {
 
     while (true) {
 
-      ScanProgress scanProgress = scanProgressManager.getLatestScanProgress(tableScanConfig);
-      List<ScanRecord> scanRecords = scanRecordManager.scanSameTime(tableScanConfig, scanProgress);
+      ScanProgress scanProgress = scanProgressManager.getLatestScanProgress(scanTable);
+      List<ScanRecord> scanRecords = scanRecordManager.scanSameTime(scanTable, scanProgress);
       if (scanRecords.size() == 0) {
         break;
       } else {
         scanRecords.forEach(scanRecord -> log.info(" process same time data:" + scanRecord));
         for (ScanRecord scanRecord : scanRecords) {
-          tableMonitorTaskManager.saveOrUpdate(tableScanConfig, scanRecord);
+          tableMonitorTaskManager.saveOrUpdate(scanTable, scanRecord);
         }
 
         ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
-        this.scanProgressManager.update(tableScanConfig.getId(), lastRecord);
+        this.scanProgressManager.update(scanTable.getServerId(), lastRecord);
       }
-      ThreadHelper.sleep(tableScanConfig.getScanInterval(), TimeUnit.MILLISECONDS);
+      ThreadHelper.sleep(scanTable.getScanInterval(), TimeUnit.MILLISECONDS);
     }
   }
 
   /**
-   * @param tableScanConfig tableScanConfig
+   * @param scanTable tableScanConfig
    * @title proccessNextTime
    * @description proccessNextTime
    * @author BiJi'an
    * @date 2023-12-09 02:06
    */
-  private void processNextTime(TableScanConfig tableScanConfig) {
+  private void processNextTime(ScanTable scanTable) {
 
-    ScanProgress scanProgress = scanProgressManager.getLatestScanProgress(tableScanConfig);
+    ScanProgress scanProgress = scanProgressManager.getLatestScanProgress(scanTable);
     LocalDateTime nextScanTime = scanProgress.getNextScanTime();
-    List<ScanRecord> scanRecords = scanRecordManager.scanNextTime(tableScanConfig, nextScanTime);
+    List<ScanRecord> scanRecords = scanRecordManager.scanNextTime(scanTable, nextScanTime);
     if (scanRecords.size() > 0) {
       scanRecords.forEach(scanRecord -> log.info(" process next time data:" + scanRecord));
       ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
       for (ScanRecord scanRecord : scanRecords) {
-        tableMonitorTaskManager.saveOrUpdate(tableScanConfig, scanRecord);
+        tableMonitorTaskManager.saveOrUpdate(scanTable, scanRecord);
       }
-      this.scanProgressManager.update(tableScanConfig.getId(), lastRecord);
+      this.scanProgressManager.update(scanTable.getServerId(), lastRecord);
     }
   }
 
@@ -152,8 +160,15 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @date 2023-12-09 16:58
    */
   public void init(TableScanConfig config) {
+    Objects.requireNonNull(config);
+    this.tableScanConfig = config;
     this.scanProgressManager.ensureTableExists();
-    this.tableMonitorTaskManager.ensureDestinationExists(config.getDestination());
+    config
+        .getScanTables()
+        .forEach(
+            scanTable -> {
+              this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
+            });
   }
 
   /**
@@ -163,8 +178,8 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-16 23:51
    */
-  public void clean(TableScanConfig config) {
-    this.scanProgressManager.delete(config.getId());
+  public void clean(ScanTable config) {
+    this.scanProgressManager.delete(config.getServerId());
     this.tableMonitorTaskManager.clean(config.getDestination(), config.getTableName());
   }
 }

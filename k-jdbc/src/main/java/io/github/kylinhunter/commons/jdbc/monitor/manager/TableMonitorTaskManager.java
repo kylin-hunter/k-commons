@@ -24,7 +24,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlTableMonitorTaskDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.TableScanConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
 import javax.sql.DataSource;
 
 /**
@@ -94,18 +94,15 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param tableScanConfig tableScanConfig
+   * @param scanTable tableScanConfig
    * @param scanRecord scanRecord
    * @title saveOrUpdate
    * @description saveOrUpdate
    * @author BiJi'an
    * @date 2023-12-16 23:44
    */
-  public void saveOrUpdate(TableScanConfig tableScanConfig, ScanRecord scanRecord) {
+  public void saveOrUpdate(ScanTable scanTable, ScanRecord scanRecord) {
     this.saveOrUpdate(
-        tableScanConfig.getDestination(),
-        tableScanConfig.getTableName(),
-        scanRecord.getId(),
-        RowOP.UPDATE);
+        scanTable.getDestination(), scanTable.getTableName(), scanRecord.getId(), RowOP.UPDATE);
   }
 }

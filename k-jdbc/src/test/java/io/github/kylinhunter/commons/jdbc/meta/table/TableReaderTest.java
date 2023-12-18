@@ -13,10 +13,10 @@ public class TableReaderTest {
   void test() {
     TableReader tableReader = new MysqlTableReader();
 
-    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", TestHelper.TEST_TABLE_ROLE);
+    List<TableMeta> tableMetas = tableReader.getTableMetaDatas("", TestHelper.TEST_TABLE_ROLE1);
     if (tableMetas.size() == 0) {
       TestHelper.initTestSQl();
-      tableMetas = tableReader.getTableMetaDatas("", TestHelper.TEST_TABLE_ROLE);
+      tableMetas = tableReader.getTableMetaDatas("", TestHelper.TEST_TABLE_ROLE1);
     }
     Assertions.assertEquals(1, tableMetas.size());
     TableMeta tableMeta = tableMetas.get(0);
@@ -24,7 +24,7 @@ public class TableReaderTest {
     Map<String, Object> rawMetadatas = tableMeta.getRawMetadatas();
     rawMetadatas.forEach((k, v) -> System.out.println(k + ":" + v));
 
-    Assertions.assertTrue(tableMeta.equals(TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE));
+    Assertions.assertTrue(tableMeta.equals(TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE1));
   }
 
 

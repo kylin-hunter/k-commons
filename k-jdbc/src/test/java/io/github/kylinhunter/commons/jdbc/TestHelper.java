@@ -27,7 +27,8 @@ public class TestHelper {
 
   public static String MYSQL_PASSWORD = "root";
 
-  public static String TEST_TABLE_ROLE = "k_junit_jdbc_role";
+  public static String TEST_TABLE_ROLE1 = "k_junit_jdbc_role1";
+  public static String TEST_TABLE_ROLE2 = "k_junit_jdbc_role2";
 
   public static String TEST_TABLE_TMP = "k_junit_tmp";
   public static String MONITOR_SCAN_TASK = "k_junit_table_monitor_scan_task";
@@ -49,7 +50,7 @@ public class TestHelper {
     TableReader tableReader = dataSource != null ? new MysqlTableReader(dataSource) :
         new MysqlTableReader();
 
-    if (!tableReader.exist("", TestHelper.TEST_TABLE_ROLE)) {
+    if (!tableReader.exist("", TestHelper.TEST_TABLE_ROLE1)) {
       SqlExecutor sqlExecutor = tableReader.getSqlExecutor();
       List<String> sqlLines = SqlReader.readSqls(TEST_SQL);
       sqlExecutor.executeBatch(true, sqlLines);

@@ -19,7 +19,7 @@ import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanRecordDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.TableScanConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -46,7 +46,7 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
     super(dataSource, false);
   }
 
-  public List<ScanRecord> scanSameTime(TableScanConfig config, ScanProgress scanProgress) {
+  public List<ScanRecord> scanSameTime(ScanTable config, ScanProgress scanProgress) {
     String sql =
         String.format(
             SAME_SQL,
@@ -75,7 +75,7 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
    * @author BiJi'an
    * @date 2023-12-16 22:49
    */
-  public List<ScanRecord> scanNextTime(TableScanConfig config, LocalDateTime startTime) {
+  public List<ScanRecord> scanNextTime(ScanTable config, LocalDateTime startTime) {
 
     String sql =
         String.format(

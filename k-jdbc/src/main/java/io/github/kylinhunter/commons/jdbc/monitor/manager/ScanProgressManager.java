@@ -22,7 +22,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanProgressDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.TableScanConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,13 +66,13 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-10 21:17
    */
-  public ScanProgress getLatestScanProgress(TableScanConfig config) {
+  public ScanProgress getLatestScanProgress(ScanTable config) {
 
-    ScanProgress progress = this.scanProgressDAO.findById(config.getId());
+    ScanProgress progress = this.scanProgressDAO.findById(config.getServerId());
     if (progress == null) {
       progress =
           new ScanProgress(
-              config.getId(),
+              config.getServerId(),
               config.getTableName(),
               config.getDestination(),
               config.getInitScanTime(),

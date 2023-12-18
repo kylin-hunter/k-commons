@@ -121,7 +121,14 @@ public class JULManager {
   /**
    * @param configFile configFile
    * @title trySlf4jSupport
-   * @description trySlf4jSupport
+   * @description
+   *     <p>duplicate log outputs
+   *     <p>Jul bridging SLF4J failure for duplicate log output
+   *     <p>Solution1: configure in jul configuration file,just like:
+   *     <p>handlers =org.slf4j.bridge.SLF4JBridgeHandler
+   *     <p>Solution2: remove handlers for root logger ,and then install
+   *     <p>SLF4JBridgeHandler.removeHandlersForRootLogger();
+   *     <p>SLF4JBridgeHandler.install();
    * @author BiJi'an
    * @date 2023-10-18 01:04
    */
