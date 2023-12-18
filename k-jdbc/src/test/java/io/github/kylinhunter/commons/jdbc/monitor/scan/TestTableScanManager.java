@@ -26,8 +26,8 @@ class TestTableScanManager {
 
     scanTable2.setTableName(TestHelper.TEST_TABLE_ROLE2);
     tableScanConfig.add(scanTable2);
-
     manager.init(tableScanConfig);
+    manager.clean();
     manager.start();
 
   }

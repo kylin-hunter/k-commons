@@ -68,8 +68,8 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
    */
   public ScanProgress getLatestScanProgress(ScanTable config) {
 
-    ScanProgress progress = this.scanProgressDAO.findById(config.getServerId(),
-        config.getTableName());
+    ScanProgress progress =
+        this.scanProgressDAO.findById(config.getServerId(), config.getTableName());
     if (progress == null) {
       progress =
           new ScanProgress(
@@ -84,9 +84,9 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param serverId  serverId
+   * @param serverId serverId
    * @param tableName tableName
-   * @param last      last
+   * @param last last
    * @title update
    * @description update
    * @author BiJi'an

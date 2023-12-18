@@ -39,11 +39,13 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
           + " (server_id,table_name, save_destination, next_scan_time,last_scan_id) values(?,?,?,?,?)";
 
   private static final String UPDATE_SQL =
-      "update " + TABLE_NAME + " set next_scan_time=?,last_scan_id=? where  server_id=? and "
+      "update "
+          + TABLE_NAME
+          + " set next_scan_time=?,last_scan_id=? where  server_id=? and "
           + "table_name=?";
 
-  private static final String DELETE_SQL = "delete from " + TABLE_NAME + " where server_id=? and "
-      + "table_name=?";
+  private static final String DELETE_SQL =
+      "delete from " + TABLE_NAME + " where server_id=? and " + "table_name=?";
 
   private static final String SELECT_SQL =
       "select server_id as serverId, table_name as tableName, save_destination as saveDestination, "
@@ -88,7 +90,7 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
   }
 
   /**
-   * @param serverId  serverId
+   * @param serverId serverId
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.scan.bean.TableScanProgress
    * @title getTableScanProgress

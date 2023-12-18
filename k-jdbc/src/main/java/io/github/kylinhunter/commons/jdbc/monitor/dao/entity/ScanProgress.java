@@ -37,8 +37,8 @@ public class ScanProgress implements Serializable {
   private LocalDateTime nextScanTime;
   private String lastScanId;
 
-  public ScanProgress(String serverId, String tableName, LocalDateTime nextScanTime,
-      String lastScanId) {
+  public ScanProgress(
+      String serverId, String tableName, LocalDateTime nextScanTime, String lastScanId) {
     this.serverId = serverId;
     this.tableName = tableName;
     this.nextScanTime = nextScanTime;

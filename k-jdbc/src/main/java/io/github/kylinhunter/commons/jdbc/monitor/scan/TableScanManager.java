@@ -62,14 +62,12 @@ public class TableScanManager extends AbstractDatabaseVisitor {
     this.scanProgressManager = new ScanProgressManager(dataSource);
     this.tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
     this.scanRecordManager = new ScanRecordManager(dataSource);
-
   }
 
   public void start() {
     this.scheduler = Executors.newScheduledThreadPool(tableScanConfig.getScheduleCorePoolSize());
 
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
-      scanTable.setConfig(tableScanConfig);
       scan(scanTable);
     }
   }
@@ -84,8 +82,11 @@ public class TableScanManager extends AbstractDatabaseVisitor {
   private void scan(ScanTable scanTable) {
 
     if (scanTable.getScanInterval() > 0) {
-      this.scheduler.scheduleWithFixedDelay(() -> TableScanManager.this.run(scanTable), 0,
-          scanTable.getScanInterval(), TimeUnit.MILLISECONDS);
+      this.scheduler.scheduleWithFixedDelay(
+          () -> TableScanManager.this.run(scanTable),
+          0,
+          scanTable.getScanInterval(),
+          TimeUnit.MILLISECONDS);
 
     } else {
       run(scanTable);
@@ -130,8 +131,8 @@ public class TableScanManager extends AbstractDatabaseVisitor {
         }
 
         ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
-        this.scanProgressManager.update(scanTable.getServerId(), scanTable.getTableName(),
-            lastRecord);
+        this.scanProgressManager.update(
+            scanTable.getServerId(), scanTable.getTableName(), lastRecord);
       }
       ThreadHelper.sleep(scanTable.getScanInterval(), TimeUnit.MILLISECONDS);
     }
@@ -155,38 +156,39 @@ public class TableScanManager extends AbstractDatabaseVisitor {
       for (ScanRecord scanRecord : scanRecords) {
         tableMonitorTaskManager.saveOrUpdate(scanTable, scanRecord);
       }
-      this.scanProgressManager.update(scanTable.getServerId(), scanTable.getTableName(),
-          lastRecord);
+      this.scanProgressManager.update(
+          scanTable.getServerId(), scanTable.getTableName(), lastRecord);
     }
   }
 
   /**
-   * @param config config
+   * @param tableScanConfig tableScanConfig
    * @title init
    * @description init
    * @author BiJi'an
    * @date 2023-12-09 16:58
    */
-  public void init(TableScanConfig config) {
-    Objects.requireNonNull(config);
-    this.tableScanConfig = config;
+  public void init(TableScanConfig tableScanConfig) {
+    Objects.requireNonNull(tableScanConfig);
+    this.tableScanConfig = tableScanConfig;
     this.scanProgressManager.ensureTableExists();
-    config
-        .getScanTables()
-        .forEach(
-            scanTable -> this.tableMonitorTaskManager.ensureDestinationExists(
-                scanTable.getDestination()));
+    for (ScanTable scanTable : tableScanConfig.getScanTables()) {
+      scanTable.setConfig(tableScanConfig);
+      this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
+    }
   }
 
   /**
-   * @param config config
    * @title clean
    * @description clean
    * @author BiJi'an
    * @date 2023-12-16 23:51
    */
-  public void clean(ScanTable config) {
-    this.scanProgressManager.delete(config.getServerId(), config.getTableName());
-    this.tableMonitorTaskManager.clean(config.getDestination(), config.getTableName());
+  public void clean() {
+    for (ScanTable scanTable : this.tableScanConfig.getScanTables()) {
+
+      this.scanProgressManager.delete(scanTable.getServerId(), scanTable.getTableName());
+      this.tableMonitorTaskManager.clean(scanTable.getDestination(), scanTable.getTableName());
+    }
   }
 }
