@@ -21,9 +21,8 @@ class ReflectUtilsTest {
 
     Assertions.assertThrows(
         RuntimeException.class,
-        () -> {
-          ReflectUtils.invoke(testClass, testClass.getClass().getMethod("setA", int.class), "1");
-        });
+        () -> ReflectUtils.invoke(testClass, testClass.getClass().getMethod("setA", int.class),
+            "1"));
   }
 
   @Test
@@ -115,7 +114,7 @@ class ReflectUtilsTest {
     System.out.println("#### get1");
     Set<Field> result12 = ReflectUtils.getFields(ReflectBeanChild.class);
     result12.forEach(System.out::println);
-    Assertions.assertTrue(result12.size() == 3);
+    Assertions.assertEquals(3, result12.size());
 
     System.out.println("#### get + predicate ");
     Set<Field> result13 =
@@ -128,7 +127,7 @@ class ReflectUtilsTest {
     Set<Field> result22 = ReflectUtils.getAllFields(ReflectBeanChild.class);
     result22.forEach(System.out::println);
 
-    Assertions.assertTrue(result22.size() == 7);
+    Assertions.assertEquals(7, result22.size());
 
     System.out.println("####getAll + predicate ");
     Set<Field> result23 =
@@ -138,9 +137,10 @@ class ReflectUtilsTest {
             e -> !e.getName().equals("gf2"));
     result23.forEach(System.out::println);
 
-    Assertions.assertTrue(result23.size() == 5);
+    Assertions.assertEquals(5, result23.size());
   }
 
+  @SuppressWarnings("OptionalGetWithoutIsPresent")
   @Test
   void tesetSetField() {
 
