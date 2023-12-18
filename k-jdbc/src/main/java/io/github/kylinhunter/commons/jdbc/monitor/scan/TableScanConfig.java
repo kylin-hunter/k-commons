@@ -28,6 +28,7 @@ import lombok.Data;
 public class TableScanConfig {
 
   private String serverId = "1";
+  private int scheduleCorePoolSize = 1;
   private List<ScanTable> scanTables = ListUtils.newArrayList();
 
   /**

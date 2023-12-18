@@ -68,7 +68,8 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
    */
   public ScanProgress getLatestScanProgress(ScanTable config) {
 
-    ScanProgress progress = this.scanProgressDAO.findById(config.getServerId());
+    ScanProgress progress = this.scanProgressDAO.findById(config.getServerId(),
+        config.getTableName());
     if (progress == null) {
       progress =
           new ScanProgress(
@@ -83,15 +84,16 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param id id
-   * @param last last
+   * @param serverId  serverId
+   * @param tableName tableName
+   * @param last      last
    * @title update
    * @description update
    * @author BiJi'an
    * @date 2023-12-16 20:39
    */
-  public void update(String id, ScanRecord last) {
-    ScanProgress scanProgress = new ScanProgress(id, "", last.getTime(), last.getId());
+  public void update(String serverId, String tableName, ScanRecord last) {
+    ScanProgress scanProgress = new ScanProgress(serverId, tableName, last.getTime(), last.getId());
     this.scanProgressDAO.update(scanProgress);
   }
 
@@ -112,7 +114,7 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-16 20:41
    */
-  public void delete(String id) {
-    this.scanProgressDAO.delete(id);
+  public void delete(String id, String tableName) {
+    this.scanProgressDAO.delete(id, tableName);
   }
 }

@@ -27,14 +27,15 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 public interface ScanProgressDAO extends BaseDAO {
 
   /**
-   * @param id id
+   * @param serverId  serverId
+   * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress
    * @title findById
    * @description findById
    * @author BiJi'an
    * @date 2023-12-09 00:13
    */
-  ScanProgress findById(String id);
+  ScanProgress findById(String serverId, String tableName);
 
   /**
    * @param scanProgress scanProgress
@@ -71,5 +72,13 @@ public interface ScanProgressDAO extends BaseDAO {
    */
   void ensureTableExists();
 
-  void delete(String id);
+  /**
+   * @param serverId  serverId
+   * @param tableName tableName
+   * @title delete
+   * @description delete
+   * @author BiJi'an
+   * @date 2023-12-18 23:24
+   */
+  void delete(String serverId, String tableName);
 }

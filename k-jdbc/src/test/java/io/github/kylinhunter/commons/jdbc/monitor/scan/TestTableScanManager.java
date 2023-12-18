@@ -15,6 +15,8 @@ class TestTableScanManager {
     TableScanManager manager = new TableScanManager(dataSource);
 
     TableScanConfig tableScanConfig = new TableScanConfig();
+    tableScanConfig.setServerId("1");
+    tableScanConfig.setScheduleCorePoolSize(1);
 
     ScanTable scanTable1 = getScanTable();
     scanTable1.setTableName(TestHelper.TEST_TABLE_ROLE1);
@@ -37,7 +39,7 @@ class TestTableScanManager {
         .tablePkName("id")
         .tableTimeName("sys_auto_updated")
         .destination(TestHelper.MONITOR_SCAN_TASK)
-        .scanLimit(100);
+        .scanLimit(1).scanInterval(100);
     return builder.build();
   }
 }

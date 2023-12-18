@@ -25,6 +25,8 @@ import io.github.kylinhunter.commons.util.ThreadHelper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +46,8 @@ public class TableScanManager extends AbstractDatabaseVisitor {
 
   private TableScanConfig tableScanConfig;
 
+  private ScheduledExecutorService scheduler;
+
   public TableScanManager() {
     super(null, true);
     init();
@@ -58,9 +62,12 @@ public class TableScanManager extends AbstractDatabaseVisitor {
     this.scanProgressManager = new ScanProgressManager(dataSource);
     this.tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
     this.scanRecordManager = new ScanRecordManager(dataSource);
+
   }
 
   public void start() {
+    this.scheduler = Executors.newScheduledThreadPool(tableScanConfig.getScheduleCorePoolSize());
+
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
       scanTable.setConfig(tableScanConfig);
       scan(scanTable);
@@ -77,14 +84,9 @@ public class TableScanManager extends AbstractDatabaseVisitor {
   private void scan(ScanTable scanTable) {
 
     if (scanTable.getScanInterval() > 0) {
-      while (true) {
-        try {
-          run(scanTable);
-        } catch (Exception e) {
-          log.error("scan error", e);
-        }
-        ThreadHelper.sleep(scanTable.getScanInterval(), TimeUnit.MILLISECONDS);
-      }
+      this.scheduler.scheduleWithFixedDelay(() -> TableScanManager.this.run(scanTable), 0,
+          scanTable.getScanInterval(), TimeUnit.MILLISECONDS);
+
     } else {
       run(scanTable);
     }
@@ -98,8 +100,12 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @date 2023-12-16 22:50
    */
   private void run(ScanTable scanTable) {
-    processSameTime(scanTable);
-    processNextTime(scanTable);
+    try {
+      processSameTime(scanTable);
+      processNextTime(scanTable);
+    } catch (Exception e) {
+      log.error("scan error", e);
+    }
   }
 
   /**
@@ -124,7 +130,8 @@ public class TableScanManager extends AbstractDatabaseVisitor {
         }
 
         ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
-        this.scanProgressManager.update(scanTable.getServerId(), lastRecord);
+        this.scanProgressManager.update(scanTable.getServerId(), scanTable.getTableName(),
+            lastRecord);
       }
       ThreadHelper.sleep(scanTable.getScanInterval(), TimeUnit.MILLISECONDS);
     }
@@ -148,7 +155,8 @@ public class TableScanManager extends AbstractDatabaseVisitor {
       for (ScanRecord scanRecord : scanRecords) {
         tableMonitorTaskManager.saveOrUpdate(scanTable, scanRecord);
       }
-      this.scanProgressManager.update(scanTable.getServerId(), lastRecord);
+      this.scanProgressManager.update(scanTable.getServerId(), scanTable.getTableName(),
+          lastRecord);
     }
   }
 
@@ -166,9 +174,8 @@ public class TableScanManager extends AbstractDatabaseVisitor {
     config
         .getScanTables()
         .forEach(
-            scanTable -> {
-              this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
-            });
+            scanTable -> this.tableMonitorTaskManager.ensureDestinationExists(
+                scanTable.getDestination()));
   }
 
   /**
@@ -179,7 +186,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @date 2023-12-16 23:51
    */
   public void clean(ScanTable config) {
-    this.scanProgressManager.delete(config.getServerId());
+    this.scanProgressManager.delete(config.getServerId(), config.getTableName());
     this.tableMonitorTaskManager.clean(config.getDestination(), config.getTableName());
   }
 }
