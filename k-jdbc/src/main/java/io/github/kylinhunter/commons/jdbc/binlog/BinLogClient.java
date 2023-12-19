@@ -30,17 +30,17 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
- * <p>show variables like 'log_bin' # is the binlog enabled
- * <p>show binary logs # show the binlog file list
- * <p>show master status; # show the writing binlog file
- * <p>show binlog events # show the binlog content
- * <p>show binlog events in 'mysql-bin.000002' # show the 'mysql-bin.000002' 's content
- * <p>reset master # delete all the master binlogs
- * <p>reset slave # delete all the slave binlogs
- * <p>purge master logs before '2012-03-30 17:20:00' # delete bin logs before the date
- * '2012-03-30 17:20:00'
- * <p>purge master logs to 'mysql-bin.000002' # delete bin logs named with 'mysql-bin.000002'
- * <p>flush logs # create a new binlog file
+ *     <p>show variables like 'log_bin' # is the binlog enabled
+ *     <p>show binary logs # show the binlog file list
+ *     <p>show master status; # show the writing binlog file
+ *     <p>show binlog events # show the binlog content
+ *     <p>show binlog events in 'mysql-bin.000002' # show the 'mysql-bin.000002' 's content
+ *     <p>reset master # delete all the master binlogs
+ *     <p>reset slave # delete all the slave binlogs
+ *     <p>purge master logs before '2012-03-30 17:20:00' # delete bin logs before the date
+ *     '2012-03-30 17:20:00'
+ *     <p>purge master logs to 'mysql-bin.000002' # delete bin logs named with 'mysql-bin.000002'
+ *     <p>flush logs # create a new binlog file
  * @description the client reading bin log
  * @date 2023-11-25 02:51
  */

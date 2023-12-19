@@ -1,21 +1,26 @@
 package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
-import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.TestBinLogClient;
+import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
 
 class TestBinLogTableMonitor {
 
   public static void main(String[] args) {
     BinLogConfig binLogConfig = TestBinLogClient.getBinLogConfig();
-    BinLogTableMonitor binLogTableMonitor = new BinLogTableMonitor(binLogConfig);
 
-    MonitorTable monitorTable = getMonitorTable1();
+    MonitorTable monitorTable1 = getMonitorTable1();
     MonitorTable monitorTable2 = getMonitorTable2();
-    binLogTableMonitor.setMonitorTables(ListUtils.newArrayList(monitorTable, monitorTable2));
-    binLogTableMonitor.reset();
-    binLogTableMonitor.start();
+    MonitorTables monitorTables = new MonitorTables();
+    monitorTables.addMonitorTable(monitorTable1);
+    monitorTables.addMonitorTable(monitorTable2);
+
+    TableMonitor tableMonitor = new BinLogTableMonitor(binLogConfig, monitorTables);
+    tableMonitor.reset();
+    tableMonitor.start();
   }
 
 

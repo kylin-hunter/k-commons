@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog;
+package io.github.kylinhunter.commons.jdbc.monitor;
 
-import lombok.Data;
+public interface TableMonitor {
 
-/**
- * @author BiJi'an
- * @description
- * @date 2023-12-10 21:22
- */
-@Data
-public class MonitorTable {
+  /**
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-12-20 00:41
+   */
+  void reset();
 
-  private String database;
-  private String name;
-  private String tablePkName;
-  private String destination = "k_table_monitor_binlog_task";
+  /**
+   * @title start
+   * @description start
+   * @author BiJi'an
+   * @date 2023-12-20 00:41
+   */
+  void start();
 }

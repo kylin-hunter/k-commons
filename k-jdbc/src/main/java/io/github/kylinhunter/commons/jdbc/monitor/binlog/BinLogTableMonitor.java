@@ -17,7 +17,9 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import io.github.kylinhunter.commons.jdbc.binlog.BinLogClient;
 import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
-import java.util.List;
+import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorListener;
 import lombok.Setter;
 
 /**
@@ -25,24 +27,38 @@ import lombok.Setter;
  * @description
  * @date 2023-12-17 17:29
  */
-public class BinLogTableMonitor {
+public class BinLogTableMonitor implements TableMonitor {
 
-  @Setter
-  private List<MonitorTable> monitorTables;
+  @Setter private MonitorTables monitorTables;
   private final BinLogClient binLogClient;
 
   private final TableMonitorListener tableMonitorListener = new TableMonitorListener();
 
-  public BinLogTableMonitor(BinLogConfig binLogConfig) {
+  public BinLogTableMonitor(BinLogConfig binLogConfig, MonitorTables monitorTables) {
     this.binLogClient = new BinLogClient(binLogConfig);
+    this.monitorTables = monitorTables;
   }
 
+  /**
+   * @title start
+   * @description start
+   * @author BiJi'an
+   * @date 2023-12-20 00:40
+   */
+  @Override
   public void start() {
     tableMonitorListener.setMonitorTables(monitorTables);
     binLogClient.addBinLogEventListener(tableMonitorListener);
     binLogClient.start();
   }
 
+  /**
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-12-20 00:41
+   */
+  @Override
   public void reset() {
     binLogClient.reset();
   }

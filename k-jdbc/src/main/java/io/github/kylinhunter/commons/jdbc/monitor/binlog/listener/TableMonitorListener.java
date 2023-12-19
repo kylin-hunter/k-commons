@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
 
 import io.github.kylinhunter.commons.jdbc.binlog.listener.AbstractBinLogEventListener;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorDeleteRowsEventDataProcessor;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorUpdateRowsEventDataProcessor;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorWriteRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorContext;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
-import java.util.List;
 import javax.sql.DataSource;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +32,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TableMonitorListener extends AbstractBinLogEventListener<TableMonitorContext> {
 
-  @Setter private List<MonitorTable> monitorTables;
+  @Setter private MonitorTables monitorTables;
 
   @Override
   public void init(DataSource dataSource) {
     super.init(dataSource);
     TableMonitorTaskManager tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
     this.context = new TableMonitorContext();
-    for (MonitorTable monitorTable : monitorTables) {
+    for (MonitorTable monitorTable : monitorTables.getDatas()) {
       tableMonitorTaskManager.ensureDestinationExists(monitorTable.getDestination());
     }
 

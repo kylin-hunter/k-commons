@@ -16,6 +16,7 @@
 package io.github.kylinhunter.commons.jdbc.monitor.scan;
 
 import io.github.kylinhunter.commons.jdbc.dao.AbstractDatabaseVisitor;
+import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanProgressManager;
@@ -37,33 +38,41 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-12-09 22:48
  */
 @Slf4j
-public class TableScanManager extends AbstractDatabaseVisitor {
+public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMonitor {
 
-  private ScanProgressManager scanProgressManager;
-  private TableMonitorTaskManager tableMonitorTaskManager;
+  private final ScanProgressManager scanProgressManager;
+  private final TableMonitorTaskManager tableMonitorTaskManager;
 
-  private ScanRecordManager scanRecordManager;
+  private final ScanRecordManager scanRecordManager;
 
-  private TableScanConfig tableScanConfig;
+  private final TableScanConfig tableScanConfig;
 
   private ScheduledExecutorService scheduler;
 
-  public TableScanManager() {
-    super(null, true);
-    init();
+  public ScanTableMonitor(TableScanConfig tableScanConfig) {
+    this(null, true, tableScanConfig);
   }
 
-  public TableScanManager(DataSource dataSource) {
-    super(dataSource, false);
-    init();
+  public ScanTableMonitor(DataSource dataSource, TableScanConfig tableScanConfig) {
+    this(dataSource, false, tableScanConfig);
   }
 
-  private void init() {
+  private ScanTableMonitor(
+      DataSource dataSource, boolean dbConfigEnabled, TableScanConfig tableScanConfig) {
+    super(dataSource, dbConfigEnabled);
     this.scanProgressManager = new ScanProgressManager(dataSource);
     this.tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
     this.scanRecordManager = new ScanRecordManager(dataSource);
+    Objects.requireNonNull(tableScanConfig);
+    this.tableScanConfig = tableScanConfig;
+    this.scanProgressManager.ensureTableExists();
+    for (ScanTable scanTable : tableScanConfig.getScanTables()) {
+      scanTable.setConfig(tableScanConfig);
+      this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
+    }
   }
 
+  @Override
   public void start() {
     this.scheduler = Executors.newScheduledThreadPool(tableScanConfig.getScheduleCorePoolSize());
 
@@ -83,7 +92,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
 
     if (scanTable.getScanInterval() > 0) {
       this.scheduler.scheduleWithFixedDelay(
-          () -> TableScanManager.this.run(scanTable),
+          () -> ScanTableMonitor.this.run(scanTable),
           0,
           scanTable.getScanInterval(),
           TimeUnit.MILLISECONDS);
@@ -162,29 +171,13 @@ public class TableScanManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param tableScanConfig tableScanConfig
-   * @title init
-   * @description init
+   * @title reset
+   * @description reset
    * @author BiJi'an
-   * @date 2023-12-09 16:58
+   * @date 2023-12-20 00:43
    */
-  public void init(TableScanConfig tableScanConfig) {
-    Objects.requireNonNull(tableScanConfig);
-    this.tableScanConfig = tableScanConfig;
-    this.scanProgressManager.ensureTableExists();
-    for (ScanTable scanTable : tableScanConfig.getScanTables()) {
-      scanTable.setConfig(tableScanConfig);
-      this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
-    }
-  }
-
-  /**
-   * @title clean
-   * @description clean
-   * @author BiJi'an
-   * @date 2023-12-16 23:51
-   */
-  public void clean() {
+  @Override
+  public void reset() {
     for (ScanTable scanTable : this.tableScanConfig.getScanTables()) {
 
       this.scanProgressManager.delete(scanTable.getServerId(), scanTable.getTableName());

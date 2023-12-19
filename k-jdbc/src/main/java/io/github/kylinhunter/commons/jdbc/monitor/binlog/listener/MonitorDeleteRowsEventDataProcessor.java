@@ -19,7 +19,8 @@ import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.DeleteRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.MonitorTable;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
 import java.io.Serializable;
@@ -35,12 +36,12 @@ import lombok.RequiredArgsConstructor;
 public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProcessor {
 
   private final TableMonitorTaskManager tableMonitorTaskManager;
-  private final List<MonitorTable> monitorTables;
+  private final MonitorTables monitorTables;
 
   @Override
   protected void deleteDataRecord(DeleteRowsEventData eventData, Context context) {
 
-    for (MonitorTable monitorTable : monitorTables) {
+    for (MonitorTable monitorTable : monitorTables.getDatas()) {
       ColumnMeta pkColumnMeta =
           tableIdManager.getPkColumnMeta(
               eventData.getTableId(),
