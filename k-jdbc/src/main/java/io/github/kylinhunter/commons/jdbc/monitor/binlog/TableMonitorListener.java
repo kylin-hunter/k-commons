@@ -20,6 +20,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorDeleteR
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorUpdateRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorWriteRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import java.util.List;
 import javax.sql.DataSource;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -32,20 +33,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TableMonitorListener extends AbstractBinLogEventListener<TableMonitorContext> {
 
-  @Setter private MonitorTable monitorTable;
+  @Setter private List<MonitorTable> monitorTables;
 
   @Override
   public void init(DataSource dataSource) {
     super.init(dataSource);
     TableMonitorTaskManager tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
     this.context = new TableMonitorContext();
-    tableMonitorTaskManager.ensureDestinationExists(monitorTable.getDestination());
+    for (MonitorTable monitorTable : monitorTables) {
+      tableMonitorTaskManager.ensureDestinationExists(monitorTable.getDestination());
+    }
 
     addEventProcessor(
-        new MonitorWriteRowsEventDataProcessor(tableMonitorTaskManager, monitorTable));
+        new MonitorWriteRowsEventDataProcessor(tableMonitorTaskManager, monitorTables));
     addEventProcessor(
-        new MonitorDeleteRowsEventDataProcessor(tableMonitorTaskManager, monitorTable));
+        new MonitorDeleteRowsEventDataProcessor(tableMonitorTaskManager, monitorTables));
     addEventProcessor(
-        new MonitorUpdateRowsEventDataProcessor(tableMonitorTaskManager, monitorTable));
+        new MonitorUpdateRowsEventDataProcessor(tableMonitorTaskManager, monitorTables));
   }
 }

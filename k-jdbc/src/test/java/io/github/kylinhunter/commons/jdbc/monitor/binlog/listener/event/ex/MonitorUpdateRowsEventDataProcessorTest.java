@@ -5,9 +5,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.google.common.collect.Lists;
+import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
-import io.github.kylinhunter.commons.jdbc.meta.cache.DatabaseMetaCache;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorUpdateRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
@@ -27,16 +28,16 @@ class MonitorUpdateRowsEventDataProcessorTest {
     monitorTable.setName("");
     monitorTable.setTablePkName("");
 
-    DatabaseMetaCache databaseMetaCache = Mockito.mock(DatabaseMetaCache.class);
+    TableIdManager tableIdManager = Mockito.mock(TableIdManager.class);
     ColumnMeta columnMeta = new ColumnMeta();
-    Mockito.when(databaseMetaCache.getPkColumnMeta(anyLong(), anyString(),
+    Mockito.when(tableIdManager.getPkColumnMeta(anyLong(), anyString(),
         anyString(), anyString())).thenReturn(columnMeta);
 
     TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
     MonitorUpdateRowsEventDataProcessor processor = new MonitorUpdateRowsEventDataProcessor(
         tableMonitorTaskManager,
-        monitorTable);
-    processor.setDatabaseMetaCache(databaseMetaCache);
+        ListUtils.newArrayList(monitorTable));
+    processor.setTableIdManager(tableIdManager);
 
     UpdateRowsEventData eventData = Mockito.mock(UpdateRowsEventData.class);
 
@@ -59,7 +60,7 @@ class MonitorUpdateRowsEventDataProcessorTest {
 
     Mockito.when(eventData.getRows()).thenReturn(Lists.newArrayList(entry));
     processor.process(null, eventData, new Context());
-    Mockito.verify(tableMonitorTaskManager, Mockito.times(1))
+    Mockito.verify(tableMonitorTaskManager, Mockito.times(2))
         .saveOrUpdate(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
             Mockito.any(RowOP.class));
   }

@@ -44,7 +44,7 @@ public class TableMapEventDataProcessor extends BasicEventProcessor {
       long tableId = eventData.getTableId();
       String table = eventData.getTable();
       log.info("table={}/{}/{}", database, tableId, table);
-      databaseMetaCache.updateTableCache(tableId, database, table, false);
+      tableIdManager.update(tableId, database, table);
     }
   }
 

@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.jdbc.meta.cache;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
@@ -9,15 +10,15 @@ import javax.sql.DataSource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class DatabaseMetaCacheTest {
+class TableIdManagerTest {
 
   @Test
   void test() {
 
     DataSourceManager dataSourceManager = new DataSourceManager(true);
     DataSource dataSource = dataSourceManager.get();
-    DatabaseMetaCache cache = new DatabaseMetaCache(dataSource);
-    cache.updateTableCache(1L, TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE1, true);
+    TableIdManager cache = new TableIdManager(dataSource);
+    cache.update(1L, TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE1);
     TableMeta tableMeta = cache.getTableMeta(1L);
     Assertions.assertEquals(TestHelper.DATABASE, tableMeta.getDatabase());
     ColumnMetas columnMetas = cache.getColumnMetas(1L);

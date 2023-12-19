@@ -13,32 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.scan;
+package io.github.kylinhunter.commons.jdbc.binlog.listener;
 
-import io.github.kylinhunter.commons.collections.ListUtils;
-import java.util.List;
-import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
- * @description
- * @date 2023-12-10 21:22
+ * @description EventListener
+ * @date 2023-11-25 02:56
  */
-@Data
-public class TableScanConfig {
+@Slf4j
+public class TestBinLogEventListener extends AbstractBinLogEventListener<Context> {
 
-  private String serverId = "1";
-  private int scheduleCorePoolSize = 1;
-  private List<ScanTable> scanTables = ListUtils.newArrayList();
-
-  /**
-   * @param scanTable scanTable
-   * @title add
-   * @description add
-   * @author BiJi'an
-   * @date 2023-12-17 17:17
-   */
-  public void add(ScanTable scanTable) {
-    this.scanTables.add(scanTable);
-  }
 }

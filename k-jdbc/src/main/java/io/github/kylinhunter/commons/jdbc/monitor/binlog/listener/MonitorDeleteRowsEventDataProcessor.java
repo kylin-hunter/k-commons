@@ -35,21 +35,23 @@ import lombok.RequiredArgsConstructor;
 public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProcessor {
 
   private final TableMonitorTaskManager tableMonitorTaskManager;
-  private final MonitorTable monitorTable;
+  private final List<MonitorTable> monitorTables;
 
   @Override
   protected void deleteDataRecord(DeleteRowsEventData eventData, Context context) {
 
-    ColumnMeta pkColumnMeta =
-        databaseMetaCache.getPkColumnMeta(
-            eventData.getTableId(),
-            monitorTable.getDatabase(),
-            monitorTable.getName(),
-            monitorTable.getTablePkName());
-    if (pkColumnMeta != null) {
-      List<Serializable[]> rows = eventData.getRows();
-      for (Serializable[] row : rows) {
-        processScanRecord(row, pkColumnMeta);
+    for (MonitorTable monitorTable : monitorTables) {
+      ColumnMeta pkColumnMeta =
+          tableIdManager.getPkColumnMeta(
+              eventData.getTableId(),
+              monitorTable.getDatabase(),
+              monitorTable.getName(),
+              monitorTable.getTablePkName());
+      if (pkColumnMeta != null) {
+        List<Serializable[]> rows = eventData.getRows();
+        for (Serializable[] row : rows) {
+          processScanRecord(monitorTable, row, pkColumnMeta);
+        }
       }
     }
   }
@@ -62,9 +64,9 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
    * @author BiJi'an
    * @date 2023-12-12 01:42
    */
-  private void processScanRecord(Serializable[] row, ColumnMeta pkColumnMeta) {
+  private void processScanRecord(
+      MonitorTable monitorTable, Serializable[] row, ColumnMeta pkColumnMeta) {
 
-    MonitorTable monitorTable = this.monitorTable;
     if (pkColumnMeta.getPos() < row.length) {
       tableMonitorTaskManager.saveOrUpdate(
           monitorTable.getDestination(),

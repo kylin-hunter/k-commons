@@ -77,7 +77,7 @@ public class TableScanManager extends AbstractDatabaseVisitor {
    * @title scan
    * @description scan
    * @author BiJi'an
-   * @date 2023-12-18 20:19
+   * @date 2023-12-17 20:19
    */
   private void scan(ScanTable scanTable) {
 

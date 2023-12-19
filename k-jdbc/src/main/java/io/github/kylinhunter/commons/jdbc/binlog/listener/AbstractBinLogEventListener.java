@@ -32,8 +32,9 @@ import io.github.kylinhunter.commons.jdbc.binlog.listener.event.TableMapEventDat
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.UpdateRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.WriteRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.meta.cache.DatabaseMetaCache;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
+import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.util.Map;
 import javax.sql.DataSource;
 import lombok.Setter;
@@ -54,7 +55,7 @@ public abstract class AbstractBinLogEventListener<T extends Context>
 
   private final Map<EventType, EventProcessor> processors = MapUtils.newHashMap();
 
-  private DatabaseMetaCache databaseMetaCache;
+  private TableIdManager tableIdManager;
 
   /**
    * @param dataSource dataSource
@@ -64,7 +65,9 @@ public abstract class AbstractBinLogEventListener<T extends Context>
    * @date 2023-12-10 01:34
    */
   public void init(DataSource dataSource) {
-    this.databaseMetaCache = new DatabaseMetaCache(dataSource);
+    Class<T> contentClazz = GenericTypeUtils.getSuperClassActualType(this.getClass(), 0);
+    this.context = ObjectCreator.create(contentClazz);
+    this.tableIdManager = new TableIdManager(dataSource);
     addEventProcessor(new RotateEventDataProcessor());
     addEventProcessor(new TableMapEventDataProcessor());
     addEventProcessor(new WriteRowsEventDataProcessor());
@@ -76,7 +79,7 @@ public abstract class AbstractBinLogEventListener<T extends Context>
 
   public void addEventProcessor(BasicEventProcessor eventProcessor) {
 
-    eventProcessor.setDatabaseMetaCache(databaseMetaCache);
+    eventProcessor.setTableIdManager(tableIdManager);
     processors.put(eventProcessor.getEventType(), eventProcessor);
   }
 

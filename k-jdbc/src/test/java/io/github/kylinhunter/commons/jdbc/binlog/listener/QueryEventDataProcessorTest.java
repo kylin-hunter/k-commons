@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.jdbc.binlog.listener;
 
 import com.github.shyiko.mysql.binlog.event.QueryEventData;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.QueryEventDataProcessor;
-import io.github.kylinhunter.commons.jdbc.meta.cache.DatabaseMetaCache;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -15,8 +14,8 @@ class QueryEventDataProcessorTest {
     QueryEventData eventData = Mockito.mock(QueryEventData.class);
     Mockito.when(eventData.getSql()).thenReturn("alter table xxx");
 
-    DatabaseMetaCache databaseMetaCache = Mockito.mock(DatabaseMetaCache.class);
-    event.setDatabaseMetaCache(databaseMetaCache);
+    TableIdManager tableIdManager = Mockito.mock(TableIdManager.class);
+    event.setTableIdManager(tableIdManager);
     event.process(null, eventData, new Context());
   }
 }

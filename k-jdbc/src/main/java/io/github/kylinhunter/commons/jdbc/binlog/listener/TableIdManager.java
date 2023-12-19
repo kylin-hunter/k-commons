@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.meta.cache;
+package io.github.kylinhunter.commons.jdbc.binlog.listener;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
@@ -32,17 +32,21 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-12-16 00:06
  */
 @Slf4j
-public class DatabaseMetaCache {
+public class TableIdManager {
 
-  protected final Map<Long, TableMeta> tableMetas = MapUtils.newHashMap();
-  protected final Map<Long, ColumnMetas> tableColumnMetas = MapUtils.newHashMap();
+  protected final Map<Long, TableMeta> allTableMetas = MapUtils.newHashMap();
+
+  protected final Map<Long, ColumnMetas> allColumnMetas = MapUtils.newHashMap();
+
+  protected final Map<String, Long> tableIdMaps = MapUtils.newHashMap();
+
   protected DatabaseMetaReader databaseMetaReader;
   private final TableReader tableReader;
   private final ColumnReader columnReader;
 
   protected DataSource dataSource;
 
-  public DatabaseMetaCache(DataSource dataSource) {
+  public TableIdManager(DataSource dataSource) {
     this.dataSource = dataSource;
     this.databaseMetaReader = new DatabaseMetaReader(dataSource);
     this.tableReader = this.databaseMetaReader.getTableReader();
@@ -52,31 +56,46 @@ public class DatabaseMetaCache {
   /**
    * @param tableId tableId
    * @param tableName tableName
-   * @param forceUpdate forceUpdate
    * @title addTable
    * @description addTable
    * @author BiJi'an
    * @date 2023-12-09 23:27
    */
-  public void updateTableCache(
-      Long tableId, String database, String tableName, boolean forceUpdate) {
+  public void update(Long tableId, String database, String tableName) {
 
-    TableMeta tableMeta = tableMetas.get(tableId);
-    if (tableMeta == null || forceUpdate) {
-      tableMeta = tableReader.getTableMetaData(this.dataSource, database, tableName);
+    TableMeta oldTableMeta = allTableMetas.get(tableId);
+    if (oldTableMeta == null || !oldTableMeta.equals(database, tableName)) {
+      TableMeta tableMeta = tableReader.getTableMetaData(this.dataSource, database, tableName);
       if (tableMeta != null) {
-        tableMetas.put(tableId, tableMeta);
+        allTableMetas.put(tableId, tableMeta);
         log.info("############# updateTableMeta={}", tableMeta);
       }
-    }
 
-    ColumnMetas columnMetas = this.tableColumnMetas.get(tableId);
-    if (columnMetas == null || forceUpdate) {
-      columnMetas = columnReader.getColumnMetaData(this.dataSource, database, tableName);
+      ColumnMetas columnMetas =
+          columnReader.getColumnMetaData(this.dataSource, database, tableName);
       if (columnMetas != null) {
-        this.tableColumnMetas.put(tableId, columnMetas);
+        this.allColumnMetas.put(tableId, columnMetas);
         log.info("############# updateColumnMeta={}", columnMetas);
       }
+
+      tableIdMaps.put(database + ":" + tableName, tableId);
+    }
+  }
+
+  /**
+   * @param database database
+   * @param tableName tableName
+   * @title clean
+   * @description clean
+   * @author BiJi'an
+   * @date 2023-12-17 14:38
+   */
+  public void clean(String database, String tableName) {
+
+    Long tableId = this.tableIdMaps.get(database + ":" + tableName);
+    if (tableId != null) {
+      this.allTableMetas.remove(tableId);
+      this.allColumnMetas.remove(tableId);
     }
   }
 
@@ -89,7 +108,7 @@ public class DatabaseMetaCache {
    * @date 2023-12-16 21:10
    */
   public TableMeta getTableMeta(long tableId) {
-    return this.tableMetas.get(tableId);
+    return this.allTableMetas.get(tableId);
   }
 
   /**
@@ -101,7 +120,7 @@ public class DatabaseMetaCache {
    * @date 2023-12-16 00:57
    */
   public ColumnMetas getColumnMetas(long tableId) {
-    return this.tableColumnMetas.get(tableId);
+    return this.allColumnMetas.get(tableId);
   }
 
   /**

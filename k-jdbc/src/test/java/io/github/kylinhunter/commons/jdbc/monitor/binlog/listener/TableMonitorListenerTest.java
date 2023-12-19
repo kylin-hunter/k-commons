@@ -4,6 +4,7 @@ import com.github.shyiko.mysql.binlog.event.Event;
 import com.github.shyiko.mysql.binlog.event.EventData;
 import com.github.shyiko.mysql.binlog.event.EventHeaderV4;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
+import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.QueryEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.MonitorTable;
@@ -28,7 +29,7 @@ class TableMonitorListenerTest {
     tableMonitorListener.setContext(context);
     tableMonitorListener.addEventProcessor(new QueryEventDataProcessor());
     MonitorTable monitorTable = new MonitorTable();
-    tableMonitorListener.setMonitorTable(monitorTable);
+    tableMonitorListener.setMonitorTables(ListUtils.newArrayList(monitorTable));
     tableMonitorListener.init(dataSourceManager.get());
     tableMonitorListener.onEvent(event);
     dataSourceManager.close();

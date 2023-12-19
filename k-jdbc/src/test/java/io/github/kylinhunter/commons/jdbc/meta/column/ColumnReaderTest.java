@@ -19,7 +19,6 @@ class ColumnReaderTest {
       TestHelper.initTestSQl();
       columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE1);
     }
-    Assertions.assertEquals(16, columnMetas.size());
     for (ColumnMeta columnMeta : columnMetas.getColumns()) {
       System.out.println("################" + columnMeta.getColumnName() + "###############");
       System.out.println(columnMeta);
@@ -27,6 +26,7 @@ class ColumnReaderTest {
       System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
       columnMeta.getRawMetadatas().forEach((k, v) -> System.out.println(k + ":" + v));
     }
+    Assertions.assertEquals(16, columnMetas.size());
 
     ColumnMeta columnMeta = columnMetas.getByIndex(0);
     Assertions.assertEquals("id", columnMeta.getColumnName());

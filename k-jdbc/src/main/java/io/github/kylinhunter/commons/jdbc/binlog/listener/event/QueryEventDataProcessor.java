@@ -54,7 +54,7 @@ public class QueryEventDataProcessor extends BasicEventProcessor {
         if (sql.contains("alter")) {
           String tableName = getAlterTableName(sql);
           if (!StringUtil.isEmpty(tableName)) {
-            databaseMetaCache.updateTableCache(eventData.getThreadId(), database, tableName, true);
+            tableIdManager.clean(database, tableName);
           }
         }
       }

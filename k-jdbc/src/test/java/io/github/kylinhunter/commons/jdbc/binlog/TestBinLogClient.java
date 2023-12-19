@@ -3,38 +3,25 @@ package io.github.kylinhunter.commons.jdbc.binlog;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.TestBinLogEventListener;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.MysqlSavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.MonitorTable;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorListener;
 
-class TestBinLogClient {
+public class TestBinLogClient {
 
   public static void main(String[] args) {
 
     BinLogClient binLogClient = new BinLogClient(getBinLogConfig());
-    SavePointManager redisSavePointManager = getRedisSavePointManager();
-    redisSavePointManager.reset();
+    binLogClient.addBinLogEventListener(new TestBinLogEventListener());
 
-    TableMonitorListener tableMonitorListener = new TableMonitorListener();
-    MonitorTable monitorTable = getTableMonitorConfig();
-    tableMonitorListener.setMonitorTable(monitorTable);
-    binLogClient.addBinLogEventListener(tableMonitorListener);
-
+    binLogClient.reset();
     binLogClient.start();
-    binLogClient.disconnect();
+//    binLogClient.disconnect();
   }
 
-  public static MonitorTable getTableMonitorConfig() {
-    MonitorTable tableBinlogConfig = new MonitorTable();
-    tableBinlogConfig.setTablePkName("id");
-    tableBinlogConfig.setDatabase(TestHelper.DATABASE);
-    tableBinlogConfig.setName(TestHelper.TEST_TABLE_ROLE1);
-    return tableBinlogConfig;
-  }
 
   public static BinLogConfig getBinLogConfig() {
     BinLogConfig binLogConfig = new BinLogConfig();

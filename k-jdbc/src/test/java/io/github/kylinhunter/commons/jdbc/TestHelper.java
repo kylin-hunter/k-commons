@@ -34,8 +34,8 @@ public class TestHelper {
   public static String MONITOR_SCAN_TASK = "k_junit_table_monitor_scan_task";
   public static String MONITOR_BINLOG_TASK = "k_junit_table_monitor_binlog_task";
 
-  public static String BINLOG_FILENAME = "binlog.000029";
-  public static long BINLOG_POS = 1776364;
+  public static String BINLOG_FILENAME = "binlog.000030";
+  public static long BINLOG_POS = 0;
 
   public static String TEST_SQL = "io/github/kylinhunter/commons/jdbc/test_data.sql";
 

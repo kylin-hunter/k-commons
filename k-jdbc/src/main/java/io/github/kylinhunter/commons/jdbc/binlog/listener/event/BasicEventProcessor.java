@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.binlog.listener.event;
 
-import io.github.kylinhunter.commons.jdbc.meta.cache.DatabaseMetaCache;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
 import lombok.Setter;
 
 /**
@@ -25,5 +25,5 @@ import lombok.Setter;
  */
 public abstract class BasicEventProcessor implements EventProcessor {
 
-  @Setter protected DatabaseMetaCache databaseMetaCache;
+  @Setter protected TableIdManager tableIdManager;
 }

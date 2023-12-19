@@ -78,7 +78,7 @@ public interface ScanProgressDAO extends BaseDAO {
    * @title delete
    * @description delete
    * @author BiJi'an
-   * @date 2023-12-18 23:24
+   * @date 2023-12-17 23:24
    */
   void delete(String serverId, String tableName);
 }
