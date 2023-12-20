@@ -16,8 +16,10 @@
 package io.github.kylinhunter.commons.jdbc.binlog;
 
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
+import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
+import javax.sql.DataSource;
 import lombok.Data;
 
 /**
@@ -68,5 +70,16 @@ public class BinLogConfig {
     this.url = JdbcUtils.toString(jdbcUrl);
     this.hostname = jdbcUrl.getHost();
     this.port = jdbcUrl.getPort();
+  }
+
+  /**
+   * @return javax.sql.DataSource
+   * @title getDataSource
+   * @description getDataSource
+   * @author BiJi'an
+   * @date 2023-12-17 20:47
+   */
+  public DataSource toDataSource() {
+    return DataSourceManager.createDataSource(url, username, password);
   }
 }

@@ -17,10 +17,8 @@ package io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp;
 
 import io.github.kylinhunter.commons.jdbc.binlog.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
-import java.util.Objects;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,8 +33,8 @@ public class RedisSavePointManager implements SavePointManager {
   @Setter private String recentBinLogKey = "binlog_process";
   private final RedisExecutor redisExecutor;
 
-  public RedisSavePointManager(RedisConfig redisConfig) {
-    redisExecutor = new RedisExecutor(redisConfig);
+  public RedisSavePointManager(RedisExecutor redisExecutor) {
+    this.redisExecutor = redisExecutor;
   }
 
   @Override
@@ -57,7 +55,6 @@ public class RedisSavePointManager implements SavePointManager {
 
   @Override
   public void init(JdbcUrl jdbcUrl) {
-    Objects.requireNonNull(jdbcUrl);
     SavePoint savePoint = this.get();
     if (savePoint == null) {
       this.redisExecutor.set(recentBinLogKey, this.getDefaultSavePoint());

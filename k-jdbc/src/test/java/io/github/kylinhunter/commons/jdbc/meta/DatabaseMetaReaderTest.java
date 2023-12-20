@@ -23,8 +23,21 @@ class DatabaseMetaReaderTest {
 
 
   @Test
-  void test() {
-    DatabaseMetaReader databaseMetaReader = new DatabaseMetaReader();
+  void test() throws SQLException {
+    DatabaseMetaData databaseMetaDataMock = Mockito.mock(DatabaseMetaData.class);
+
+    Mockito.when(databaseMetaDataMock.getURL()).thenReturn(TestHelper.MYSQL_JDBC_URL);
+    Mockito.when(databaseMetaDataMock.getDatabaseProductName()).thenReturn("mysql");
+    Mockito.when(databaseMetaDataMock.getDatabaseProductVersion()).thenReturn("8.0.0");
+    Mockito.when(databaseMetaDataMock.getDriverName()).thenReturn("mysql Connector/J");
+
+    Connection connectionMock = Mockito.mock(Connection.class);
+    Mockito.when(connectionMock.getMetaData()).thenReturn(databaseMetaDataMock);
+
+    DataSource dataSource = Mockito.mock(DataSource.class);
+    Mockito.when(dataSource.getConnection()).thenReturn(connectionMock);
+
+    DatabaseMetaReader databaseMetaReader = new DatabaseMetaReader(dataSource);
     DatabaseMeta databaseMeta = databaseMetaReader.getDBMetaData();
     System.out.println(databaseMeta);
     Assertions.assertEquals(DbType.MYSQL, databaseMeta.getDbType());

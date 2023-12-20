@@ -33,7 +33,6 @@ jar {
     exclude("k-jul-logging.properties")
 }
 test {
-    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
 
     println jvmArgs

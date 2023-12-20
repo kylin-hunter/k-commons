@@ -122,6 +122,9 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
     try {
       DatabaseMetaData metaData = connection.getMetaData();
       ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[] {"TABLE"});
+      if (tables == null) {
+        return ListUtils.newArrayList();
+      }
       ResultSetMetaData tableMetadata = tables.getMetaData();
       Map<String, Object> rawMetadata = MapUtils.newHashMap();
       while (tables.next()) {
@@ -129,7 +132,7 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
         TableMeta tableMeta = new TableMeta();
         for (int i = 1; i <= tableMetadata.getColumnCount(); i++) {
           String colName = tableMetadata.getColumnName(i);
-          Object value = tables.getObject(colName);
+          Object value = tables.getObject(i);
           rawMetadata.put(colName, value);
           processMetadata(tableMeta, colName, value);
         }

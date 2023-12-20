@@ -1,34 +1,30 @@
 package io.github.kylinhunter.commons.jdbc.meta.column;
 
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import io.github.kylinhunter.commons.jdbc.meta.column.imp.MysqlColumnReader;
-import java.sql.SQLException;
-import javax.sql.DataSource;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
-class ColumnReaderTest {
+public class TestColumnReader {
 
-  @Test
-  void test() throws SQLException {
+  public static void main(String[] args) {
 
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
-
-    ColumnReader columnReader = new MysqlColumnReader(dataSource);
+    ColumnReader columnReader = new MysqlColumnReader();
 
     ColumnMetas columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE1);
-    Assertions.assertEquals(1, columnMetas.size());
+    if (columnMetas.size() == 0) {
+      TestHelper.initTestSQl();
+      columnMetas = columnReader.getColumnMetaData("", TestHelper.TEST_TABLE_ROLE1);
+    }
     for (ColumnMeta columnMeta : columnMetas.getColumns()) {
       System.out.println("################" + columnMeta.getColumnName() + "###############");
       System.out.println(columnMeta);
       Assertions.assertNotNull(columnMeta.getJavaClass());
-      System.out.println(columnMeta.getColumnName() + "/" + columnMeta.getJavaClass().getName());
+      System.out.println(columnMeta.getColumnName() + ":" + columnMeta.getJavaClass().getName());
       columnMeta.getRawMetadatas().forEach((k, v) -> System.out.println(k + ":" + v));
     }
-    Assertions.assertEquals(1, columnMetas.size());
+    Assertions.assertEquals(16, columnMetas.size());
 
     ColumnMeta columnMeta = columnMetas.getByIndex(0);
     Assertions.assertEquals("id", columnMeta.getColumnName());

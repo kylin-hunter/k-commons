@@ -108,9 +108,9 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
       while (columns.next()) {
         ColumnMeta columnMeta = new ColumnMeta();
         columnMeta.setPos(pos++);
-        for (int i = 0; i < columnMetadata.getColumnCount(); i++) {
-          String colName = columnMetadata.getColumnName(i + 1);
-          Object value = columns.getObject(colName);
+        for (int i = 1; i <= columnMetadata.getColumnCount(); i++) {
+          String colName = columnMetadata.getColumnName(i);
+          Object value = columns.getObject(i);
           rawMetadata.put(colName, value);
           processMetadata(columnMeta, colName, value);
         }

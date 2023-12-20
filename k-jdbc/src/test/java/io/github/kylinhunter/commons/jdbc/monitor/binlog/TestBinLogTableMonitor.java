@@ -11,7 +11,7 @@ class TestBinLogTableMonitor {
 
   public static void main(String[] args) {
     BinLogConfig binLogConfig = TestBinLogClient.getBinLogConfig();
-
+    binLogConfig.setSavePointManager(TestBinLogClient.getRedisSavePointManager1());
     MonitorTable monitorTable1 = getMonitorTable1();
     MonitorTable monitorTable2 = getMonitorTable2();
     MonitorTables monitorTables = new MonitorTables();

@@ -65,15 +65,19 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
     this.scanRecordManager = new ScanRecordManager(dataSource);
     Objects.requireNonNull(tableScanConfig);
     this.tableScanConfig = tableScanConfig;
-    this.scanProgressManager.ensureTableExists();
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
       scanTable.setConfig(tableScanConfig);
-      this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
     }
   }
 
   @Override
   public void start() {
+
+    this.scanProgressManager.ensureTableExists();
+    for (ScanTable scanTable : tableScanConfig.getScanTables()) {
+      this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
+    }
+
     this.scheduler = Executors.newScheduledThreadPool(tableScanConfig.getScheduleCorePoolSize());
 
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
@@ -174,7 +178,7 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
    * @title reset
    * @description reset
    * @author BiJi'an
-   * @date 2023-12-20 00:43
+   * @date 2023-12-17 00:43
    */
   @Override
   public void reset() {

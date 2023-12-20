@@ -43,7 +43,7 @@ public class BinLogTableMonitor implements TableMonitor {
    * @title start
    * @description start
    * @author BiJi'an
-   * @date 2023-12-20 00:40
+   * @date 2023-12-17 00:40
    */
   @Override
   public void start() {
@@ -56,7 +56,7 @@ public class BinLogTableMonitor implements TableMonitor {
    * @title reset
    * @description reset
    * @author BiJi'an
-   * @date 2023-12-20 00:41
+   * @date 2023-12-17 00:41
    */
   @Override
   public void reset() {

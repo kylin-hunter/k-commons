@@ -21,7 +21,6 @@ import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.jdbc.binlog.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.BinLogEventListener;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import java.io.IOException;
 import java.util.List;
@@ -63,7 +62,7 @@ public class BinLogClient {
     this.binaryLogClient =
         new BinaryLogClient(
             jdbcUrl.getHost(), jdbcUrl.getPort(), jdbcUrl.getDatabase(), username, password);
-    this.dataSource = DataSourceManager.createDataSource(config.getUrl(), username, password);
+    this.dataSource = config.toDataSource();
     savePointManager = binLogConfig.getSavePointManager();
   }
 

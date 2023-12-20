@@ -1,6 +1,8 @@
 package io.github.kylinhunter.commons.jdbc;
 
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
@@ -63,5 +65,15 @@ public class TestHelper {
     redisConfig.setPort(6379);
     redisConfig.setPassword("123456");
     return redisConfig;
+  }
+
+  public static RedisExecutor getRedisExecutor() {
+    return new RedisExecutor(getRedisConfig());
+  }
+
+  public static RedisExecutor getJDKRedisExecutor() {
+    RedisConfig redisConfig = getRedisConfig();
+    redisConfig.setRedisCodec(new JdkRedisCodec());
+    return new RedisExecutor(redisConfig);
   }
 }

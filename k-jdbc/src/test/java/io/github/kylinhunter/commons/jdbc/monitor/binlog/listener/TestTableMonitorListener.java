@@ -4,23 +4,17 @@ import com.github.shyiko.mysql.binlog.event.Event;
 import com.github.shyiko.mysql.binlog.event.EventData;
 import com.github.shyiko.mysql.binlog.event.EventHeaderV4;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.QueryEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorContext;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
-import java.sql.SQLException;
-import javax.sql.DataSource;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-class TableMonitorListenerTest {
+public class TestTableMonitorListener {
 
-  @Test
-  void test() throws SQLException {
-
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+  public static void main(String[] args) {
+    DataSourceManager dataSourceManager = new DataSourceManager(true);
     Event event = Mockito.mock(Event.class);
     Mockito.when(event.getHeader()).thenReturn(new EventHeaderV4());
     TableMonitorListener tableMonitorListener = new TableMonitorListener();
@@ -33,9 +27,8 @@ class TableMonitorListenerTest {
     MonitorTable monitorTable = new MonitorTable();
     MonitorTables monitorTables = new MonitorTables(monitorTable);
     tableMonitorListener.setMonitorTables(monitorTables);
-    TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
-    tableMonitorListener.setTableMonitorTaskManager(tableMonitorTaskManager);
-    tableMonitorListener.init(dataSource);
+    tableMonitorListener.init(dataSourceManager.get());
     tableMonitorListener.onEvent(event);
+    dataSourceManager.close();
   }
 }

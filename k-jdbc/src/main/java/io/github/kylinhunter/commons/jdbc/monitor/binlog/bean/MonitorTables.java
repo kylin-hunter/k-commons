@@ -46,7 +46,7 @@ public class MonitorTables {
    * @title addMonitorTable
    * @description addMonitorTable
    * @author BiJi'an
-   * @date 2023-12-20 00:55
+   * @date 2023-12-17 00:55
    */
   public void addMonitorTable(MonitorTable monitorTable) {
     datas.add(monitorTable);

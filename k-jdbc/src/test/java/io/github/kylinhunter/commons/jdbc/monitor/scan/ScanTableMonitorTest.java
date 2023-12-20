@@ -1,16 +1,22 @@
 package io.github.kylinhunter.commons.jdbc.monitor.scan;
 
+import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanProgressManager;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.reflect.ReflectUtils;
+import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class ScanTableMonitorTest {
 
   @Test
-  void init() {
-    DataSource dataSource = new DataSourceManager(true).get();
-    TestHelper.initTestSQl(dataSource);
+  void init() throws SQLException {
+    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    ScanProgressManager scanProgressManager = Mockito.mock(ScanProgressManager.class);
+    TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
 
     TableScanConfig tableScanConfig = new TableScanConfig();
     tableScanConfig.setServerId("1");
@@ -28,6 +34,8 @@ class ScanTableMonitorTest {
     scanTable1.setScanInterval(-1);
     tableScanConfig.add(scanTable2);
     ScanTableMonitor manager = new ScanTableMonitor(dataSource, tableScanConfig);
+    ReflectUtils.setField(manager, "scanProgressManager", scanProgressManager);
+    ReflectUtils.setField(manager, "tableMonitorTaskManager", tableMonitorTaskManager);
 
     manager.reset();
     manager.start();

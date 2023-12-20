@@ -87,7 +87,7 @@ subprojects {
         testImplementation 'org.junit.platform:junit-platform-suite'
         testImplementation 'org.mockito:mockito-core'
         testImplementation 'org.mockito:mockito-inline'
-        testImplementation 'org.jmockit:jmockit'
+
     }
 
     jar {

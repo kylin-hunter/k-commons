@@ -77,6 +77,12 @@ public class RedisExecutor {
     return (V) this.redisCommands.get(key);
   }
 
+  /**
+   * @title shutdown
+   * @description shutdown
+   * @author BiJi'an
+   * @date 2023-12-17 10:23
+   */
   public void shutdown() {
     IOUtil.closeQuietly(this.connection);
   }

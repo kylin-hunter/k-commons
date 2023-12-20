@@ -9,12 +9,14 @@ import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.MysqlSavePointMan
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
 
 public class TestBinLogClient {
 
   public static void main(String[] args) {
-
-    BinLogClient binLogClient = new BinLogClient(getBinLogConfig());
+    BinLogConfig binLogConfig = getBinLogConfig();
+    binLogConfig.setSavePointManager(getRedisSavePointManager1());
+    BinLogClient binLogClient = new BinLogClient(binLogConfig);
     binLogClient.addBinLogEventListener(new TestBinLogEventListener());
 
     binLogClient.reset();
@@ -30,22 +32,23 @@ public class TestBinLogClient {
     binLogConfig.setUrl(TestHelper.MYSQL_JDBC_URL);
     binLogConfig.setUsername(TestHelper.MYSQL_USERNAME);
     binLogConfig.setPassword(TestHelper.MYSQL_PASSWORD);
-    binLogConfig.setSavePointManager(getRedisSavePointManager());
     binLogConfig.setServerId(1);
     return binLogConfig;
   }
 
 
-  public static RedisSavePointManager getRedisSavePointManager() {
+  public static RedisSavePointManager getRedisSavePointManager1() {
     RedisConfig redisConfig = TestHelper.getRedisConfig();
-    return new RedisSavePointManager(redisConfig);
+    RedisExecutor redisExecutor = new RedisExecutor(redisConfig);
+    return new RedisSavePointManager(redisExecutor);
   }
 
 
   public static SavePointManager getRedisSavePointManager2() {
     RedisConfig redisConfig = TestHelper.getRedisConfig();
     redisConfig.setRedisCodec(new JdkRedisCodec());
-    return new RedisSavePointManager(redisConfig);
+    RedisExecutor redisExecutor = new RedisExecutor(redisConfig);
+    return new RedisSavePointManager(redisExecutor);
 
   }
 
