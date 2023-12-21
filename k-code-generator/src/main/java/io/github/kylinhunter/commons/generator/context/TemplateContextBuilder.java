@@ -41,10 +41,8 @@ import lombok.extern.slf4j.Slf4j;
  * @description
  * @date 2023-02-12 10:24
  */
-
 @Slf4j
 public class TemplateContextBuilder {
-
 
   private final Config config;
   private final ModuleInfoReader moduleInfoReader;
@@ -198,6 +196,4 @@ public class TemplateContextBuilder {
     TableMeta tableMeta = moduleInfo.getTableInfo().getTableMeta();
     classInfo.setComment(StringUtil.defaultString(tableMeta.getRemarks(), tableMeta.getName()));
   }
-
-
 }

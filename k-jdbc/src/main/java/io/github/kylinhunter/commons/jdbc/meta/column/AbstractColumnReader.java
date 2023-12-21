@@ -60,7 +60,7 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
   }
 
   /**
-   * @param catalog   catalog
+   * @param catalog catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -74,8 +74,8 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
 
   /**
    * @param dataSource dataSource
-   * @param catalog    catalog
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -98,9 +98,9 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
 
   /**
    * @param connection connection
-   * @param catalog    catalog
-   * @param schema     schema
-   * @param tableName  tableName
+   * @param catalog catalog
+   * @param schema schema
+   * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -140,8 +140,8 @@ public abstract class AbstractColumnReader extends AbstractDatabaseVisitor imple
 
   /**
    * @param columnMeta columnMeta
-   * @param colName    colName
-   * @param value      value
+   * @param colName colName
+   * @param value value
    * @title processMetadata
    * @description read cloumn metadata
    * @author BiJi'an

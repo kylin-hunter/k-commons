@@ -97,7 +97,6 @@ public class CodeExporter {
     return classInfo.getPackageName().replaceAll("\\.", "/") + "/" + classInfo.getName();
   }
 
-
   /**
    * @param config config
    * @return io.github.kylinhunter.commons.generator.template.TemplateEngine

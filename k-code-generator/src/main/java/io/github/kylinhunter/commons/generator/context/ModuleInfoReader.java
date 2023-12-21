@@ -44,7 +44,6 @@ public class ModuleInfoReader {
 
   public ModuleInfoReader(DataSource dataSource) {
     this.databaseMetaReader = new DatabaseMetaReader(dataSource);
-
   }
 
   /**

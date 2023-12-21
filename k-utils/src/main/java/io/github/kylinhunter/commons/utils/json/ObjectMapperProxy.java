@@ -122,8 +122,8 @@ public class ObjectMapperProxy {
 
   /**
    * @param jsonOption jsonOption
-   * @param content    content
-   * @param javaType   javaType
+   * @param content content
+   * @param javaType javaType
    * @return T
    * @title readValue
    * @description
@@ -136,11 +136,10 @@ public class ObjectMapperProxy {
     return getObjectMapper(jsonOption).readValue(content, javaType);
   }
 
-
   /**
    * @param jsonOption jsonOption
-   * @param content    content
-   * @param valueType  valueType
+   * @param content content
+   * @param valueType valueType
    * @return T
    * @title readValue
    * @description
@@ -151,12 +150,11 @@ public class ObjectMapperProxy {
       throws JsonProcessingException {
 
     return getObjectMapper(jsonOption).readValue(content, valueType);
-
   }
 
   /**
-   * @param content    content
-   * @param valueType  valueType
+   * @param content content
+   * @param valueType valueType
    * @param jsonOption jsonOption
    * @return T
    * @title readValue
@@ -168,11 +166,10 @@ public class ObjectMapperProxy {
       throws IOException {
 
     return getObjectMapper(jsonOption).readValue(content, valueType);
-
   }
 
   /**
-   * @param content    content
+   * @param content content
    * @param jsonOption jsonOption
    * @return java.lang.String
    * @title writeValueAsString
@@ -184,11 +181,10 @@ public class ObjectMapperProxy {
       throws JsonProcessingException {
 
     return ObjectMapperProxy.getObjectMapper(jsonOption).writeValueAsString(content);
-
   }
 
   /**
-   * @param content    content
+   * @param content content
    * @param jsonOption jsonOption
    * @return byte[]
    * @title writeValueAsBytes
@@ -200,6 +196,5 @@ public class ObjectMapperProxy {
       throws JsonProcessingException {
 
     return getObjectMapper(jsonOption).writeValueAsBytes(content);
-
   }
 }

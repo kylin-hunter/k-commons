@@ -32,15 +32,14 @@ import java.util.Map;
  * @description
  * @date 2023-02-26 19:04
  */
-
 public class FieldInfoConvertor {
 
   ExpressionExecutor expressionExecutor = new ExpressionExecutor();
 
   /**
    * @param columnMeta columnMeta
-   * @param table      table
-   * @param database   database
+   * @param table table
+   * @param database database
    * @return io.github.kylinhunter.commons.generator.context.bean.clazz.FieldInfo
    * @title convert
    * @description

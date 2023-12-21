@@ -23,6 +23,14 @@ import javax.sql.DataSource;
 
 public interface TableReader extends DatabaseVisitor {
 
+  /**
+   * @param tableName tableName
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
+   * @title getTableMetaData
+   * @description getTableMetaData
+   * @author BiJi'an
+   * @date 2023-12-21 23:59
+   */
   TableMeta getTableMetaData(String tableName);
 
   /**

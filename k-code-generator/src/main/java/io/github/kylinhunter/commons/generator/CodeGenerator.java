@@ -30,11 +30,9 @@ import lombok.Setter;
  * @description
  * @date 2023-01-08 22:10
  */
-
 public class CodeGenerator {
 
-  @Setter
-  private TemplateContextBuilder templateContextBuilder;
+  @Setter private TemplateContextBuilder templateContextBuilder;
   private final CodeExporter codeExporter;
 
   public CodeGenerator() {
