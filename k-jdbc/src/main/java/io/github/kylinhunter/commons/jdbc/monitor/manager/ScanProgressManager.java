@@ -66,27 +66,27 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-10 21:17
    */
-  public ScanProgress getLatestScanProgress(ScanTable config) {
+  public ScanProgress getLatestScanProgress(ScanTable scanTable) {
 
     ScanProgress progress =
-        this.scanProgressDAO.findById(config.getServerId(), config.getTableName());
+        this.scanProgressDAO.findById(scanTable.getServerId(), scanTable.getTableName());
     if (progress == null) {
       progress =
           new ScanProgress(
-              config.getServerId(),
-              config.getTableName(),
-              config.getDestination(),
-              config.getInitScanTime(),
-              config.getInitScanId());
+              scanTable.getServerId(),
+              scanTable.getTableName(),
+              scanTable.getDestination(),
+              scanTable.getInitScanTime(),
+              scanTable.getInitScanId());
       this.scanProgressDAO.save(progress);
     }
     return progress;
   }
 
   /**
-   * @param serverId serverId
+   * @param serverId  serverId
    * @param tableName tableName
-   * @param last last
+   * @param last      last
    * @title update
    * @description update
    * @author BiJi'an

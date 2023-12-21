@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.url.JdbcUrl;
 import io.github.kylinhunter.commons.jdbc.utils.JdbcUtils;
+import java.io.Serializable;
 import javax.sql.DataSource;
 import lombok.Data;
 
@@ -28,7 +29,7 @@ import lombok.Data;
  * @date 2023-12-10 21:22
  */
 @Data
-public class BinLogConfig {
+public class BinLogConfig implements Serializable {
 
   long serverId;
   String hostname;

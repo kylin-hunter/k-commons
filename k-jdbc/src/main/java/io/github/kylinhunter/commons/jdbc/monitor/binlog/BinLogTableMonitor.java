@@ -29,7 +29,8 @@ import lombok.Setter;
  */
 public class BinLogTableMonitor implements TableMonitor {
 
-  @Setter private MonitorTables monitorTables;
+  @Setter
+  private MonitorTables monitorTables;
   private final BinLogClient binLogClient;
 
   private final TableMonitorListener tableMonitorListener = new TableMonitorListener();

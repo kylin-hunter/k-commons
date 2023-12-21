@@ -145,6 +145,7 @@ class TestCodeGenerator {
     Assertions.assertTrue(distFile.exists());
     String text1 = ResourceHelper.getText(file.getAbsolutePath());
     String text2 = ResourceHelper.getText(distFile.getAbsolutePath());
+    text1 = text1.replaceAll("@since \\d{4}-\\d{2}-\\d{2}", "@since 2023-12-21");
     Assertions.assertEquals(text1, text2);
   }
 

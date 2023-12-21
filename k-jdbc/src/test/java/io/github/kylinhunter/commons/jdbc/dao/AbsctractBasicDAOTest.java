@@ -20,5 +20,7 @@ class AbsctractBasicDAOTest {
     basicDAO.dropTable(tableName);
     basicDAO.ensureTableExists(tableName, "create table " + tableName + " (id int)");
 
+    basicDAO.ensureTableExists(tableName + 2, "create table " + tableName + " (id int)");
+
   }
 }
