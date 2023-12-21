@@ -3,7 +3,6 @@ package io.github.kylinhunter.commons.jdbc.monitor.dao;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
@@ -22,7 +21,7 @@ class MysqlTableMonitorTaskDAOTest {
   @Test
   void test() throws SQLException {
     SqlExecutor sqlExecutor = Mockito.mock(SqlExecutor.class);
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
     MysqlTableMonitorTaskDAO scanProcessorDAO = new MysqlTableMonitorTaskDAO(dataSource);
     ReflectUtils.setField(scanProcessorDAO, "sqlExecutor", sqlExecutor);
     String tableName = TestHelper.MONITOR_SCAN_TASK;

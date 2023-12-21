@@ -7,6 +7,8 @@ import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
+import io.github.kylinhunter.commons.jdbc.test.TestDataSourceHelper;
+import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 
@@ -75,5 +77,9 @@ public class TestHelper {
     RedisConfig redisConfig = getRedisConfig();
     redisConfig.setRedisCodec(new JdkRedisCodec());
     return new RedisExecutor(redisConfig);
+  }
+
+  public static DataSource mockDataSource() throws SQLException {
+    return TestDataSourceHelper.mockDataSource();
   }
 }

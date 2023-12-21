@@ -1,16 +1,16 @@
 package io.github.kylinhunter.commons.generator.function;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.component.CF;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ExpressionExecutorTest {
 
+  ExpressionExecutor expressionExecutor = new ExpressionExecutor();
+
   @Test
   void execute() {
-    ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
     Long result1 = expressionExecutor.execute("1+1");
     Assertions.assertEquals(2, result1);
 
@@ -35,7 +35,6 @@ class ExpressionExecutorTest {
     env.put("b", 2);
 
     String path = "io/github/kylinhunter/commons/generator/function/Function.txt";
-    ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
     Long result1 = expressionExecutor.executeByFile(path, env);
     Assertions.assertEquals(4, result1);
 

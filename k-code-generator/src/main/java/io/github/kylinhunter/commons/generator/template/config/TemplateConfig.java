@@ -31,12 +31,11 @@ import lombok.Setter;
 @Setter
 public class TemplateConfig {
 
-  private Path templatePath = UserDirUtils.getDir(true, "templates").toPath();
+  private Path templatePath = UserDirUtils.getDir(false, "templates_sample").toPath();
   private OutputConfig outputConfig = new OutputConfig();
 
   /**
    * @param templatePath templateDir
-   * @return void
    * @title setOutputDir
    * @description
    * @author BiJi'an

@@ -1,8 +1,9 @@
-package io.github.kylinhunter.commons.jdbc;
+package io.github.kylinhunter.commons.jdbc.test;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
+import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

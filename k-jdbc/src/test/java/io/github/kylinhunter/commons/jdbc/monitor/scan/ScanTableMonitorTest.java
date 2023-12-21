@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.jdbc.monitor.scan;
 
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanProgressManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
@@ -14,7 +13,7 @@ class ScanTableMonitorTest {
 
   @Test
   void init() throws SQLException {
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
     ScanProgressManager scanProgressManager = Mockito.mock(ScanProgressManager.class);
     TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
 

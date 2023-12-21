@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `k_junit_code_user`
     `birth`               datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'birthday',
     `leave_company_time`  timestamp      NOT NULL COMMENT 'the time leave company',
     `join_company_date`   date           NOT NULL COMMENT 'what time to join the company',
-    `work_time_work_time` time           NOT NULL COMMENT 'what time to work ervery moring',
+    `work_time`           time           NOT NULL COMMENT 'what time to work ervery moring',
     `work_hours`          int            NOT NULL DEFAULT 0 COMMENT 'how many hours to work everyday',
     `age`                 smallint       NOT NULL DEFAULT 0 COMMENT 'age',
     `height`              float(9, 2)    NOT NULL DEFAULT 0 COMMENT 'height',

@@ -1,4 +1,4 @@
-#parse("commons/swagger.vm")
+#parse("templates_sample/commons/swagger.vm")
 package ${class.packageName};
 ${class.imports}
 

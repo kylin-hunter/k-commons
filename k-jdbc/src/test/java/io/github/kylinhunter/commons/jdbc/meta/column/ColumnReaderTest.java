@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.jdbc.meta.column;
 
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
@@ -15,7 +14,7 @@ class ColumnReaderTest {
   @Test
   void test() throws SQLException {
 
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
 
     ColumnReader columnReader = new MysqlColumnReader(dataSource);
 

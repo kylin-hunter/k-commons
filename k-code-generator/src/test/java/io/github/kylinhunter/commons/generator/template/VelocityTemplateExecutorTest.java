@@ -53,7 +53,7 @@ class VelocityTemplateExecutorTest {
           OutputConfig outputConfig = config.getOutputConfig();
           outputConfig.setOutputPath(defaultDir.toPath());
           outputConfig.setAutoClean(true);
-          config.setTemplatePath(UserDirUtils.getDir("templates").toPath());
+          config.setTemplatePath(UserDirUtils.getDir("src/main/resources/templates").toPath());
         });
     templateExecutor
         .tmplate(templateInFile, null, FileExtensions.VM)

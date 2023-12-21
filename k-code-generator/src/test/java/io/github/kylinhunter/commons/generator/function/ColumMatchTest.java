@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.generator.function;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.component.CF;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +8,7 @@ class ColumMatchTest {
 
   @Test
   void execute() {
-    ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
+    ExpressionExecutor expressionExecutor = new ExpressionExecutor();
 
     Map<String, Object> env = MapUtils.newHashMap();
     env.put("name", "test");

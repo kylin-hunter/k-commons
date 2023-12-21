@@ -23,11 +23,11 @@ jar {
     exclude("logback.xml")
 
 }
-sourceSets {
-    main {
-        java.srcDirs += ['src_generator']
-    }
-}
+//sourceSets {
+//    main {
+//        java.srcDirs += ['src_generator']
+//    }
+//}
 test {
     jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
     println jvmArgs

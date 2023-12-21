@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.generator.function;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.component.CF;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
@@ -15,7 +14,7 @@ class StringToCamelTest {
 
   @Test
   void execute() {
-    ExpressionExecutor expressionExecutor = CF.get(ExpressionExecutor.class);
+    ExpressionExecutor expressionExecutor = new ExpressionExecutor();
 
     ModuleInfo moduleInfo = new ModuleInfo();
     moduleInfo.setName("hello_the_word");

@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.binlog.dao.imp.MysqlSavePointDAO;
@@ -19,7 +18,7 @@ class MysqlSavePointManagerTest {
 
   @Test
   void test() throws SQLException {
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
     MysqlSavePointManager savePointManager = new MysqlSavePointManager(dataSource);
     MysqlSavePointDAO dao = Mockito.mock(MysqlSavePointDAO.class);
     DatabaseMeta databaseMeta = new DatabaseMeta();

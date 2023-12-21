@@ -49,7 +49,6 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
   }
 
   /**
-   * @return void
    * @title reInit
    * @description
    * @author BiJi'an
@@ -60,18 +59,18 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
     properties.setProperty(Velocity.RESOURCE_LOADERS, "class,file");
     properties.setProperty(Velocity.INPUT_ENCODING, Velocity.ENCODING_DEFAULT);
 
-    // resource.loader.class
+    // the class loader
     properties.setProperty(
         VelocityConst.KEY_RESOURCE_LOADER_CLASS_CLASS,
         VelocityConst.VALUE_RESOURCE_LOADER_CLASS_CLASS);
-
+    // the file loader
     properties.setProperty(
         VelocityConst.KEY_RESOURCE_LOADER_FILE_CLASS,
         VelocityConst.VALUE_RESOURCE_LOADER_FILE_CLASS);
 
     // resource.loader.file
     String templatePath = templateConfig.getTemplatePath().toFile().getAbsolutePath();
-    log.info("resource.loader.file.path=>" + templatePath);
+    log.info("resource.loader.file.path=>{}", templatePath);
     properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, templatePath);
 
     properties.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, "true");

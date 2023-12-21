@@ -1,7 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.binlog;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.TestBinLogEventListener;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
@@ -32,7 +31,7 @@ public class BinLogClientTest {
   }
 
   public static BinLogConfig mockBinLogconfig() throws SQLException {
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
 
     SavePointManager savePointManager = Mockito.mock(SavePointManager.class);
     BinLogConfig binLogConfig = Mockito.mock(BinLogConfig.class);

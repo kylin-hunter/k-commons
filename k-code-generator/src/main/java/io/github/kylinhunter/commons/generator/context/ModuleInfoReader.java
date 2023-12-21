@@ -15,7 +15,6 @@
  */
 package io.github.kylinhunter.commons.generator.context;
 
-import io.github.kylinhunter.commons.component.C;
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
@@ -30,6 +29,7 @@ import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -37,9 +37,15 @@ import lombok.RequiredArgsConstructor;
  * @description
  * @date 2023-02-12 10:24
  */
-@C
 @RequiredArgsConstructor
 public class ModuleInfoReader {
+
+  private final DatabaseMetaReader databaseMetaReader;
+
+  public ModuleInfoReader(DataSource dataSource) {
+    this.databaseMetaReader = new DatabaseMetaReader(dataSource);
+
+  }
 
   /**
    * @return io.github.kylinhunter.commons.generator.context.bean.ModuleInfos
@@ -61,7 +67,6 @@ public class ModuleInfoReader {
    * @date 2023-03-19 22:36
    */
   private TableInfo toTable(Module module) {
-    DatabaseMetaReader databaseMetaReader = new DatabaseMetaReader();
     TableReader tableMetaReader = databaseMetaReader.getTableReader();
     ColumnReader columnMetaReader = databaseMetaReader.getColumnReader();
 

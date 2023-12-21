@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.jdbc.meta.table;
 
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.sql.SQLException;
@@ -15,7 +14,7 @@ public class TableReaderTest {
 
   @Test
   void test() throws SQLException {
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
 
     TableReader tableReader = new MysqlTableReader(dataSource);
 

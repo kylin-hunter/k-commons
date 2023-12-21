@@ -1,6 +1,5 @@
 package io.github.kylinhunter.commons.jdbc.meta.cache;
 
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
@@ -15,7 +14,7 @@ class TableIdManagerTest {
 
   @Test
   void test() throws SQLException {
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
     TableIdManager tableIdManager = new TableIdManager(dataSource);
     tableIdManager.update(1L, TestHelper.DATABASE, TestHelper.TEST_TABLE_ROLE1);
     TableMeta tableMeta = tableIdManager.getTableMeta(1L);

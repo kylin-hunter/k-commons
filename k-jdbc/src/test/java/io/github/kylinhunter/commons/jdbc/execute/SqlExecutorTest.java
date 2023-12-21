@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
+import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,7 +23,7 @@ class SqlExecutorTest {
   @SuppressWarnings("unchecked")
   @Test
   void execute() throws SQLException {
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
     QueryRunner runner = Mockito.mock(QueryRunner.class);
     Mockito.when(runner.query(anyString(), any(ResultSetHandler.class), eq(new Object[]{})))
         .thenReturn(ListUtils.newArrayList(

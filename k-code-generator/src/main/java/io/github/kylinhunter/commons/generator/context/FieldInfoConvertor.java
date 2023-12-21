@@ -16,8 +16,6 @@
 package io.github.kylinhunter.commons.generator.context;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
-import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.generator.context.bean.clazz.FieldInfo;
@@ -34,14 +32,15 @@ import java.util.Map;
  * @description
  * @date 2023-02-26 19:04
  */
-@C
+
 public class FieldInfoConvertor {
-  @CSet private ExpressionExecutor expressionExecutor;
+
+  ExpressionExecutor expressionExecutor = new ExpressionExecutor();
 
   /**
    * @param columnMeta columnMeta
-   * @param table table
-   * @param database database
+   * @param table      table
+   * @param database   database
    * @return io.github.kylinhunter.commons.generator.context.bean.clazz.FieldInfo
    * @title convert
    * @description

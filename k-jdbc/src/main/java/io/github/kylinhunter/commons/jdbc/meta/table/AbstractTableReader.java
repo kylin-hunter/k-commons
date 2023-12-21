@@ -43,7 +43,20 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
   }
 
   /**
-   * @param catalog catalog
+   * @param tableName tableName
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
+   * @title getTableMetaData
+   * @description getTableMetaData
+   * @author BiJi'an
+   * @date 2023-12-17 17:10
+   */
+  public TableMeta getTableMetaData(String tableName) {
+    return getTableMetaData(null, tableName);
+  }
+
+
+  /**
+   * @param catalog   catalog
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta
    * @title getTableMetaData
@@ -68,7 +81,7 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
   }
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -82,8 +95,8 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -107,9 +120,9 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -121,7 +134,7 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
     List<TableMeta> columnMetaDatas = ListUtils.newArrayList();
     try {
       DatabaseMetaData metaData = connection.getMetaData();
-      ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[] {"TABLE"});
+      ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[]{"TABLE"});
       if (tables == null) {
         return ListUtils.newArrayList();
       }
@@ -147,7 +160,7 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
   }
 
   /**
-   * @param catalog catalog
+   * @param catalog   catalog
    * @param tableName tableName
    * @return boolean
    * @title exist
@@ -161,8 +174,8 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return boolean
    * @title exist
    * @description exist
@@ -177,7 +190,7 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
   /**
    * @param tableMeta tableMeta
    * @param columName columName
-   * @param value value
+   * @param value     value
    * @title processMetadata
    * @description
    * @author BiJi'an

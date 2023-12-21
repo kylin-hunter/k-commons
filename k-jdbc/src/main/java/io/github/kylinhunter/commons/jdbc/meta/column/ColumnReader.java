@@ -28,7 +28,17 @@ import javax.sql.DataSource;
 public interface ColumnReader extends DatabaseVisitor {
 
   /**
-   * @param catalog catalog
+   * @param tableName tableName
+   * @return io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas
+   * @title getColumnMetaData
+   * @description getColumnMetaData
+   * @author BiJi'an
+   * @date 2023-12-17 17:13
+   */
+  ColumnMetas getColumnMetaData(String tableName);
+
+  /**
+   * @param catalog   catalog
    * @param tableName tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
@@ -40,8 +50,8 @@ public interface ColumnReader extends DatabaseVisitor {
 
   /**
    * @param dataSource dataSource
-   * @param catalog catalog
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description
@@ -52,9 +62,9 @@ public interface ColumnReader extends DatabaseVisitor {
 
   /**
    * @param connection connection
-   * @param catalog catalog
-   * @param schema schema
-   * @param tableName tableName
+   * @param catalog    catalog
+   * @param schema     schema
+   * @param tableName  tableName
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta>
    * @title getColumnMetaData
    * @description

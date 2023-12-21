@@ -4,7 +4,7 @@ import com.github.shyiko.mysql.binlog.event.Event;
 import com.github.shyiko.mysql.binlog.event.EventData;
 import com.github.shyiko.mysql.binlog.event.EventHeaderV4;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
-import io.github.kylinhunter.commons.jdbc.TestDataSourceHelper;
+import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.QueryEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorContext;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
@@ -20,7 +20,7 @@ class TableMonitorListenerTest {
   @Test
   void test() throws SQLException {
 
-    DataSource dataSource = TestDataSourceHelper.mockDataSource();
+    DataSource dataSource = TestHelper.mockDataSource();
     Event event = Mockito.mock(Event.class);
     Mockito.when(event.getHeader()).thenReturn(new EventHeaderV4());
     TableMonitorListener tableMonitorListener = new TableMonitorListener();
