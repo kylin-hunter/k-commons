@@ -1,15 +1,12 @@
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event.ex;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.google.common.collect.Lists;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
-import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorUpdateRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
@@ -29,13 +26,11 @@ class MonitorUpdateRowsEventDataProcessorTest {
     monitorTable.setTablePkName("");
 
     TableIdManager tableIdManager = Mockito.mock(TableIdManager.class);
-    ColumnMeta columnMeta = new ColumnMeta();
-    Mockito.when(tableIdManager.getPkColumnMeta(anyLong(), anyString(),
-        anyString(), anyString())).thenReturn(columnMeta);
 
     TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
     MonitorUpdateRowsEventDataProcessor processor = new MonitorUpdateRowsEventDataProcessor(
-        tableMonitorTaskManager, new MonitorTables(monitorTable));
+        tableMonitorTaskManager, new MonitorTables(monitorTable),
+        new MonitorManager(tableIdManager));
     processor.setTableIdManager(tableIdManager);
 
     UpdateRowsEventData eventData = Mockito.mock(UpdateRowsEventData.class);

@@ -32,12 +32,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TableMonitorListener extends AbstractBinLogEventListener {
 
-  @Setter private MonitorTables monitorTables;
-  @Setter TableMonitorTaskManager tableMonitorTaskManager;
+  @Setter
+  private MonitorTables monitorTables;
+  @Setter
+  TableMonitorTaskManager tableMonitorTaskManager;
+
+  MonitorManager monitorManager;
 
   @Override
   public void init(DataSource dataSource) {
     super.init(dataSource);
+    this.monitorManager = new MonitorManager(this.tableIdManager);
     this.context = new Context();
     if (tableMonitorTaskManager == null) {
       this.tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
@@ -47,10 +52,13 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
     }
 
     addEventProcessor(
-        new MonitorWriteRowsEventDataProcessor(tableMonitorTaskManager, monitorTables));
+        new MonitorWriteRowsEventDataProcessor(tableMonitorTaskManager, monitorTables,
+            monitorManager));
     addEventProcessor(
-        new MonitorDeleteRowsEventDataProcessor(tableMonitorTaskManager, monitorTables));
+        new MonitorDeleteRowsEventDataProcessor(tableMonitorTaskManager, monitorTables,
+            monitorManager));
     addEventProcessor(
-        new MonitorUpdateRowsEventDataProcessor(tableMonitorTaskManager, monitorTables));
+        new MonitorUpdateRowsEventDataProcessor(tableMonitorTaskManager, monitorTables,
+            monitorManager));
   }
 }

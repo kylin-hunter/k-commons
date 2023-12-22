@@ -17,7 +17,6 @@ package io.github.kylinhunter.commons.jdbc.binlog.listener;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.jdbc.meta.DatabaseMetaReader;
-import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
@@ -54,7 +53,7 @@ public class TableIdManager {
   }
 
   /**
-   * @param tableId tableId
+   * @param tableId   tableId
    * @param tableName tableName
    * @title addTable
    * @description addTable
@@ -83,7 +82,7 @@ public class TableIdManager {
   }
 
   /**
-   * @param database database
+   * @param database  database
    * @param tableName tableName
    * @title clean
    * @description clean
@@ -122,28 +121,4 @@ public class TableIdManager {
     return this.allColumnMetas.get(tableId);
   }
 
-  /**
-   * @return io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta
-   * @title getPkColumnMeta
-   * @description getPkColumnMeta
-   * @author BiJi'an
-   * @date 2023-12-16 14:24
-   */
-  public ColumnMeta getPkColumnMeta(
-      long tableId, String database, String tableName, String tablePkName) {
-
-    TableMeta tableMeta = this.getTableMeta(tableId);
-    if (tableMeta == null) {
-      return null;
-    }
-    if (!tableMeta.equals(database, tableName)) {
-      return null;
-    }
-
-    ColumnMetas columnMetas = this.getColumnMetas(tableId);
-    if (columnMetas != null) {
-      return columnMetas.getByName(tablePkName);
-    }
-    return null;
-  }
 }

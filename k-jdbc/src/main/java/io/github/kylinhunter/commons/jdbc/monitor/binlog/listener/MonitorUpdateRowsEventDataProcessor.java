@@ -39,63 +39,62 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
   private final TableMonitorTaskManager tableMonitorTaskManager;
   private final MonitorTables monitorTables;
 
+  private final MonitorManager monitorManager;
+
+
   @Override
   protected void updateDataRecord(UpdateRowsEventData eventData, Context context) {
-    for (MonitorTable monitorTable : monitorTables.getDatas()) {
-      ColumnMeta pkColumnMeta =
-          tableIdManager.getPkColumnMeta(
-              eventData.getTableId(),
-              monitorTable.getDatabase(),
-              monitorTable.getName(),
-              monitorTable.getTablePkName());
-      if (pkColumnMeta != null) {
-        List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
-        for (Entry<Serializable[], Serializable[]> row : rows) {
-          processScanRecord(monitorTable, row.getKey(), row.getValue(), pkColumnMeta);
-        }
-      }
-    }
+
+    this.monitorManager.process(eventData.getTableId(), this.monitorTables, eventData,
+        this::processScanRecord);
   }
 
   /**
-   * @param newRow newRow
+   * @param monitorTable monitorTable
+   * @param eventData    eventData
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord
    * @author BiJi'an
-   * @date 2023-12-12 01:42
+   * @date 2023-12-23 02:22
    */
   private void processScanRecord(
       MonitorTable monitorTable,
-      Serializable[] oldRow,
-      Serializable[] newRow,
+      UpdateRowsEventData eventData,
       ColumnMeta pkColumnMeta) {
-    if (pkColumnMeta.getPos() < oldRow.length && pkColumnMeta.getPos() < newRow.length) {
-      Serializable oldId = oldRow[pkColumnMeta.getPos()];
-      Serializable newId = newRow[pkColumnMeta.getPos()];
-      if (oldId != null && newId != null) {
-        if (oldId.equals(newId)) {
+    List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
+    for (Entry<Serializable[], Serializable[]> row : rows) {
+      Serializable[] oldRow = row.getKey();
+      Serializable[] newRow = row.getValue();
 
-          tableMonitorTaskManager.saveOrUpdate(
-              monitorTable.getDestination(),
-              monitorTable.getName(),
-              String.valueOf(oldId),
-              RowOP.UPDATE);
-        } else {
+      if (pkColumnMeta.getPos() < oldRow.length && pkColumnMeta.getPos() < newRow.length) {
+        Serializable oldId = oldRow[pkColumnMeta.getPos()];
+        Serializable newId = newRow[pkColumnMeta.getPos()];
+        if (oldId != null && newId != null) {
+          if (oldId.equals(newId)) {
 
-          tableMonitorTaskManager.saveOrUpdate(
-              monitorTable.getDestination(),
-              monitorTable.getName(),
-              String.valueOf(oldId),
-              RowOP.DELETE);
+            tableMonitorTaskManager.saveOrUpdate(
+                monitorTable.getDestination(),
+                monitorTable.getName(),
+                String.valueOf(oldId),
+                RowOP.UPDATE);
+          } else {
 
-          tableMonitorTaskManager.saveOrUpdate(
-              monitorTable.getDestination(),
-              monitorTable.getName(),
-              String.valueOf(newId),
-              RowOP.INSERT);
+            tableMonitorTaskManager.saveOrUpdate(
+                monitorTable.getDestination(),
+                monitorTable.getName(),
+                String.valueOf(oldId),
+                RowOP.DELETE);
+
+            tableMonitorTaskManager.saveOrUpdate(
+                monitorTable.getDestination(),
+                monitorTable.getName(),
+                String.valueOf(newId),
+                RowOP.INSERT);
+          }
         }
       }
     }
+
   }
 }

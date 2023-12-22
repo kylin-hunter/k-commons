@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.jdbc.meta.cache;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
-import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.sql.SQLException;
@@ -21,9 +20,7 @@ class TableIdManagerTest {
     Assertions.assertEquals(TestHelper.DATABASE, tableMeta.getDatabase());
     ColumnMetas columnMetas = tableIdManager.getColumnMetas(1L);
     Assertions.assertNotNull(columnMetas);
-    ColumnMeta columnMeta = tableIdManager.getPkColumnMeta(1L, TestHelper.DATABASE,
-        TestHelper.TEST_TABLE_ROLE1, "id");
-    Assertions.assertNotNull(columnMeta);
+
 
   }
 

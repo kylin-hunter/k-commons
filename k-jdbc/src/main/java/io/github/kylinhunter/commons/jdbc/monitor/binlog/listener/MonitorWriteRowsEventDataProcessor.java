@@ -37,41 +37,40 @@ public class MonitorWriteRowsEventDataProcessor extends WriteRowsEventDataProces
 
   private final TableMonitorTaskManager tableMonitorTaskManager;
   private final MonitorTables monitorTables;
+  private final MonitorManager monitorManager;
+
 
   @Override
   protected void insertDataRecord(WriteRowsEventData eventData, Context context) {
-    for (MonitorTable monitorTable : monitorTables.getDatas()) {
-      ColumnMeta pkColumnMeta =
-          tableIdManager.getPkColumnMeta(
-              eventData.getTableId(),
-              monitorTable.getDatabase(),
-              monitorTable.getName(),
-              monitorTable.getTablePkName());
-      if (pkColumnMeta != null) {
-        List<Serializable[]> rows = eventData.getRows();
-        for (Serializable[] row : rows) {
-          processScanRecord(monitorTable, row, pkColumnMeta);
-        }
-      }
-    }
+
+    this.monitorManager.process(eventData.getTableId(), this.monitorTables, eventData,
+        this::processScanRecord);
+
+
   }
 
   /**
-   * @param row row
+   * @param monitorTable monitorTable
+   * @param eventData    eventData
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord
    * @author BiJi'an
-   * @date 2023-12-12 01:42
+   * @date 2023-12-23 02:19
    */
-  private void processScanRecord(
-      MonitorTable monitorTable, Serializable[] row, ColumnMeta pkColumnMeta) {
-    if (pkColumnMeta.getPos() < row.length) {
-      tableMonitorTaskManager.saveOrUpdate(
-          monitorTable.getDestination(),
-          monitorTable.getName(),
-          String.valueOf(row[pkColumnMeta.getPos()]),
-          RowOP.INSERT);
+  private void processScanRecord(MonitorTable monitorTable, WriteRowsEventData eventData,
+      ColumnMeta pkColumnMeta) {
+
+    List<Serializable[]> rows = eventData.getRows();
+    for (Serializable[] row : rows) {
+      if (pkColumnMeta.getPos() < row.length) {
+        tableMonitorTaskManager.saveOrUpdate(
+            monitorTable.getDestination(),
+            monitorTable.getName(),
+            String.valueOf(row[pkColumnMeta.getPos()]),
+            RowOP.INSERT);
+      }
     }
+
   }
 }
