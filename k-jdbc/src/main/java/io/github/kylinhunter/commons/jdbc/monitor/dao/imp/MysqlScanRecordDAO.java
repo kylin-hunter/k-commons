@@ -17,9 +17,8 @@ package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
 
 import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanRecordDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -46,7 +45,18 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
     super(dataSource, false);
   }
 
-  public List<ScanRecord> scanSameTime(ScanTable config, ScanProgress scanProgress) {
+  /**
+   * @param config     config
+   * @param startTime  startTime
+   * @param lastScanId lastScanId
+   * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
+   * @title scanSameTime
+   * @description scanSameTime
+   * @author BiJi'an
+   * @date 2023-12-17 14:36
+   */
+  public List<ScanRecord> scanSameTime(ScanTable config, LocalDateTime startTime,
+      String lastScanId) {
     String sql =
         String.format(
             SAME_SQL,
@@ -60,14 +70,12 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
             config.getTablePkName());
     LocalDateTime endTime = LocalDateTime.now().minus(3, ChronoUnit.SECONDS);
 
-    LocalDateTime nextScanTime = scanProgress.getNextScanTime();
-    String lastScanId = scanProgress.getLastScanId();
     long limit = config.getScanLimit();
-    return sqlExecutor.query(sql, beanHandler, nextScanTime, endTime, lastScanId, limit);
+    return sqlExecutor.query(sql, beanHandler, startTime, endTime, lastScanId, limit);
   }
 
   /**
-   * @param config config
+   * @param config    config
    * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime

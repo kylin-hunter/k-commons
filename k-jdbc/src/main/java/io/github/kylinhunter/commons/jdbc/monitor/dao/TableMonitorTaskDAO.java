@@ -26,32 +26,34 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
 public interface TableMonitorTaskDAO {
 
   /**
-   * @param tableName tableName
+   * @param destination destination
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById
    * @author BiJi'an
    * @date 2023-12-09 00:13
    */
-  TableMonitorTask findById(String tableName, String bizTable, String dataId);
+  TableMonitorTask findById(String destination, String bizTable, String dataId);
 
   /**
-   * @param tableMonitorTask scanProcessor
+   * @param destination      destination
+   * @param tableMonitorTask tableMonitorTask
    * @title save
    * @description save
    * @author BiJi'an
-   * @date 2023-12-09 00:13
+   * @date 2023-12-17 10:23
    */
-  void save(String tableName, TableMonitorTask tableMonitorTask);
+  void save(String destination, TableMonitorTask tableMonitorTask);
 
   /**
-   * @param tableMonitorTask scanProcessor
+   * @param destination      destination
+   * @param tableMonitorTask tableMonitorTask
    * @title update
    * @description update
    * @author BiJi'an
-   * @date 2023-12-09 00:14
+   * @date 2023-12-17 10:25
    */
-  void update(String tableName, TableMonitorTask tableMonitorTask);
+  void update(String destination, TableMonitorTask tableMonitorTask);
 
   /**
    * @return io.github.kylinhunter.commons.jdbc.execute.SqlExecutor
@@ -71,11 +73,11 @@ public interface TableMonitorTaskDAO {
   void ensureDestinationExists(String tableName);
 
   /**
-   * @param tableName tableName
+   * @param destination destination
    * @title clean
    * @description clean
    * @author BiJi'an
    * @date 2023-12-09 14:44
    */
-  void clean(String tableName, String bizTableName);
+  void clean(String destination, String bizTableName);
 }

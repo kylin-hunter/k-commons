@@ -2,7 +2,8 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import io.github.kylinhunter.commons.jdbc.binlog.BinLogClient;
 import io.github.kylinhunter.commons.jdbc.binlog.BinLogClientTest;
-import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
@@ -24,11 +25,11 @@ class BinLogTableMonitorTest {
     monitorTables.addMonitorTable(monitorTable2);
     BinLogClient binLogClient = Mockito.mock(BinLogClient.class);
 
-    BinLogTableMonitor binLogTableMonitor = new BinLogTableMonitor(binLogConfig, monitorTables);
+    TableMonitor tableMonitor = new BinLogTableMonitor(binLogConfig, monitorTables);
 
-    ReflectUtils.setField(binLogTableMonitor, "binLogClient", binLogClient);
+    ReflectUtils.setField(tableMonitor, "binLogClient", binLogClient);
 
-    binLogTableMonitor.reset();
-    binLogTableMonitor.start();
+    tableMonitor.reset();
+    tableMonitor.start();
   }
 }

@@ -6,7 +6,6 @@ import com.github.shyiko.mysql.binlog.event.EventHeaderV4;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.QueryEventDataProcessor;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorContext;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
@@ -27,8 +26,6 @@ class TableMonitorListenerTest {
     EventData writeRowsEventData = Mockito.mock(WriteRowsEventData.class);
     Mockito.when(event.getData()).thenReturn(writeRowsEventData);
 
-    TableMonitorContext context = new TableMonitorContext();
-    tableMonitorListener.setContext(context);
     tableMonitorListener.addEventProcessor(new QueryEventDataProcessor());
     MonitorTable monitorTable = new MonitorTable();
     MonitorTables monitorTables = new MonitorTables(monitorTable);

@@ -13,17 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog;
+package io.github.kylinhunter.commons.jdbc.monitor.scan.bean;
 
-import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
-import lombok.Getter;
-import lombok.Setter;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import java.util.List;
+import lombok.Data;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-16 23:46
+ * @date 2023-12-10 21:22
  */
-@Getter
-@Setter
-public class TableMonitorContext extends Context {}
+@Data
+public class TableScanConfig {
+
+  private String serverId = "1";
+  private int scheduleCorePoolSize = 1;
+  private List<ScanTable> scanTables = ListUtils.newArrayList();
+
+  /**
+   * @param scanTable scanTable
+   * @title add
+   * @description add
+   * @author BiJi'an
+   * @date 2023-12-17 17:17
+   */
+  public void add(ScanTable scanTable) {
+    this.scanTables.add(scanTable);
+  }
+}

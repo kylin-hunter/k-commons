@@ -24,7 +24,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlTableMonitorTaskDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import javax.sql.DataSource;
 
 /**
@@ -47,7 +47,7 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param tableName tableName
+   * @param tableName   tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -69,8 +69,8 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param dataId dataId
-   * @param rowOP rowOP
+   * @param dataId      dataId
+   * @param rowOP       rowOP
    * @title saveOrUpdate
    * @description saveOrUpdate
    * @author BiJi'an
@@ -94,7 +94,7 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param scanTable tableScanConfig
+   * @param scanTable  scanTable
    * @param scanRecord scanRecord
    * @title saveOrUpdate
    * @description saveOrUpdate

@@ -3,6 +3,7 @@ package io.github.kylinhunter.commons.jdbc.binlog;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.TestBinLogEventListener;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.MysqlSavePointManager;

@@ -16,9 +16,8 @@
 package io.github.kylinhunter.commons.jdbc.monitor.dao;
 
 import io.github.kylinhunter.commons.jdbc.dao.BaseDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,7 +28,7 @@ import java.util.List;
  */
 public interface ScanRecordDAO extends BaseDAO {
 
-  List<ScanRecord> scanSameTime(ScanTable config, ScanProgress scanProgress);
+  List<ScanRecord> scanSameTime(ScanTable config, LocalDateTime startTime, String lastScanId);
 
   List<ScanRecord> scanNextTime(ScanTable scanTable, LocalDateTime startTime);
 }

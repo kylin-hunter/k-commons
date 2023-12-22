@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.binlog;
+package io.github.kylinhunter.commons.jdbc.binlog.bean;
 
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
@@ -44,6 +44,7 @@ public class BinLogConfig implements Serializable {
   private JdbcUrl jdbcUrl;
 
   private SavePointManager savePointManager;
+
 
   /**
    * @param url url

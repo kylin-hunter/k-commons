@@ -18,6 +18,7 @@ package io.github.kylinhunter.commons.jdbc.binlog;
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.dao.entity.SavePoint;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.BinLogEventListener;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;

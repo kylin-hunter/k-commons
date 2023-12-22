@@ -23,6 +23,6 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-11-25 02:56
  */
 @Slf4j
-public class TestBinLogEventListener extends AbstractBinLogEventListener<Context> {
+public class TestBinLogEventListener extends AbstractBinLogEventListener {
 
 }

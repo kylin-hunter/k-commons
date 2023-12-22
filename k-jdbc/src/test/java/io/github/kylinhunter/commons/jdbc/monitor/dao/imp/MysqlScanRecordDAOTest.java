@@ -9,7 +9,7 @@ import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,7 +35,8 @@ class MysqlScanRecordDAOTest {
     scanRecord1.setId("1");
     when(sqlExecutor.query(anyString(), any(ResultSetHandler.class), any(), any(), any(),
         any())).thenReturn(ListUtils.newArrayList(scanRecord1));
-    List<ScanRecord> scanRecords1 = dao.scanSameTime(scanTable, scanProgress);
+    List<ScanRecord> scanRecords1 = dao.scanSameTime(scanTable, scanProgress.getNextScanTime(),
+        scanProgress.getLastScanId());
     Assertions.assertEquals("1", scanRecords1.get(0).getId());
 
     ScanRecord scanRecord2 = new ScanRecord();

@@ -15,11 +15,13 @@
  */
 package io.github.kylinhunter.commons.jdbc.meta.bean;
 
+import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
@@ -27,16 +29,28 @@ import lombok.Data;
  * @date 2023-01-10 11:11
  */
 @Data
+@NoArgsConstructor
 public class ColumnMetas {
 
-  private List<ColumnMeta> columns;
+  private List<ColumnMeta> columns = ListUtils.newArrayList();
 
   private Map<String, ColumnMeta> nameColumns = MapUtils.newHashMap();
 
   public ColumnMetas(List<ColumnMeta> columns) {
     Objects.requireNonNull(columns);
-    this.columns = columns;
-    this.columns.forEach(columnMeta -> nameColumns.put(columnMeta.getColumnName(), columnMeta));
+    columns.forEach(this::addColumnMeta);
+  }
+
+  /**
+   * @param columnMeta columnMeta
+   * @title addColumnMeta
+   * @description addColumnMeta
+   * @author BiJi'an
+   * @date 2023-12-22 23:58
+   */
+  public void addColumnMeta(ColumnMeta columnMeta) {
+    this.columns.add(columnMeta);
+    this.nameColumns.put(columnMeta.getColumnName(), columnMeta);
   }
 
   /**

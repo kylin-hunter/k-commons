@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.scan;
+package io.github.kylinhunter.commons.jdbc.monitor.scan.bean;
 
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.time.LocalDateTime;
@@ -32,18 +32,24 @@ import lombok.Setter;
 @Builder
 public class ScanTable {
 
-  @Setter private TableScanConfig config;
+  @Setter
+  private TableScanConfig config;
 
   private String database;
   private String tableName;
   private String tablePkName;
   private String tableTimeName;
-  @Default private String destination = "k_table_monitor_scan_task";
-  @Default private LocalDateTime initScanTime = LocalDateTime.now().minus(10, ChronoUnit.YEARS);
-  @Default private String initScanId = StringUtil.EMPTY;
+  @Default
+  private String destination = "k_table_monitor_scan_task";
+  @Default
+  private LocalDateTime initScanTime = LocalDateTime.now().minus(10, ChronoUnit.YEARS);
+  @Default
+  private String initScanId = StringUtil.EMPTY;
 
-  @Default private long scanLimit = 3000;
-  @Default private int scanInterval = 1000;
+  @Default
+  private long scanLimit = 3000;
+  @Default
+  private int scanInterval = 1000;
 
   public String getServerId() {
     return this.config.getServerId();

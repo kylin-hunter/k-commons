@@ -1,15 +1,20 @@
 package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.TestBinLogClient;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
+import javax.sql.DataSource;
 
 class TestBinLogTableMonitor {
 
   public static void main(String[] args) {
+    DataSource dataSource = new DataSourceManager(true).get();
+    TestHelper.initTestSQl(dataSource);
+    
     BinLogConfig binLogConfig = TestBinLogClient.getBinLogConfig();
     binLogConfig.setSavePointManager(TestBinLogClient.getRedisSavePointManager1());
     MonitorTable monitorTable1 = getMonitorTable1();

@@ -56,6 +56,7 @@ public class DataSourceManager {
   private volatile boolean initialized = false;
 
   private String dbConfigPath;
+  private final DSConfigLoader dsConfigLoader = new DSConfigLoader();
 
   public DataSourceManager(boolean dbConfigEnabled) {
     if (dbConfigEnabled) {
@@ -83,8 +84,7 @@ public class DataSourceManager {
    */
   public void init(String path) {
     try {
-      DSConfigLoader DSConfigLoader = new DSConfigLoader();
-      List<ExHikariConfig> exHikariConfigs = DSConfigLoader.load(path);
+      List<ExHikariConfig> exHikariConfigs = dsConfigLoader.load(path);
       init(exHikariConfigs);
     } catch (Exception e) {
       throw new InitException("init error", e);
@@ -111,7 +111,7 @@ public class DataSourceManager {
 
         ExDataSource exDataSource =
             ObjectCreator.create(
-                clazz, new Class[] {HikariConfig.class}, new Object[] {exHikariConfig});
+                clazz, new Class[]{HikariConfig.class}, new Object[]{exHikariConfig});
         exDataSource.setDsNo(exHikariConfig.getNo());
         exDataSource.setDsName(exHikariConfig.getName());
         allExDataSources.add(exDataSource);
@@ -266,7 +266,7 @@ public class DataSourceManager {
   }
 
   /**
-   * @param jdbcUrl jdbcUrl
+   * @param jdbcUrl  jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource
@@ -284,7 +284,7 @@ public class DataSourceManager {
   }
 
   /**
-   * @param jdbcUrl jdbcUrl
+   * @param jdbcUrl  jdbcUrl
    * @param username username
    * @param password password
    * @return javax.sql.DataSource

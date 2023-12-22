@@ -60,7 +60,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination destination
+   * @param destination      destination
    * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
@@ -80,7 +80,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param tableName tableName
+   * @param tableName   tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -113,17 +113,17 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param tableName tableName
+   * @param destination  tableName
    * @param bizTableName bizTableName
-   * @param dataId dataId
+   * @param dataId       dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById
    * @author BiJi'an
    * @date 2023-12-09 14:25
    */
-  public TableMonitorTask findById(String tableName, String bizTableName, String dataId) {
-    String sql = String.format(SELECT_SQL, tableName);
+  public TableMonitorTask findById(String destination, String bizTableName, String dataId) {
+    String sql = String.format(SELECT_SQL, destination);
 
     return this.getSqlExecutor().query(sql, beanHandler, bizTableName, dataId);
   }

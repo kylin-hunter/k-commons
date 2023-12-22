@@ -29,7 +29,7 @@ public interface TableReader extends DatabaseVisitor {
    * @title getTableMetaData
    * @description getTableMetaData
    * @author BiJi'an
-   * @date 2023-12-21 23:59
+   * @date 2023-12-17 23:59
    */
   TableMeta getTableMetaData(String tableName);
 

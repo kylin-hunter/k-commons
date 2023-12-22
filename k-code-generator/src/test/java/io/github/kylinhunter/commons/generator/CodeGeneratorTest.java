@@ -6,7 +6,6 @@ import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.generator.config.ConfigReader;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
-import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
 import io.github.kylinhunter.commons.generator.config.bean.Table;
 import io.github.kylinhunter.commons.generator.context.ModuleInfoReader;
@@ -54,14 +53,13 @@ class CodeGeneratorTest {
   public ModuleInfoReader mockModuleInfoReader() {
     ModuleInfoReader moduleInfoReader = Mockito.mock(ModuleInfoReader.class);
 
-    Mockito.when(moduleInfoReader.read(any(), any())).thenAnswer(invocation -> {
-      Database database = invocation.getArgument(0);
-      Module module = invocation.getArgument(1);
+    Mockito.when(moduleInfoReader.read(any())).thenAnswer(invocation -> {
+      Module module = invocation.getArgument(0);
 
       if (module.getName().equals("User")) {
-        return new ModuleInfo(database, module, userTableInf());
+        return new ModuleInfo(module, userTableInf());
       } else if (module.getName().equals("Role")) {
-        return new ModuleInfo(database, module, roleTableInfo());
+        return new ModuleInfo(module, roleTableInfo());
       }
       throw new RuntimeException("not support module: " + module.getName());
     });

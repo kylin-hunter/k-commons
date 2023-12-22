@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis;
 
-import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

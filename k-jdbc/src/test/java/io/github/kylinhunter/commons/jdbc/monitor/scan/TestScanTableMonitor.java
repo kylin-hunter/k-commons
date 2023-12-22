@@ -3,7 +3,9 @@ package io.github.kylinhunter.commons.jdbc.monitor.scan;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable.ScanTableBuilder;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable.ScanTableBuilder;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
 import javax.sql.DataSource;
 
 class TestScanTableMonitor {
@@ -26,6 +28,7 @@ class TestScanTableMonitor {
     scanTable2.setTableName(TestHelper.TEST_TABLE_ROLE2);
     tableScanConfig.add(scanTable2);
     TableMonitor tableMonitor = new ScanTableMonitor(dataSource, tableScanConfig);
+    tableMonitor.init();
     tableMonitor.reset();
     tableMonitor.start();
 

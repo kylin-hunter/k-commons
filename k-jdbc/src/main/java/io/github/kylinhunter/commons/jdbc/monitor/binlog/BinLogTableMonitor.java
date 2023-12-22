@@ -16,7 +16,7 @@
 package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import io.github.kylinhunter.commons.jdbc.binlog.BinLogClient;
-import io.github.kylinhunter.commons.jdbc.binlog.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorListener;
@@ -62,5 +62,16 @@ public class BinLogTableMonitor implements TableMonitor {
   @Override
   public void reset() {
     binLogClient.reset();
+  }
+
+  /**
+   * @title init
+   * @description init
+   * @author BiJi'an
+   * @date 2023-12-23 00:20
+   */
+  @Override
+  public void init() {
+
   }
 }

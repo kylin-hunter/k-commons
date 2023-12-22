@@ -22,8 +22,9 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanProgressManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanRecordManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
 import io.github.kylinhunter.commons.util.ThreadHelper;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
@@ -60,10 +61,10 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
   private ScanTableMonitor(
       DataSource dataSource, boolean dbConfigEnabled, TableScanConfig tableScanConfig) {
     super(dataSource, dbConfigEnabled);
+    Objects.requireNonNull(tableScanConfig);
     this.scanProgressManager = new ScanProgressManager(dataSource);
     this.tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
     this.scanRecordManager = new ScanRecordManager(dataSource);
-    Objects.requireNonNull(tableScanConfig);
     this.tableScanConfig = tableScanConfig;
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
       scanTable.setConfig(tableScanConfig);
@@ -72,11 +73,6 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
 
   @Override
   public void start() {
-
-    this.scanProgressManager.ensureTableExists();
-    for (ScanTable scanTable : tableScanConfig.getScanTables()) {
-      this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
-    }
 
     this.scheduler = Executors.newScheduledThreadPool(tableScanConfig.getScheduleCorePoolSize());
 
@@ -96,13 +92,13 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
 
     if (scanTable.getScanInterval() > 0) {
       this.scheduler.scheduleWithFixedDelay(
-          () -> ScanTableMonitor.this.run(scanTable),
+          () -> ScanTableMonitor.this.run(scanTable, false),
           0,
           scanTable.getScanInterval(),
           TimeUnit.MILLISECONDS);
 
     } else {
-      run(scanTable);
+      run(scanTable, true);
     }
   }
 
@@ -113,11 +109,14 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
    * @author BiJi'an
    * @date 2023-12-16 22:50
    */
-  private void run(ScanTable scanTable) {
+  private void run(ScanTable scanTable, boolean throwIfFailed) {
     try {
       processSameTime(scanTable);
       processNextTime(scanTable);
     } catch (Exception e) {
+      if (throwIfFailed) {
+        throw e;
+      }
       log.error("scan error", e);
     }
   }
@@ -161,8 +160,7 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
   private void processNextTime(ScanTable scanTable) {
 
     ScanProgress scanProgress = scanProgressManager.getLatestScanProgress(scanTable);
-    LocalDateTime nextScanTime = scanProgress.getNextScanTime();
-    List<ScanRecord> scanRecords = scanRecordManager.scanNextTime(scanTable, nextScanTime);
+    List<ScanRecord> scanRecords = scanRecordManager.scanNextTime(scanTable, scanProgress);
     if (scanRecords.size() > 0) {
       scanRecords.forEach(scanRecord -> log.info(" process next time data:" + scanRecord));
       ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
@@ -186,6 +184,21 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
 
       this.scanProgressManager.delete(scanTable.getServerId(), scanTable.getTableName());
       this.tableMonitorTaskManager.clean(scanTable.getDestination(), scanTable.getTableName());
+    }
+  }
+
+  /**
+   * @title init
+   * @description init
+   * @author BiJi'an
+   * @date 2023-12-23 00:17
+   */
+  @Override
+  public void init() {
+    this.scanProgressManager.ensureTableExists();
+
+    for (ScanTable scanTable : tableScanConfig.getScanTables()) {
+      this.tableMonitorTaskManager.ensureDestinationExists(scanTable.getDestination());
     }
   }
 }

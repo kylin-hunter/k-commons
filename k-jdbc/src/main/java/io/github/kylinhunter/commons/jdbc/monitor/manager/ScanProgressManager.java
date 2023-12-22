@@ -22,7 +22,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanProgressDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.ScanTable;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 

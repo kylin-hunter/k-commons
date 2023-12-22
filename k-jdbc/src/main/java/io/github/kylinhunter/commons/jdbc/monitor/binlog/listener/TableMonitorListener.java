@@ -16,7 +16,7 @@
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
 
 import io.github.kylinhunter.commons.jdbc.binlog.listener.AbstractBinLogEventListener;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.TableMonitorContext;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
@@ -30,15 +30,17 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-11-25 02:56
  */
 @Slf4j
-public class TableMonitorListener extends AbstractBinLogEventListener<TableMonitorContext> {
+public class TableMonitorListener extends AbstractBinLogEventListener {
 
-  @Setter private MonitorTables monitorTables;
-  @Setter TableMonitorTaskManager tableMonitorTaskManager;
+  @Setter
+  private MonitorTables monitorTables;
+  @Setter
+  TableMonitorTaskManager tableMonitorTaskManager;
 
   @Override
   public void init(DataSource dataSource) {
     super.init(dataSource);
-    this.context = new TableMonitorContext();
+    this.context = new Context();
     if (tableMonitorTaskManager == null) {
       this.tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
     }

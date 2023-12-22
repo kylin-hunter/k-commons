@@ -69,9 +69,8 @@ public class TemplateContextBuilder {
   public List<TemplateContext> build() {
     List<TemplateContext> templateContexts = ListUtils.newArrayList();
     Modules modules = config.getModules();
-    Database database = modules.getDatabase();
     for (Module module : modules.getList()) {
-      ModuleInfo moduleInfo = moduleInfoReader.read(database, module);
+      ModuleInfo moduleInfo = moduleInfoReader.read(module);
       for (Template template : config.getTemplates().getList()) {
         if (template.isEnabled()) {
           TemplateContext templateContext = new TemplateContext(moduleInfo, template);
