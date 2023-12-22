@@ -32,10 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TableMonitorListener extends AbstractBinLogEventListener {
 
-  @Setter
-  private MonitorTables monitorTables;
-  @Setter
-  TableMonitorTaskManager tableMonitorTaskManager;
+  @Setter private MonitorTables monitorTables;
+  @Setter TableMonitorTaskManager tableMonitorTaskManager;
 
   @Override
   public void init(DataSource dataSource) {

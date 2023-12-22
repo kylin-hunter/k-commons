@@ -36,7 +36,7 @@ public interface TableMonitorTaskDAO {
   TableMonitorTask findById(String destination, String bizTable, String dataId);
 
   /**
-   * @param destination      destination
+   * @param destination destination
    * @param tableMonitorTask tableMonitorTask
    * @title save
    * @description save
@@ -46,7 +46,7 @@ public interface TableMonitorTaskDAO {
   void save(String destination, TableMonitorTask tableMonitorTask);
 
   /**
-   * @param destination      destination
+   * @param destination destination
    * @param tableMonitorTask tableMonitorTask
    * @title update
    * @description update

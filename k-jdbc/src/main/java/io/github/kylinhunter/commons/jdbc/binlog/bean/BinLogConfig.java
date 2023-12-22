@@ -45,7 +45,6 @@ public class BinLogConfig implements Serializable {
 
   private SavePointManager savePointManager;
 
-
   /**
    * @param url url
    * @title setUrl

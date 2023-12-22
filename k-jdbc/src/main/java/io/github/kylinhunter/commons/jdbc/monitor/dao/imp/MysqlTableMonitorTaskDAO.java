@@ -60,7 +60,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination      destination
+   * @param destination destination
    * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
@@ -80,7 +80,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param tableName   tableName
+   * @param tableName tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -113,9 +113,9 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination  tableName
+   * @param destination tableName
    * @param bizTableName bizTableName
-   * @param dataId       dataId
+   * @param dataId dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById

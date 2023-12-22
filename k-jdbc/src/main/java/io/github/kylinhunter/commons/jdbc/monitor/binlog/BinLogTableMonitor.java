@@ -29,8 +29,7 @@ import lombok.Setter;
  */
 public class BinLogTableMonitor implements TableMonitor {
 
-  @Setter
-  private MonitorTables monitorTables;
+  @Setter private MonitorTables monitorTables;
   private final BinLogClient binLogClient;
 
   private final TableMonitorListener tableMonitorListener = new TableMonitorListener();
@@ -71,7 +70,5 @@ public class BinLogTableMonitor implements TableMonitor {
    * @date 2023-12-23 00:20
    */
   @Override
-  public void init() {
-
-  }
+  public void init() {}
 }

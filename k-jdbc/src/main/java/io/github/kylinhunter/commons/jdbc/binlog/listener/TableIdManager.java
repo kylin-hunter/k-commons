@@ -54,7 +54,7 @@ public class TableIdManager {
   }
 
   /**
-   * @param tableId   tableId
+   * @param tableId tableId
    * @param tableName tableName
    * @title addTable
    * @description addTable
@@ -83,7 +83,7 @@ public class TableIdManager {
   }
 
   /**
-   * @param database  database
+   * @param database database
    * @param tableName tableName
    * @title clean
    * @description clean

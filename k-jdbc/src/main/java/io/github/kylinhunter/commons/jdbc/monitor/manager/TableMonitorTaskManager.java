@@ -47,7 +47,7 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param tableName   tableName
+   * @param tableName tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -69,8 +69,8 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param dataId      dataId
-   * @param rowOP       rowOP
+   * @param dataId dataId
+   * @param rowOP rowOP
    * @title saveOrUpdate
    * @description saveOrUpdate
    * @author BiJi'an
@@ -94,7 +94,7 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param scanTable  scanTable
+   * @param scanTable scanTable
    * @param scanRecord scanRecord
    * @title saveOrUpdate
    * @description saveOrUpdate

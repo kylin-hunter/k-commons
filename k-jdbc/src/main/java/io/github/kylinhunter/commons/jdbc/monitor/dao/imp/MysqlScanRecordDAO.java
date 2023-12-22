@@ -46,8 +46,8 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
   }
 
   /**
-   * @param config     config
-   * @param startTime  startTime
+   * @param config config
+   * @param startTime startTime
    * @param lastScanId lastScanId
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanSameTime
@@ -55,8 +55,8 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
    * @author BiJi'an
    * @date 2023-12-17 14:36
    */
-  public List<ScanRecord> scanSameTime(ScanTable config, LocalDateTime startTime,
-      String lastScanId) {
+  public List<ScanRecord> scanSameTime(
+      ScanTable config, LocalDateTime startTime, String lastScanId) {
     String sql =
         String.format(
             SAME_SQL,
@@ -75,7 +75,7 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
   }
 
   /**
-   * @param config    config
+   * @param config config
    * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime

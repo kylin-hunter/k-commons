@@ -62,7 +62,7 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param scanTable    scanTable
+   * @param scanTable scanTable
    * @param scanProgress scanProgress
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanSameTime
@@ -71,12 +71,12 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
    * @date 2023-12-16 23:59
    */
   public List<ScanRecord> scanSameTime(ScanTable scanTable, ScanProgress scanProgress) {
-    return this.scanRecordDAO.scanSameTime(scanTable, scanProgress.getNextScanTime(),
-        scanProgress.getLastScanId());
+    return this.scanRecordDAO.scanSameTime(
+        scanTable, scanProgress.getNextScanTime(), scanProgress.getLastScanId());
   }
 
   /**
-   * @param scanTable    tableScanConfig
+   * @param scanTable tableScanConfig
    * @param scanProgress scanProgress
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime

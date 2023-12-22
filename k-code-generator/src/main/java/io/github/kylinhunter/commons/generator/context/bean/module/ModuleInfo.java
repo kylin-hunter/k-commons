@@ -33,8 +33,7 @@ import lombok.Setter;
 @Setter
 public class ModuleInfo {
 
-  @EqualsAndHashCode.Include
-  private String name;
+  @EqualsAndHashCode.Include private String name;
   private Database database;
   private TableInfo tableInfo;
   private Module module;
