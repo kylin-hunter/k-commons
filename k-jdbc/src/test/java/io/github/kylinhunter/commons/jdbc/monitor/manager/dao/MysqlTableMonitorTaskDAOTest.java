@@ -1,12 +1,12 @@
-package io.github.kylinhunter.commons.jdbc.monitor.dao;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlTableMonitorTaskDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp.MysqlTableMonitorTaskDAO;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import javax.sql.DataSource;

@@ -21,8 +21,8 @@ import io.github.kylinhunter.commons.jdbc.binlog.listener.event.DeleteRowsEventD
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowOP;
 import java.io.Serializable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,7 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
 
   /**
    * @param monitorTable monitorTable
-   * @param eventData eventData
+   * @param eventData    eventData
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord

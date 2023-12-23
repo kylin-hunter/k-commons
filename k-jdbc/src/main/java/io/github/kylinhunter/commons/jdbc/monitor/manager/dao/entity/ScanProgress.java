@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao.entity;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,11 +29,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TableMonitorTask implements Serializable {
+public class ScanProgress implements Serializable {
 
-  private String db;
+  private String serverId;
   private String tableName;
-  private String dataId;
-  private int op;
-  private int status;
+  private String saveDestination;
+  private LocalDateTime nextScanTime;
+  private String lastScanId;
+
+  public ScanProgress(
+      String serverId, String tableName, LocalDateTime nextScanTime, String lastScanId) {
+    this.serverId = serverId;
+    this.tableName = tableName;
+    this.nextScanTime = nextScanTime;
+    this.lastScanId = lastScanId;
+  }
 }

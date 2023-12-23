@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import javax.sql.DataSource;
@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 
 class MysqlScanProgressDAOTest {
 
+  @SuppressWarnings("unchecked")
   @Test
   void test() throws SQLException {
 

@@ -10,7 +10,7 @@ import io.github.kylinhunter.commons.jdbc.meta.cache.TestTableIdManager;
 import io.github.kylinhunter.commons.jdbc.meta.column.TestColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TestTableReader;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TestTableMonitorListener;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.TestMysqlTableMonitorTaskDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.TestMysqlTableMonitorTaskDAO;
 import java.sql.SQLException;
 
 /**

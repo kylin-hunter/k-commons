@@ -5,9 +5,9 @@ import static org.mockito.Mockito.when;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanRecordDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.ScanRecordDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import java.util.List;

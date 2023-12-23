@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao;
 
 import io.github.kylinhunter.commons.jdbc.dao.BaseDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
 
 /**
  * @author BiJi'an
@@ -27,7 +27,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
 public interface ScanProgressDAO extends BaseDAO {
 
   /**
-   * @param serverId serverId
+   * @param serverId  serverId
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress
    * @title findById
@@ -73,7 +73,7 @@ public interface ScanProgressDAO extends BaseDAO {
   void ensureTableExists();
 
   /**
-   * @param serverId serverId
+   * @param serverId  serverId
    * @param tableName tableName
    * @title delete
    * @description delete

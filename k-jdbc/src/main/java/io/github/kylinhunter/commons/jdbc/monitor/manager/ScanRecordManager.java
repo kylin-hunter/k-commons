@@ -18,10 +18,10 @@ package io.github.kylinhunter.commons.jdbc.monitor.manager;
 import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.dao.AbstractDatabaseVisitor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanRecordDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanRecordDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.ScanRecordDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp.MysqlScanRecordDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import java.util.List;
 import javax.sql.DataSource;
@@ -62,7 +62,7 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param scanTable scanTable
+   * @param scanTable    scanTable
    * @param scanProgress scanProgress
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanSameTime
@@ -76,7 +76,7 @@ public class ScanRecordManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param scanTable tableScanConfig
+   * @param scanTable    tableScanConfig
    * @param scanProgress scanProgress
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime

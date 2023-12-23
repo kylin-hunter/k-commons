@@ -18,10 +18,10 @@ package io.github.kylinhunter.commons.jdbc.monitor.manager;
 import io.github.kylinhunter.commons.exception.embed.UnsupportedException;
 import io.github.kylinhunter.commons.jdbc.constant.DbType;
 import io.github.kylinhunter.commons.jdbc.dao.AbstractDatabaseVisitor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.imp.MysqlScanProgressDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.ScanProgressDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp.MysqlScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -84,9 +84,9 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param serverId serverId
+   * @param serverId  serverId
    * @param tableName tableName
-   * @param last last
+   * @param last      last
    * @title update
    * @description update
    * @author BiJi'an

@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -7,8 +7,8 @@ import static org.mockito.Mockito.when;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;

@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity;
 
-import io.github.kylinhunter.commons.jdbc.dao.BaseDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-09 22:50
+ * @date 2023-12-03 19:50
  */
-public interface ScanRecordDAO extends BaseDAO {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ScanRecord implements Serializable {
 
-  List<ScanRecord> scanSameTime(ScanTable config, LocalDateTime startTime, String lastScanId);
-
-  List<ScanRecord> scanNextTime(ScanTable scanTable, LocalDateTime startTime);
+  private String id;
+  private LocalDateTime time;
 }

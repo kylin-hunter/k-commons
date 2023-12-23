@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp;
 
 import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanRecordDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.ScanRecordDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -46,8 +46,8 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
   }
 
   /**
-   * @param config config
-   * @param startTime startTime
+   * @param config     config
+   * @param startTime  startTime
    * @param lastScanId lastScanId
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanSameTime
@@ -75,7 +75,7 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
   }
 
   /**
-   * @param config config
+   * @param config    config
    * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime

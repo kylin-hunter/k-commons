@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao.constant;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import io.github.kylinhunter.commons.jdbc.dao.BaseDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
+import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023/1/18
+ * @date 2023-12-09 22:50
  */
-@RequiredArgsConstructor
-public enum MonitorStatus {
-  WAIT(0),
-  PROCESSING(1),
-  SUCCESS(2),
-  RETRYING(3),
-  ERROR(4);
+public interface ScanRecordDAO extends BaseDAO {
 
-  @Getter private final int code;
+  List<ScanRecord> scanSameTime(ScanTable config, LocalDateTime startTime, String lastScanId);
+
+  List<ScanRecord> scanNextTime(ScanTable scanTable, LocalDateTime startTime);
 }

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp;
 
 import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.TableMonitorTaskDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.TableMonitorTaskDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
 import javax.sql.DataSource;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 
@@ -61,7 +61,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination destination
+   * @param destination      destination
    * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
@@ -82,7 +82,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param tableName tableName
+   * @param tableName   tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -116,9 +116,9 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination tableName
+   * @param destination  tableName
    * @param bizTableName bizTableName
-   * @param dataId dataId
+   * @param dataId       dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById

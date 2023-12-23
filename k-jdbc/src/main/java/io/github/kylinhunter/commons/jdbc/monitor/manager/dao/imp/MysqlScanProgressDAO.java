@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao.imp;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp;
 
 import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.ScanProgressDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
 import javax.sql.DataSource;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 
@@ -90,7 +90,7 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
   }
 
   /**
-   * @param serverId serverId
+   * @param serverId  serverId
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.scan.bean.TableScanProgress
    * @title getTableScanProgress

@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao.constant;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023/1/18
+ * @date 2023-12-03 19:50
  */
-@RequiredArgsConstructor
-public enum RowOP {
-  INSERT(1),
-  UPDATE(2),
-  DELETE(3);
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class TableMonitorTask implements Serializable {
 
-  @Getter private final int code;
+  private String db;
+  private String tableName;
+  private String dataId;
+  private int op;
+  private int status;
 }

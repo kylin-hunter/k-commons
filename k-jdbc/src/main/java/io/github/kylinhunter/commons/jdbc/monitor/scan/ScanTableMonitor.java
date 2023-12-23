@@ -17,11 +17,11 @@ package io.github.kylinhunter.commons.jdbc.monitor.scan;
 
 import io.github.kylinhunter.commons.jdbc.dao.AbstractDatabaseVisitor;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanProgressManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanRecordManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
 import io.github.kylinhunter.commons.util.ThreadHelper;

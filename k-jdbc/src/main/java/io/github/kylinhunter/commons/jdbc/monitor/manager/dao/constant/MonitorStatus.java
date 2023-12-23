@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao.entity;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-03 19:50
+ * @date 2023/1/18
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ScanRecord implements Serializable {
+@RequiredArgsConstructor
+public enum MonitorStatus {
+  WAIT(0),
+  PROCESSING(1),
+  SUCCESS(2),
+  RETRYING(3),
+  ERROR(4);
 
-  private String id;
-  private LocalDateTime time;
+  @Getter
+  private final int code;
 }

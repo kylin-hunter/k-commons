@@ -3,9 +3,9 @@ package io.github.kylinhunter.commons.jdbc.monitor.manager;
 import static org.mockito.ArgumentMatchers.any;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.ScanProgressDAO;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProgress;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.ScanProgressDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;

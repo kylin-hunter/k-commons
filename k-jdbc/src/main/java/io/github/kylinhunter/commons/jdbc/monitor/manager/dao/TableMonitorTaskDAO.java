@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.dao;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao;
 
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
-import io.github.kylinhunter.commons.jdbc.monitor.dao.entity.TableMonitorTask;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
 
 /**
  * @author BiJi'an
@@ -36,7 +36,7 @@ public interface TableMonitorTaskDAO {
   TableMonitorTask findById(String destination, String database, String bizTable, String dataId);
 
   /**
-   * @param destination destination
+   * @param destination      destination
    * @param tableMonitorTask tableMonitorTask
    * @title save
    * @description save
@@ -46,7 +46,7 @@ public interface TableMonitorTaskDAO {
   void save(String destination, TableMonitorTask tableMonitorTask);
 
   /**
-   * @param destination destination
+   * @param destination      destination
    * @param tableMonitorTask tableMonitorTask
    * @title update
    * @description update
@@ -73,8 +73,8 @@ public interface TableMonitorTaskDAO {
   void ensureDestinationExists(String destination);
 
   /**
-   * @param destination destination
-   * @param database database
+   * @param destination  destination
+   * @param database     database
    * @param bizTableName bizTableName
    * @title clean
    * @description clean
