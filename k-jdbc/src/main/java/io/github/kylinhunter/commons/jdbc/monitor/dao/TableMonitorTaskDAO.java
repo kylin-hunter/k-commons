@@ -33,7 +33,7 @@ public interface TableMonitorTaskDAO {
    * @author BiJi'an
    * @date 2023-12-09 00:13
    */
-  TableMonitorTask findById(String destination, String bizTable, String dataId);
+  TableMonitorTask findById(String destination, String database, String bizTable, String dataId);
 
   /**
    * @param destination destination
@@ -70,14 +70,16 @@ public interface TableMonitorTaskDAO {
    * @author BiJi'an
    * @date 2023-12-09 00:16
    */
-  void ensureDestinationExists(String tableName);
+  void ensureDestinationExists(String destination);
 
   /**
    * @param destination destination
+   * @param database database
+   * @param bizTableName bizTableName
    * @title clean
    * @description clean
    * @author BiJi'an
-   * @date 2023-12-09 14:44
+   * @date 2023-12-23 17:02
    */
-  void clean(String destination, String bizTableName);
+  void clean(String destination, String database, String bizTableName);
 }

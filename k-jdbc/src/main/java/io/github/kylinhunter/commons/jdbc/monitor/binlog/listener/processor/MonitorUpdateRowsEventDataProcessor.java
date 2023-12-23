@@ -72,6 +72,7 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
 
             tableMonitorTaskManager.saveOrUpdate(
                 monitorTable.getDestination(),
+                monitorTable.getDatabase(),
                 monitorTable.getName(),
                 String.valueOf(oldId),
                 RowOP.UPDATE);
@@ -79,12 +80,14 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
 
             tableMonitorTaskManager.saveOrUpdate(
                 monitorTable.getDestination(),
+                monitorTable.getDatabase(),
                 monitorTable.getName(),
                 String.valueOf(oldId),
                 RowOP.DELETE);
 
             tableMonitorTaskManager.saveOrUpdate(
                 monitorTable.getDestination(),
+                monitorTable.getDatabase(),
                 monitorTable.getName(),
                 String.valueOf(newId),
                 RowOP.INSERT);

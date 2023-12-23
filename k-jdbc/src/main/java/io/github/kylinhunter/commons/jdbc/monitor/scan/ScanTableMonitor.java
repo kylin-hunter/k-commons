@@ -183,7 +183,8 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
     for (ScanTable scanTable : this.tableScanConfig.getScanTables()) {
 
       this.scanProgressManager.delete(scanTable.getServerId(), scanTable.getTableName());
-      this.tableMonitorTaskManager.clean(scanTable.getDestination(), scanTable.getTableName());
+      this.tableMonitorTaskManager.clean(
+          scanTable.getDestination(), scanTable.getDatabase(), scanTable.getTableName());
     }
   }
 

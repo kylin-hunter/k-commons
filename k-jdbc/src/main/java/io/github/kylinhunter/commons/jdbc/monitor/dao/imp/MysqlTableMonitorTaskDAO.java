@@ -33,16 +33,17 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
       "io/github/kylinhunter/commons/jdbc/monitor/table-monitor-task.sql";
 
   private static final String INSERT_SQL =
-      "insert into %s" + " (table_name, data_id, op,status) values(?,?,?,?)";
+      "insert into %s" + " (db,table_name, data_id, op,status) values(?,?,?,?,?)";
 
-  private static final String DELETE_SQL = "delete from %s  where table_name=?";
+  private static final String DELETE_SQL = "delete from %s  where db=? and table_name=?";
   private static final String UPDATE_SQL =
-      "update %s" + " set op=?,status=? where table_name=? and data_id=?";
+      "update %s" + " set op=?,status=? where db=? and table_name=? and data_id=?";
 
   private static final String SELECT_SQL =
-      "select  table_name as tableName,  data_id as dataId, op ,status from %s"
+      "select  db ,table_name as tableName,  data_id as dataId, op ,status from %s"
           + " where "
-          + "table_name=? "
+          + "db=? "
+          + " and table_name=? "
           + "and data_id=?";
   private final BeanHandler<TableMonitorTask> beanHandler =
       new BeanHandler<>(TableMonitorTask.class);
@@ -72,6 +73,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
     this.getSqlExecutor()
         .execute(
             sql,
+            tableMonitorTask.getDb(),
             tableMonitorTask.getTableName(),
             tableMonitorTask.getDataId(),
             tableMonitorTask.getOp(),
@@ -87,9 +89,9 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
    * @date 2023-12-09 14:44
    */
   @Override
-  public void clean(String destination, String tableName) {
+  public void clean(String destination, String db, String tableName) {
     String sql = String.format(DELETE_SQL, destination);
-    this.getSqlExecutor().execute(sql, tableName);
+    this.getSqlExecutor().execute(sql, db, tableName);
   }
 
   /**
@@ -108,6 +110,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
             sql,
             tableMonitorTask.getOp(),
             tableMonitorTask.getStatus(),
+            tableMonitorTask.getDb(),
             tableMonitorTask.getTableName(),
             tableMonitorTask.getDataId());
   }
@@ -122,23 +125,24 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
    * @author BiJi'an
    * @date 2023-12-09 14:25
    */
-  public TableMonitorTask findById(String destination, String bizTableName, String dataId) {
+  public TableMonitorTask findById(
+      String destination, String db, String bizTableName, String dataId) {
     String sql = String.format(SELECT_SQL, destination);
 
-    return this.getSqlExecutor().query(sql, beanHandler, bizTableName, dataId);
+    return this.getSqlExecutor().query(sql, beanHandler, db, bizTableName, dataId);
   }
 
   /**
-   * @param tableName tableName
+   * @param destination tableName
    * @title ensureTableExists
    * @description ensureTableExists
    * @author BiJi'an
    * @date 2023-12-09 14:22
    */
   @Override
-  public void ensureDestinationExists(String tableName) {
+  public void ensureDestinationExists(String destination) {
     String creatTableSql = SqlReader.readSql(INIT_SQL);
-    creatTableSql = String.format(creatTableSql, tableName);
-    super.ensureTableExists(tableName, creatTableSql);
+    creatTableSql = String.format(creatTableSql, destination);
+    super.ensureTableExists(destination, creatTableSql);
   }
 }

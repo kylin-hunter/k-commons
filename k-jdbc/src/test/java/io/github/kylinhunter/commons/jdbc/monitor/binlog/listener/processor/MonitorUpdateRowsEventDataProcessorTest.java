@@ -53,6 +53,7 @@ class MonitorUpdateRowsEventDataProcessorTest {
     processor.process(null, eventData, new Context());
     Mockito.verify(tableMonitorTaskManager, Mockito.times(2))
         .saveOrUpdate(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
+            Mockito.anyString(),
             Mockito.any(RowOP.class));
   }
 }

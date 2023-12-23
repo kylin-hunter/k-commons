@@ -10,26 +10,30 @@ public class TestMysqlTableMonitorTaskDAO {
   public static void main(String[] args) {
 
     MysqlTableMonitorTaskDAO scanProcessorDAO = new MysqlTableMonitorTaskDAO();
-    String tableName = TestHelper.MONITOR_SCAN_TASK;
+    String destination = TestHelper.MONITOR_SCAN_TASK;
     String bizTable = "bizTable_xxx";
+    String datbase = "test_database";
 
-    scanProcessorDAO.ensureDestinationExists(tableName);
+    scanProcessorDAO.ensureDestinationExists(destination);
 
-    scanProcessorDAO.clean(tableName, bizTable);
+    scanProcessorDAO.clean(destination, datbase, bizTable);
 
-    TableMonitorTask tableMonitorTask1 = scanProcessorDAO.findById(tableName, bizTable, "dataId-1");
+    TableMonitorTask tableMonitorTask1 = scanProcessorDAO.findById(destination, datbase, bizTable,
+        "dataId-1");
     Assertions.assertNull(tableMonitorTask1);
 
     tableMonitorTask1 = new TableMonitorTask();
+    tableMonitorTask1.setDb(datbase);
     tableMonitorTask1.setTableName(bizTable);
     tableMonitorTask1.setDataId("dataId-1");
     tableMonitorTask1.setOp(1);
     tableMonitorTask1.setStatus(2);
-    scanProcessorDAO.save(tableName, tableMonitorTask1);
+    scanProcessorDAO.save(destination, tableMonitorTask1);
 
     System.out.println("scanProcessor1:" + tableMonitorTask1);
 
-    TableMonitorTask tableMonitorTask2 = scanProcessorDAO.findById(tableName, bizTable, "dataId-1");
+    TableMonitorTask tableMonitorTask2 = scanProcessorDAO.findById(destination, datbase, bizTable,
+        "dataId-1");
     System.out.println("scanProcessor2:" + tableMonitorTask2);
 
     Assertions.assertNotNull(tableMonitorTask2);
@@ -38,11 +42,13 @@ public class TestMysqlTableMonitorTaskDAO {
     tableMonitorTask2.setTableName(bizTable);
     tableMonitorTask2.setDataId("dataId-1");
     tableMonitorTask2.setOp(11);
+    tableMonitorTask2.setDb(datbase);
     tableMonitorTask2.setStatus(21);
 
-    scanProcessorDAO.update(tableName, tableMonitorTask2);
+    scanProcessorDAO.update(destination, tableMonitorTask2);
 
-    TableMonitorTask tableMonitorTask3 = scanProcessorDAO.findById(tableName, bizTable, "dataId-1");
+    TableMonitorTask tableMonitorTask3 = scanProcessorDAO.findById(destination, datbase, bizTable,
+        "dataId-1");
     System.out.println("scanProcessor3:" + tableMonitorTask3);
 
     Assertions.assertNotNull(tableMonitorTask3);

@@ -30,6 +30,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TableMonitorTask implements Serializable {
 
+  private String db;
   private String tableName;
   private String dataId;
   private int op;

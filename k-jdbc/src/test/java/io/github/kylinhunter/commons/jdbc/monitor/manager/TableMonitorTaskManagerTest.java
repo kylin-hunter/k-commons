@@ -24,7 +24,7 @@ class TableMonitorTaskManagerTest {
     ScanTable scanTable = ScanTable.builder().build();
 
     manager.saveOrUpdate(scanTable, scanRecord);
-    manager.clean("destination", "testTable");
+    manager.clean("destination", "databae", "testTable");
     manager.ensureDestinationExists("destination");
 
 

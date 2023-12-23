@@ -38,7 +38,7 @@ class MonitorWriteRowsEventDataProcessorTest {
     Mockito.when(eventData.getRows()).thenReturn(serializables);
     processor.process(null, eventData, new Context());
     Mockito.verify(tableMonitorTaskManager, Mockito.times(2))
-        .saveOrUpdate(anyString(), anyString(), anyString(),
+        .saveOrUpdate(anyString(), anyString(), Mockito.anyString(), anyString(),
             Mockito.any(RowOP.class));
   }
 }

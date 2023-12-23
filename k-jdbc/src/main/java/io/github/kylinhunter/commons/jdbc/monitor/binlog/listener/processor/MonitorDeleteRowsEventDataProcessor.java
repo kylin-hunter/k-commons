@@ -64,6 +64,7 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
       if (pkColumnMeta.getPos() < row.length) {
         tableMonitorTaskManager.saveOrUpdate(
             monitorTable.getDestination(),
+            monitorTable.getDatabase(),
             monitorTable.getName(),
             String.valueOf(row[pkColumnMeta.getPos()]),
             RowOP.DELETE);

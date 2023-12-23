@@ -53,8 +53,8 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-16 16:15
    */
-  public void clean(String destination, String tableName) {
-    tableMonitorTaskDAO.clean(destination, tableName);
+  public void clean(String destination, String database, String tableName) {
+    tableMonitorTaskDAO.clean(destination, database, tableName);
   }
 
   /**
@@ -76,11 +76,13 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-12 01:43
    */
-  public void saveOrUpdate(String destination, String targetTable, String dataId, RowOP rowOP) {
+  public void saveOrUpdate(
+      String destination, String database, String targetTable, String dataId, RowOP rowOP) {
     TableMonitorTask tableMonitorTask =
-        this.tableMonitorTaskDAO.findById(destination, targetTable, dataId);
+        this.tableMonitorTaskDAO.findById(destination, database, targetTable, dataId);
     if (tableMonitorTask == null) {
       tableMonitorTask = new TableMonitorTask();
+      tableMonitorTask.setDb(database);
       tableMonitorTask.setTableName(targetTable);
       tableMonitorTask.setDataId(dataId);
       tableMonitorTask.setStatus(MonitorStatus.WAIT.getCode());
@@ -103,6 +105,10 @@ public class TableMonitorTaskManager extends AbstractDatabaseVisitor {
    */
   public void saveOrUpdate(ScanTable scanTable, ScanRecord scanRecord) {
     this.saveOrUpdate(
-        scanTable.getDestination(), scanTable.getTableName(), scanRecord.getId(), RowOP.UPDATE);
+        scanTable.getDestination(),
+        scanTable.getDatabase(),
+        scanTable.getTableName(),
+        scanRecord.getId(),
+        RowOP.UPDATE);
   }
 }

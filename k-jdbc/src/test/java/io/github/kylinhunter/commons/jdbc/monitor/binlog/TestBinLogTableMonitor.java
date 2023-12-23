@@ -14,7 +14,7 @@ class TestBinLogTableMonitor {
   public static void main(String[] args) {
     DataSource dataSource = new DataSourceManager(true).get();
     TestHelper.initTestSQl(dataSource);
-    
+
     BinLogConfig binLogConfig = TestBinLogClient.getBinLogConfig();
     binLogConfig.setSavePointManager(TestBinLogClient.getRedisSavePointManager1());
     MonitorTable monitorTable1 = getMonitorTable1();
@@ -30,11 +30,11 @@ class TestBinLogTableMonitor {
 
 
   public static MonitorTable getMonitorTable1() {
-    MonitorTable tableBinlogConfig = new MonitorTable();
-    tableBinlogConfig.setTablePkName("id");
-    tableBinlogConfig.setDatabase(TestHelper.DATABASE);
-    tableBinlogConfig.setName(TestHelper.TEST_TABLE_ROLE1);
-    return tableBinlogConfig;
+    MonitorTable monitorTable = new MonitorTable();
+    monitorTable.setTablePkName("id");
+    monitorTable.setDatabase(TestHelper.DATABASE);
+    monitorTable.setName(TestHelper.TEST_TABLE_ROLE1);
+    return monitorTable;
   }
 
   public static MonitorTable getMonitorTable2() {

@@ -24,14 +24,16 @@ class MysqlTableMonitorTaskDAOTest {
     DataSource dataSource = TestHelper.mockDataSource();
     MysqlTableMonitorTaskDAO scanProcessorDAO = new MysqlTableMonitorTaskDAO(dataSource);
     ReflectUtils.setField(scanProcessorDAO, "sqlExecutor", sqlExecutor);
-    String tableName = TestHelper.MONITOR_SCAN_TASK;
+    String destination = "";
+    String database = "";
     String bizTable = "bizTable_xxx";
 
-    scanProcessorDAO.ensureDestinationExists(tableName);
+    scanProcessorDAO.ensureDestinationExists(destination);
 
-    scanProcessorDAO.clean(tableName, bizTable);
+    scanProcessorDAO.clean(destination, database, bizTable);
 
-    TableMonitorTask tableMonitorTask1 = scanProcessorDAO.findById(tableName, bizTable, "dataId-1");
+    TableMonitorTask tableMonitorTask1 = scanProcessorDAO.findById(destination, database, bizTable,
+        "dataId-1");
     Assertions.assertNull(tableMonitorTask1);
 
     tableMonitorTask1 = new TableMonitorTask();
@@ -39,14 +41,16 @@ class MysqlTableMonitorTaskDAOTest {
     tableMonitorTask1.setDataId("dataId-1");
     tableMonitorTask1.setOp(1);
     tableMonitorTask1.setStatus(2);
-    scanProcessorDAO.save(tableName, tableMonitorTask1);
+    scanProcessorDAO.save(destination, tableMonitorTask1);
 
     System.out.println("scanProcessor1:" + tableMonitorTask1);
 
-    Mockito.when(sqlExecutor.query(anyString(), Mockito.any(ResultSetHandler.class), eq(bizTable),
+    Mockito.when(sqlExecutor.query(anyString(), Mockito.any(ResultSetHandler.class),
+        anyString(), eq(bizTable),
         eq("dataId-1"))).thenReturn(tableMonitorTask1);
 
-    TableMonitorTask tableMonitorTask2 = scanProcessorDAO.findById(tableName, bizTable, "dataId-1");
+    TableMonitorTask tableMonitorTask2 = scanProcessorDAO.findById(destination, database, bizTable,
+        "dataId-1");
     System.out.println("scanProcessor2:" + tableMonitorTask2);
 
     Assertions.assertNotNull(tableMonitorTask2);
@@ -58,11 +62,13 @@ class MysqlTableMonitorTaskDAOTest {
     tableMonitorTask2Update.setOp(11);
     tableMonitorTask2Update.setStatus(21);
 
-    scanProcessorDAO.update(tableName, tableMonitorTask2Update);
+    scanProcessorDAO.update(destination, tableMonitorTask2Update);
 
-    Mockito.when(sqlExecutor.query(anyString(), Mockito.any(ResultSetHandler.class), eq(bizTable),
+    Mockito.when(sqlExecutor.query(anyString(), Mockito.any(ResultSetHandler.class),
+        anyString(), eq(bizTable),
         eq("dataId-1"))).thenReturn(tableMonitorTask2Update);
-    TableMonitorTask tableMonitorTask3 = scanProcessorDAO.findById(tableName, bizTable, "dataId-1");
+    TableMonitorTask tableMonitorTask3 = scanProcessorDAO.findById(destination, database, bizTable,
+        "dataId-1");
     System.out.println("scanProcessor3:" + tableMonitorTask3);
 
     Assertions.assertNotNull(tableMonitorTask3);
