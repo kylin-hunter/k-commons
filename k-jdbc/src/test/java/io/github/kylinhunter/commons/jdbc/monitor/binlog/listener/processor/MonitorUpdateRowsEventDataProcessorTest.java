@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.event.ex;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor;
 
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.google.common.collect.Lists;
@@ -6,8 +6,6 @@ import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorManager;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.MonitorUpdateRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
 import java.io.Serializable;
@@ -21,11 +19,10 @@ class MonitorUpdateRowsEventDataProcessorTest {
   void updateDataRecord() {
 
     MonitorTable monitorTable = new MonitorTable();
-    monitorTable.setDatabase("");
-    monitorTable.setName("");
-    monitorTable.setTablePkName("");
-
-    TableIdManager tableIdManager = Mockito.mock(TableIdManager.class);
+    monitorTable.setDatabase("database");
+    monitorTable.setName("tableName");
+    monitorTable.setTablePkName("id");
+    TableIdManager tableIdManager = MonitorDeleteRowsEventDataProcessorTest.mockeTableIdManager();
 
     TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
     MonitorUpdateRowsEventDataProcessor processor = new MonitorUpdateRowsEventDataProcessor(

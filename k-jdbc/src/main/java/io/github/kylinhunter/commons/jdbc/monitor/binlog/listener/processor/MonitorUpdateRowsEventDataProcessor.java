@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor;
 
-import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
+import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
-import io.github.kylinhunter.commons.jdbc.binlog.listener.event.WriteRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.event.UpdateRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
@@ -25,6 +25,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map.Entry;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -33,20 +34,19 @@ import lombok.RequiredArgsConstructor;
  * @date 2023-12-16 00:48
  */
 @RequiredArgsConstructor
-public class MonitorWriteRowsEventDataProcessor extends WriteRowsEventDataProcessor {
+public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProcessor {
 
   private final TableMonitorTaskManager tableMonitorTaskManager;
   private final MonitorTables monitorTables;
+
   private final MonitorManager monitorManager;
 
 
   @Override
-  protected void insertDataRecord(WriteRowsEventData eventData, Context context) {
+  protected void updateDataRecord(UpdateRowsEventData eventData, Context context) {
 
     this.monitorManager.process(eventData.getTableId(), this.monitorTables, eventData,
         this::processScanRecord);
-
-
   }
 
   /**
@@ -56,19 +56,43 @@ public class MonitorWriteRowsEventDataProcessor extends WriteRowsEventDataProces
    * @title processScanRecord
    * @description processScanRecord
    * @author BiJi'an
-   * @date 2023-12-23 02:19
+   * @date 2023-12-23 02:22
    */
-  private void processScanRecord(MonitorTable monitorTable, WriteRowsEventData eventData,
+  private void processScanRecord(
+      MonitorTable monitorTable,
+      UpdateRowsEventData eventData,
       ColumnMeta pkColumnMeta) {
+    List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
+    for (Entry<Serializable[], Serializable[]> row : rows) {
+      Serializable[] oldRow = row.getKey();
+      Serializable[] newRow = row.getValue();
 
-    List<Serializable[]> rows = eventData.getRows();
-    for (Serializable[] row : rows) {
-      if (pkColumnMeta.getPos() < row.length) {
-        tableMonitorTaskManager.saveOrUpdate(
-            monitorTable.getDestination(),
-            monitorTable.getName(),
-            String.valueOf(row[pkColumnMeta.getPos()]),
-            RowOP.INSERT);
+      if (pkColumnMeta.getPos() < oldRow.length && pkColumnMeta.getPos() < newRow.length) {
+        Serializable oldId = oldRow[pkColumnMeta.getPos()];
+        Serializable newId = newRow[pkColumnMeta.getPos()];
+        if (oldId != null && newId != null) {
+          if (oldId.equals(newId)) {
+
+            tableMonitorTaskManager.saveOrUpdate(
+                monitorTable.getDestination(),
+                monitorTable.getName(),
+                String.valueOf(oldId),
+                RowOP.UPDATE);
+          } else {
+
+            tableMonitorTaskManager.saveOrUpdate(
+                monitorTable.getDestination(),
+                monitorTable.getName(),
+                String.valueOf(oldId),
+                RowOP.DELETE);
+
+            tableMonitorTaskManager.saveOrUpdate(
+                monitorTable.getDestination(),
+                monitorTable.getName(),
+                String.valueOf(newId),
+                RowOP.INSERT);
+          }
+        }
       }
     }
 

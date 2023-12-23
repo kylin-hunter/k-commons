@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor;
 
-import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
+import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
-import io.github.kylinhunter.commons.jdbc.binlog.listener.event.DeleteRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.event.WriteRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
@@ -33,19 +33,20 @@ import lombok.RequiredArgsConstructor;
  * @date 2023-12-16 00:48
  */
 @RequiredArgsConstructor
-public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProcessor {
+public class MonitorWriteRowsEventDataProcessor extends WriteRowsEventDataProcessor {
 
   private final TableMonitorTaskManager tableMonitorTaskManager;
   private final MonitorTables monitorTables;
-
   private final MonitorManager monitorManager;
 
 
   @Override
-  protected void deleteDataRecord(DeleteRowsEventData eventData, Context context) {
+  protected void insertDataRecord(WriteRowsEventData eventData, Context context) {
 
     this.monitorManager.process(eventData.getTableId(), this.monitorTables, eventData,
         this::processScanRecord);
+
+
   }
 
   /**
@@ -55,10 +56,10 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
    * @title processScanRecord
    * @description processScanRecord
    * @author BiJi'an
-   * @date 2023-12-23 02:20
+   * @date 2023-12-23 02:19
    */
-  private void processScanRecord(
-      MonitorTable monitorTable, DeleteRowsEventData eventData, ColumnMeta pkColumnMeta) {
+  private void processScanRecord(MonitorTable monitorTable, WriteRowsEventData eventData,
+      ColumnMeta pkColumnMeta) {
 
     List<Serializable[]> rows = eventData.getRows();
     for (Serializable[] row : rows) {
@@ -67,7 +68,7 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
             monitorTable.getDestination(),
             monitorTable.getName(),
             String.valueOf(row[pkColumnMeta.getPos()]),
-            RowOP.DELETE);
+            RowOP.INSERT);
       }
     }
 

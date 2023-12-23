@@ -1,4 +1,4 @@
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor;
 
 import com.github.shyiko.mysql.binlog.event.EventData;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;

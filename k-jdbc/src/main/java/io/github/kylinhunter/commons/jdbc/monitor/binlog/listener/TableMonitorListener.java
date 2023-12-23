@@ -19,6 +19,10 @@ import io.github.kylinhunter.commons.jdbc.binlog.listener.AbstractBinLogEventLis
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.MonitorDeleteRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.MonitorManager;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.MonitorUpdateRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.MonitorWriteRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
 import javax.sql.DataSource;
 import lombok.Setter;

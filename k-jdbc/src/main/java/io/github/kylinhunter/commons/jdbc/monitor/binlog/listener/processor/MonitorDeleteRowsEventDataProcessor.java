@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor;
 
-import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
+import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
-import io.github.kylinhunter.commons.jdbc.binlog.listener.event.UpdateRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.binlog.listener.event.DeleteRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
@@ -25,7 +25,6 @@ import io.github.kylinhunter.commons.jdbc.monitor.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map.Entry;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -34,7 +33,7 @@ import lombok.RequiredArgsConstructor;
  * @date 2023-12-16 00:48
  */
 @RequiredArgsConstructor
-public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProcessor {
+public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProcessor {
 
   private final TableMonitorTaskManager tableMonitorTaskManager;
   private final MonitorTables monitorTables;
@@ -43,7 +42,7 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
 
 
   @Override
-  protected void updateDataRecord(UpdateRowsEventData eventData, Context context) {
+  protected void deleteDataRecord(DeleteRowsEventData eventData, Context context) {
 
     this.monitorManager.process(eventData.getTableId(), this.monitorTables, eventData,
         this::processScanRecord);
@@ -56,43 +55,19 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
    * @title processScanRecord
    * @description processScanRecord
    * @author BiJi'an
-   * @date 2023-12-23 02:22
+   * @date 2023-12-23 02:20
    */
   private void processScanRecord(
-      MonitorTable monitorTable,
-      UpdateRowsEventData eventData,
-      ColumnMeta pkColumnMeta) {
-    List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
-    for (Entry<Serializable[], Serializable[]> row : rows) {
-      Serializable[] oldRow = row.getKey();
-      Serializable[] newRow = row.getValue();
+      MonitorTable monitorTable, DeleteRowsEventData eventData, ColumnMeta pkColumnMeta) {
 
-      if (pkColumnMeta.getPos() < oldRow.length && pkColumnMeta.getPos() < newRow.length) {
-        Serializable oldId = oldRow[pkColumnMeta.getPos()];
-        Serializable newId = newRow[pkColumnMeta.getPos()];
-        if (oldId != null && newId != null) {
-          if (oldId.equals(newId)) {
-
-            tableMonitorTaskManager.saveOrUpdate(
-                monitorTable.getDestination(),
-                monitorTable.getName(),
-                String.valueOf(oldId),
-                RowOP.UPDATE);
-          } else {
-
-            tableMonitorTaskManager.saveOrUpdate(
-                monitorTable.getDestination(),
-                monitorTable.getName(),
-                String.valueOf(oldId),
-                RowOP.DELETE);
-
-            tableMonitorTaskManager.saveOrUpdate(
-                monitorTable.getDestination(),
-                monitorTable.getName(),
-                String.valueOf(newId),
-                RowOP.INSERT);
-          }
-        }
+    List<Serializable[]> rows = eventData.getRows();
+    for (Serializable[] row : rows) {
+      if (pkColumnMeta.getPos() < row.length) {
+        tableMonitorTaskManager.saveOrUpdate(
+            monitorTable.getDestination(),
+            monitorTable.getName(),
+            String.valueOf(row[pkColumnMeta.getPos()]),
+            RowOP.DELETE);
       }
     }
 
