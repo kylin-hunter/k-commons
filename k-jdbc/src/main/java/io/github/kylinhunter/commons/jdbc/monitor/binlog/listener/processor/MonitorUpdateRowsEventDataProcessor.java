@@ -41,17 +41,16 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
 
   private final MonitorManager monitorManager;
 
-
   @Override
   protected void updateDataRecord(UpdateRowsEventData eventData, Context context) {
 
-    this.monitorManager.process(eventData.getTableId(), this.monitorTables, eventData,
-        this::processScanRecord);
+    this.monitorManager.process(
+        eventData.getTableId(), this.monitorTables, eventData, this::processScanRecord);
   }
 
   /**
    * @param monitorTable monitorTable
-   * @param eventData    eventData
+   * @param eventData eventData
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord
@@ -59,9 +58,7 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
    * @date 2023-12-23 02:22
    */
   private void processScanRecord(
-      MonitorTable monitorTable,
-      UpdateRowsEventData eventData,
-      ColumnMeta pkColumnMeta) {
+      MonitorTable monitorTable, UpdateRowsEventData eventData, ColumnMeta pkColumnMeta) {
     List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
     for (Entry<Serializable[], Serializable[]> row : rows) {
       Serializable[] oldRow = row.getKey();
@@ -95,6 +92,5 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
         }
       }
     }
-
   }
 }

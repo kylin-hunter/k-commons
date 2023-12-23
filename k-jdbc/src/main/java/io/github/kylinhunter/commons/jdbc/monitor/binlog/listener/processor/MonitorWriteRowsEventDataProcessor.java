@@ -39,27 +39,24 @@ public class MonitorWriteRowsEventDataProcessor extends WriteRowsEventDataProces
   private final MonitorTables monitorTables;
   private final MonitorManager monitorManager;
 
-
   @Override
   protected void insertDataRecord(WriteRowsEventData eventData, Context context) {
 
-    this.monitorManager.process(eventData.getTableId(), this.monitorTables, eventData,
-        this::processScanRecord);
-
-
+    this.monitorManager.process(
+        eventData.getTableId(), this.monitorTables, eventData, this::processScanRecord);
   }
 
   /**
    * @param monitorTable monitorTable
-   * @param eventData    eventData
+   * @param eventData eventData
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord
    * @author BiJi'an
    * @date 2023-12-23 02:19
    */
-  private void processScanRecord(MonitorTable monitorTable, WriteRowsEventData eventData,
-      ColumnMeta pkColumnMeta) {
+  private void processScanRecord(
+      MonitorTable monitorTable, WriteRowsEventData eventData, ColumnMeta pkColumnMeta) {
 
     List<Serializable[]> rows = eventData.getRows();
     for (Serializable[] row : rows) {
@@ -71,6 +68,5 @@ public class MonitorWriteRowsEventDataProcessor extends WriteRowsEventDataProces
             RowOP.INSERT);
       }
     }
-
   }
 }

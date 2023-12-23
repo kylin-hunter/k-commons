@@ -51,6 +51,4 @@ public class MonitorTables {
   public void addMonitorTable(MonitorTable monitorTable) {
     datas.add(monitorTable);
   }
-
-
 }

@@ -46,11 +46,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractBinLogEventListener implements BinLogEventListener {
 
-  @Setter
-  private SavePointManager savePointManager;
+  @Setter private SavePointManager savePointManager;
 
-  @Setter
-  protected Context context;
+  @Setter protected Context context;
 
   private final Map<EventType, EventProcessor> processors = MapUtils.newHashMap();
 
@@ -112,7 +110,7 @@ public abstract class AbstractBinLogEventListener implements BinLogEventListener
 
   /**
    * @param eventHeaderV4 eventHeaderV4
-   * @param data          data
+   * @param data data
    * @title process
    * @description process
    * @author BiJi'an

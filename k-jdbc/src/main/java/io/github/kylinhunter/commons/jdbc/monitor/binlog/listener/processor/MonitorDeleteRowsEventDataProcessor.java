@@ -40,17 +40,16 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
 
   private final MonitorManager monitorManager;
 
-
   @Override
   protected void deleteDataRecord(DeleteRowsEventData eventData, Context context) {
 
-    this.monitorManager.process(eventData.getTableId(), this.monitorTables, eventData,
-        this::processScanRecord);
+    this.monitorManager.process(
+        eventData.getTableId(), this.monitorTables, eventData, this::processScanRecord);
   }
 
   /**
    * @param monitorTable monitorTable
-   * @param eventData    eventData
+   * @param eventData eventData
    * @param pkColumnMeta pkColumnMeta
    * @title processScanRecord
    * @description processScanRecord
@@ -70,6 +69,5 @@ public class MonitorDeleteRowsEventDataProcessor extends DeleteRowsEventDataProc
             RowOP.DELETE);
       }
     }
-
   }
 }
