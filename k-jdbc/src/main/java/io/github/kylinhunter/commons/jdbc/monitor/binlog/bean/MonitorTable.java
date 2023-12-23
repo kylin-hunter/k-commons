@@ -28,5 +28,5 @@ public class MonitorTable {
   private String database;
   private String name;
   private String tablePkName;
-  private String destination = "k_table_monitor_binlog_task";
+  private String destination = "k_table_monitor_task";
 }

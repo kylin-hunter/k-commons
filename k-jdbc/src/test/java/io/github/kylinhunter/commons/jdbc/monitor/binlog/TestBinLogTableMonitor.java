@@ -34,6 +34,7 @@ class TestBinLogTableMonitor {
     monitorTable.setTablePkName("id");
     monitorTable.setDatabase(TestHelper.DATABASE);
     monitorTable.setName(TestHelper.TEST_TABLE_ROLE1);
+    monitorTable.setDestination(TestHelper.MONITOR_TASK_BINLOG);
     return monitorTable;
   }
 

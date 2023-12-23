@@ -39,6 +39,7 @@ class TestScanTableMonitor {
     ScanTableBuilder builder = ScanTable.builder();
     builder.tableName(TestHelper.TEST_TABLE_ROLE2)
         .database(TestHelper.DATABASE)
+        .destination(TestHelper.MONITOR_SCAN_TASK)
         .tablePkName("id")
         .tableTimeName("sys_auto_updated")
         .scanLimit(1).scanInterval(100);

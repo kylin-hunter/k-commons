@@ -94,7 +94,10 @@ ext {
             'converter-jackson'               : 'com.squareup.retrofit2:converter-jackson:2.9.0',
             'pdf2dom'                         : 'net.sf.cssbox:pdf2dom:1.6',
             'pdfbox-tools'                    : 'org.apache.pdfbox:pdfbox:2.0.4',
-            'IKAnalyzer'                      : 'com.github.magese:ik-analyzer:8.5.0'
+            'IKAnalyzer'                      : 'com.github.magese:ik-analyzer:8.5.0',
+            'mysql-binlog-connector-java'     : 'com.zendesk:mysql-binlog-connector-java:0.28.3',
+            'lettuce-core'                    : 'io.lettuce:lettuce-core:6.1.10.RELEASE'
+
 
     ]
 

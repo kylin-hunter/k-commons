@@ -35,7 +35,8 @@ public class TestHelper {
   public static String TEST_TABLE_ROLE2 = "k_junit_jdbc_role2";
 
   public static String TEST_TABLE_TMP = "k_junit_tmp";
-  public static String MONITOR_SCAN_TASK = "k_junit_table_monitor_scan_task";
+  public static String MONITOR_SCAN_TASK = "k_junit_table_monitor_scan";
+  public static String MONITOR_TASK_BINLOG = "k_junit_table_monitor_binlog";
 
   public static String BINLOG_FILENAME = "binlog.000044";
   public static long BINLOG_POS = 0;
