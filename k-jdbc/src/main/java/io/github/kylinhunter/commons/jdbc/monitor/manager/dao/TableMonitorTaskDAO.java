@@ -39,7 +39,7 @@ public interface TableMonitorTaskDAO {
   TableMonitorTask findById(String destination, String database, String bizTable, String dataId);
 
   /**
-   * @param destination      destination
+   * @param destination destination
    * @param tableMonitorTask tableMonitorTask
    * @title save
    * @description save
@@ -49,7 +49,7 @@ public interface TableMonitorTaskDAO {
   void save(String destination, TableMonitorTask tableMonitorTask);
 
   /**
-   * @param destination      destination
+   * @param destination destination
    * @param tableMonitorTask tableMonitorTask
    * @title update
    * @description update
@@ -77,8 +77,8 @@ public interface TableMonitorTaskDAO {
 
   /**
    * @param destination destination
-   * @param database    database
-   * @param tableName   tableName
+   * @param database database
+   * @param tableName tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -88,8 +88,8 @@ public interface TableMonitorTaskDAO {
 
   /**
    * @param destination destination
-   * @param database    database
-   * @param tableName   tableName
+   * @param database database
+   * @param tableName tableName
    * @title reset
    * @description reset
    * @author BiJi'an
@@ -99,9 +99,9 @@ public interface TableMonitorTaskDAO {
 
   /**
    * @param destination destination
-   * @param database    database
-   * @param tableName   tableName
-   * @param dataId      dataId
+   * @param database database
+   * @param tableName tableName
+   * @param dataId dataId
    * @title reset
    * @description reset
    * @author BiJi'an
@@ -111,8 +111,8 @@ public interface TableMonitorTaskDAO {
 
   /**
    * @param destination destination
-   * @param time        time
-   * @param limit       limit
+   * @param time time
+   * @param limit limit
    * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
    * @title findWaitDatas
    * @description findWaitDatas
@@ -122,10 +122,10 @@ public interface TableMonitorTaskDAO {
   List<TableMonitorTask> findWaitDatas(String destination, LocalDateTime time, int limit);
 
   /**
-   * @param destination  destination
-   * @param db           db
-   * @param tableName    tableName
-   * @param dataId       dataId
+   * @param destination destination
+   * @param db db
+   * @param tableName tableName
+   * @param dataId dataId
    * @param newRowStatus newStatus
    * @param oldRowStatus oldStatus
    * @return int
@@ -134,13 +134,15 @@ public interface TableMonitorTaskDAO {
    * @author BiJi'an
    * @date 2023-12-23 22:06
    */
-  int updateStatusByStatus(String destination, String db, String tableName, String dataId,
-      RowStatus newRowStatus, RowStatus oldRowStatus);
-
+  int updateStatusByStatus(
+      String destination,
+      String db,
+      String tableName,
+      String dataId,
+      RowStatus newRowStatus,
+      RowStatus oldRowStatus);
 
   int batchRetry(String destination, RowStatus rowStatus, int maxRetry, LocalDateTime startDate);
 
   int batchError(String destination, int maxRetry, LocalDateTime startDate);
-
-
 }

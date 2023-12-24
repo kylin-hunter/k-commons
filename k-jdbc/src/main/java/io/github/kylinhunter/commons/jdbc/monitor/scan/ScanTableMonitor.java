@@ -59,20 +59,23 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
     this(dataSource, false, tableScanConfig);
   }
 
-
-  private ScanTableMonitor(DataSource dataSource, boolean dbConfigEnabled,
-      TableScanConfig tableScanConfig) {
+  private ScanTableMonitor(
+      DataSource dataSource, boolean dbConfigEnabled, TableScanConfig tableScanConfig) {
     super(dataSource, dbConfigEnabled);
     Objects.requireNonNull(tableScanConfig);
-    this.init(new ScanProgressManager(dataSource), new TableTaskManager(dataSource),
-        new ScanRecordManager(dataSource), tableScanConfig);
-
+    this.init(
+        new ScanProgressManager(dataSource),
+        new TableTaskManager(dataSource),
+        new ScanRecordManager(dataSource),
+        tableScanConfig);
   }
 
-
-  public ScanTableMonitor(DataSource dataSource,
-      ScanProgressManager scanProgressManager, TableTaskManager tableTaskManager,
-      ScanRecordManager scanRecordManager, TableScanConfig tableScanConfig) {
+  public ScanTableMonitor(
+      DataSource dataSource,
+      ScanProgressManager scanProgressManager,
+      TableTaskManager tableTaskManager,
+      ScanRecordManager scanRecordManager,
+      TableScanConfig tableScanConfig) {
     super(dataSource, false);
     Objects.requireNonNull(tableScanConfig);
     this.init(scanProgressManager, tableTaskManager, scanRecordManager, tableScanConfig);
@@ -84,9 +87,11 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
    * @author BiJi'an
    * @date 2023-12-23 00:17
    */
-
-  private void init(ScanProgressManager scanProgressManager, TableTaskManager tableTaskManager,
-      ScanRecordManager scanRecordManager, TableScanConfig tableScanConfig) {
+  private void init(
+      ScanProgressManager scanProgressManager,
+      TableTaskManager tableTaskManager,
+      ScanRecordManager scanRecordManager,
+      TableScanConfig tableScanConfig) {
     this.scanProgressManager = scanProgressManager;
     this.tableTaskManager = tableTaskManager;
     this.scanRecordManager = scanRecordManager;
@@ -116,13 +121,11 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
     }
   }
 
-
   @Override
   public void close() {
     super.close();
     this.scheduler.shutdownNow();
   }
-
 
   @Override
   public void start() {

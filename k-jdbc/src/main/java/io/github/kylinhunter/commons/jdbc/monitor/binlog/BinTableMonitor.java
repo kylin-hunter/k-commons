@@ -30,7 +30,6 @@ import javax.sql.DataSource;
  */
 public class BinTableMonitor implements TableMonitor {
 
-
   private final BinLogClient binLogClient;
 
   private final TableMonitorListener listener;
@@ -66,5 +65,4 @@ public class BinTableMonitor implements TableMonitor {
   public void reset() {
     binLogClient.reset();
   }
-
 }

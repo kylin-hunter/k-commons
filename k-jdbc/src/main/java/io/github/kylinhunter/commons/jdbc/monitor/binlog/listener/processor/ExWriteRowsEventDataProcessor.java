@@ -44,8 +44,8 @@ public class ExWriteRowsEventDataProcessor extends WriteRowsEventDataProcessor {
   }
 
   /**
-   * @param binTable     monitorTable
-   * @param eventData    eventData
+   * @param binTable monitorTable
+   * @param eventData eventData
    * @param pkColumnMeta pkColumnMeta
    * @title process
    * @description process

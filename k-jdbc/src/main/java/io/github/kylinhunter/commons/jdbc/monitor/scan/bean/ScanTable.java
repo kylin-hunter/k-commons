@@ -32,9 +32,7 @@ import lombok.Setter;
 @Data
 public class ScanTable extends Table {
 
-  @Setter
-  private TableScanConfig config;
-
+  @Setter private TableScanConfig config;
 
   private String tableTimeName;
 
@@ -42,9 +40,7 @@ public class ScanTable extends Table {
 
   private String initScanId = StringUtil.EMPTY;
 
-
   private long scanLimit = 3000;
 
   private int scanInterval = 1000;
-
 }

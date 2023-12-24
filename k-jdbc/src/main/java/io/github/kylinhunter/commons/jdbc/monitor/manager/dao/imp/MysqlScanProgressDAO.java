@@ -90,7 +90,7 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
   }
 
   /**
-   * @param db        db
+   * @param db db
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.scan.bean.TableScanProgress
    * @title getTableScanProgress

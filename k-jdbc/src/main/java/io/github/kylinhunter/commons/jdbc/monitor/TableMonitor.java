@@ -24,7 +24,7 @@ public interface TableMonitor {
    * @date 2023-12-17 00:41
    */
   void reset();
-  
+
   /**
    * @title start
    * @description start

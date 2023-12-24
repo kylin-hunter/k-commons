@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class TableMonitorListener extends AbstractBinLogEventListener {
-  
+
   private final BinMonitorConfig config;
 
   private final TableTaskManager taskManager;

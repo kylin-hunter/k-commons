@@ -26,7 +26,4 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class BinTable extends Table {
-
-
-}
+public class BinTable extends Table {}

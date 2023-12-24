@@ -31,6 +31,5 @@ public enum RowStatus {
   RETRYING(3),
   ERROR(4);
 
-  @Getter
-  private final int code;
+  @Getter private final int code;
 }

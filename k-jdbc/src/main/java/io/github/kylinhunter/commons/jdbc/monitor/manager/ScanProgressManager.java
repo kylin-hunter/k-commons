@@ -84,9 +84,9 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param db        db
+   * @param db db
    * @param tableName tableName
-   * @param last      last
+   * @param last last
    * @title update
    * @description update
    * @author BiJi'an

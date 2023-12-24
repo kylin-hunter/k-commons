@@ -29,6 +29,5 @@ public enum RowOP {
   UPDATE(2),
   DELETE(3);
 
-  @Getter
-  private final int code;
+  @Getter private final int code;
 }

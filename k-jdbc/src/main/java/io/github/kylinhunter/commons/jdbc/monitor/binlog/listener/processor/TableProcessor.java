@@ -36,16 +36,16 @@ public class TableProcessor {
   private final BinMonitorConfig config;
 
   /**
-   * @param tableId   tableId
+   * @param tableId tableId
    * @param eventData eventData
-   * @param callback  callback
+   * @param callback callback
    * @title process
    * @description process
    * @author BiJi'an
    * @date 2023-12-23 02:25
    */
-  public <T extends EventData> void process(long tableId, T eventData,
-      ProcessCallback<T> callback) {
+  public <T extends EventData> void process(
+      long tableId, T eventData, ProcessCallback<T> callback) {
     TableMeta tableMeta = tableIdManager.getTableMeta(tableId);
     if (tableMeta != null) {
       for (BinTable binTable : config.getBinTables()) {

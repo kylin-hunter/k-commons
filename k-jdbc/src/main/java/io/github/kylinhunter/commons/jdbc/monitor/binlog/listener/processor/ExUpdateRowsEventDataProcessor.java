@@ -46,8 +46,8 @@ public class ExUpdateRowsEventDataProcessor extends UpdateRowsEventDataProcessor
   }
 
   /**
-   * @param table        table
-   * @param eventData    eventData
+   * @param table table
+   * @param eventData eventData
    * @param pkColumnMeta pkColumnMeta
    * @title process
    * @description process

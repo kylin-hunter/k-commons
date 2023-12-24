@@ -44,9 +44,9 @@ public class ExDeleteRowsEventDataProcessor extends DeleteRowsEventDataProcessor
   }
 
   /**
-   * @param table     table
+   * @param table table
    * @param eventData eventData
-   * @param pk        pk
+   * @param pk pk
    * @title process
    * @description process
    * @author BiJi'an

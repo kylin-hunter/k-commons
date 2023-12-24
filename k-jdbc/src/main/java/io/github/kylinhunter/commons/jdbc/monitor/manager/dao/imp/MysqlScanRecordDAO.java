@@ -46,8 +46,8 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
   }
 
   /**
-   * @param config     config
-   * @param startTime  startTime
+   * @param config config
+   * @param startTime startTime
    * @param lastScanId lastScanId
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanSameTime
@@ -75,7 +75,7 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
   }
 
   /**
-   * @param config    config
+   * @param config config
    * @param startTime startTime
    * @return java.util.List<io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanRecord>
    * @title scanNextTime

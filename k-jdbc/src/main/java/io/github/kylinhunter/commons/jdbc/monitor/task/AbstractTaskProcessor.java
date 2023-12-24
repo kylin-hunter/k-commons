@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 The k-commons Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.kylinhunter.commons.jdbc.monitor.task;
 
 import io.github.kylinhunter.commons.jdbc.monitor.bean.Config;
@@ -28,9 +43,7 @@ public class AbstractTaskProcessor implements TaskProcessor {
   protected TableTaskManager taskManager;
   protected Config config;
 
-  @Setter
-  protected ExecCallback execCallback;
-
+  @Setter protected ExecCallback execCallback;
 
   /**
    * @return void
@@ -55,16 +68,15 @@ public class AbstractTaskProcessor implements TaskProcessor {
   public void start() {
     this.scheduler = Executors.newScheduledThreadPool(this.config.getThreadPoolSize());
 
-    this.scheduler.scheduleWithFixedDelay(() -> execJob(), 0, this.config.getExecInterval(),
-        TimeUnit.MILLISECONDS);
+    this.scheduler.scheduleWithFixedDelay(
+        () -> execJob(), 0, this.config.getExecInterval(), TimeUnit.MILLISECONDS);
 
-    this.scheduler.scheduleWithFixedDelay(() -> execRetringJob(), 0, this.config.getRetryInterval(),
-        TimeUnit.MILLISECONDS);
+    this.scheduler.scheduleWithFixedDelay(
+        () -> execRetringJob(), 0, this.config.getRetryInterval(), TimeUnit.MILLISECONDS);
 
-    this.scheduler.scheduleWithFixedDelay(() -> execErrorJob(), 0, this.config.getErrorInterval(),
-        TimeUnit.MILLISECONDS);
+    this.scheduler.scheduleWithFixedDelay(
+        () -> execErrorJob(), 0, this.config.getErrorInterval(), TimeUnit.MILLISECONDS);
   }
-
 
   private void execJob() {
     try {
@@ -74,8 +86,8 @@ public class AbstractTaskProcessor implements TaskProcessor {
         String database = table.getDatabase();
         String tableName = table.getTableName();
         log.info("exec Job {}/{}/{}", destination, database, tableName);
-        LocalDateTime endTime = LocalDateTime.now()
-            .minus(this.config.getExecBefore(), ChronoUnit.MILLIS);
+        LocalDateTime endTime =
+            LocalDateTime.now().minus(this.config.getExecBefore(), ChronoUnit.MILLIS);
 
         List<TableMonitorTask> waitDatas = this.taskManager.findWaitDatas(destination, endTime, 10);
         if (waitDatas.size() > 0) {
@@ -85,7 +97,6 @@ public class AbstractTaskProcessor implements TaskProcessor {
             this.execCallback.callback(this.taskManager, destination, waitData);
           }
         }
-
       }
     } catch (Exception e) {
       log.error("execJob error", e);
@@ -102,19 +113,18 @@ public class AbstractTaskProcessor implements TaskProcessor {
 
     try {
       for (Table scanTable : tables) {
-        taskManager.batchRetry(scanTable.getDestination(), RowStatus.RETRYING, 3,
-            LocalDateTime.now());
+        taskManager.batchRetry(
+            scanTable.getDestination(), RowStatus.RETRYING, 3, LocalDateTime.now());
       }
 
-      LocalDateTime time = LocalDateTime.now()
-          .minus(this.config.getRetryBefore(), ChronoUnit.MILLIS);
+      LocalDateTime time =
+          LocalDateTime.now().minus(this.config.getRetryBefore(), ChronoUnit.MILLIS);
       for (Table scanTable : tables) {
         taskManager.batchRetry(scanTable.getDestination(), RowStatus.PROCESSING, 3, time);
       }
     } catch (Exception e) {
       log.error("execRetringJob error", e);
     }
-
   }
 
   /**
@@ -132,7 +142,5 @@ public class AbstractTaskProcessor implements TaskProcessor {
     } catch (Exception e) {
       log.error("execErrorJob error", e);
     }
-
   }
-
 }
