@@ -10,29 +10,30 @@ import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowOP;
 import java.io.Serializable;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-class MonitorDeleteRowsEventDataProcessorTest {
+class ExDeleteRowsEventDataProcessorTest {
 
   @Test
   void deleteDataRecord() {
-    MonitorTable monitorTable = new MonitorTable();
-    monitorTable.setDatabase("database");
-    monitorTable.setName("tableName");
-    monitorTable.setTablePkName("id");
+    BinTable binTable = new BinTable();
+    binTable.setDatabase("database");
+    binTable.setTableName("tableName");
+    binTable.setPkColName("id");
     TableIdManager tableIdManager = mockeTableIdManager();
-
-    TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
-    MonitorDeleteRowsEventDataProcessor processor = new MonitorDeleteRowsEventDataProcessor(
-        tableMonitorTaskManager, new MonitorTables(monitorTable),
-        new MonitorManager(tableIdManager));
+    BinMonitorConfig binMonitorConfig = new BinMonitorConfig();
+    binMonitorConfig.add(binTable);
+    TableTaskManager tableTaskManager = Mockito.mock(TableTaskManager.class);
+    ExDeleteRowsEventDataProcessor processor = new ExDeleteRowsEventDataProcessor(
+        tableTaskManager,
+        new TableProcessor(tableIdManager, binMonitorConfig));
     processor.setTableIdManager(tableIdManager);
 
     DeleteRowsEventData eventData = Mockito.mock(DeleteRowsEventData.class);
@@ -41,9 +42,8 @@ class MonitorDeleteRowsEventDataProcessorTest {
 
     when(eventData.getRows()).thenReturn(serializables);
     processor.process(null, eventData, new Context());
-    Mockito.verify(tableMonitorTaskManager, Mockito.times(2))
-        .saveOrUpdate(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
-            Mockito.anyString(),
+    Mockito.verify(tableTaskManager, Mockito.times(2))
+        .save(Mockito.any(BinTable.class), Mockito.anyString(),
             Mockito.any(RowOP.class));
   }
 

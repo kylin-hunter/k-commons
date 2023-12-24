@@ -69,11 +69,11 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
   public ScanProgress getLatestScanProgress(ScanTable scanTable) {
 
     ScanProgress progress =
-        this.scanProgressDAO.findById(scanTable.getServerId(), scanTable.getTableName());
+        this.scanProgressDAO.findById(scanTable.getDatabase(), scanTable.getTableName());
     if (progress == null) {
       progress =
           new ScanProgress(
-              scanTable.getServerId(),
+              scanTable.getDatabase(),
               scanTable.getTableName(),
               scanTable.getDestination(),
               scanTable.getInitScanTime(),
@@ -84,7 +84,7 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param serverId  serverId
+   * @param db        db
    * @param tableName tableName
    * @param last      last
    * @title update
@@ -92,8 +92,8 @@ public class ScanProgressManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-16 20:39
    */
-  public void update(String serverId, String tableName, ScanRecord last) {
-    ScanProgress scanProgress = new ScanProgress(serverId, tableName, last.getTime(), last.getId());
+  public void update(String db, String tableName, ScanRecord last) {
+    ScanProgress scanProgress = new ScanProgress(db, tableName, last.getTime(), last.getId());
     this.scanProgressDAO.update(scanProgress);
   }
 

@@ -33,6 +33,8 @@ public class TableMonitorTask implements Serializable {
   private String db;
   private String tableName;
   private String dataId;
+
+  private int retryTimes;
   private int op;
   private int status;
 }

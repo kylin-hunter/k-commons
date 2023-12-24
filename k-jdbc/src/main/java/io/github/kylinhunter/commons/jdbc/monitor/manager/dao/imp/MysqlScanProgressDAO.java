@@ -36,22 +36,22 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
   private static final String INSERT_SQL =
       "insert into "
           + TABLE_NAME
-          + " (server_id,table_name, save_destination, next_scan_time,last_scan_id) values(?,?,?,?,?)";
+          + " (db,table_name, save_destination, next_scan_time,last_scan_id) values(?,?,?,?,?)";
 
   private static final String UPDATE_SQL =
       "update "
           + TABLE_NAME
-          + " set next_scan_time=?,last_scan_id=? where  server_id=? and "
+          + " set next_scan_time=?,last_scan_id=? where  db=? and "
           + "table_name=?";
 
   private static final String DELETE_SQL =
-      "delete from " + TABLE_NAME + " where server_id=? and " + "table_name=?";
+      "delete from " + TABLE_NAME + " where db=? and " + "table_name=?";
 
   private static final String SELECT_SQL =
-      "select server_id as serverId, table_name as tableName, save_destination as saveDestination, "
+      "select db, table_name as tableName, save_destination as saveDestination, "
           + " next_scan_time as nextScanTime,last_scan_id lastScanId  from "
           + TABLE_NAME
-          + " where server_id=? and table_name=?";
+          + " where db=? and table_name=?";
   private final BeanHandler<ScanProgress> beanHandler = new BeanHandler<>(ScanProgress.class);
 
   public MysqlScanProgressDAO() {
@@ -71,7 +71,7 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
     this.getSqlExecutor()
         .execute(
             INSERT_SQL,
-            scanProgress.getServerId(),
+            scanProgress.getDb(),
             scanProgress.getTableName(),
             scanProgress.getSaveDestination(),
             scanProgress.getNextScanTime(),
@@ -85,12 +85,12 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
             UPDATE_SQL,
             scanProgress.getNextScanTime(),
             scanProgress.getLastScanId(),
-            scanProgress.getServerId(),
+            scanProgress.getDb(),
             scanProgress.getTableName());
   }
 
   /**
-   * @param serverId  serverId
+   * @param db        db
    * @param tableName tableName
    * @return io.github.kylinhunter.commons.jdbc.scan.bean.TableScanProgress
    * @title getTableScanProgress
@@ -98,9 +98,9 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
    * @author BiJi'an
    * @date 2023-12-09 22:42
    */
-  public ScanProgress findById(String serverId, String tableName) {
+  public ScanProgress findById(String db, String tableName) {
 
-    return this.getSqlExecutor().query(SELECT_SQL, beanHandler, serverId, tableName);
+    return this.getSqlExecutor().query(SELECT_SQL, beanHandler, db, tableName);
   }
 
   /**
@@ -115,7 +115,7 @@ public class MysqlScanProgressDAO extends AbsctractBasicDAO implements ScanProgr
   }
 
   @Override
-  public void delete(String serverId, String tableName) {
-    this.getSqlExecutor().execute(DELETE_SQL, serverId, tableName);
+  public void delete(String db, String tableName) {
+    this.getSqlExecutor().execute(DELETE_SQL, db, tableName);
   }
 }

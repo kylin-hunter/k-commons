@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.bean;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor;
 
-import lombok.Data;
+import com.github.shyiko.mysql.binlog.event.EventData;
+import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-10 21:22
+ * @date 2023-12-23 02:03
  */
-@Data
-public class MonitorTable {
+@FunctionalInterface
+public interface ProcessCallback<T extends EventData> {
 
-  private String database;
-  private String name;
-  private String tablePkName;
-  private String destination = "k_table_monitor_task";
+  void callback(BinTable binTable, T eventData, ColumnMeta pkColumnMeta);
 }

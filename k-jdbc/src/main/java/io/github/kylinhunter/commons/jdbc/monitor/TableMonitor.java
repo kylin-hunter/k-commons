@@ -24,15 +24,7 @@ public interface TableMonitor {
    * @date 2023-12-17 00:41
    */
   void reset();
-
-  /**
-   * @title init
-   * @description init
-   * @author BiJi'an
-   * @date 2023-12-23 00:15
-   */
-  void init();
-
+  
   /**
    * @title start
    * @description start

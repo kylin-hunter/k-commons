@@ -13,24 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant;
+package io.github.kylinhunter.commons.jdbc.monitor.binlog.bean;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.jdbc.monitor.bean.Config;
+import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023/1/18
+ * @date 2023-12-10 21:22
  */
-@RequiredArgsConstructor
-public enum MonitorStatus {
-  WAIT(0),
-  PROCESSING(1),
-  SUCCESS(2),
-  RETRYING(3),
-  ERROR(4);
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class BinMonitorConfig extends Config {
 
-  @Getter
-  private final int code;
+  private List<BinTable> binTables = ListUtils.newArrayList();
+
+  /**
+   * @param binTable binTable
+   * @title add
+   * @description add
+   * @author BiJi'an
+   * @date 2023-12-17 17:17
+   */
+  public void add(BinTable binTable) {
+    this.binTables.add(binTable);
+  }
 }

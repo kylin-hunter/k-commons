@@ -16,27 +16,33 @@
 package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import io.github.kylinhunter.commons.jdbc.binlog.BinLogClient;
-import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorListener;
-import lombok.Setter;
+import io.github.kylinhunter.commons.jdbc.monitor.task.TaskProcessor;
+import javax.sql.DataSource;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-12-17 17:29
  */
-public class BinLogTableMonitor implements TableMonitor {
+public class BinTableMonitor implements TableMonitor {
 
-  @Setter private MonitorTables monitorTables;
+
   private final BinLogClient binLogClient;
 
-  private final TableMonitorListener tableMonitorListener = new TableMonitorListener();
+  private final TableMonitorListener listener;
 
-  public BinLogTableMonitor(BinLogConfig binLogConfig, MonitorTables monitorTables) {
-    this.binLogClient = new BinLogClient(binLogConfig);
-    this.monitorTables = monitorTables;
+  private final TaskProcessor taskProcessor;
+
+  public BinTableMonitor(BinConfig binConfig, BinMonitorConfig monitorConfig) {
+    this.binLogClient = new BinLogClient(binConfig);
+    DataSource dataSource = binLogClient.getDataSource();
+    this.listener = new TableMonitorListener(monitorConfig, dataSource);
+    this.binLogClient.addBinLogEventListener(listener);
+    this.taskProcessor = new BinTaskProcessor(dataSource, monitorConfig);
   }
 
   /**
@@ -47,8 +53,6 @@ public class BinLogTableMonitor implements TableMonitor {
    */
   @Override
   public void start() {
-    tableMonitorListener.setMonitorTables(monitorTables);
-    binLogClient.addBinLogEventListener(tableMonitorListener);
     binLogClient.start();
   }
 
@@ -63,12 +67,4 @@ public class BinLogTableMonitor implements TableMonitor {
     binLogClient.reset();
   }
 
-  /**
-   * @title init
-   * @description init
-   * @author BiJi'an
-   * @date 2023-12-23 00:20
-   */
-  @Override
-  public void init() {}
 }

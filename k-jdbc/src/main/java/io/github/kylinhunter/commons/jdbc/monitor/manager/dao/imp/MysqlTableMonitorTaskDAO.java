@@ -18,9 +18,13 @@ package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp;
 import io.github.kylinhunter.commons.jdbc.dao.AbsctractBasicDAO;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.TableMonitorTaskDAO;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowStatus;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.sql.DataSource;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 /**
  * @author BiJi'an
@@ -36,17 +40,53 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
       "insert into %s" + " (db,table_name, data_id, op,status) values(?,?,?,?,?)";
 
   private static final String DELETE_SQL = "delete from %s  where db=? and table_name=?";
-  private static final String UPDATE_SQL =
+
+
+  private static final String SQL_UPDATE =
       "update %s" + " set op=?,status=? where db=? and table_name=? and data_id=?";
 
-  private static final String SELECT_SQL =
-      "select  db ,table_name as tableName,  data_id as dataId, op ,status from %s"
-          + " where "
-          + "db=? "
-          + " and table_name=? "
-          + "and data_id=?";
+  private static final String SQL_SELECT =
+      "select  db ,table_name as tableName,  data_id as dataId, retry_times as retryTimes,op ,"
+          + "status from %s  where db=? and table_name=? and data_id=?";
+
+  private static final String SQL_RESET =
+      "update  %s  set retry_times=0 ,status=" + RowStatus.WAIT.getCode()
+          + " ,sys_auto_updated=sys_auto_updated"
+          + " where db=? and table_name=?";
+
+  private static final String SQL_RESET_ID =
+      "update  %s  set status=" + RowStatus.WAIT.getCode() + " where db=?"
+          + " and table_name=? and data_id=? ";
+
+
+  private static final String SQL_FIND_WAIT_DATAS =
+      "select  db ,table_name as tableName,  data_id as dataId,retry_times as retryTimes "
+          + ",op ,status from %s"
+          + " where status=" + RowStatus.WAIT.getCode()
+          + " and   sys_auto_updated <? "
+          + " order by sys_auto_updated desc limit ?";
+
+
+  private static final String SQL_UPDATE_STATUS_BY_STATUS =
+      "update  %s  set status=? where db=? and table_name=? and data_id=?  and status=?";
+
+
+  private static final String SQL_RETRY_BATCH =
+      "update  %s  set status=" + RowStatus.WAIT.getCode() + " ,sys_auto_updated=sys_auto_updated "
+          + " , retry_times=retry_times+1 "
+          + " where status=?  and retry_times<=? and sys_auto_updated <?";
+
+
+  private static final String SQL_ERROR_BATCH =
+      "update  %s  set status=" + RowStatus.ERROR.getCode() + " ,sys_auto_updated=sys_auto_updated "
+          + " where  retry_times>? and sys_auto_updated <?";
+
   private final BeanHandler<TableMonitorTask> beanHandler =
       new BeanHandler<>(TableMonitorTask.class);
+
+
+  private final BeanListHandler<TableMonitorTask> beanHandlers =
+      new BeanListHandler<>(TableMonitorTask.class);
 
   public MysqlTableMonitorTaskDAO() {
     this(null, true);
@@ -103,7 +143,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
    */
   @Override
   public void update(String destination, TableMonitorTask tableMonitorTask) {
-    String sql = String.format(UPDATE_SQL, destination);
+    String sql = String.format(SQL_UPDATE, destination);
 
     this.getSqlExecutor()
         .execute(
@@ -127,7 +167,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
    */
   public TableMonitorTask findById(
       String destination, String db, String bizTableName, String dataId) {
-    String sql = String.format(SELECT_SQL, destination);
+    String sql = String.format(SQL_SELECT, destination);
 
     return this.getSqlExecutor().query(sql, beanHandler, db, bizTableName, dataId);
   }
@@ -145,4 +185,103 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
     creatTableSql = String.format(creatTableSql, destination);
     super.ensureTableExists(destination, creatTableSql);
   }
+
+
+  /**
+   * @param destination destination
+   * @param db          db
+   * @param tableName   tableName
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-12-23 21:40
+   */
+  @Override
+  public int reset(String destination, String db, String tableName) {
+    String sql = String.format(SQL_RESET, destination);
+    return this.getSqlExecutor().execute(sql, db, tableName);
+  }
+
+  /**
+   * @param destination destination
+   * @param db          db
+   * @param tableName   tableName
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-12-23 21:40
+   */
+  @Override
+  public int reset(String destination, String db, String tableName, String dataId) {
+    String sql = String.format(SQL_RESET_ID, destination);
+    return this.getSqlExecutor().execute(sql, db, tableName, dataId);
+  }
+
+  /**
+   * @param destination destination
+   * @param limit       limit
+   * @param time        time
+   * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
+   * @title findWaitDatas
+   * @description findWaitDatas
+   * @author BiJi'an
+   * @date 2023-12-23 21:48
+   */
+  public List<TableMonitorTask> findWaitDatas(String destination, LocalDateTime time, int limit) {
+    String sql = String.format(SQL_FIND_WAIT_DATAS, destination);
+
+    return this.getSqlExecutor().query(sql, beanHandlers, time, limit);
+  }
+
+  /**
+   * @param destination  destination
+   * @param db           db
+   * @param tableName    tableName
+   * @param dataId       dataId
+   * @param newRowStatus newStatus
+   * @param oldRowStatus oldStatus
+   * @title updateStatusByStatus
+   * @description updateStatusByStatus
+   * @author BiJi'an
+   * @date 2023-12-23 21:55
+   */
+  @Override
+  public int updateStatusByStatus(String destination, String db, String tableName, String dataId,
+      RowStatus newRowStatus, RowStatus oldRowStatus) {
+    String sql = String.format(SQL_UPDATE_STATUS_BY_STATUS, destination);
+    return this.getSqlExecutor()
+        .execute(sql, newRowStatus.getCode(), db, tableName, dataId, oldRowStatus.getCode());
+  }
+
+  /**
+   * @param destination destination
+   * @param startDate   startDate
+   * @return int
+   * @title batchRetry
+   * @description batchRetry
+   * @author BiJi'an
+   * @date 2023-12-24 00:25
+   */
+  public int batchRetry(String destination, RowStatus status, int maxRetry,
+      LocalDateTime startDate) {
+    String sql = String.format(SQL_RETRY_BATCH, destination);
+    return this.getSqlExecutor().execute(sql, status.getCode(), maxRetry, startDate);
+  }
+
+  /**
+   * @param destination destination
+   * @param maxRetry    maxRetry
+   * @param startDate   startDate
+   * @return int
+   * @title batchError
+   * @description batchError
+   * @author BiJi'an
+   * @date 2023-12-24 00:51
+   */
+
+  public int batchError(String destination, int maxRetry, LocalDateTime startDate) {
+    String sql = String.format(SQL_ERROR_BATCH, destination);
+    return this.getSqlExecutor().execute(sql, maxRetry, startDate);
+  }
+
 }

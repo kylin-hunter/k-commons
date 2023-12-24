@@ -2,11 +2,11 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.binlog.TestBinLogClient;
-import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
 import javax.sql.DataSource;
 
 class TestBinLogTableMonitor {
@@ -15,33 +15,38 @@ class TestBinLogTableMonitor {
     DataSource dataSource = new DataSourceManager(true).get();
     TestHelper.initTestSQl(dataSource);
 
-    BinLogConfig binLogConfig = TestBinLogClient.getBinLogConfig();
-    binLogConfig.setSavePointManager(TestBinLogClient.getRedisSavePointManager1());
-    MonitorTable monitorTable1 = getMonitorTable1();
-    MonitorTable monitorTable2 = getMonitorTable2();
-    MonitorTables monitorTables = new MonitorTables();
-    monitorTables.addMonitorTable(monitorTable1);
-    monitorTables.addMonitorTable(monitorTable2);
+    BinConfig binConfig = TestBinLogClient.getBinLogConfig();
+    binConfig.setSavePointManager(TestBinLogClient.getRedisSavePointManager1());
 
-    TableMonitor tableMonitor = new BinLogTableMonitor(binLogConfig, monitorTables);
+    BinMonitorConfig monitorConfig = getBinMonitorConfig();
+    TableMonitor tableMonitor = new BinTableMonitor(binConfig, monitorConfig);
     tableMonitor.reset();
     tableMonitor.start();
   }
 
 
-  public static MonitorTable getMonitorTable1() {
-    MonitorTable monitorTable = new MonitorTable();
-    monitorTable.setTablePkName("id");
-    monitorTable.setDatabase(TestHelper.DATABASE);
-    monitorTable.setName(TestHelper.TEST_TABLE_ROLE1);
-    monitorTable.setDestination(TestHelper.MONITOR_TASK_BINLOG);
-    return monitorTable;
+  public static BinMonitorConfig getBinMonitorConfig() {
+    BinTable binTable1 = getMonitorTable1();
+    BinTable binTable2 = getMonitorTable2();
+    BinMonitorConfig monitorConfig = new BinMonitorConfig();
+    monitorConfig.add(binTable1);
+    monitorConfig.add(binTable2);
+    return monitorConfig;
   }
 
-  public static MonitorTable getMonitorTable2() {
-    MonitorTable monitorTable2 = getMonitorTable1();
-    monitorTable2.setName(TestHelper.TEST_TABLE_ROLE2);
-    return monitorTable2;
+  public static BinTable getMonitorTable1() {
+    BinTable binTable = new BinTable();
+    binTable.setPkColName("id");
+    binTable.setDatabase(TestHelper.DATABASE);
+    binTable.setTableName(TestHelper.TEST_TABLE_ROLE1);
+    binTable.setDestination(TestHelper.TEST_BINLOG_TASK);
+    return binTable;
+  }
+
+  public static BinTable getMonitorTable2() {
+    BinTable binTable2 = getMonitorTable1();
+    binTable2.setTableName(TestHelper.TEST_TABLE_ROLE2);
+    return binTable2;
 
   }
 }

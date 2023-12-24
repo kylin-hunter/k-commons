@@ -16,8 +16,10 @@
 package io.github.kylinhunter.commons.jdbc.monitor.scan.bean;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
+import io.github.kylinhunter.commons.jdbc.monitor.bean.Config;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BiJi'an
@@ -25,10 +27,9 @@ import lombok.Data;
  * @date 2023-12-10 21:22
  */
 @Data
-public class TableScanConfig {
+@EqualsAndHashCode(callSuper = false)
+public class TableScanConfig extends Config {
 
-  private String serverId = "1";
-  private int scheduleCorePoolSize = 1;
   private List<ScanTable> scanTables = ListUtils.newArrayList();
 
   /**

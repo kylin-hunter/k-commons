@@ -1,0 +1,4 @@
+1、不要直接出现 AbstractTaskProcessor
+2、process和Monitor要结合
+3、更好的单测，全面回归
+4、ScanTaskProcessor 的datasource TableScanConfig 作为成员没有意义

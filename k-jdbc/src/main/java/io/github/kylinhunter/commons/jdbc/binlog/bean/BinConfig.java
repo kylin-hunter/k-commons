@@ -29,7 +29,7 @@ import lombok.Data;
  * @date 2023-12-10 21:22
  */
 @Data
-public class BinLogConfig implements Serializable {
+public class BinConfig implements Serializable {
 
   long serverId;
   String hostname;

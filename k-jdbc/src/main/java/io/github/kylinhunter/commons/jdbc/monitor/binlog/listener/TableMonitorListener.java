@@ -17,15 +17,14 @@ package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener;
 
 import io.github.kylinhunter.commons.jdbc.binlog.listener.AbstractBinLogEventListener;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.MonitorDeleteRowsEventDataProcessor;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.MonitorManager;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.MonitorUpdateRowsEventDataProcessor;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.MonitorWriteRowsEventDataProcessor;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.ExDeleteRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.ExUpdateRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.ExWriteRowsEventDataProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor.TableProcessor;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import javax.sql.DataSource;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,32 +34,27 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class TableMonitorListener extends AbstractBinLogEventListener {
+  
+  private final BinMonitorConfig config;
 
-  @Setter private MonitorTables monitorTables;
-  @Setter TableMonitorTaskManager tableMonitorTaskManager;
+  private final TableTaskManager taskManager;
 
-  MonitorManager monitorManager;
+  public TableMonitorListener(BinMonitorConfig config, DataSource dataSource) {
+    this.config = config;
+    taskManager = new TableTaskManager(dataSource);
+  }
 
   @Override
   public void init(DataSource dataSource) {
     super.init(dataSource);
-    this.monitorManager = new MonitorManager(this.tableIdManager);
     this.context = new Context();
-    if (tableMonitorTaskManager == null) {
-      this.tableMonitorTaskManager = new TableMonitorTaskManager(dataSource);
-    }
-    for (MonitorTable monitorTable : monitorTables.getDatas()) {
-      tableMonitorTaskManager.ensureDestinationExists(monitorTable.getDestination());
+    for (BinTable binTable : config.getBinTables()) {
+      taskManager.ensureDestinationExists(binTable.getDestination());
     }
 
-    addEventProcessor(
-        new MonitorWriteRowsEventDataProcessor(
-            tableMonitorTaskManager, monitorTables, monitorManager));
-    addEventProcessor(
-        new MonitorDeleteRowsEventDataProcessor(
-            tableMonitorTaskManager, monitorTables, monitorManager));
-    addEventProcessor(
-        new MonitorUpdateRowsEventDataProcessor(
-            tableMonitorTaskManager, monitorTables, monitorManager));
+    TableProcessor tableProcessor = new TableProcessor(this.tableIdManager, this.config);
+    addEventProcessor(new ExWriteRowsEventDataProcessor(taskManager, tableProcessor));
+    addEventProcessor(new ExDeleteRowsEventDataProcessor(taskManager, tableProcessor));
+    addEventProcessor(new ExUpdateRowsEventDataProcessor(taskManager, tableProcessor));
   }
 }

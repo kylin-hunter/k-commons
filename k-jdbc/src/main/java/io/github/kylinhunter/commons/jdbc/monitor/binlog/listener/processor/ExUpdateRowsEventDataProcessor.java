@@ -19,9 +19,8 @@ import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.UpdateRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowOP;
 import java.io.Serializable;
 import java.util.List;
@@ -34,31 +33,28 @@ import lombok.RequiredArgsConstructor;
  * @date 2023-12-16 00:48
  */
 @RequiredArgsConstructor
-public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProcessor {
+public class ExUpdateRowsEventDataProcessor extends UpdateRowsEventDataProcessor {
 
-  private final TableMonitorTaskManager tableMonitorTaskManager;
-  private final MonitorTables monitorTables;
+  private final TableTaskManager taskManager;
 
-  private final MonitorManager monitorManager;
+  private final TableProcessor tableProcessor;
 
   @Override
   protected void updateDataRecord(UpdateRowsEventData eventData, Context context) {
 
-    this.monitorManager.process(
-        eventData.getTableId(), this.monitorTables, eventData, this::processScanRecord);
+    this.tableProcessor.process(eventData.getTableId(), eventData, this::process);
   }
 
   /**
-   * @param monitorTable monitorTable
+   * @param table        table
    * @param eventData    eventData
    * @param pkColumnMeta pkColumnMeta
-   * @title processScanRecord
-   * @description processScanRecord
+   * @title process
+   * @description process
    * @author BiJi'an
    * @date 2023-12-23 02:22
    */
-  private void processScanRecord(
-      MonitorTable monitorTable, UpdateRowsEventData eventData, ColumnMeta pkColumnMeta) {
+  private void process(BinTable table, UpdateRowsEventData eventData, ColumnMeta pkColumnMeta) {
     List<Entry<Serializable[], Serializable[]>> rows = eventData.getRows();
     for (Entry<Serializable[], Serializable[]> row : rows) {
       Serializable[] oldRow = row.getKey();
@@ -70,27 +66,10 @@ public class MonitorUpdateRowsEventDataProcessor extends UpdateRowsEventDataProc
         if (oldId != null && newId != null) {
           if (oldId.equals(newId)) {
 
-            tableMonitorTaskManager.saveOrUpdate(
-                monitorTable.getDestination(),
-                monitorTable.getDatabase(),
-                monitorTable.getName(),
-                String.valueOf(oldId),
-                RowOP.UPDATE);
+            taskManager.save(table, String.valueOf(oldId), RowOP.UPDATE);
           } else {
-
-            tableMonitorTaskManager.saveOrUpdate(
-                monitorTable.getDestination(),
-                monitorTable.getDatabase(),
-                monitorTable.getName(),
-                String.valueOf(oldId),
-                RowOP.DELETE);
-
-            tableMonitorTaskManager.saveOrUpdate(
-                monitorTable.getDestination(),
-                monitorTable.getDatabase(),
-                monitorTable.getName(),
-                String.valueOf(newId),
-                RowOP.INSERT);
+            taskManager.save(table, String.valueOf(oldId), RowOP.DELETE);
+            taskManager.save(table, String.valueOf(newId), RowOP.INSERT);
           }
         }
       }

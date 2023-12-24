@@ -1,62 +1,147 @@
 package io.github.kylinhunter.commons.jdbc.monitor.manager.dao;
 
 import io.github.kylinhunter.commons.jdbc.TestHelper;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowOP;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowStatus;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.imp.MysqlTableMonitorTaskDAO;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 
 public class TestMysqlTableMonitorTaskDAO {
 
+  static String destination = TestHelper.TEST_SCAN_TASK2;
+  static String tableName = "table";
+  static String datbase = "database";
+
+
   public static void main(String[] args) {
 
-    MysqlTableMonitorTaskDAO scanProcessorDAO = new MysqlTableMonitorTaskDAO();
-    String destination = TestHelper.MONITOR_SCAN_TASK;
-    String bizTable = "bizTable_xxx";
-    String datbase = "test_database";
+    MysqlTableMonitorTaskDAO monitorTaskDAO = new MysqlTableMonitorTaskDAO();
 
-    scanProcessorDAO.ensureDestinationExists(destination);
+    monitorTaskDAO.ensureDestinationExists(destination);
 
-    scanProcessorDAO.clean(destination, datbase, bizTable);
+    monitorTaskDAO.clean(destination, datbase, tableName);
 
-    TableMonitorTask tableMonitorTask1 = scanProcessorDAO.findById(destination, datbase, bizTable,
-        "dataId-1");
-    Assertions.assertNull(tableMonitorTask1);
+    TableMonitorTask tableMonitorTaskOld = monitorTaskDAO.findById(destination, datbase, tableName,
+        "1");
+    Assertions.assertNull(tableMonitorTaskOld);
 
-    tableMonitorTask1 = new TableMonitorTask();
+    TableMonitorTask tableMonitorTask1 = new TableMonitorTask();
     tableMonitorTask1.setDb(datbase);
-    tableMonitorTask1.setTableName(bizTable);
-    tableMonitorTask1.setDataId("dataId-1");
-    tableMonitorTask1.setOp(1);
-    tableMonitorTask1.setStatus(2);
-    scanProcessorDAO.save(destination, tableMonitorTask1);
-
-    System.out.println("scanProcessor1:" + tableMonitorTask1);
-
-    TableMonitorTask tableMonitorTask2 = scanProcessorDAO.findById(destination, datbase, bizTable,
-        "dataId-1");
-    System.out.println("scanProcessor2:" + tableMonitorTask2);
-
-    Assertions.assertNotNull(tableMonitorTask2);
-    Assertions.assertEquals(tableMonitorTask1, tableMonitorTask2);
-
-    tableMonitorTask2.setTableName(bizTable);
-    tableMonitorTask2.setDataId("dataId-1");
-    tableMonitorTask2.setOp(11);
+    tableMonitorTask1.setTableName(tableName);
+    tableMonitorTask1.setDataId("1");
+    tableMonitorTask1.setOp(RowOP.INSERT.getCode());
+    tableMonitorTask1.setStatus(RowStatus.ERROR.getCode());
+    monitorTaskDAO.save(destination, tableMonitorTask1);
+    TableMonitorTask tableMonitorTask2 = new TableMonitorTask();
     tableMonitorTask2.setDb(datbase);
-    tableMonitorTask2.setStatus(21);
+    tableMonitorTask2.setTableName(tableName);
+    tableMonitorTask2.setDataId("2");
+    tableMonitorTask2.setOp(RowOP.INSERT.getCode());
+    tableMonitorTask2.setStatus(RowStatus.WAIT.getCode());
+    monitorTaskDAO.save(destination, tableMonitorTask2);
 
-    scanProcessorDAO.update(destination, tableMonitorTask2);
+    System.out.println("tableMonitorTask1:" + tableMonitorTask1);
+    System.out.println("tableMonitorTask2:" + tableMonitorTask2);
 
-    TableMonitorTask tableMonitorTask3 = scanProcessorDAO.findById(destination, datbase, bizTable,
-        "dataId-1");
-    System.out.println("scanProcessor3:" + tableMonitorTask3);
+    TableMonitorTask tableMonitorTask1_Old = monitorTaskDAO.findById(destination, datbase,
+        tableName, "1");
+    Assertions.assertNotNull(tableMonitorTask1_Old);
+    Assertions.assertEquals(tableMonitorTask1, tableMonitorTask1_Old);
 
-    Assertions.assertNotNull(tableMonitorTask3);
-    Assertions.assertNotEquals(tableMonitorTask1, tableMonitorTask3);
+    tableMonitorTask1_Old.setOp(RowOP.UPDATE.getCode());
+    tableMonitorTask1_Old.setStatus(RowStatus.WAIT.getCode());
 
-    Assertions.assertEquals(11, tableMonitorTask3.getOp());
+    monitorTaskDAO.update(destination, tableMonitorTask1_Old);
 
-    Assertions.assertEquals(21, tableMonitorTask3.getStatus());
+    TableMonitorTask tableMonitorTask11Old2 = monitorTaskDAO.findById(destination, datbase,
+        tableName, "1");
+    System.out.println("tableMonitorTask11Old2:" + tableMonitorTask11Old2);
+
+    Assertions.assertNotNull(tableMonitorTask11Old2);
+    Assertions.assertNotEquals(tableMonitorTask1, tableMonitorTask11Old2);
+
+    Assertions.assertEquals(RowOP.UPDATE.getCode(), tableMonitorTask11Old2.getOp());
+
+    Assertions.assertEquals(RowStatus.WAIT.getCode(), tableMonitorTask11Old2.getStatus());
+
+    testStatus(monitorTaskDAO);
+  }
+
+  static void testStatus(MysqlTableMonitorTaskDAO monitorTaskDAO) {
+    int maxRetryCount = 3;
+
+    List<TableMonitorTask> waitDatas = monitorTaskDAO.findWaitDatas(destination,
+        LocalDateTime.now(), 10);
+
+    Assertions.assertEquals(2, waitDatas.size());
+    TableMonitorTask tableMonitorTask = waitDatas.get(0);
+
+    String dataId = tableMonitorTask.getDataId();
+
+    monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
+        dataId, RowStatus.PROCESSING, RowStatus.WAIT);
+
+    tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
+
+    Assertions.assertEquals(RowStatus.PROCESSING.getCode(), tableMonitorTask.getStatus());
+
+    waitDatas = monitorTaskDAO.findWaitDatas(destination, LocalDateTime.now(), 10);
+
+    Assertions.assertEquals(1, waitDatas.size());
+
+    // update to retring 1
+    monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
+        dataId, RowStatus.RETRYING, RowStatus.PROCESSING);
+
+    tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
+
+    Assertions.assertEquals(RowStatus.RETRYING.getCode(), tableMonitorTask.getStatus());
+
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+
+    tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
+
+    Assertions.assertEquals(1, tableMonitorTask.getRetryTimes());
+
+    // update to retring 2
+    monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
+        dataId, RowStatus.RETRYING, RowStatus.WAIT);
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
+
+    Assertions.assertEquals(2, tableMonitorTask.getRetryTimes());
+
+    // update to retring 3
+    monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
+        dataId, RowStatus.RETRYING, RowStatus.WAIT);
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
+    Assertions.assertEquals(3, tableMonitorTask.getRetryTimes());
+
+    // update to retring 4
+    monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
+        dataId, RowStatus.RETRYING, RowStatus.WAIT);
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
+    Assertions.assertEquals(4, tableMonitorTask.getRetryTimes());
+
+    // update to retring 5
+    monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
+        dataId, RowStatus.RETRYING, RowStatus.WAIT);
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
+    Assertions.assertEquals(4, tableMonitorTask.getRetryTimes());
+
+    // batch error
+    monitorTaskDAO.batchError(destination, maxRetryCount, LocalDateTime.now());
+
+    tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
+
+    Assertions.assertEquals(4, tableMonitorTask.getRetryTimes());
+    Assertions.assertEquals(RowStatus.ERROR.getCode(), tableMonitorTask.getStatus());
 
 
   }

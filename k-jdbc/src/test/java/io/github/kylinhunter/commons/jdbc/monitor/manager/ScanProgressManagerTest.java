@@ -25,15 +25,15 @@ class ScanProgressManagerTest {
 
     manager.ensureTableExists();
 
-    manager.update("serverId", "", new ScanRecord());
+    manager.update("db", "", new ScanRecord());
 
-    ScanProgress scanProgress = new ScanProgress("serverId", "", null, "99");
+    ScanProgress scanProgress = new ScanProgress("db", "", null, "99");
     Mockito.when(scanProgressDAO.findById(any(), any())).thenReturn(scanProgress);
-    ScanTable scanTable = ScanTable.builder().build();
+    ScanTable scanTable = new ScanTable();
     scanTable.setConfig(new TableScanConfig());
     ScanProgress latestScanProgress = manager.getLatestScanProgress(scanTable);
     Assertions.assertEquals("99", latestScanProgress.getLastScanId());
-    Assertions.assertEquals("serverId", latestScanProgress.getServerId());
+    Assertions.assertEquals("db", latestScanProgress.getDb());
 
 
   }

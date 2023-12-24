@@ -7,12 +7,11 @@ import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanProgressManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanRecordManager;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
-import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import javax.sql.DataSource;
@@ -37,28 +36,25 @@ class ScanTableMonitorTest {
     Mockito.when(scanRecordManager.scanSameTime(any(), any())).thenReturn(
         ListUtils.newArrayList(scanRecord)).thenReturn(ListUtils.newArrayList());
 
-    TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
+    TableTaskManager tableTaskManager = Mockito.mock(TableTaskManager.class);
 
     TableScanConfig tableScanConfig = new TableScanConfig();
-    tableScanConfig.setServerId("1");
-    tableScanConfig.setScheduleCorePoolSize(1);
+    tableScanConfig.setThreadPoolSize(1);
 
     ScanTable scanTable1 = TestScanTableMonitor.getScanTable();
     scanTable1.setTableName(TestHelper.TEST_TABLE_ROLE1);
-    scanTable1.setDestination(TestHelper.MONITOR_SCAN_TASK);
+    scanTable1.setDestination(TestHelper.TEST_SCAN_TASK);
     scanTable1.setScanInterval(-1);
     tableScanConfig.add(scanTable1);
 
     ScanTable scanTable2 = TestScanTableMonitor.getScanTable();
     scanTable2.setTableName(TestHelper.TEST_TABLE_ROLE2);
-    scanTable1.setDestination(TestHelper.MONITOR_SCAN_TASK);
+    scanTable1.setDestination(TestHelper.TEST_SCAN_TASK);
     scanTable1.setScanInterval(-1);
     tableScanConfig.add(scanTable2);
-    TableMonitor manager = new ScanTableMonitor(dataSource, tableScanConfig);
-    ReflectUtils.setField(manager, "scanProgressManager", scanProgressManager);
-    ReflectUtils.setField(manager, "tableMonitorTaskManager", tableMonitorTaskManager);
-    ReflectUtils.setField(manager, "scanRecordManager", scanRecordManager);
-
+    TableMonitor manager = new ScanTableMonitor(dataSource, scanProgressManager, tableTaskManager,
+        scanRecordManager,
+        tableScanConfig);
     manager.reset();
     manager.start();
 

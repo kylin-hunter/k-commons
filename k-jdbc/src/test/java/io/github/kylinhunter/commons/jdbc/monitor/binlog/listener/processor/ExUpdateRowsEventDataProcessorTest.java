@@ -4,30 +4,32 @@ import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.google.common.collect.Lists;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.TableIdManager;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowOP;
 import java.io.Serializable;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-class MonitorUpdateRowsEventDataProcessorTest {
+class ExUpdateRowsEventDataProcessorTest {
 
   @Test
   void updateDataRecord() {
 
-    MonitorTable monitorTable = new MonitorTable();
-    monitorTable.setDatabase("database");
-    monitorTable.setName("tableName");
-    monitorTable.setTablePkName("id");
-    TableIdManager tableIdManager = MonitorDeleteRowsEventDataProcessorTest.mockeTableIdManager();
+    BinTable binTable = new BinTable();
+    binTable.setDatabase("database");
+    binTable.setTableName("tableName");
+    binTable.setPkColName("id");
+    TableIdManager tableIdManager = ExDeleteRowsEventDataProcessorTest.mockeTableIdManager();
 
-    TableMonitorTaskManager tableMonitorTaskManager = Mockito.mock(TableMonitorTaskManager.class);
-    MonitorUpdateRowsEventDataProcessor processor = new MonitorUpdateRowsEventDataProcessor(
-        tableMonitorTaskManager, new MonitorTables(monitorTable),
-        new MonitorManager(tableIdManager));
+    BinMonitorConfig binMonitorConfig = new BinMonitorConfig();
+    binMonitorConfig.add(binTable);
+    TableTaskManager tableTaskManager = Mockito.mock(TableTaskManager.class);
+    ExUpdateRowsEventDataProcessor processor = new ExUpdateRowsEventDataProcessor(
+        tableTaskManager,
+        new TableProcessor(tableIdManager, binMonitorConfig));
     processor.setTableIdManager(tableIdManager);
 
     UpdateRowsEventData eventData = Mockito.mock(UpdateRowsEventData.class);
@@ -51,9 +53,8 @@ class MonitorUpdateRowsEventDataProcessorTest {
 
     Mockito.when(eventData.getRows()).thenReturn(Lists.newArrayList(entry));
     processor.process(null, eventData, new Context());
-    Mockito.verify(tableMonitorTaskManager, Mockito.times(2))
-        .saveOrUpdate(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
-            Mockito.anyString(),
+    Mockito.verify(tableTaskManager, Mockito.times(2))
+        .save(Mockito.any(BinTable.class), Mockito.anyString(),
             Mockito.any(RowOP.class));
   }
 }

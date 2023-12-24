@@ -33,7 +33,8 @@ import org.apache.commons.dbutils.ResultSetHandler;
 @RequiredArgsConstructor
 public class SqlExecutor {
 
-  @Getter private QueryRunner queryRunner;
+  @Getter
+  private QueryRunner queryRunner;
   private DataSource dataSource;
 
   public SqlExecutor(DataSource dataSource) {
@@ -42,7 +43,7 @@ public class SqlExecutor {
   }
 
   /**
-   * @param sql sql
+   * @param sql    sql
    * @param params params
    * @return int
    * @title execute
@@ -59,8 +60,8 @@ public class SqlExecutor {
   }
 
   /**
-   * @param sql sql
-   * @param rsh rsh
+   * @param sql    sql
+   * @param rsh    rsh
    * @param params params
    * @return T
    * @title query
@@ -75,6 +76,7 @@ public class SqlExecutor {
       throw new JdbcException("execute sql error", e);
     }
   }
+
 
   /**
    * @return java.sql.Connection

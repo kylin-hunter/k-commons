@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.jdbc.binlog;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.kylinhunter.commons.jdbc.TestHelper;
-import io.github.kylinhunter.commons.jdbc.binlog.bean.BinLogConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.TestBinLogEventListener;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.MysqlSavePointManager;
@@ -15,9 +15,9 @@ import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
 public class TestBinLogClient {
 
   public static void main(String[] args) {
-    BinLogConfig binLogConfig = getBinLogConfig();
-    binLogConfig.setSavePointManager(getRedisSavePointManager1());
-    BinLogClient binLogClient = new BinLogClient(binLogConfig);
+    BinConfig binConfig = getBinLogConfig();
+    binConfig.setSavePointManager(getRedisSavePointManager1());
+    BinLogClient binLogClient = new BinLogClient(binConfig);
     binLogClient.addBinLogEventListener(new TestBinLogEventListener());
 
     binLogClient.reset();
@@ -26,15 +26,15 @@ public class TestBinLogClient {
   }
 
 
-  public static BinLogConfig getBinLogConfig() {
-    BinLogConfig binLogConfig = new BinLogConfig();
-    binLogConfig.setBinlogFilename(TestHelper.BINLOG_FILENAME);
-    binLogConfig.setBinlogPosition(TestHelper.BINLOG_POS);
-    binLogConfig.setUrl(TestHelper.MYSQL_JDBC_URL);
-    binLogConfig.setUsername(TestHelper.MYSQL_USERNAME);
-    binLogConfig.setPassword(TestHelper.MYSQL_PASSWORD);
-    binLogConfig.setServerId(1);
-    return binLogConfig;
+  public static BinConfig getBinLogConfig() {
+    BinConfig binConfig = new BinConfig();
+    binConfig.setBinlogFilename(TestHelper.BINLOG_FILENAME);
+    binConfig.setBinlogPosition(TestHelper.BINLOG_POS);
+    binConfig.setUrl(TestHelper.MYSQL_JDBC_URL);
+    binConfig.setUsername(TestHelper.MYSQL_USERNAME);
+    binConfig.setPassword(TestHelper.MYSQL_PASSWORD);
+    binConfig.setServerId(1);
+    return binConfig;
   }
 
 

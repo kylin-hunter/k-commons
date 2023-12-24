@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.processor;
+package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant;
 
-import com.github.shyiko.mysql.binlog.event.EventData;
-import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-23 02:03
+ * @date 2023/1/18
  */
-@FunctionalInterface
-public interface EventDataCallback<T extends EventData> {
+@RequiredArgsConstructor
+public enum RowStatus {
+  WAIT(0),
+  PROCESSING(1),
+  SUCCESS(2),
+  RETRYING(3),
+  ERROR(4);
 
-  void callback(MonitorTable monitorTable, T eventData, ColumnMeta pkColumnMeta);
+  @Getter
+  private final int code;
 }

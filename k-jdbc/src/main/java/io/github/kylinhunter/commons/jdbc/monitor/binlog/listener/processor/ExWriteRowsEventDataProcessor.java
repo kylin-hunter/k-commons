@@ -19,9 +19,8 @@ import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.Context;
 import io.github.kylinhunter.commons.jdbc.binlog.listener.event.WriteRowsEventDataProcessor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTable;
-import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.MonitorTables;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableMonitorTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowOP;
 import java.io.Serializable;
 import java.util.List;
@@ -33,40 +32,32 @@ import lombok.RequiredArgsConstructor;
  * @date 2023-12-16 00:48
  */
 @RequiredArgsConstructor
-public class MonitorWriteRowsEventDataProcessor extends WriteRowsEventDataProcessor {
+public class ExWriteRowsEventDataProcessor extends WriteRowsEventDataProcessor {
 
-  private final TableMonitorTaskManager tableMonitorTaskManager;
-  private final MonitorTables monitorTables;
-  private final MonitorManager monitorManager;
+  private final TableTaskManager taskManager;
+  private final TableProcessor tableProcessor;
 
   @Override
   protected void insertDataRecord(WriteRowsEventData eventData, Context context) {
 
-    this.monitorManager.process(
-        eventData.getTableId(), this.monitorTables, eventData, this::processScanRecord);
+    this.tableProcessor.process(eventData.getTableId(), eventData, this::process);
   }
 
   /**
-   * @param monitorTable monitorTable
+   * @param binTable     monitorTable
    * @param eventData    eventData
    * @param pkColumnMeta pkColumnMeta
-   * @title processScanRecord
-   * @description processScanRecord
+   * @title process
+   * @description process
    * @author BiJi'an
    * @date 2023-12-23 02:19
    */
-  private void processScanRecord(
-      MonitorTable monitorTable, WriteRowsEventData eventData, ColumnMeta pkColumnMeta) {
+  private void process(BinTable binTable, WriteRowsEventData eventData, ColumnMeta pkColumnMeta) {
 
     List<Serializable[]> rows = eventData.getRows();
     for (Serializable[] row : rows) {
       if (pkColumnMeta.getPos() < row.length) {
-        tableMonitorTaskManager.saveOrUpdate(
-            monitorTable.getDestination(),
-            monitorTable.getDatabase(),
-            monitorTable.getName(),
-            String.valueOf(row[pkColumnMeta.getPos()]),
-            RowOP.INSERT);
+        taskManager.save(binTable, String.valueOf(row[pkColumnMeta.getPos()]), RowOP.INSERT);
       }
     }
   }

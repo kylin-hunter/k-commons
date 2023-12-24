@@ -29,7 +29,7 @@ class MysqlScanRecordDAOTest {
     MysqlScanRecordDAO dao = new MysqlScanRecordDAO(dataSource);
     ReflectUtils.setField(dao, "sqlExecutor", sqlExecutor);
 
-    ScanTable scanTable = ScanTable.builder().build();
+    ScanTable scanTable = new ScanTable();
     ScanProgress scanProgress = new ScanProgress();
     ScanRecord scanRecord1 = new ScanRecord();
     scanRecord1.setId("1");

@@ -15,10 +15,9 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.binlog.bean;
 
-import io.github.kylinhunter.commons.collections.ListUtils;
-import java.util.List;
+import io.github.kylinhunter.commons.jdbc.monitor.bean.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BiJi'an
@@ -26,29 +25,8 @@ import lombok.NoArgsConstructor;
  * @date 2023-12-10 21:22
  */
 @Data
-@NoArgsConstructor
-public class MonitorTables {
+@EqualsAndHashCode(callSuper = false)
+public class BinTable extends Table {
 
-  private List<MonitorTable> datas = ListUtils.newArrayList();
 
-  public MonitorTables(List<MonitorTable> datas) {
-    this.datas = datas;
-  }
-
-  public MonitorTables(MonitorTable... tables) {
-    for (MonitorTable monitorTable : tables) {
-      this.addMonitorTable(monitorTable);
-    }
-  }
-
-  /**
-   * @param monitorTable monitorTable
-   * @title addMonitorTable
-   * @description addMonitorTable
-   * @author BiJi'an
-   * @date 2023-12-17 00:55
-   */
-  public void addMonitorTable(MonitorTable monitorTable) {
-    datas.add(monitorTable);
-  }
 }

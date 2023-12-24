@@ -16,7 +16,10 @@
 package io.github.kylinhunter.commons.jdbc.monitor.manager.dao;
 
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowStatus;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author BiJi'an
@@ -73,13 +76,71 @@ public interface TableMonitorTaskDAO {
   void ensureDestinationExists(String destination);
 
   /**
-   * @param destination  destination
-   * @param database     database
-   * @param bizTableName bizTableName
+   * @param destination destination
+   * @param database    database
+   * @param tableName   tableName
    * @title clean
    * @description clean
    * @author BiJi'an
    * @date 2023-12-23 17:02
    */
-  void clean(String destination, String database, String bizTableName);
+  void clean(String destination, String database, String tableName);
+
+  /**
+   * @param destination destination
+   * @param database    database
+   * @param tableName   tableName
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-12-23 21:38
+   */
+  int reset(String destination, String database, String tableName);
+
+  /**
+   * @param destination destination
+   * @param database    database
+   * @param tableName   tableName
+   * @param dataId      dataId
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-12-23 21:44
+   */
+  int reset(String destination, String database, String tableName, String dataId);
+
+  /**
+   * @param destination destination
+   * @param time        time
+   * @param limit       limit
+   * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
+   * @title findWaitDatas
+   * @description findWaitDatas
+   * @author BiJi'an
+   * @date 2023-12-23 22:04
+   */
+  List<TableMonitorTask> findWaitDatas(String destination, LocalDateTime time, int limit);
+
+  /**
+   * @param destination  destination
+   * @param db           db
+   * @param tableName    tableName
+   * @param dataId       dataId
+   * @param newRowStatus newStatus
+   * @param oldRowStatus oldStatus
+   * @return int
+   * @title updateStatusByStatus
+   * @description updateStatusByStatus
+   * @author BiJi'an
+   * @date 2023-12-23 22:06
+   */
+  int updateStatusByStatus(String destination, String db, String tableName, String dataId,
+      RowStatus newRowStatus, RowStatus oldRowStatus);
+
+
+  int batchRetry(String destination, RowStatus rowStatus, int maxRetry, LocalDateTime startDate);
+
+  int batchError(String destination, int maxRetry, LocalDateTime startDate);
+
+
 }

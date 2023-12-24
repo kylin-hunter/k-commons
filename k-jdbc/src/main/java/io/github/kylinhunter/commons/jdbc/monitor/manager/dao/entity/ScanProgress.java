@@ -31,15 +31,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ScanProgress implements Serializable {
 
-  private String serverId;
+  private String db;
   private String tableName;
   private String saveDestination;
   private LocalDateTime nextScanTime;
   private String lastScanId;
 
   public ScanProgress(
-      String serverId, String tableName, LocalDateTime nextScanTime, String lastScanId) {
-    this.serverId = serverId;
+      String db, String tableName, LocalDateTime nextScanTime, String lastScanId) {
+    this.db = db;
     this.tableName = tableName;
     this.nextScanTime = nextScanTime;
     this.lastScanId = lastScanId;

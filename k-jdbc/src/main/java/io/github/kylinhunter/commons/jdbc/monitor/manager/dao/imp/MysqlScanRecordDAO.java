@@ -60,14 +60,14 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
     String sql =
         String.format(
             SAME_SQL,
-            config.getTablePkName(),
+            config.getPkColName(),
             config.getTableTimeName(),
             config.getTableName(),
             config.getTableTimeName(),
             config.getTableTimeName(),
-            config.getTablePkName(),
+            config.getPkColName(),
             config.getTableTimeName(),
-            config.getTablePkName());
+            config.getPkColName());
     LocalDateTime endTime = LocalDateTime.now().minus(3, ChronoUnit.SECONDS);
 
     long limit = config.getScanLimit();
@@ -88,13 +88,13 @@ public class MysqlScanRecordDAO extends AbsctractBasicDAO implements ScanRecordD
     String sql =
         String.format(
             NEXT_SQL,
-            config.getTablePkName(),
+            config.getPkColName(),
             config.getTableTimeName(),
             config.getTableName(),
             config.getTableTimeName(),
             config.getTableTimeName(),
             config.getTableTimeName(),
-            config.getTablePkName());
+            config.getPkColName());
     LocalDateTime endTime = LocalDateTime.now().minus(3, ChronoUnit.SECONDS);
 
     return sqlExecutor.query(sql, beanHandler, startTime, endTime, config.getScanLimit());
