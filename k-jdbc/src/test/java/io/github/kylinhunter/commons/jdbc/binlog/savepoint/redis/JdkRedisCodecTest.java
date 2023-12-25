@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis;
 
-import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.dao.entity.SavePoint;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,12 +15,14 @@ class JdkRedisCodecTest {
     String key = jdkRedisCodec.decodeKey(byteBuffer);
     Assertions.assertEquals("123", key);
 
-    BinConfig binConfig = new BinConfig();
-    binConfig.setServerId(999);
-    byteBuffer = jdkRedisCodec.encodeValue(binConfig);
+    SavePoint savePoint = new SavePoint();
+    savePoint.setName("name");
+    savePoint.setPosition(100L);
+    byteBuffer = jdkRedisCodec.encodeValue(savePoint);
     Object decodeValue = jdkRedisCodec.decodeValue(byteBuffer);
-    Assertions.assertEquals(binConfig, decodeValue);
+    Assertions.assertEquals(savePoint, decodeValue);
 
 
   }
+
 }

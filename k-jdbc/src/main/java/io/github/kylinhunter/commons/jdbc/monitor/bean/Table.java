@@ -16,6 +16,8 @@
 package io.github.kylinhunter.commons.jdbc.monitor.bean;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode.Include;
 
 /**
  * @author BiJi'an
@@ -23,10 +25,11 @@ import lombok.Data;
  * @date 2023-12-24 01:50
  */
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Table {
 
-  private String database;
-  private String tableName;
+  @Include private String database;
+  @Include private String tableName;
   private String pkColName; // primary key
   private String destination = "k_table_monitor_task";
 }

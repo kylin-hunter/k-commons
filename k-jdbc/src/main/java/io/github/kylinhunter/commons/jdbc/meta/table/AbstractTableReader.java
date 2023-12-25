@@ -134,9 +134,6 @@ public abstract class AbstractTableReader extends AbstractDatabaseVisitor implem
     try {
       DatabaseMetaData metaData = connection.getMetaData();
       ResultSet tables = metaData.getTables(catalog, schema, tableName, new String[] {"TABLE"});
-      if (tables == null) {
-        return ListUtils.newArrayList();
-      }
       ResultSetMetaData tableMetadata = tables.getMetaData();
       Map<String, Object> rawMetadata = MapUtils.newHashMap();
       while (tables.next()) {

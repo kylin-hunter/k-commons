@@ -25,5 +25,5 @@ import lombok.EqualsAndHashCode;
  * @date 2023-12-10 21:22
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class BinTable extends Table {}

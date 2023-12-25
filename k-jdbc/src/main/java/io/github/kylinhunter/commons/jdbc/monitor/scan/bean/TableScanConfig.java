@@ -18,16 +18,18 @@ package io.github.kylinhunter.commons.jdbc.monitor.scan.bean;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.jdbc.monitor.bean.Config;
 import java.util.List;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-12-10 21:22
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
+@ToString
 public class TableScanConfig extends Config {
 
   private List<ScanTable> scanTables = ListUtils.newArrayList();

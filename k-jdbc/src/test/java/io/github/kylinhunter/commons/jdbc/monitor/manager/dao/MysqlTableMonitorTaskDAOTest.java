@@ -30,9 +30,9 @@ class MysqlTableMonitorTaskDAOTest {
     DataSource dataSource = TestHelper.mockDataSource();
     MysqlTableMonitorTaskDAO scanProcessorDAO = new MysqlTableMonitorTaskDAO(dataSource);
     ReflectUtils.setField(scanProcessorDAO, "sqlExecutor", sqlExecutor);
-    String destination = "";
+    String destination = TestHelper.TEST_SCAN_TASK;
     String database = "";
-    String table = "table";
+    String table = TestHelper.TEST_TABLE_ROLE1;
 
     scanProcessorDAO.ensureDestinationExists(destination);
 

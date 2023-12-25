@@ -15,14 +15,18 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.bean;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-12-24 21:06
  */
-@Data
+@Getter
+@Setter
+@ToString
 public class Config {
 
   private int threadPoolSize = 2; // thread pool size  for schedule

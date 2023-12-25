@@ -69,7 +69,7 @@ public class TestDataSourceHelper {
   private static void mockTableMetadata(DatabaseMetaData databaseMetaData) throws SQLException {
     mockTableMetadata(databaseMetaData, TestHelper.TEST_TABLE_ROLE1);
     mockTableMetadata(databaseMetaData, TestHelper.TEST_SCAN_TASK);
-    mockTableMetadata(databaseMetaData, TestHelper.TEST_TABLE_TMP);
+    mockTableMetadata(databaseMetaData, TestHelper.TEST_SCAN_TASK);
 
 
   }
