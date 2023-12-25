@@ -43,10 +43,10 @@ public class AbstractTaskProcessor implements TaskProcessor {
   protected TableTaskManager taskManager;
   protected Config config;
 
-  @Setter protected ExecCallback execCallback;
+  @Setter
+  protected ExecCallback execCallback;
 
   /**
-   * @return void
    * @title reset
    * @description reset
    * @author BiJi'an
@@ -69,15 +69,26 @@ public class AbstractTaskProcessor implements TaskProcessor {
     this.scheduler = Executors.newScheduledThreadPool(this.config.getThreadPoolSize());
 
     this.scheduler.scheduleWithFixedDelay(
-        () -> execJob(), 0, this.config.getExecInterval(), TimeUnit.MILLISECONDS);
+        this::execJob, 0, this.config.getExecInterval(), TimeUnit.MILLISECONDS);
 
     this.scheduler.scheduleWithFixedDelay(
-        () -> execRetringJob(), 0, this.config.getRetryInterval(), TimeUnit.MILLISECONDS);
+        this::execRetringJob, 0, this.config.getRetryInterval(), TimeUnit.MILLISECONDS);
 
     this.scheduler.scheduleWithFixedDelay(
-        () -> execErrorJob(), 0, this.config.getErrorInterval(), TimeUnit.MILLISECONDS);
+        this::execErrorJob, 0, this.config.getErrorInterval(), TimeUnit.MILLISECONDS);
   }
 
+  @Override
+  public void shutdown() {
+    this.scheduler.shutdownNow();
+  }
+
+  /**
+   * @title execJob
+   * @description execJob
+   * @author BiJi'an
+   * @date 2023-12-25 23:43
+   */
   private void execJob() {
     try {
       for (Table table : tables) {

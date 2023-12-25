@@ -19,7 +19,10 @@ import io.github.kylinhunter.commons.jdbc.binlog.BinLogClient;
 import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorListener;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.task.ExecCallback;
 import io.github.kylinhunter.commons.jdbc.monitor.task.TaskProcessor;
 import javax.sql.DataSource;
 
@@ -36,12 +39,36 @@ public class BinTableMonitor implements TableMonitor {
 
   private final TaskProcessor taskProcessor;
 
+  private final BinMonitorConfig monitorConfig;
+
+  private final TableTaskManager taskManager;
+
   public BinTableMonitor(BinConfig binConfig, BinMonitorConfig monitorConfig) {
     this.binLogClient = new BinLogClient(binConfig);
+    this.monitorConfig = monitorConfig;
     DataSource dataSource = binLogClient.getDataSource();
-    this.listener = new TableMonitorListener(monitorConfig, dataSource);
+    this.taskManager = new TableTaskManager(dataSource);
+    this.listener = new TableMonitorListener(monitorConfig, taskManager);
     this.binLogClient.addBinLogEventListener(listener);
-    this.taskProcessor = new BinTaskProcessor(dataSource, monitorConfig);
+    this.taskProcessor = new BinTaskProcessor(taskManager, monitorConfig);
+  }
+
+  /**
+   * @param execCallback execCallback
+   * @title setExecCallback
+   * @description setExecCallback
+   * @author BiJi'an
+   * @date 2023-12-25 23:15
+   */
+  public void setExecCallback(ExecCallback execCallback) {
+
+    taskProcessor.setExecCallback(execCallback);
+  }
+
+  @Override
+  public void shutdown() {
+    this.binLogClient.disconnect();
+    this.taskProcessor.shutdown();
   }
 
   /**
@@ -52,6 +79,7 @@ public class BinTableMonitor implements TableMonitor {
    */
   @Override
   public void start() {
+    taskProcessor.start();
     binLogClient.start();
   }
 
@@ -64,5 +92,11 @@ public class BinTableMonitor implements TableMonitor {
   @Override
   public void reset() {
     binLogClient.reset();
+    for (BinTable binTable : monitorConfig.getBinTables()) {
+      this.taskManager.clean(
+          binTable.getDestination(), binTable.getDatabase(), binTable.getTableName());
+    }
   }
+
+
 }

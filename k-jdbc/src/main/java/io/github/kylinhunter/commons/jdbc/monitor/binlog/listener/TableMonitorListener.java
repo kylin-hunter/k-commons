@@ -39,9 +39,9 @@ public class TableMonitorListener extends AbstractBinLogEventListener {
 
   private final TableTaskManager taskManager;
 
-  public TableMonitorListener(BinMonitorConfig config, DataSource dataSource) {
+  public TableMonitorListener(BinMonitorConfig config, TableTaskManager taskManager) {
     this.config = config;
-    taskManager = new TableTaskManager(dataSource);
+    this.taskManager = taskManager;
   }
 
   @Override

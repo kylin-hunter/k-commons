@@ -9,7 +9,6 @@ import io.github.kylinhunter.commons.jdbc.binlog.listener.event.QueryEventDataPr
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
-import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
@@ -30,8 +29,7 @@ class TableMonitorListenerTest {
     TableTaskManager tableTaskManager = Mockito.mock(TableTaskManager.class);
 
     TableMonitorListener tableMonitorListener = new TableMonitorListener(binMonitorConfig,
-        dataSource);
-    ReflectUtils.setField(tableMonitorListener, "taskManager", tableTaskManager);
+        tableTaskManager);
     EventData writeRowsEventData = Mockito.mock(WriteRowsEventData.class);
     Mockito.when(event.getData()).thenReturn(writeRowsEventData);
 

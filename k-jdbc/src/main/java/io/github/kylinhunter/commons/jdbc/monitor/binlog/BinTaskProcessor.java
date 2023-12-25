@@ -19,7 +19,6 @@ import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.task.AbstractTaskProcessor;
 import java.util.ArrayList;
-import javax.sql.DataSource;
 
 /**
  * @author BiJi'an
@@ -28,13 +27,9 @@ import javax.sql.DataSource;
  */
 public class BinTaskProcessor extends AbstractTaskProcessor {
 
-  private final DataSource dataSource;
-  private final BinMonitorConfig binlogConfig;
 
-  public BinTaskProcessor(DataSource dataSource, BinMonitorConfig monitorConfig) {
-    this.dataSource = dataSource;
-    this.taskManager = new TableTaskManager(dataSource);
-    this.binlogConfig = monitorConfig;
+  public BinTaskProcessor(TableTaskManager taskManager, BinMonitorConfig monitorConfig) {
+    this.taskManager = taskManager;
     this.config = monitorConfig;
     this.tables = new ArrayList<>(monitorConfig.getBinTables());
   }

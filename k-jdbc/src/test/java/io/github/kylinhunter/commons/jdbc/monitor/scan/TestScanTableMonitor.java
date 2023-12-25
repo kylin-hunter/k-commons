@@ -5,6 +5,7 @@ import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.task.TestCallback;
 import javax.sql.DataSource;
 
 class TestScanTableMonitor {
@@ -17,6 +18,9 @@ class TestScanTableMonitor {
     TableScanConfig tablescanConfig = getTablescanConfig();
     TableMonitor tableMonitor = new ScanTableMonitor(dataSource, tablescanConfig);
     tableMonitor.reset();
+
+    TestCallback testCallback = new TestCallback();
+    tableMonitor.setExecCallback(testCallback);
     tableMonitor.start();
 
   }

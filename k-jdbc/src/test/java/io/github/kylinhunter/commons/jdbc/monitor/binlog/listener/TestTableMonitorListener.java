@@ -8,6 +8,8 @@ import io.github.kylinhunter.commons.jdbc.binlog.listener.event.QueryEventDataPr
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
+import javax.sql.DataSource;
 import org.mockito.Mockito;
 
 public class TestTableMonitorListener {
@@ -21,14 +23,16 @@ public class TestTableMonitorListener {
     BinMonitorConfig binMonitorConfig = new BinMonitorConfig();
     binMonitorConfig.add(binTable);
 
+    DataSource dataSource = dataSourceManager.get();
+    TableTaskManager taskManager = new TableTaskManager(dataSource);
     TableMonitorListener tableMonitorListener = new TableMonitorListener(binMonitorConfig,
-        dataSourceManager.get());
+        taskManager);
     EventData writeRowsEventData = Mockito.mock(WriteRowsEventData.class);
     Mockito.when(event.getData()).thenReturn(writeRowsEventData);
 
     tableMonitorListener.addEventProcessor(new QueryEventDataProcessor());
 
-    tableMonitorListener.init(dataSourceManager.get());
+    tableMonitorListener.init(dataSource);
     tableMonitorListener.onEvent(event);
     dataSourceManager.close();
   }

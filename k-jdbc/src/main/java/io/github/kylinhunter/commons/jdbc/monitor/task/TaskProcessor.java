@@ -17,5 +17,11 @@ package io.github.kylinhunter.commons.jdbc.monitor.task;
 
 public interface TaskProcessor {
 
+  void reset();
+
   void start();
+
+  void setExecCallback(ExecCallback execCallback);
+
+  void shutdown();
 }

@@ -25,6 +25,8 @@ import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgres
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.task.ExecCallback;
+import io.github.kylinhunter.commons.jdbc.monitor.task.TaskProcessor;
 import io.github.kylinhunter.commons.util.ThreadHelper;
 import java.util.List;
 import java.util.Objects;
@@ -50,6 +52,8 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
   private TableScanConfig tableScanConfig;
 
   private ScheduledExecutorService scheduler;
+  private TaskProcessor taskProcessor;
+
 
   public ScanTableMonitor(TableScanConfig tableScanConfig) {
     this(null, true, tableScanConfig);
@@ -57,6 +61,24 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
 
   public ScanTableMonitor(DataSource dataSource, TableScanConfig tableScanConfig) {
     this(dataSource, false, tableScanConfig);
+  }
+
+  /**
+   * @param execCallback execCallback
+   * @title setExecCallback
+   * @description setExecCallback
+   * @author BiJi'an
+   * @date 2023-12-25 23:15
+   */
+  public void setExecCallback(ExecCallback execCallback) {
+
+    taskProcessor.setExecCallback(execCallback);
+  }
+
+  @Override
+  public void shutdown() {
+    this.scheduler.shutdownNow();
+    this.taskProcessor.shutdown();
   }
 
   private ScanTableMonitor(
@@ -103,6 +125,7 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
       this.tableTaskManager.ensureDestinationExists(scanTable.getDestination());
     }
+    this.taskProcessor = new ScanTaskProcessor(dataSource, tableScanConfig);
   }
 
   /**
@@ -135,6 +158,8 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
       scan(scanTable);
     }
+    taskProcessor.start();
+
   }
 
   /**
