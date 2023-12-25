@@ -6,6 +6,8 @@ import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.task.TaskProcessor;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
@@ -24,11 +26,14 @@ class BinTableMonitorTest {
     binlogConfig.add(binTable1);
     binlogConfig.add(binTable2);
     BinLogClient binLogClient = Mockito.mock(BinLogClient.class);
+    TableTaskManager taskManager = Mockito.mock(TableTaskManager.class);
 
     TableMonitor tableMonitor = new BinTableMonitor(binConfig, binlogConfig);
 
     ReflectUtils.setField(tableMonitor, "binLogClient", binLogClient);
-
+    ReflectUtils.setField(tableMonitor, "taskManager", taskManager);
+    TaskProcessor taskProcessor = Mockito.mock(TaskProcessor.class);
+    ReflectUtils.setField(tableMonitor, "taskProcessor", taskProcessor);
     tableMonitor.reset();
     tableMonitor.start();
   }

@@ -12,6 +12,8 @@ import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgres
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
+import io.github.kylinhunter.commons.jdbc.monitor.task.TaskProcessor;
+import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import javax.sql.DataSource;
@@ -55,6 +57,9 @@ class ScanTableMonitorTest {
     TableMonitor manager = new ScanTableMonitor(dataSource, scanProgressManager, tableTaskManager,
         scanRecordManager,
         tableScanConfig);
+
+    TaskProcessor taskProcessor = Mockito.mock(TaskProcessor.class);
+    ReflectUtils.setField(manager, "taskProcessor", taskProcessor);
     manager.reset();
     manager.start();
 

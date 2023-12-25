@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-12-24 01:53
  */
 @Slf4j
-public class AbstractTaskProcessor implements TaskProcessor {
+public abstract class AbstractTaskProcessor implements TaskProcessor {
 
   private ScheduledExecutorService scheduler;
   protected List<Table> tables;

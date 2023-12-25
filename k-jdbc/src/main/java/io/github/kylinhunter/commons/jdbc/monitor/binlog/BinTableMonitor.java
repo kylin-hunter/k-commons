@@ -35,7 +35,6 @@ public class BinTableMonitor implements TableMonitor {
 
   private final BinLogClient binLogClient;
 
-  private final TableMonitorListener listener;
 
   private final TaskProcessor taskProcessor;
 
@@ -48,8 +47,8 @@ public class BinTableMonitor implements TableMonitor {
     this.monitorConfig = monitorConfig;
     DataSource dataSource = binLogClient.getDataSource();
     this.taskManager = new TableTaskManager(dataSource);
-    this.listener = new TableMonitorListener(monitorConfig, taskManager);
-    this.binLogClient.addBinLogEventListener(listener);
+
+    this.binLogClient.addBinLogEventListener(new TableMonitorListener(monitorConfig, taskManager));
     this.taskProcessor = new BinTaskProcessor(taskManager, monitorConfig);
   }
 
