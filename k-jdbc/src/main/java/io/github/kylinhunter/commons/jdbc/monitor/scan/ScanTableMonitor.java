@@ -54,7 +54,6 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
   private ScheduledExecutorService scheduler;
   private TaskProcessor taskProcessor;
 
-
   public ScanTableMonitor(TableScanConfig tableScanConfig) {
     this(null, true, tableScanConfig);
   }
@@ -159,7 +158,6 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
       scan(scanTable);
     }
     taskProcessor.start();
-
   }
 
   /**

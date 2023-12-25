@@ -43,8 +43,7 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
   protected TableTaskManager taskManager;
   protected Config config;
 
-  @Setter
-  protected ExecCallback execCallback;
+  @Setter protected ExecCallback execCallback;
 
   /**
    * @title reset

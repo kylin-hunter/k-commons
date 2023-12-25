@@ -35,7 +35,6 @@ public class BinTableMonitor implements TableMonitor {
 
   private final BinLogClient binLogClient;
 
-
   private final TaskProcessor taskProcessor;
 
   private final BinMonitorConfig monitorConfig;
@@ -96,6 +95,4 @@ public class BinTableMonitor implements TableMonitor {
           binTable.getDestination(), binTable.getDatabase(), binTable.getTableName());
     }
   }
-
-
 }

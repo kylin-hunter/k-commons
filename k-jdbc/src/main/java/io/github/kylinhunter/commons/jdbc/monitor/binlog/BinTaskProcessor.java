@@ -27,7 +27,6 @@ import java.util.ArrayList;
  */
 public class BinTaskProcessor extends AbstractTaskProcessor {
 
-
   public BinTaskProcessor(TableTaskManager taskManager, BinMonitorConfig monitorConfig) {
     this.taskManager = taskManager;
     this.config = monitorConfig;
