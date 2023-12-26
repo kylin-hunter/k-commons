@@ -6,8 +6,9 @@
 
 ## 文档支持
 
-> [通用工具](k-commons/README-zh.md)
-> [代码生成器](k-code-generator/README-zh.md) 
+> [bean复制](doc/bean/BeanCopyUtils-zh.md) 
+> [bit状态管理](doc/state/BitState-zh.md)
+> [uid生成器-基于雪花算法](doc/uid/UidGenerator-zh.md)
 
 
 #### 版权 | License

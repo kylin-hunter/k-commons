@@ -12,15 +12,15 @@ A bean copy util  based on spring BeanUtil
 
 ####1、build and publish to local
 
-```java
+```
         gradle clean build publishToMavenLocal-x test
 ```
 
 #### 2、gradle (gradle.org)
 
-```java
+```
 
-        implementation 'io.github.kylin-hunter:k-commons:1.0.9'
+        implementation 'io.github.kylin-hunter:k-commons:x.x.x'
 
         implementation 'org.yaml:snakeyaml:1.29' // support yaml , if needed
 
@@ -30,12 +30,12 @@ A bean copy util  based on spring BeanUtil
 
 #### 3、maven (maven.apache.org)
 
-```java
+```
 
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-commons</artifactId>
-          <version>1.0.9</version>
+          <version>x.x.x</version>
         </dependency>
         <dependency>  <!-- support yaml , if needed-->
           <groupId>org.yaml</groupId>
@@ -56,7 +56,7 @@ A bean copy util  based on spring BeanUtil
 
 ##### 1.1 api
 
-```java
+```
 
 /**
  * @param source           the source bean
@@ -169,7 +169,7 @@ class BeanCopyUtilsTest {
 
 ###### 1.2.2 print result
 
-```java
+```
 
         name=>name
         nameIgnore=>null

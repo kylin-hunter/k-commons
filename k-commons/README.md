@@ -6,8 +6,9 @@ a Common tool collection
 
 ## Document
 
-> [k-commons](k-commons/README.md)
-> [k-code-generator](k-code-generator/README.md)
+> [bean copy](doc/bean/BeanCopyUtils.md)
+> [bit state](doc/state/BitState.md)
+> [UID generator(snowflake)](doc/uid/UidGenerator.md)
 
 #### License
 
