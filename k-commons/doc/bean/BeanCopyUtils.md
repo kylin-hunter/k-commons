@@ -20,7 +20,8 @@ A bean copy util  based on spring BeanUtil
 
 ```
 
-        implementation 'io.github.kylin-hunter:k-commons:x.x.x'
+        implementation 'io.github.kylin-hunter:k-commons:x.x.x' 
+        //The latest version can be found in the Maven repository 
 
         implementation 'org.yaml:snakeyaml:1.29' // support yaml , if needed
 
@@ -35,7 +36,7 @@ A bean copy util  based on spring BeanUtil
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-commons</artifactId>
-          <version>x.x.x</version>
+          <version>x.x.x</version> //The latest version can be found in the Maven repository
         </dependency>
         <dependency>  <!-- support yaml , if needed-->
           <groupId>org.yaml</groupId>

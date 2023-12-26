@@ -21,6 +21,7 @@
 ```
 
         implementation 'io.github.kylin-hunter:k-commons:x.x.x'
+        //最新版本号可以去中央仓库查找
 
         implementation 'org.yaml:snakeyaml:1.29' // 如果需要支持yaml 才需要引用
 
@@ -35,7 +36,7 @@
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-commons</artifactId>
-          <version>x.x.x</version>
+          <version>x.x.x</version>//最新版本号可以去中央仓库查找
         </dependency>
         <dependency>  <!-- 可选支持snake->
           <groupId>org.yaml</groupId>

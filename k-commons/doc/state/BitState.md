@@ -21,6 +21,7 @@ Use bit operation and java enumeration type to manage state
 ```
 
         implementation 'io.github.kylin-hunter:k-commons:x.x.x'
+        //The latest version can be found in the Maven repository 
 
 ```
 
@@ -31,7 +32,7 @@ Use bit operation and java enumeration type to manage state
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
             <artifactId>k-commons</artifactId>
-          <version>x.x.x</version>
+          <version>x.x.x</version> //The latest version can be found in the Maven repository
         </dependency>
 
 ```

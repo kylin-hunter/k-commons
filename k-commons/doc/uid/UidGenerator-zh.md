@@ -12,26 +12,27 @@
 
 #### 1、编译并发布到本地仓库
 
-```java
+```
         gradle clean build publishToMavenLocal -x test
 ```
 
 #### 2、gradle (gradle.org)
 
-```java
+```
 
-    implementation'io.github.kylin-hunter:k-commons:1.0.9'
+    implementation'io.github.kylin-hunter:k-commons:x.x.x'
+    //最新版本号可以去中央仓库查找
 
 ```
 
 #### 3、maven (maven.apache.org)
 
-```java
+```
 
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
             <artifactId>io.github.kylin-hunter:k-commons</artifactId>
-          <version>1.0.9</version>
+          <version>x.x.x</version> //最新版本号可以去中央仓库查找
         </dependency>
 
 ```
@@ -42,7 +43,7 @@
 
 ##### 1.1 api
 
-```java
+```
 
 /**
  * @param type 业务类型
@@ -67,9 +68,7 @@ public UidGenerator(long type,long workerId,long datacenterId);
  * @author BiJi'an
  * @date 2022-12-11 16:20
  */
-public UidGenerator(int sequenceBits,int typeBits,int workerIdBits,int datacenterIdBits,
-        long type,long workerId,
-        long datacenterId);
+public UidGenerator(int sequenceBits,int typeBits,int workerIdBits,int datacenterIdBits,long type,long workerId,long datacenterId);
 
 /**
  * @return long
@@ -98,7 +97,7 @@ public UidInfo parse(long uid);
 
 ###### 1.2.1 代码
 
-```java
+```
 
     // 业务代码 3，默认业务代码支持范围 0-15
     // 机器编码 4，默认机器编码支持范围0-15
@@ -114,7 +113,7 @@ public UidInfo parse(long uid);
 
 ###### 1.2.2 打印结果
 
-```java
+```
 
         2022-12-11 22:54:26.177 [Test worker] INFO   -  i.g.k.commons.uid.UidGenerator[107]: timestampBits 41,datacenterIdBits 2, workerIdBits 4,typeBits 4, sequenceBits 12
         161155503589961728=>UidInfo[sequence=0, type=3, workerId=4, datacenterId=1, timestamp=1670921666180/2022-12-13 16:54:26]
