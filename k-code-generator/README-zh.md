@@ -6,6 +6,8 @@
 
 ### 软件架构
 
+![code-generator](./doc/code-generator.png)
+
 利用jdbc读取表信息，生成源代码
 
 ### 安装教程
@@ -19,8 +21,7 @@
 #### 2、gradle (gradle.org)
 
 ```
-
-        implementation 'io.github.kylin-hunter:k-code-generator:x.x.x'
+        implementation 'io.github.kylin-hunter:k-code-generator:1.0.4'
         //最新版本号可以去中央仓库查找
 
 ```
@@ -28,11 +29,10 @@
 #### 3、maven (maven.apache.org)
 
 ```
-
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-code-generator</artifactId>
-          <version>x.x.x</version>//最新版本号可以去中央仓库查找
+          <version>1.0.4</version>//最新版本号可以去中央仓库查找
         </dependency>
 
 ```

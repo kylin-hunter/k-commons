@@ -4,38 +4,12 @@
 
 A state management tool based on bit operation
 
-### Software Architecture
+### design specification
+
+![bitset](./bitset.png)
 
 Use bit operation and java enumeration type to manage state
 
-### Installation
-
-####1、build and publish to local
-
-```
-        gradle clean build publishToMavenLocal-x test
-```
-
-#### 2、gradle (gradle.org)
-
-```
-
-        implementation 'io.github.kylin-hunter:k-commons:x.x.x'
-        //The latest version can be found in the Maven repository 
-
-```
-
-#### 3、maven (maven.apache.org)
-
-```
-
-        <dependency>
-          <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>k-commons</artifactId>
-          <version>x.x.x</version> //The latest version can be found in the Maven repository
-        </dependency>
-
-```
 
 ### Instructions
 

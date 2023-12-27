@@ -2,9 +2,11 @@
 
 ### Description
 
+![beanutil](./beanutil.png)
+
 A bean copy util  based on spring BeanUtil
 
-### Software Architecture
+### design specification
 
 A bean copy util  based on spring BeanUtil
 
@@ -16,28 +18,17 @@ A bean copy util  based on spring BeanUtil
         gradle clean build publishToMavenLocal-x test
 ```
 
-#### 2、gradle (gradle.org)
+#### Optional  Dependencies (gradle.org)
 
 ```
-
-        implementation 'io.github.kylin-hunter:k-commons:x.x.x' 
-        //The latest version can be found in the Maven repository 
-
         implementation 'org.yaml:snakeyaml:1.29' // support yaml , if needed
-
         implementation 'org.dom4j:dom4j:2.1.3' // support xml, if needed
 
 ```
 
-#### 3、maven (maven.apache.org)
+####  Optional  Dependencies  (maven.apache.org)
 
 ```
-
-        <dependency>
-          <groupId>io.github.kylin-hunter</groupId>
-          <artifactId>k-commons</artifactId>
-          <version>x.x.x</version> //The latest version can be found in the Maven repository
-        </dependency>
         <dependency>  <!-- support yaml , if needed-->
           <groupId>org.yaml</groupId>
           <artifactId>snakeyaml</artifactId>

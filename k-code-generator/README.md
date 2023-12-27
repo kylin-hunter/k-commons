@@ -6,6 +6,8 @@ A code generator
 
 ### Software Architecture
 
+![code-generator](./doc/code-generator.png)
+
 read table info using jdbc,to generate source code。
 
 ### Installation
@@ -20,7 +22,7 @@ read table info using jdbc,to generate source code。
 
 ```
 
-        implementation 'io.github.kylin-hunter:k-code-generator:x.x.x'
+        implementation 'io.github.kylin-hunter:k-code-generator:1.0.4'
          //The latest version can be found in the Maven repository 
 
 ```
@@ -32,7 +34,7 @@ read table info using jdbc,to generate source code。
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-code-generator</artifactId>
-          <version>x.x.x</version> //The latest version can be found in the Maven repository 
+          <version>1.0.4</version> //The latest version can be found in the Maven repository 
         </dependency>
 
 ```

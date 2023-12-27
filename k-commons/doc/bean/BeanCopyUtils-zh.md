@@ -2,42 +2,29 @@
 
 ### 介绍
 
+![beanutil](./beanutil.png)
+
 一个基于spring BeanUtils的扩展工具
 
-### 软件架构
+### 设计说明
 
 一个基于spring BeanUtils的扩展工具
 
 ### 安装教程
 
-#### 1、编译并发布到本地仓库
+#### 可选其他依赖（gradle.org）
 
 ```
-        gradle clean build publishToMavenLocal-x test
-```
-
-#### 2、gradle (gradle.org)
-
-```
-
-        implementation 'io.github.kylin-hunter:k-commons:x.x.x'
-        //最新版本号可以去中央仓库查找
-
         implementation 'org.yaml:snakeyaml:1.29' // 如果需要支持yaml 才需要引用
 
         implementation 'org.dom4j:dom4j:2.1.3' // 如果需要支持xml 才需要引用
 
 ```
 
-#### 3、maven (maven.apache.org)
+#### 可选依赖 (maven.apache.org)
 
 ```
-
-        <dependency>
-          <groupId>io.github.kylin-hunter</groupId>
-          <artifactId>k-commons</artifactId>
-          <version>x.x.x</version>//最新版本号可以去中央仓库查找
-        </dependency>
+       
         <dependency>  <!-- 可选支持snake->
           <groupId>org.yaml</groupId>
           <artifactId>snakeyaml</artifactId>

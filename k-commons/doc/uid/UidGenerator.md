@@ -4,38 +4,12 @@
 
 A Unique ID Generator Based on Snowflake Algorithm
 
-### Software Architecture
+### design specification
+
+![uid](./uid.png)
 
 Based on Snowflake Algorithm
 
-### Installation
-
-####1、build and publish to local
-
-```
-        gradle clean build publishToMavenLocal -x test
-```
-
-#### 2、gradle (gradle.org)
-
-```
-
-    implementation'io.github.kylin-hunter:k-commons:1.0.9'
-    //The latest version can be found in the Maven repository 
-
-```
-
-#### 3、maven (maven.apache.org)
-
-```
-
-        <dependency>
-          <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>io.github.kylin-hunter:k-commons</artifactId>
-          <version>x.x.x</version>  //The latest version can be found in the Maven repository 
-        </dependency>
-
-```
 
 ### Instructions
 

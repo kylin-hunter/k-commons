@@ -4,38 +4,12 @@
 
 一个基于雪花算法的唯一ID生成器
 
-### 软件架构
+### 设计说明
+
+![uid](./uid.png)
 
 基于雪花算法
 
-### 安装教程
-
-#### 1、编译并发布到本地仓库
-
-```
-        gradle clean build publishToMavenLocal -x test
-```
-
-#### 2、gradle (gradle.org)
-
-```
-
-    implementation'io.github.kylin-hunter:k-commons:x.x.x'
-    //最新版本号可以去中央仓库查找
-
-```
-
-#### 3、maven (maven.apache.org)
-
-```
-
-        <dependency>
-          <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>io.github.kylin-hunter:k-commons</artifactId>
-          <version>x.x.x</version> //最新版本号可以去中央仓库查找
-        </dependency>
-
-```
 
 ### 使用说明
 

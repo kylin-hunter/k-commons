@@ -4,38 +4,12 @@
 
 一个基于位运算的状态管理工具
 
-### 软件架构
+### 设计说明
+
+![bitset](./bitset.png)
 
 利用位运算，以及java的枚举类型，管理状态
 
-### 安装教程
-
-#### 1、编译并发布到本地仓库
-
-```
-        gradle clean build publishToMavenLocal-x test
-```
-
-#### 2、gradle (gradle.org)
-
-```
-
-        implementation 'io.github.kylin-hunter:k-commons:x.x.x'
-        //最新版本号可以去中央仓库查找
-
-```
-
-#### 3、maven (maven.apache.org)
-
-```
-
-        <dependency>
-          <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>k-commons</artifactId>
-          <version>x.x.x</version>//最新版本号可以去中央仓库查找
-        </dependency>
-
-```
 
 ### 使用说明
 
