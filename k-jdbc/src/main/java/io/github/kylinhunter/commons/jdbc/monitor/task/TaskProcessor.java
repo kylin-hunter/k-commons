@@ -21,7 +21,7 @@ public interface TaskProcessor {
 
   void start();
 
-  void setExecCallback(ExecCallback execCallback);
+  void setRowListener(RowListener rowListener);
 
   void shutdown();
 }

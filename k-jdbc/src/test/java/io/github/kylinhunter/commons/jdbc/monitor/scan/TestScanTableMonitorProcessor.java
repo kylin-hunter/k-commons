@@ -4,7 +4,7 @@ import io.github.kylinhunter.commons.jdbc.TestHelper;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.task.AbstractTaskProcessor;
-import io.github.kylinhunter.commons.jdbc.monitor.task.TestCallback;
+import io.github.kylinhunter.commons.jdbc.monitor.task.TestRowListener;
 import javax.sql.DataSource;
 
 public class TestScanTableMonitorProcessor {
@@ -15,8 +15,8 @@ public class TestScanTableMonitorProcessor {
     TableScanConfig tablescanConfig = TestScanTableMonitor.getTablescanConfig();
 
     AbstractTaskProcessor processor = new ScanTaskProcessor(dataSource, tablescanConfig);
-    TestCallback testCallback = new TestCallback();
-    processor.setExecCallback(testCallback);
+    TestRowListener rowNotifier = new TestRowListener();
+    processor.setRowListener(rowNotifier);
     processor.reset();
     processor.start();
   }

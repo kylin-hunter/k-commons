@@ -21,7 +21,7 @@ class AbstractTaskProcessorTest {
     ReflectUtils.setField(t, "config", new Config());
     List<Table> tables = ListUtils.newArrayList(new ScanTable());
     ReflectUtils.setField(t, "tables", tables);
-    t.setExecCallback(new TestCallback());
+    t.setRowListener(new TestRowListener());
     t.reset();
     t.start();
     t.shutdown();
@@ -29,6 +29,7 @@ class AbstractTaskProcessorTest {
 
 
   static class TestProcessor extends AbstractTaskProcessor {
+
 
   }
 }

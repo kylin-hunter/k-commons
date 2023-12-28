@@ -7,7 +7,7 @@ import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
-import io.github.kylinhunter.commons.jdbc.monitor.task.TestCallback;
+import io.github.kylinhunter.commons.jdbc.monitor.task.TestRowListener;
 import javax.sql.DataSource;
 
 class TestBinLogTableMonitor {
@@ -23,8 +23,8 @@ class TestBinLogTableMonitor {
     TableMonitor tableMonitor = new BinTableMonitor(binConfig, monitorConfig);
     tableMonitor.reset();
 
-    TestCallback testCallback = new TestCallback();
-    tableMonitor.setExecCallback(testCallback);
+    TestRowListener testRowListener = new TestRowListener();
+    tableMonitor.setRowListener(testRowListener);
     tableMonitor.start();
   }
 

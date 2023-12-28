@@ -16,6 +16,7 @@
 package io.github.kylinhunter.commons.jdbc.exception;
 
 import io.github.kylinhunter.commons.exception.embed.biz.BizException;
+import io.github.kylinhunter.commons.exception.info.ErrInfo;
 
 /**
  * @author BiJi'an
@@ -34,5 +35,14 @@ public class JdbcException extends BizException {
 
   public JdbcException(String message) {
     super(JdbcErrInfos.JDBC, message);
+  }
+
+  public JdbcException(ErrInfo errInfo, String message,
+      Throwable cause) {
+    super(errInfo, message, cause);
+  }
+
+  public JdbcException(ErrInfo errInfo, String message) {
+    super(errInfo, message);
   }
 }

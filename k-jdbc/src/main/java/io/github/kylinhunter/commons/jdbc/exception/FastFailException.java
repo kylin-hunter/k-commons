@@ -13,12 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.task;
+package io.github.kylinhunter.commons.jdbc.exception;
 
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
+/**
+ * @author BiJi'an
+ * @description JdbcException
+ * @date 2023-01-17 23:47
+ */
+public class FastFailException extends JdbcException {
 
-public interface ExecCallback {
+  public FastFailException(Throwable cause) {
+    super(JdbcErrInfos.FAST_FAIL, "JDBC ERROR", cause);
+  }
 
-  void callback(TableTaskManager taskManager, String destination, TableMonitorTask task);
+  public FastFailException(String message, Throwable cause) {
+    super(JdbcErrInfos.JDBC, message, cause);
+  }
+
+  public FastFailException(String message) {
+    super(JdbcErrInfos.FAST_FAIL, message);
+  }
 }

@@ -13,23 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant;
+package io.github.kylinhunter.commons.jdbc.monitor.task;
 
-import io.github.kylinhunter.commons.lang.EnumUtils.EnumCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
+import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
 
-/**
- * @author BiJi'an
- * @description
- * @date 2023/1/18
- */
-@RequiredArgsConstructor
-public enum RowOP implements EnumCode {
-  INSERT(1),
-  UPDATE(2),
-  DELETE(3);
+public interface RowListener {
 
-  @Getter
-  private final int code;
+  void onEvent(TableTaskManager taskManager, String destination, TableMonitorTask task);
 }

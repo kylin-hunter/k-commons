@@ -22,7 +22,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.listener.TableMonitorListener;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
-import io.github.kylinhunter.commons.jdbc.monitor.task.ExecCallback;
+import io.github.kylinhunter.commons.jdbc.monitor.task.RowListener;
 import io.github.kylinhunter.commons.jdbc.monitor.task.TaskProcessor;
 import javax.sql.DataSource;
 
@@ -52,15 +52,15 @@ public class BinTableMonitor implements TableMonitor {
   }
 
   /**
-   * @param execCallback execCallback
-   * @title setExecCallback
-   * @description setExecCallback
+   * @param rowListener rowListener
+   * @title setRowListener
+   * @description setRowListener
    * @author BiJi'an
    * @date 2023-12-25 23:15
    */
-  public void setExecCallback(ExecCallback execCallback) {
+  public void setRowListener(RowListener rowListener) {
 
-    taskProcessor.setExecCallback(execCallback);
+    taskProcessor.setRowListener(rowListener);
   }
 
   @Override

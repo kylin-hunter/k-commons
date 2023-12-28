@@ -43,7 +43,8 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
   protected TableTaskManager taskManager;
   protected Config config;
 
-  @Setter protected ExecCallback execCallback;
+  @Setter
+  protected RowListener rowListener;
 
   /**
    * @title reset
@@ -104,7 +105,7 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
           log.info("wait data size=>{}", waitDatas.size());
           for (TableMonitorTask waitData : waitDatas) {
             log.info("process data {}/{}", waitData.getTableName(), waitData.getDataId());
-            this.execCallback.callback(this.taskManager, destination, waitData);
+            this.rowListener.onEvent(this.taskManager, destination, waitData);
           }
         }
       }

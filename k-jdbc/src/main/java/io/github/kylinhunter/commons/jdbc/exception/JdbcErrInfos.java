@@ -29,4 +29,6 @@ public class JdbcErrInfos {
   static int BASE_CODE = 3000;
 
   public static final ErrInfo JDBC = new ErrInfo(++BASE_CODE);
+  public static final ErrInfo FAST_FAIL = new ErrInfo(++BASE_CODE);
+
 }

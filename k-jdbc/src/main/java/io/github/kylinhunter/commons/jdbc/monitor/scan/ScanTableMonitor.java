@@ -25,7 +25,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgres
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
-import io.github.kylinhunter.commons.jdbc.monitor.task.ExecCallback;
+import io.github.kylinhunter.commons.jdbc.monitor.task.RowListener;
 import io.github.kylinhunter.commons.jdbc.monitor.task.TaskProcessor;
 import io.github.kylinhunter.commons.util.ThreadHelper;
 import java.util.List;
@@ -63,15 +63,15 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
   }
 
   /**
-   * @param execCallback execCallback
-   * @title setExecCallback
-   * @description setExecCallback
+   * @param rowListener rowListener
+   * @title setRowListener
+   * @description setRowListener
    * @author BiJi'an
    * @date 2023-12-25 23:15
    */
-  public void setExecCallback(ExecCallback execCallback) {
+  public void setRowListener(RowListener rowListener) {
 
-    taskProcessor.setExecCallback(execCallback);
+    taskProcessor.setRowListener(rowListener);
   }
 
   @Override

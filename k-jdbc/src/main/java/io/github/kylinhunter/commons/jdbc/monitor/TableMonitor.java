@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor;
 
-import io.github.kylinhunter.commons.jdbc.monitor.task.ExecCallback;
+import io.github.kylinhunter.commons.jdbc.monitor.task.RowListener;
 
 public interface TableMonitor {
 
@@ -36,13 +36,13 @@ public interface TableMonitor {
   void start();
 
   /**
-   * @param execCallback execCallback
-   * @title setExecCallback
-   * @description setExecCallback
+   * @param rowListener rowListener
+   * @title setRowListener
+   * @description setRowListener
    * @author BiJi'an
    * @date 2023-12-25 23:44
    */
-  void setExecCallback(ExecCallback execCallback);
+  void setRowListener(RowListener rowListener);
 
   /**
    * @title shutdown

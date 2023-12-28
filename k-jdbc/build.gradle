@@ -3,8 +3,8 @@ dependencies {
     api("com.zaxxer:HikariCP")
     api("commons-dbutils:commons-dbutils")
 
-    implementation("ch.qos.logback:logback-classic")
-    implementation("org.codehaus.janino:janino")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.codehaus.janino:janino")
 
 
     implementation("mysql:mysql-connector-java")

@@ -148,7 +148,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
-import io.github.kylinhunter.commons.jdbc.monitor.task.ExecCallback;
+import io.github.kylinhunter.commons.jdbc.monitor.task.RowListener;
 import lombok.extern.slf4j.Slf4j;
 
 class TestBinLogTableMonitor {
@@ -190,10 +190,10 @@ class TestBinLogTableMonitor {
   public static BinMonitorConfig getBinMonitorConfig() {
     BinMonitorConfig monitorConfig = new BinMonitorConfig();
 
-    BinTable binTable = new BinTable();
-    binTable.setPkColName("id");
-    binTable.setDatabase("kp");
-    binTable.setTableName("k_junit_jdbc_role1");
+    BinTable binTable = new BinTable(); 
+    binTable.setPkColName("id"); // primary key 's column name
+    binTable.setDatabase("kp"); // database 
+    binTable.setTableName("k_junit_jdbc_role1"); // the be monitored table
     binTable.setDestination("k_junit_table_monitor_binlog");
 
     monitorConfig.add(binTable);
@@ -211,33 +211,71 @@ class TestBinLogTableMonitor {
    */
 
   @Slf4j
-  public static class TestCallback implements ExecCallback {
+  public static class TestRowListener implements ExecCallback {
     /**
-     * Callback function, set task status based on task status
-     *
-     * @param taskManager task manager for callback
-     * @param destination  the destination for record  monitoring table  e.g.k_junit_table_monitor_binlog
-     * @param task       the monitoring table detail
+     * @param database  database
+     * @param tableName tableName
+     * @param dataId    dataId
+     * @title insert
+     * @description insert
+     * @author BiJi'an
+     * @date 2023-12-28 17:08
      */
     @Override
-    public void callback(TableTaskManager taskManager, String destination,
-        TableMonitorTask task) {
-      if ("1".equals(task.getDataId())) { // k_junit_table_monitor_binlog dataId=1 set status=2
-        taskManager.setSuccess(destination, task);
-        log.info("{}/{} set setSuccess", task.getTableName(), task.getDataId());
-
-
-      } else if ("2".equals(task.getDataId())) {  // dataId=2 set status=4
-        taskManager.setError(destination, task);
-        log.info("{}/{} set setError", task.getTableName(), task.getDataId());
-
-
-      } else {  // other dataId set status=3
-        taskManager.setRetry(destination, task);
-        log.info("{}/{} set setRetry", task.getTableName(), task.getDataId());
+    public void insert(String database, String tableName, String dataId) {
+      log.info("inser to database:{},tableName:{},dataId:{}", database, tableName, dataId);
+      // 模拟业务处理
+      if (dataId.equals("1")) {
+        log.info("mock data1  insert event ,success 。。。。。。");
+      } else if (dataId.equals("2")) {
+        throw new FastFailException("mock fast fail 。。。。。。");
+      } else {
+        throw new RuntimeException("mock other fail  , retry 3 times....");
       }
+    }
 
+    /**
+     * @param database  database
+     * @param tableName tableName
+     * @param dataId    dataId
+     * @title update
+     * @description update
+     * @author BiJi'an
+     * @date 2023-12-28 17:08
+     */
+    @Override
+    public void update(String database, String tableName, String dataId) {
+      log.info("update to database:{},tableName:{},dataId:{}", database, tableName, dataId);
+      // 模拟业务处理
+      if (dataId.equals("1")) {
+        log.info("mock data1  insert event ,success 。。。。。。");
+      } else if (dataId.equals("2")) {
+        throw new FastFailException("mock fast fail 。。。。。。");
+      } else {
+        throw new RuntimeException("mock other fail  , retry 3 times....");
+      }
+    }
 
+    /**
+     * @param database  database
+     * @param tableName tableName
+     * @param dataId    dataId
+     * @title delete
+     * @description delete
+     * @author BiJi'an
+     * @date 2023-12-28 17:08
+     */
+    @Override
+    public void delete(String database, String tableName, String dataId) {
+      log.info("delete to database:{},tableName:{},dataId:{}", database, tableName, dataId);
+      // 模拟业务处理
+      if (dataId.equals("1")) {
+        log.info("mock data1  delete event ,success 。。。。。。");
+      } else if (dataId.equals("2")) {
+        throw new FastFailException("mock fast fail 。。。。。。");
+      } else {
+        throw new RuntimeException("mock other fail  , retry 3 times....");
+      }
     }
   }
 
@@ -249,7 +287,7 @@ class TestBinLogTableMonitor {
   public static void main(String[] args) {
     TableMonitor tableMonitor = new BinTableMonitor(getBinLogConfig(), getBinMonitorConfig());
     //tableMonitor.reset(); // Reset the temporary save point. If you need to reread the binlog,you need to call this method
-    tableMonitor.setExecCallback(new TestCallback()); // set callback
+    tableMonitor.setRowListener(new TestRowListener()); // set callback
     tableMonitor.start(); // start
   }
 }

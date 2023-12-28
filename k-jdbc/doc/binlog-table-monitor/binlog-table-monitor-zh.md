@@ -127,18 +127,18 @@ import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
+import io.github.kylinhunter.commons.jdbc.exception.FastFailException;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.BinTableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
-import io.github.kylinhunter.commons.jdbc.monitor.task.ExecCallback;
+import io.github.kylinhunter.commons.jdbc.monitor.task.AbstractRowListener;
 import lombok.extern.slf4j.Slf4j;
 
 class TestBinLogTableMonitor {
+
   /**
-   * 获取RedisSavePointManager实例, 用于存储binlog的记录的暂存点
+   * 获取RedisSavePointManager实例，用于保存binlog 读取 的 进度点
    *
    * @return RedisSavePointManager实例
    */
@@ -150,8 +150,9 @@ class TestBinLogTableMonitor {
     RedisExecutor redisExecutor = new RedisExecutor(redisConfig);
     return new RedisSavePointManager(redisExecutor);
   }
+
   /**
-   * 获取BinConfig对象, 用于读取binlog
+   * 获取BinConfig对象，用于指定读取那个mysql的哪个binlog文件名
    *
    * @return BinConfig 返回一个BinConfig对象
    */
@@ -162,25 +163,25 @@ class TestBinLogTableMonitor {
     binConfig.setUrl("jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai");
     binConfig.setUsername("root");
     binConfig.setPassword("root");
-    binConfig.setSavePointManager(getRedisSavePointManager());
+    binConfig.setSavePointManager(getRedisSavePointManager()); // 指定保存binlog读取进度点
 
     return binConfig;
   }
 
+
   /**
-   * 获取BinMonitorConfig实例, 用于指定需要监控的表
+   * 获取BinMonitorConfig实例
    *
    * @return BinMonitorConfig实例
    */
   public static BinMonitorConfig getBinMonitorConfig() {
     BinMonitorConfig monitorConfig = new BinMonitorConfig();
 
-    BinTable binTable = new BinTable();
-    binTable.setPkColName("id");
-    binTable.setDatabase("kp");
-    binTable.setTableName("k_junit_jdbc_role1");
-    binTable.setDestination("k_junit_table_monitor_binlog");
-
+    BinTable binTable = new BinTable(); // 指定监控的表
+    binTable.setPkColName("id"); // 指定主键列名
+    binTable.setDatabase("kp"); // 指定数据库名
+    binTable.setTableName("k_junit_jdbc_role1"); // 指定表名
+    binTable.setDestination("k_junit_table_monitor_binlog"); // 指定监控信息保存在哪里，表结构在上面定义的
     monitorConfig.add(binTable);
     // monitorConfig.add(binTable2); 支持多个表
     return monitorConfig;
@@ -188,42 +189,76 @@ class TestBinLogTableMonitor {
 
 
 
-
-
-
-  /**
-   * 监控表的回调逻辑
-   *
+  /***
+   * @title 测试行变化的回调函数
    */
-
   @Slf4j
-  public static class TestCallback implements ExecCallback {
+  public static class TestRowListener extends AbstractRowListener {
+
     /**
-     * 回调函数，根据任务状态设置任务状态。
-     *
-     * @param taskManager 任务管理器
-     * @param destination 目标
-     * @param task        表格监控任务
+     * @param database  database
+     * @param tableName tableName
+     * @param dataId    dataId
+     * @title insert
+     * @description insert
+     * @author BiJi'an
+     * @date 2023-12-28 17:08
      */
     @Override
-    public void callback(TableTaskManager taskManager, String destination,
-        TableMonitorTask task) {
-      if ("1".equals(task.getDataId())) { // 主键ID是1的记录，设置成成功 具体指k_junit_table_monitor_binlog表中dataId=1的记录,status=2;
-        taskManager.setSuccess(destination, task);
-        log.info("{}/{} set setSuccess", task.getTableName(), task.getDataId());
-
-
-      } else if ("2".equals(task.getDataId())) {  // 主键ID是2的记录，设置成错误,status字段设置为4
-        taskManager.setError(destination, task);
-        log.info("{}/{} set setError", task.getTableName(), task.getDataId());
-
-
-      } else {  // 其余记录，设置成重试，重试3次，如果还是失败，则设置成错误，,status字段设置为3
-        taskManager.setRetry(destination, task);
-        log.info("{}/{} set setRetry", task.getTableName(), task.getDataId());
+    public void insert(String database, String tableName, String dataId) {
+      log.info("inser to database:{},tableName:{},dataId:{}", database, tableName, dataId);
+      // 模拟业务处理
+      if (dataId.equals("1")) {
+        log.info("模拟处理  数据1  insert 事件处理 成功 。。。。。。");
+      } else if (dataId.equals("2")) {
+        throw new FastFailException("模拟处理 数据2  的 insert 事件处理 快速失败 ，不再处理 。。。。。。");
+      } else {
+        throw new RuntimeException("模拟处理其他数据的 insert 事件，发生失败 ,默认会重试3次....");
       }
+    }
 
+    /**
+     * @param database  database
+     * @param tableName tableName
+     * @param dataId    dataId
+     * @title update
+     * @description update
+     * @author BiJi'an
+     * @date 2023-12-28 17:08
+     */
+    @Override
+    public void update(String database, String tableName, String dataId) {
+      log.info("update to database:{},tableName:{},dataId:{}", database, tableName, dataId);
+      // 模拟业务处理
+      if (dataId.equals("1")) {
+        log.info("模拟处理  数据1  insert 事件处理 成功 。。。。。。");
+      } else if (dataId.equals("2")) {
+        throw new FastFailException("模拟处理 数据2  的 update 事件处理 快速失败 ，不再处理 。。。。。。");
+      } else {
+        throw new RuntimeException("模拟处理其他数据的 update 事件，发生失败 ,默认会重试3次....");
+      }
+    }
 
+    /**
+     * @param database  database
+     * @param tableName tableName
+     * @param dataId    dataId
+     * @title delete
+     * @description delete
+     * @author BiJi'an
+     * @date 2023-12-28 17:08
+     */
+    @Override
+    public void delete(String database, String tableName, String dataId) {
+      log.info("delete to database:{},tableName:{},dataId:{}", database, tableName, dataId);
+      // 模拟业务处理
+      if (dataId.equals("1")) {
+        log.info("模拟处理  数据1  insert 事件处理 成功 。。。。。。");
+      } else if (dataId.equals("2")) {
+        throw new FastFailException("模拟处理 数据2  的 update 事件处理 快速失败 ，不再处理 。。。。。。");
+      } else {
+        throw new RuntimeException("模拟处理其他数据的 delete 事件，发生失败 ,默认会重试3次....");
+      }
     }
   }
 
@@ -235,8 +270,8 @@ class TestBinLogTableMonitor {
   public static void main(String[] args) {
     TableMonitor tableMonitor = new BinTableMonitor(getBinLogConfig(), getBinMonitorConfig());
     //tableMonitor.reset(); // 重置暂存点，如果需要重新读取binlog，需要调用该方法
-    tableMonitor.setExecCallback(new TestCallback()); // 设置回调函数
-    tableMonitor.start();
+    tableMonitor.setRowListener(new TestRowListener()); // 设置回调函数
+    tableMonitor.start(); // 启动监控
   }
 }
 
