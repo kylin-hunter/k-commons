@@ -37,13 +37,14 @@ public class TestBinLogClient {
 
 
   public static RedisSavePointManager getRedisSavePointManager1() {
-    RedisExecutor redisExecutor = TestHelper.getRedisExecutor();
+//    RedisExecutor redisExecutor = TestHelper.getJsonSingleRedisExecutor();
+    RedisExecutor redisExecutor = TestHelper.getJsonClusterRedisExecutor();
     return new RedisSavePointManager(redisExecutor);
   }
 
 
   public static SavePointManager getRedisSavePointManager2() {
-    RedisExecutor redisExecutor = TestHelper.getJDKRedisExecutor();
+    RedisExecutor redisExecutor = TestHelper.getJDKSingleRedisExecutor();
     return new RedisSavePointManager(redisExecutor);
 
   }

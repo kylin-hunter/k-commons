@@ -18,14 +18,14 @@ public class TestRedisSavePointManager {
   }
 
   static void test1() {
-    RedisExecutor redisExecutor = TestHelper.getRedisExecutor();
+    RedisExecutor redisExecutor = TestHelper.getJsonSingleRedisExecutor();
     RedisSavePointManager savePointManager = new RedisSavePointManager(redisExecutor);
     savePointManager.setRecentBinLogKey("binlog_process_json");
     test(savePointManager);
   }
 
   static void test2() {
-    RedisExecutor redisExecutor = TestHelper.getRedisExecutor();
+    RedisExecutor redisExecutor = TestHelper.getJsonSingleRedisExecutor();
     RedisSavePointManager savePointManager = new RedisSavePointManager(redisExecutor);
     savePointManager.setRecentBinLogKey("binlog_process_jdk");
     test(savePointManager);

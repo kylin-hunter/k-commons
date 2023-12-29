@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.jdbc;
 
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.ClusterRedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.ClusterRedisExecutor;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisConfig;
@@ -85,14 +86,24 @@ public class TestHelper {
     return clusterRedisConfig;
   }
 
-  public static RedisExecutor getRedisExecutor() {
+  public static RedisExecutor getJsonSingleRedisExecutor() {
     return new SingleRedisExecutor(getSingleRedisConfig());
   }
 
-  public static RedisExecutor getJDKRedisExecutor() {
+  public static RedisExecutor getJDKSingleRedisExecutor() {
     SingleRedisConfig singleRedisConfig = getSingleRedisConfig();
     singleRedisConfig.setRedisCodec(new JdkRedisCodec());
     return new SingleRedisExecutor(singleRedisConfig);
+  }
+
+  public static RedisExecutor getJsonClusterRedisExecutor() {
+    return new ClusterRedisExecutor(getClusterRedisConfig());
+  }
+
+  public static RedisExecutor getJDKClusterRedisExecutor() {
+    ClusterRedisConfig clusterRedisConfig = getClusterRedisConfig();
+    clusterRedisConfig.setRedisCodec(new JdkRedisCodec());
+    return new ClusterRedisExecutor(clusterRedisConfig);
   }
 
   public static DataSource mockDataSource() throws SQLException {
