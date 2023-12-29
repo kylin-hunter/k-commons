@@ -73,7 +73,7 @@ public abstract class AbstractRowListener implements RowListener {
    * @title insert
    * @description insert
    * @author BiJi'an
-   * @date 2023-12-28 17:00
+   * @date 2023-12-30 17:00
    */
   protected void insert(TableTaskManager taskManager, String destination, TableMonitorTask task) {
     try {
@@ -102,7 +102,7 @@ public abstract class AbstractRowListener implements RowListener {
    * @title update
    * @description update
    * @author BiJi'an
-   * @date 2023-12-28 17:00
+   * @date 2023-12-30 17:00
    */
   protected void update(TableTaskManager taskManager, String destination, TableMonitorTask task) {
     try {
@@ -132,7 +132,7 @@ public abstract class AbstractRowListener implements RowListener {
    * @title delete
    * @description delete
    * @author BiJi'an
-   * @date 2023-12-28 17:00
+   * @date 2023-12-30 17:00
    */
   protected void delete(TableTaskManager taskManager, String destination, TableMonitorTask task) {
     try {

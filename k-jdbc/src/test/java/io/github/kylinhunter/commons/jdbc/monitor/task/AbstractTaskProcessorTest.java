@@ -7,6 +7,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -14,17 +15,18 @@ class AbstractTaskProcessorTest {
 
   @Test
   void test() {
-    TestProcessor t = new TestProcessor();
+    TestProcessor processor = new TestProcessor();
 
     TableTaskManager taskManager = Mockito.mock(TableTaskManager.class);
-    ReflectUtils.setField(t, "taskManager", taskManager);
-    ReflectUtils.setField(t, "config", new Config());
+    ReflectUtils.setField(processor, "taskManager", taskManager);
+    ReflectUtils.setField(processor, "config", new Config());
     List<Table> tables = ListUtils.newArrayList(new ScanTable());
-    ReflectUtils.setField(t, "tables", tables);
-    t.setRowListener(new TestRowListener());
-    t.reset();
-    t.start();
-    t.shutdown();
+    ReflectUtils.setField(processor, "tables", tables);
+    processor.setRowListener(new TestRowListener());
+    processor.reset();
+    processor.setScheduler(Mockito.mock(ScheduledExecutorService.class));
+    processor.start();
+    processor.shutdown();
   }
 
 

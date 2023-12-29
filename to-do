@@ -1,0 +1,4 @@
+1、k-code-generator 等项目，出现警告日志
+2、k-jdbc 支持redis集群
+3、jdbc  扫描 线程池多个合并
+4、重试次数动态控制

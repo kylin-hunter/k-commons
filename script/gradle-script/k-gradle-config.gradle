@@ -3,7 +3,7 @@ ext {
     KYLIN_VERIONS = [
             "k-commons"              : '1.0.14',
             "k-utils"                : '1.0.2',
-            "k-jdbc"                 : '1.0.4',
+            "k-jdbc"                 : '1.0.5',
             "k-clazz"                : '1.0.2',
             "k-agent-invoke-analysis": '1.0.2',
             "k-code-generator"       : '1.0.4'

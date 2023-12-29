@@ -7,7 +7,6 @@ import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.ScanProgressDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
-import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
 import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.sql.SQLException;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +29,6 @@ class ScanProgressManagerTest {
     ScanProgress scanProgress = new ScanProgress("db", "", null, "99");
     Mockito.when(scanProgressDAO.findById(any(), any())).thenReturn(scanProgress);
     ScanTable scanTable = new ScanTable();
-    scanTable.setConfig(new TableScanConfig());
     ScanProgress latestScanProgress = manager.getLatestScanProgress(scanTable);
     Assertions.assertEquals("99", latestScanProgress.getLastScanId());
     Assertions.assertEquals("db", latestScanProgress.getDb());

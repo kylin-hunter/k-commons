@@ -15,13 +15,49 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.task;
 
+import java.util.concurrent.ScheduledExecutorService;
+
 public interface TaskProcessor {
 
+  /**
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-12-29 22:20
+   */
   void reset();
 
+  /**
+   * @title start
+   * @description start
+   * @author BiJi'an
+   * @date 2023-12-29 22:20
+   */
   void start();
 
+  /**
+   * @param scheduler scheduler
+   * @title init
+   * @description init
+   * @author BiJi'an
+   * @date 2023-12-29 22:20
+   */
+  void setScheduler(ScheduledExecutorService scheduler);
+
+  /**
+   * @param rowListener rowListener
+   * @title setRowListener
+   * @description setRowListener
+   * @author BiJi'an
+   * @date 2023-12-29 22:20
+   */
   void setRowListener(RowListener rowListener);
 
+  /**
+   * @title shutdown
+   * @description shutdown
+   * @author BiJi'an
+   * @date 2023-12-29 22:20
+   */
   void shutdown();
 }

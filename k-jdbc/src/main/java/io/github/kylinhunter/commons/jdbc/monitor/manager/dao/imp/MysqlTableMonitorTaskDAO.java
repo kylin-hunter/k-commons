@@ -42,7 +42,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   private static final String DELETE_SQL = "delete from %s  where db=? and table_name=?";
 
   private static final String SQL_UPDATE =
-      "update %s" + " set op=?,status=? where db=? and table_name=? and data_id=?";
+      "update %s" + " set op=?,retry_times=?,status=? where db=? and table_name=? and data_id=?";
 
   private static final String SQL_SELECT =
       "select  db ,table_name as tableName,  data_id as dataId, retry_times as retryTimes,op ,"
@@ -103,7 +103,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination destination
+   * @param destination      destination
    * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
@@ -124,7 +124,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param tableName tableName
+   * @param tableName   tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -151,6 +151,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
         .execute(
             sql,
             tableMonitorTask.getOp(),
+            tableMonitorTask.getRetryTimes(),
             tableMonitorTask.getStatus(),
             tableMonitorTask.getDb(),
             tableMonitorTask.getTableName(),
@@ -158,9 +159,9 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination tableName
+   * @param destination  tableName
    * @param bizTableName bizTableName
-   * @param dataId dataId
+   * @param dataId       dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById
@@ -190,8 +191,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param db db
-   * @param tableName tableName
+   * @param db          db
+   * @param tableName   tableName
    * @title reset
    * @description reset
    * @author BiJi'an
@@ -205,8 +206,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param db db
-   * @param tableName tableName
+   * @param db          db
+   * @param tableName   tableName
    * @title reset
    * @description reset
    * @author BiJi'an
@@ -220,8 +221,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param limit limit
-   * @param time time
+   * @param limit       limit
+   * @param time        time
    * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
    * @title findWaitDatas
    * @description findWaitDatas
@@ -235,10 +236,10 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination destination
-   * @param db db
-   * @param tableName tableName
-   * @param dataId dataId
+   * @param destination  destination
+   * @param db           db
+   * @param tableName    tableName
+   * @param dataId       dataId
    * @param newRowStatus newStatus
    * @param oldRowStatus oldStatus
    * @title updateStatusByStatus
@@ -261,7 +262,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param startDate startDate
+   * @param startDate   startDate
    * @return int
    * @title batchRetry
    * @description batchRetry
@@ -276,8 +277,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param maxRetry maxRetry
-   * @param startDate startDate
+   * @param maxRetry    maxRetry
+   * @param startDate   startDate
    * @return int
    * @title batchError
    * @description batchError

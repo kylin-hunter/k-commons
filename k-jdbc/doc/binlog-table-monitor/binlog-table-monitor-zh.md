@@ -202,7 +202,7 @@ class TestBinLogTableMonitor {
      * @title insert
      * @description insert
      * @author BiJi'an
-     * @date 2023-12-28 17:08
+     * @date 2023-12-30 17:08
      */
     @Override
     public void insert(String database, String tableName, String dataId) {
@@ -224,7 +224,7 @@ class TestBinLogTableMonitor {
      * @title update
      * @description update
      * @author BiJi'an
-     * @date 2023-12-28 17:08
+     * @date 2023-12-30 17:08
      */
     @Override
     public void update(String database, String tableName, String dataId) {
@@ -246,7 +246,7 @@ class TestBinLogTableMonitor {
      * @title delete
      * @description delete
      * @author BiJi'an
-     * @date 2023-12-28 17:08
+     * @date 2023-12-30 17:08
      */
     @Override
     public void delete(String database, String tableName, String dataId) {

@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 
 /**
  * @author BiJi'an
@@ -32,7 +31,6 @@ import lombok.Setter;
 @Data
 public class ScanTable extends Table {
 
-  @Setter private TableScanConfig config;
 
   private String tableTimeName;
 

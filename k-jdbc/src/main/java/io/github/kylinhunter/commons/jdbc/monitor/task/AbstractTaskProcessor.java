@@ -23,7 +23,6 @@ import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonito
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import lombok.Setter;
@@ -59,6 +58,19 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
   }
 
   /**
+   * @param scheduler scheduler
+   * @title init
+   * @description init
+   * @author BiJi'an
+   * @date 2023-12-29 22:21
+   */
+
+  @Override
+  public void setScheduler(ScheduledExecutorService scheduler) {
+    this.scheduler = scheduler;
+  }
+
+  /**
    * @title start
    * @description start
    * @author BiJi'an
@@ -66,7 +78,6 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
    */
   @Override
   public void start() {
-    this.scheduler = Executors.newScheduledThreadPool(this.config.getThreadPoolSize());
 
     this.scheduler.scheduleWithFixedDelay(
         this::execJob, 0, this.config.getExecInterval(), TimeUnit.MILLISECONDS);

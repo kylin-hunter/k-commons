@@ -16,7 +16,7 @@
 
 ```
 
-        implementation 'io.github.kylin-hunter:k-jdbc:1.0.3'
+        implementation 'io.github.kylin-hunter:k-jdbc:1.0.5'
         //最新版本号可以去中央仓库查找
 
 ```
@@ -27,7 +27,7 @@
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-jdbc</artifactId>
-          <version>1.0.3</version>//最新版本号可以去中央仓库查找
+          <version>1.0.5</version>//最新版本号可以去中央仓库查找
         </dependency>
 
 ```

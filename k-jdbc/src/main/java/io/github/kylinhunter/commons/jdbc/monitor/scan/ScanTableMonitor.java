@@ -20,7 +20,6 @@ import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanProgressManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.ScanRecordManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowOP;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanProgress;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.ScanRecord;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
@@ -117,14 +116,14 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
     this.tableTaskManager = tableTaskManager;
     this.scanRecordManager = scanRecordManager;
     this.tableScanConfig = tableScanConfig;
-    for (ScanTable scanTable : tableScanConfig.getScanTables()) {
-      scanTable.setConfig(tableScanConfig);
-    }
+
     this.scanProgressManager.ensureTableExists();
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
       this.tableTaskManager.ensureDestinationExists(scanTable.getDestination());
     }
     this.taskProcessor = new ScanTaskProcessor(dataSource, tableScanConfig);
+    this.scheduler = Executors.newScheduledThreadPool(tableScanConfig.getThreadPoolSize());
+    this.taskProcessor.setScheduler(scheduler);
   }
 
   /**
@@ -151,9 +150,6 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
 
   @Override
   public void start() {
-
-    this.scheduler = Executors.newScheduledThreadPool(tableScanConfig.getThreadPoolSize());
-
     for (ScanTable scanTable : tableScanConfig.getScanTables()) {
       scan(scanTable);
     }
@@ -218,7 +214,7 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
       } else {
         scanRecords.forEach(scanRecord -> log.info(" process same time data:" + scanRecord));
         for (ScanRecord scanRecord : scanRecords) {
-          tableTaskManager.save(scanTable, scanRecord.getId(), RowOP.UPDATE);
+          tableTaskManager.save(scanTable, scanRecord.getId());
         }
 
         ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
@@ -244,7 +240,7 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
       scanRecords.forEach(scanRecord -> log.info(" process next time data:" + scanRecord));
       ScanRecord lastRecord = scanRecords.get(scanRecords.size() - 1);
       for (ScanRecord scanRecord : scanRecords) {
-        tableTaskManager.save(scanTable, scanRecord.getId(), RowOP.UPDATE);
+        tableTaskManager.save(scanTable, scanRecord.getId());
       }
       this.scanProgressManager.update(
           scanTable.getDatabase(), scanTable.getTableName(), lastRecord);
