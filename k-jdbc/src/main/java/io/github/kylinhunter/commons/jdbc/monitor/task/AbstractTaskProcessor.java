@@ -42,8 +42,7 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
   protected TableTaskManager taskManager;
   protected Config config;
 
-  @Setter
-  protected RowListener rowListener;
+  @Setter protected RowListener rowListener;
 
   /**
    * @title reset
@@ -86,11 +85,6 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
 
     this.scheduler.scheduleWithFixedDelay(
         this::execErrorJob, 0, this.config.getErrorInterval(), TimeUnit.MILLISECONDS);
-  }
-
-  @Override
-  public void shutdown() {
-    this.scheduler.shutdownNow();
   }
 
   /**
@@ -137,14 +131,14 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
       LocalDateTime beforTime = now.minus(this.config.getTryMinTime(), ChronoUnit.MILLIS);
 
       for (Table scanTable : tables) {
-        taskManager.batchRetry(scanTable.getDestination(), RowStatus.RETRYING,
-            config.getMaxRetryTimes(), beforTime);
+        taskManager.batchRetry(
+            scanTable.getDestination(), RowStatus.RETRYING, config.getMaxRetryTimes(), beforTime);
       }
 
       beforTime = now.minus(this.config.getProcessTimeout(), ChronoUnit.MILLIS);
       for (Table scanTable : tables) {
-        taskManager.batchRetry(scanTable.getDestination(), RowStatus.PROCESSING,
-            config.getMaxRetryTimes(), beforTime);
+        taskManager.batchRetry(
+            scanTable.getDestination(), RowStatus.PROCESSING, config.getMaxRetryTimes(), beforTime);
       }
     } catch (Exception e) {
       log.error("exec retring Job error", e);
@@ -161,8 +155,8 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
 
     try {
       for (Table scanTable : tables) {
-        taskManager.batchError(scanTable.getDestination(), config.getMaxRetryTimes(),
-            LocalDateTime.now());
+        taskManager.batchError(
+            scanTable.getDestination(), config.getMaxRetryTimes(), LocalDateTime.now());
       }
     } catch (Exception e) {
       log.error("execErrorJob error", e);

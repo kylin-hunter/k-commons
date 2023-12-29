@@ -15,7 +15,9 @@
  */
 package io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
 import io.lettuce.core.codec.RedisCodec;
+import java.util.Map;
 import lombok.Data;
 
 /**
@@ -24,12 +26,23 @@ import lombok.Data;
  * @date 2023-12-05 20:26
  */
 @Data
-public class RedisConfig {
+public class ClusterRedisConfig {
 
-  private String host;
-  private int port;
+  private Map<String, Integer> nodes = MapUtils.newHashMap();
   private CharSequence password;
   private long timeout;
+
+  /**
+   * @param host host
+   * @param port port
+   * @title add
+   * @description add
+   * @author BiJi'an
+   * @date 2023-12-30 00:43
+   */
+  public void addNode(String host, int port) {
+    this.nodes.put(host, port);
+  }
 
   private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
 }

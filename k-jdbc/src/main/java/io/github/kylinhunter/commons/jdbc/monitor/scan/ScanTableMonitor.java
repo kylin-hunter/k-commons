@@ -76,7 +76,6 @@ public class ScanTableMonitor extends AbstractDatabaseVisitor implements TableMo
   @Override
   public void shutdown() {
     this.scheduler.shutdownNow();
-    this.taskProcessor.shutdown();
   }
 
   private ScanTableMonitor(

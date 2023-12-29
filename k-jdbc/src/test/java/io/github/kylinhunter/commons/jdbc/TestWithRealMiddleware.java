@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.jdbc;
 
-import io.github.kylinhunter.commons.jdbc.binlog.redis.TestRedisExecutor;
+import io.github.kylinhunter.commons.jdbc.binlog.redis.TestSingleRedisExecutor;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.TestMysqlSavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.TestRedisSavePointManager;
 import io.github.kylinhunter.commons.jdbc.dao.TestAbsctractBasicDAO;
@@ -21,7 +21,7 @@ import java.sql.SQLException;
 public class TestWithRealMiddleware {
 
   public static void main(String[] args) throws SQLException {
-    TestRedisExecutor.main(null);
+    TestSingleRedisExecutor.main(null);
     TestTableReader.main(null);
     TestColumnReader.main(null);
     TestRedisSavePointManager.main(null);

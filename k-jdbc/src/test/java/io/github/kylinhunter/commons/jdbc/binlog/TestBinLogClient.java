@@ -8,8 +8,6 @@ import io.github.kylinhunter.commons.jdbc.binlog.listener.TestBinLogEventListene
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.SavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.MysqlSavePointManager;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
 
 public class TestBinLogClient {
@@ -39,16 +37,13 @@ public class TestBinLogClient {
 
 
   public static RedisSavePointManager getRedisSavePointManager1() {
-    RedisConfig redisConfig = TestHelper.getRedisConfig();
-    RedisExecutor redisExecutor = new RedisExecutor(redisConfig);
+    RedisExecutor redisExecutor = TestHelper.getRedisExecutor();
     return new RedisSavePointManager(redisExecutor);
   }
 
 
   public static SavePointManager getRedisSavePointManager2() {
-    RedisConfig redisConfig = TestHelper.getRedisConfig();
-    redisConfig.setRedisCodec(new JdkRedisCodec());
-    RedisExecutor redisExecutor = new RedisExecutor(redisConfig);
+    RedisExecutor redisExecutor = TestHelper.getJDKRedisExecutor();
     return new RedisSavePointManager(redisExecutor);
 
   }

@@ -15,30 +15,21 @@
  */
 package io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis;
 
+import io.lettuce.core.codec.RedisCodec;
+import lombok.Data;
+
 /**
  * @author BiJi'an
  * @description
- * @date 2023-12-10 20:20
+ * @date 2023-12-05 20:26
  */
-public interface RedisExecutor {
+@Data
+public class SingleRedisConfig {
 
-  String set(String key, Object value);
+  private String host;
+  private int port;
+  private CharSequence password;
+  private long timeout;
 
-  /**
-   * @param key key
-   * @return V
-   * @title get
-   * @description get
-   * @author BiJi'an
-   * @date 2023-12-10 20:31
-   */
-  <V> V get(String key);
-
-  /**
-   * @title shutdown
-   * @description shutdown
-   * @author BiJi'an
-   * @date 2023-12-17 10:23
-   */
-  void shutdown();
+  private RedisCodec<String, Object> redisCodec = new JsonRedisCodec();
 }

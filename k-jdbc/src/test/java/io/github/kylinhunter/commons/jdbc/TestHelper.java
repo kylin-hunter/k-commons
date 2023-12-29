@@ -1,8 +1,10 @@
 package io.github.kylinhunter.commons.jdbc;
 
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.ClusterRedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.JdkRedisCodec;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
 import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.MysqlTableReader;
@@ -63,22 +65,34 @@ public class TestHelper {
     }
   }
 
-  public static RedisConfig getRedisConfig() {
-    RedisConfig redisConfig = new RedisConfig();
-    redisConfig.setHost("127.0.0.1");
-    redisConfig.setPort(6379);
-    redisConfig.setPassword("123456");
-    return redisConfig;
+  public static SingleRedisConfig getSingleRedisConfig() {
+    SingleRedisConfig singleRedisConfig = new SingleRedisConfig();
+    singleRedisConfig.setHost("127.0.0.1");
+    singleRedisConfig.setPort(6379);
+    singleRedisConfig.setPassword("123456");
+    return singleRedisConfig;
+  }
+
+  public static ClusterRedisConfig getClusterRedisConfig() {
+    ClusterRedisConfig clusterRedisConfig = new ClusterRedisConfig();
+    clusterRedisConfig.addNode("127.0.0.1", 7361);
+    clusterRedisConfig.addNode("127.0.0.1", 7362);
+    clusterRedisConfig.addNode("127.0.0.1", 7363);
+    clusterRedisConfig.addNode("127.0.0.1", 7364);
+    clusterRedisConfig.addNode("127.0.0.1", 7365);
+    clusterRedisConfig.addNode("127.0.0.1", 7366);
+    clusterRedisConfig.setPassword("123456");
+    return clusterRedisConfig;
   }
 
   public static RedisExecutor getRedisExecutor() {
-    return new RedisExecutor(getRedisConfig());
+    return new SingleRedisExecutor(getSingleRedisConfig());
   }
 
   public static RedisExecutor getJDKRedisExecutor() {
-    RedisConfig redisConfig = getRedisConfig();
-    redisConfig.setRedisCodec(new JdkRedisCodec());
-    return new RedisExecutor(redisConfig);
+    SingleRedisConfig singleRedisConfig = getSingleRedisConfig();
+    singleRedisConfig.setRedisCodec(new JdkRedisCodec());
+    return new SingleRedisExecutor(singleRedisConfig);
   }
 
   public static DataSource mockDataSource() throws SQLException {

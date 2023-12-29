@@ -52,12 +52,4 @@ public interface TaskProcessor {
    * @date 2023-12-29 22:20
    */
   void setRowListener(RowListener rowListener);
-
-  /**
-   * @title shutdown
-   * @description shutdown
-   * @author BiJi'an
-   * @date 2023-12-29 22:20
-   */
-  void shutdown();
 }

@@ -25,6 +25,7 @@ import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.task.RowListener;
 import io.github.kylinhunter.commons.jdbc.monitor.task.TaskProcessor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.sql.DataSource;
 
 /**
@@ -42,6 +43,8 @@ public class BinTableMonitor implements TableMonitor {
 
   private final TableTaskManager taskManager;
 
+  private final ScheduledExecutorService scheduler;
+
   public BinTableMonitor(BinConfig binConfig, BinMonitorConfig monitorConfig) {
     this.binLogClient = new BinLogClient(binConfig);
     this.monitorConfig = monitorConfig;
@@ -50,8 +53,8 @@ public class BinTableMonitor implements TableMonitor {
 
     this.binLogClient.addBinLogEventListener(new TableMonitorListener(monitorConfig, taskManager));
     this.taskProcessor = new BinTaskProcessor(taskManager, monitorConfig);
-    this.taskProcessor.setScheduler(
-        Executors.newScheduledThreadPool(monitorConfig.getThreadPoolSize()));
+    this.scheduler = Executors.newScheduledThreadPool(monitorConfig.getThreadPoolSize());
+    this.taskProcessor.setScheduler(scheduler);
   }
 
   /**
@@ -69,7 +72,7 @@ public class BinTableMonitor implements TableMonitor {
   @Override
   public void shutdown() {
     this.binLogClient.disconnect();
-    this.taskProcessor.shutdown();
+    this.scheduler.shutdown();
   }
 
   /**

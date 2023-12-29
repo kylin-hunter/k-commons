@@ -26,7 +26,6 @@ class AbstractTaskProcessorTest {
     processor.reset();
     processor.setScheduler(Mockito.mock(ScheduledExecutorService.class));
     processor.start();
-    processor.shutdown();
   }
 
 

@@ -140,7 +140,7 @@ package io.github.kylinhunter.jdbc;
 
 import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.BinTableMonitor;
@@ -158,11 +158,11 @@ class TestBinLogTableMonitor {
    * @return RedisSavePointManager instance
    */
   public static RedisSavePointManager getRedisSavePointManager() {
-    RedisConfig redisConfig = new RedisConfig();
-    redisConfig.setHost("127.0.0.1");
-    redisConfig.setPort(6379);
-    redisConfig.setPassword("123456");
-    RedisExecutor redisExecutor = new RedisExecutor(redisConfig);
+    RedisConfig singleRedisConfig = new RedisConfig();
+    singleRedisConfig.setHost("127.0.0.1");
+    singleRedisConfig.setPort(6379);
+    singleRedisConfig.setPassword("123456");
+    RedisExecutor redisExecutor = new RedisExecutor(singleRedisConfig);
     return new RedisSavePointManager(redisExecutor);
   }
   /**
