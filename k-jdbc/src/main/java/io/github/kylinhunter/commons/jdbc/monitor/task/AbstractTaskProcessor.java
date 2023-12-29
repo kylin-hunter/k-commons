@@ -42,7 +42,8 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
   protected TableTaskManager taskManager;
   protected Config config;
 
-  @Setter protected RowListener rowListener;
+  @Setter
+  protected RowListener rowListener;
 
   /**
    * @title reset
@@ -132,18 +133,21 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
   private void execRetringJob() {
 
     try {
+      LocalDateTime now = LocalDateTime.now();
+      LocalDateTime beforTime = now.minus(this.config.getTryMinTime(), ChronoUnit.MILLIS);
+
       for (Table scanTable : tables) {
-        taskManager.batchRetry(
-            scanTable.getDestination(), RowStatus.RETRYING, 3, LocalDateTime.now());
+        taskManager.batchRetry(scanTable.getDestination(), RowStatus.RETRYING,
+            config.getMaxRetryTimes(), beforTime);
       }
 
-      LocalDateTime time =
-          LocalDateTime.now().minus(this.config.getRetryBefore(), ChronoUnit.MILLIS);
+      beforTime = now.minus(this.config.getProcessTimeout(), ChronoUnit.MILLIS);
       for (Table scanTable : tables) {
-        taskManager.batchRetry(scanTable.getDestination(), RowStatus.PROCESSING, 3, time);
+        taskManager.batchRetry(scanTable.getDestination(), RowStatus.PROCESSING,
+            config.getMaxRetryTimes(), beforTime);
       }
     } catch (Exception e) {
-      log.error("execRetringJob error", e);
+      log.error("exec retring Job error", e);
     }
   }
 
@@ -157,7 +161,8 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
 
     try {
       for (Table scanTable : tables) {
-        taskManager.batchError(scanTable.getDestination(), 3, LocalDateTime.now());
+        taskManager.batchError(scanTable.getDestination(), config.getMaxRetryTimes(),
+            LocalDateTime.now());
       }
     } catch (Exception e) {
       log.error("execErrorJob error", e);

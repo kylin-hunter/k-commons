@@ -31,13 +31,17 @@ public class Config {
 
   private int threadPoolSize = 2; // thread pool size  for schedule
 
-  private int execInterval = 3000; // thread pool size  for schedule
+  private int execInterval = 3000; // interval for execute
 
-  private int retryInterval = 5000; // thread pool size  for schedule
+  private int retryInterval = 5000; // re-try interval
 
-  private int errorInterval = 10000; // thread pool size  for schedule
+  private int errorInterval = 10000; // error interval
 
-  private int execBefore = 3000; // thread pool size  for schedule
+  private int execBefore = 3000; // execute before some time
 
-  private int retryBefore = 60 * 1000; // thread pool size  for schedule
+  private int tryMinTime = 5000; // try min time
+
+  private int processTimeout = 60 * 1000; // process timeout
+
+  private int maxRetryTimes = 3; // max retry times
 }
