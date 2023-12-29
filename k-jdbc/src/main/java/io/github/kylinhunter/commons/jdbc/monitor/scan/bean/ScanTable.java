@@ -31,7 +31,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ScanTable extends Table {
 
-
   private String tableTimeName;
 
   private LocalDateTime initScanTime = LocalDateTime.now().minus(10, ChronoUnit.YEARS);

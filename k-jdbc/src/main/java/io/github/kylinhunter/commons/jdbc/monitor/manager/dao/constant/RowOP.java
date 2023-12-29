@@ -30,6 +30,5 @@ public enum RowOP implements EnumCode {
   UPDATE(2),
   DELETE(3);
 
-  @Getter
-  private final int code;
+  @Getter private final int code;
 }

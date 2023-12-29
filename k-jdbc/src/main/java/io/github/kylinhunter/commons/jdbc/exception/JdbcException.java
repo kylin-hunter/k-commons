@@ -37,8 +37,7 @@ public class JdbcException extends BizException {
     super(JdbcErrInfos.JDBC, message);
   }
 
-  public JdbcException(ErrInfo errInfo, String message,
-      Throwable cause) {
+  public JdbcException(ErrInfo errInfo, String message, Throwable cause) {
     super(errInfo, message, cause);
   }
 

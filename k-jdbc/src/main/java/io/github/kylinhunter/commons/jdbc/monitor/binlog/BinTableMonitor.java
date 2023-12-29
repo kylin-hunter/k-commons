@@ -50,8 +50,8 @@ public class BinTableMonitor implements TableMonitor {
 
     this.binLogClient.addBinLogEventListener(new TableMonitorListener(monitorConfig, taskManager));
     this.taskProcessor = new BinTaskProcessor(taskManager, monitorConfig);
-    this.taskProcessor.setScheduler(Executors.newScheduledThreadPool(
-        monitorConfig.getThreadPoolSize()));
+    this.taskProcessor.setScheduler(
+        Executors.newScheduledThreadPool(monitorConfig.getThreadPoolSize()));
   }
 
   /**

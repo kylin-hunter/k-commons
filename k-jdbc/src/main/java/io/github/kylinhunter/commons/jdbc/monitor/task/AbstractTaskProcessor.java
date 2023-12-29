@@ -42,8 +42,7 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
   protected TableTaskManager taskManager;
   protected Config config;
 
-  @Setter
-  protected RowListener rowListener;
+  @Setter protected RowListener rowListener;
 
   /**
    * @title reset
@@ -64,7 +63,6 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
    * @author BiJi'an
    * @date 2023-12-29 22:21
    */
-
   @Override
   public void setScheduler(ScheduledExecutorService scheduler) {
     this.scheduler = scheduler;

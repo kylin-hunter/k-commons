@@ -69,7 +69,7 @@ public abstract class AbstractRowListener implements RowListener {
   /**
    * @param taskManager taskManager
    * @param destination destination
-   * @param task        task
+   * @param task task
    * @title insert
    * @description insert
    * @author BiJi'an
@@ -89,16 +89,16 @@ public abstract class AbstractRowListener implements RowListener {
   /**
    * the insert event
    *
-   * @param database  database
+   * @param database database
    * @param tableName tableName
-   * @param dataId    the data id (primary key)
+   * @param dataId the data id (primary key)
    */
   public abstract void insert(String database, String tableName, String dataId);
 
   /**
    * @param taskManager taskManager
    * @param destination destination
-   * @param task        task
+   * @param task task
    * @title update
    * @description update
    * @author BiJi'an
@@ -118,17 +118,16 @@ public abstract class AbstractRowListener implements RowListener {
   /**
    * the update event
    *
-   * @param database  database
+   * @param database database
    * @param tableName tableName
-   * @param dataId    the data id (primary key)
+   * @param dataId the data id (primary key)
    */
   public abstract void update(String database, String tableName, String dataId);
-
 
   /**
    * @param taskManager taskManager
    * @param destination destination
-   * @param task        task
+   * @param task task
    * @title delete
    * @description delete
    * @author BiJi'an
@@ -148,12 +147,9 @@ public abstract class AbstractRowListener implements RowListener {
   /**
    * the delete event
    *
-   * @param database  database
+   * @param database database
    * @param tableName tableName
-   * @param dataId    the data id (primary key)
+   * @param dataId the data id (primary key)
    */
   public abstract void delete(String database, String tableName, String dataId);
-
-
 }
-

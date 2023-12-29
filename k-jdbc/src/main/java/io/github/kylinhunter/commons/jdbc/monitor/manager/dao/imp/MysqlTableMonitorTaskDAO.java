@@ -103,7 +103,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination      destination
+   * @param destination destination
    * @param tableMonitorTask scanProcessor
    * @title save
    * @description save
@@ -124,7 +124,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param tableName   tableName
+   * @param tableName tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -159,9 +159,9 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination  tableName
+   * @param destination tableName
    * @param bizTableName bizTableName
-   * @param dataId       dataId
+   * @param dataId dataId
    * @return io.github.kylinhunter.commons.jdbc.monitor.dao.entity.ScanProcessor
    * @title findById
    * @description findById
@@ -191,8 +191,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param db          db
-   * @param tableName   tableName
+   * @param db db
+   * @param tableName tableName
    * @title reset
    * @description reset
    * @author BiJi'an
@@ -206,8 +206,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param db          db
-   * @param tableName   tableName
+   * @param db db
+   * @param tableName tableName
    * @title reset
    * @description reset
    * @author BiJi'an
@@ -221,8 +221,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param limit       limit
-   * @param time        time
+   * @param limit limit
+   * @param time time
    * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
    * @title findWaitDatas
    * @description findWaitDatas
@@ -236,10 +236,10 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   }
 
   /**
-   * @param destination  destination
-   * @param db           db
-   * @param tableName    tableName
-   * @param dataId       dataId
+   * @param destination destination
+   * @param db db
+   * @param tableName tableName
+   * @param dataId dataId
    * @param newRowStatus newStatus
    * @param oldRowStatus oldStatus
    * @title updateStatusByStatus
@@ -262,7 +262,7 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param startDate   startDate
+   * @param startDate startDate
    * @return int
    * @title batchRetry
    * @description batchRetry
@@ -277,8 +277,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param maxRetry    maxRetry
-   * @param startDate   startDate
+   * @param maxRetry maxRetry
+   * @param startDate startDate
    * @return int
    * @title batchError
    * @description batchError

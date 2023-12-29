@@ -62,8 +62,8 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param dataId      dataId
-   * @param rowOP       rowOP
+   * @param dataId dataId
+   * @param rowOP rowOP
    * @title saveOrUpdate
    * @description saveOrUpdate
    * @author BiJi'an
@@ -92,7 +92,7 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param table  table
+   * @param table table
    * @param dataId dataId
    * @title saveOrUpdate
    * @description saveOrUpdate
@@ -104,9 +104,9 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param table  table
+   * @param table table
    * @param dataId dataId
-   * @param rowOp  rowOp
+   * @param rowOp rowOp
    * @title save
    * @description save
    * @author BiJi'an
@@ -114,12 +114,11 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
    */
   public void save(Table table, String dataId, RowOP rowOp) {
     this.save(table.getDestination(), table.getDatabase(), table.getTableName(), dataId, rowOp);
-
   }
 
   /**
    * @param destination destination
-   * @param tableName   tableName
+   * @param tableName tableName
    * @title clean
    * @description clean
    * @author BiJi'an
@@ -145,9 +144,9 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
   }
 
   /**
-   * @param dest    dest
+   * @param dest dest
    * @param endTime endTime
-   * @param limit   limit
+   * @param limit limit
    * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
    * @title findWaitDatas
    * @description findWaitDatas
@@ -163,12 +162,12 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
           .filter(
               e ->
                   dao.updateStatusByStatus(
-                      dest,
-                      e.getDb(),
-                      e.getTableName(),
-                      e.getDataId(),
-                      RowStatus.PROCESSING,
-                      RowStatus.WAIT)
+                          dest,
+                          e.getDb(),
+                          e.getTableName(),
+                          e.getDataId(),
+                          RowStatus.PROCESSING,
+                          RowStatus.WAIT)
                       > 0)
           .collect(Collectors.toList());
     }
@@ -177,7 +176,7 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param task        task
+   * @param task task
    * @title setSuccess
    * @description setSuccess
    * @author BiJi'an
@@ -186,18 +185,18 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
   public boolean setSuccess(String destination, TableMonitorTask task) {
 
     return dao.updateStatusByStatus(
-        destination,
-        task.getDb(),
-        task.getTableName(),
-        task.getDataId(),
-        RowStatus.SUCCESS,
-        RowStatus.PROCESSING)
+            destination,
+            task.getDb(),
+            task.getTableName(),
+            task.getDataId(),
+            RowStatus.SUCCESS,
+            RowStatus.PROCESSING)
         > 0;
   }
 
   /**
    * @param destination destination
-   * @param task        task
+   * @param task task
    * @title setError
    * @description setError
    * @author BiJi'an
@@ -205,18 +204,18 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
    */
   public boolean setError(String destination, TableMonitorTask task) {
     return dao.updateStatusByStatus(
-        destination,
-        task.getDb(),
-        task.getTableName(),
-        task.getDataId(),
-        RowStatus.ERROR,
-        RowStatus.PROCESSING)
+            destination,
+            task.getDb(),
+            task.getTableName(),
+            task.getDataId(),
+            RowStatus.ERROR,
+            RowStatus.PROCESSING)
         > 0;
   }
 
   /**
    * @param destination destination
-   * @param task        task
+   * @param task task
    * @title setRetry
    * @description setRetry
    * @author BiJi'an
@@ -224,20 +223,20 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
    */
   public boolean setRetry(String destination, TableMonitorTask task) {
     return dao.updateStatusByStatus(
-        destination,
-        task.getDb(),
-        task.getTableName(),
-        task.getDataId(),
-        RowStatus.RETRYING,
-        RowStatus.PROCESSING)
+            destination,
+            task.getDb(),
+            task.getTableName(),
+            task.getDataId(),
+            RowStatus.RETRYING,
+            RowStatus.PROCESSING)
         > 0;
   }
 
   /**
    * @param destination destination
-   * @param rowStatus   rowStatus
-   * @param maxRetry    maxRetry
-   * @param startDate   startDate
+   * @param rowStatus rowStatus
+   * @param maxRetry maxRetry
+   * @param startDate startDate
    * @return int
    * @title batchRetry
    * @description batchRetry
@@ -251,8 +250,8 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
 
   /**
    * @param destination destination
-   * @param maxRetry    maxRetry
-   * @param startDate   startDate
+   * @param maxRetry maxRetry
+   * @param startDate startDate
    * @return int
    * @title batchError
    * @description batchError
