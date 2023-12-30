@@ -18,13 +18,10 @@ class TestBinLogTableMonitor {
 
     BinConfig binConfig = TestBinLogClient.getBinLogConfig();
     binConfig.setSavePointManager(TestBinLogClient.getRedisSavePointManager1());
-
     BinMonitorConfig monitorConfig = getBinMonitorConfig();
     TableMonitor tableMonitor = new BinTableMonitor(binConfig, monitorConfig);
     tableMonitor.reset();
-
-    TestRowListener testRowListener = new TestRowListener();
-    tableMonitor.setRowListener(testRowListener);
+    tableMonitor.setRowListener(new TestRowListener());
     tableMonitor.start();
   }
 

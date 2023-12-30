@@ -125,8 +125,11 @@ package io.github.kylinhunter.jdbc;
 
 import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.ClusterRedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.ClusterRedisExecutor;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisExecutor;
 import io.github.kylinhunter.commons.jdbc.exception.FastFailException;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.BinTableMonitor;
@@ -135,19 +138,39 @@ import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
 import io.github.kylinhunter.commons.jdbc.monitor.task.AbstractRowListener;
 import lombok.extern.slf4j.Slf4j;
 
-class TestBinLogTableMonitor {
+class TestBinTableMonitor {
 
   /**
    * 获取RedisSavePointManager实例，用于保存binlog 读取 的 进度点
    *
-   * @return RedisSavePointManager实例
+   * @return RedisSavePointManager实例（单机版redis）
    */
-  public static RedisSavePointManager getRedisSavePointManager() {
-    RedisConfig singleRedisConfig = new RedisConfig();
-    singleRedisConfig.setHost("127.0.0.1");
-    singleRedisConfig.setPort(6379);
-    singleRedisConfig.setPassword("123456");
-    RedisExecutor redisExecutor = new RedisExecutor(singleRedisConfig);
+  public static RedisSavePointManager getRedisSavePointManagerForSingle() {
+    SingleRedisConfig redisConfig = new SingleRedisConfig();
+    redisConfig.setHost("127.0.0.1");
+    redisConfig.setPort(6379);
+    redisConfig.setPassword("123456");
+    RedisExecutor redisExecutor = new SingleRedisExecutor(redisConfig);
+    return new RedisSavePointManager(redisExecutor);
+  }
+
+  /**
+   * 获取RedisSavePointManager实例，用于保存binlog 读取 的 进度点
+   *
+   * @return RedisSavePointManager实例 (集群版redis）
+   */
+
+  public static RedisSavePointManager getRedisSavePointManagerForCluster() {
+    ClusterRedisConfig redisConfig = new ClusterRedisConfig();
+    redisConfig.addNode("127.0.0.1",7361);
+    redisConfig.addNode("127.0.0.1",7362);
+    redisConfig.addNode("127.0.0.1",7363);
+    redisConfig.addNode("127.0.0.1",7364);
+    redisConfig.addNode("127.0.0.1",7365);
+    redisConfig.addNode("127.0.0.1",7366);
+
+    redisConfig.setPassword("123456");
+    RedisExecutor redisExecutor = new ClusterRedisExecutor(redisConfig);
     return new RedisSavePointManager(redisExecutor);
   }
 
@@ -163,7 +186,7 @@ class TestBinLogTableMonitor {
     binConfig.setUrl("jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai");
     binConfig.setUsername("root");
     binConfig.setPassword("root");
-    binConfig.setSavePointManager(getRedisSavePointManager()); // 指定保存binlog读取进度点
+    binConfig.setSavePointManager(getRedisSavePointManagerForCluster()); // 指定保存binlog读取进度点
 
     return binConfig;
   }
@@ -183,6 +206,7 @@ class TestBinLogTableMonitor {
     binTable.setTableName("k_junit_jdbc_role1"); // 指定表名
     binTable.setDestination("k_junit_table_monitor_binlog"); // 指定监控信息保存在哪里，表结构在上面定义的
     monitorConfig.add(binTable);
+    monitorConfig.setMaxRetryTimes(1); // 指定失败重试次数
     // monitorConfig.add(binTable2); 支持多个表
     return monitorConfig;
   }
@@ -202,7 +226,7 @@ class TestBinLogTableMonitor {
      * @title insert
      * @description insert
      * @author BiJi'an
-     * @date 2023-12-30 17:08
+     * @date 2023-12-28 17:08
      */
     @Override
     public void insert(String database, String tableName, String dataId) {
@@ -224,7 +248,7 @@ class TestBinLogTableMonitor {
      * @title update
      * @description update
      * @author BiJi'an
-     * @date 2023-12-30 17:08
+     * @date 2023-12-28 17:08
      */
     @Override
     public void update(String database, String tableName, String dataId) {
@@ -246,7 +270,7 @@ class TestBinLogTableMonitor {
      * @title delete
      * @description delete
      * @author BiJi'an
-     * @date 2023-12-30 17:08
+     * @date 2023-12-28 17:08
      */
     @Override
     public void delete(String database, String tableName, String dataId) {
@@ -262,14 +286,13 @@ class TestBinLogTableMonitor {
     }
   }
 
-
   /**
    * 测试入口
    */
 
   public static void main(String[] args) {
     TableMonitor tableMonitor = new BinTableMonitor(getBinLogConfig(), getBinMonitorConfig());
-    //tableMonitor.reset(); // 重置暂存点，如果需要重新读取binlog，需要调用该方法
+    tableMonitor.reset(); // 重置暂存点，如果需要重新读取binlog，需要调用该方法
     tableMonitor.setRowListener(new TestRowListener()); // 设置回调函数
     tableMonitor.start(); // 启动监控
   }
@@ -279,9 +302,17 @@ class TestBinLogTableMonitor {
 
 #### 最终结果
 ```
+ //查看监控记录表中最新状态
   SELECT t.* FROM kp.k_junit_table_monitor_binlog t 
 ```
 ![result](./result.png)
+
+> 观察上图可以看到
+
+1. 表j_junit_jdbc_role1的row （1）    用户拿到了相关事件，并且处理成功 status=2
+2. 表j_junit_jdbc_role1的row （2）    用户拿到了相关事件，并且主动放弃处理,设置为失败  status=4
+3. 表j_junit_jdbc_role1的row （3-7） 用户拿到了相关事件，并且一直处理不成功，重试四次后，最终失败status=4
+
 
 ### 版权 | License
 

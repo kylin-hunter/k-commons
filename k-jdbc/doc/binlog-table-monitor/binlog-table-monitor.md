@@ -136,48 +136,76 @@ INSERT INTO k_junit_jdbc_role2 (id, sys_tenant_id, sys_auto_updated, sys_created
 #### sample code
 
 ```java
+
+
 package io.github.kylinhunter.jdbc;
 
 import io.github.kylinhunter.commons.jdbc.binlog.bean.BinConfig;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.imp.RedisSavePointManager;
-import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.ClusterRedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.ClusterRedisExecutor;
 import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.RedisExecutor;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisConfig;
+import io.github.kylinhunter.commons.jdbc.binlog.savepoint.redis.SingleRedisExecutor;
+import io.github.kylinhunter.commons.jdbc.exception.FastFailException;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.BinTableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinMonitorConfig;
 import io.github.kylinhunter.commons.jdbc.monitor.binlog.bean.BinTable;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
-import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
-import io.github.kylinhunter.commons.jdbc.monitor.task.RowListener;
+import io.github.kylinhunter.commons.jdbc.monitor.task.AbstractRowListener;
 import lombok.extern.slf4j.Slf4j;
 
-class TestBinLogTableMonitor {
+class TestBinTableMonitorEnglish {
+
   /**
    * Obtain RedisSavePointManager instance as a temporary storage point for storing binlog records
    *
    * @return RedisSavePointManager instance
    */
-  public static RedisSavePointManager getRedisSavePointManager() {
-    RedisConfig singleRedisConfig = new RedisConfig();
-    singleRedisConfig.setHost("127.0.0.1");
-    singleRedisConfig.setPort(6379);
-    singleRedisConfig.setPassword("123456");
-    RedisExecutor redisExecutor = new RedisExecutor(singleRedisConfig);
+  public static RedisSavePointManager getRedisSavePointManagerForSingle() {
+    SingleRedisConfig redisConfig = new SingleRedisConfig();
+    redisConfig.setHost("127.0.0.1");
+    redisConfig.setPort(6379);
+    redisConfig.setPassword("123456");
+    RedisExecutor redisExecutor = new SingleRedisExecutor(redisConfig);
     return new RedisSavePointManager(redisExecutor);
   }
+
   /**
    * Get BinConfiguration object for reading binlog
    *
    * @return BinConfiguration returns a BinConfiguration object
    */
+  public static RedisSavePointManager getRedisSavePointManagerForCluster() {
+    ClusterRedisConfig redisConfig = new ClusterRedisConfig();
+    redisConfig.addNode("127.0.0.1", 7361);
+    redisConfig.addNode("127.0.0.1", 7362);
+    redisConfig.addNode("127.0.0.1", 7363);
+    redisConfig.addNode("127.0.0.1", 7364);
+    redisConfig.addNode("127.0.0.1", 7365);
+    redisConfig.addNode("127.0.0.1", 7366);
+
+    redisConfig.setPassword("123456");
+    RedisExecutor redisExecutor = new ClusterRedisExecutor(redisConfig);
+    return new RedisSavePointManager(redisExecutor);
+  }
+
+
+  /**
+   * Get the BinConfiguration object, which is used to specify which binlog file name to read from
+   * that MySQL
+   *
+   * @return BinConfig Return a BinConfiguration object
+   */
   public static BinConfig getBinLogConfig() {
     BinConfig binConfig = new BinConfig();
-    binConfig.setBinlogFilename("binlog.000047"); // Specify the binlog file name
-    binConfig.setBinlogPosition(0); // Specify the starting position of the binlog file
-    binConfig.setUrl("jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai");
+    binConfig.setBinlogFilename("binlog.000047"); // 指定binlog文件名
+    binConfig.setBinlogPosition(0); // 指定binlog文件起始位置
+    binConfig.setUrl(
+        "jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai");
     binConfig.setUsername("root");
     binConfig.setPassword("root");
-    binConfig.setSavePointManager(getRedisSavePointManager());
+    binConfig.setSavePointManager(getRedisSavePointManagerForCluster()); // 指定保存binlog读取进度点
 
     return binConfig;
   }
@@ -190,20 +218,18 @@ class TestBinLogTableMonitor {
   public static BinMonitorConfig getBinMonitorConfig() {
     BinMonitorConfig monitorConfig = new BinMonitorConfig();
 
-    BinTable binTable = new BinTable(); 
+    BinTable binTable = new BinTable();
     binTable.setPkColName("id"); // primary key 's column name
-    binTable.setDatabase("kp"); // database 
+    binTable.setDatabase("kp"); // database
     binTable.setTableName("k_junit_jdbc_role1"); // the be monitored table
     binTable.setDestination("k_junit_table_monitor_binlog");
 
     monitorConfig.add(binTable);
+    monitorConfig.setMaxRetryTimes(1); // Specify the number of failed retries
+
     // monitorConfig.add(binTable2); Supports multiple tables
     return monitorConfig;
   }
-
-
-
-
 
 
   /**
@@ -211,7 +237,8 @@ class TestBinLogTableMonitor {
    */
 
   @Slf4j
-  public static class TestRowListener implements ExecCallback {
+  public static class TestRowListener extends AbstractRowListener {
+
     /**
      * @param database  database
      * @param tableName tableName
@@ -281,12 +308,12 @@ class TestBinLogTableMonitor {
 
 
   /**
-   *  test entry
+   * test entry
    */
 
   public static void main(String[] args) {
     TableMonitor tableMonitor = new BinTableMonitor(getBinLogConfig(), getBinMonitorConfig());
-    //tableMonitor.reset(); // Reset the temporary save point. If you need to reread the binlog,you need to call this method
+    tableMonitor.reset(); // Reset the temporary save point. If you need to reread the binlog,you need to call this method
     tableMonitor.setRowListener(new TestRowListener()); // set callback
     tableMonitor.start(); // start
   }
@@ -296,9 +323,20 @@ class TestBinLogTableMonitor {
 
 #### result
 ```
+  //查看监控记录表中最新状态
   SELECT t.* FROM kp.k_junit_table_monitor_binlog t 
 ```
 ![result](./result.png)
+
+> Observing the above picture, it can be seen that
+
+1. table j_junit_jdbc_role1 row （1）    The user received the  event and processed it successfully. 
+   Status=2
+2. table j_junit_jdbc_role1 row （2）    The user received the  event and  gave up processing, 
+   setting it to fail status=4
+3. table j_junit_jdbc_role1 row （3-7）  The user received the  event and was unable to process it 
+   successfully. After four retries, the final failure was status=4
+
 
 ### copyright | License
 
