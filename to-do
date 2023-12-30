@@ -1,2 +1,2 @@
 1、k-code-generator 等项目，出现警告日志
-2、k-jdbc 支持redis集群
+2、beanutil 从 k-util移动到k-conmons中去
