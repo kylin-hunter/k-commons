@@ -1,4 +1,4 @@
-# binlog-table-monitor
+# scan-table-monitor
 
 ### 介绍
 
