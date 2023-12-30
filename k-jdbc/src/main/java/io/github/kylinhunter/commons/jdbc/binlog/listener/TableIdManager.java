@@ -21,6 +21,7 @@ import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMetas;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.jdbc.meta.column.ColumnReader;
 import io.github.kylinhunter.commons.jdbc.meta.table.TableReader;
+import io.github.kylinhunter.commons.lang.strings.StringConst;
 import java.util.Map;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +78,7 @@ public class TableIdManager {
         log.info("############# updateColumnMeta={}", columnMetas);
       }
 
-      tableIdMaps.put(database + ":" + tableName, tableId);
+      tableIdMaps.put(database + StringConst.COLON + tableName, tableId);
     }
   }
 
@@ -91,7 +92,7 @@ public class TableIdManager {
    */
   public void clean(String database, String tableName) {
 
-    Long tableId = this.tableIdMaps.get(database + ":" + tableName);
+    Long tableId = this.tableIdMaps.get(database + StringConst.COLON + tableName);
     if (tableId != null) {
       this.update(tableId, database, tableName);
     }

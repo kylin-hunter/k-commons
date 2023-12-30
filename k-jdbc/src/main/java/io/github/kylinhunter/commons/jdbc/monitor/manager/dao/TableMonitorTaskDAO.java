@@ -112,6 +112,7 @@ public interface TableMonitorTaskDAO {
   /**
    * @param destination destination
    * @param time time
+   * @param maxRetry maxRetry
    * @param limit limit
    * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
    * @title findWaitDatas
@@ -119,20 +120,22 @@ public interface TableMonitorTaskDAO {
    * @author BiJi'an
    * @date 2023-12-23 22:04
    */
-  List<TableMonitorTask> findWaitDatas(String destination, LocalDateTime time, int limit);
+  List<TableMonitorTask> findWaitDatas(
+      String destination, LocalDateTime time, int maxRetry, int limit);
 
   /**
    * @param destination destination
    * @param db db
    * @param tableName tableName
    * @param dataId dataId
-   * @param newRowStatus newStatus
-   * @param oldRowStatus oldStatus
+   * @param newRowStatus newRowStatus
+   * @param oldRowStatus oldRowStatus
    * @return int
+   * @throws
    * @title updateStatusByStatus
    * @description updateStatusByStatus
    * @author BiJi'an
-   * @date 2023-12-23 22:06
+   * @date 2023-12-31 00:46
    */
   int updateStatusByStatus(
       String destination,
@@ -142,7 +145,50 @@ public interface TableMonitorTaskDAO {
       RowStatus newRowStatus,
       RowStatus oldRowStatus);
 
-  int batchRetry(String destination, RowStatus rowStatus, int maxRetry, LocalDateTime startDate);
+  /**
+   * @param destination destination
+   * @param db db
+   * @param tableName tableName
+   * @param dataId dataId
+   * @return int
+   * @title setRetry
+   * @description setRetry
+   * @author BiJi'an
+   * @date 2023-12-31 00:43
+   */
+  int setRetry(String destination, String db, String tableName, String dataId);
 
+  /**
+   * @param destination destination
+   * @param rowStatus rowStatus
+   * @param startDate startDate
+   * @title batchRetry
+   * @description batchRetry
+   * @author BiJi'an
+   * @date 2023-12-30 22:24
+   */
+  int batchRetry(String destination, RowStatus rowStatus, LocalDateTime startDate);
+
+  /**
+   * @param destination destination
+   * @param maxRetry maxRetry
+   * @param startDate startDate
+   * @title batchError
+   * @description batchError
+   * @author BiJi'an
+   * @date 2023-12-30 22:24
+   */
   int batchError(String destination, int maxRetry, LocalDateTime startDate);
+
+  /**
+   * @param tableName tableName
+   * @param pkColName pkColName
+   * @param dataId dataId
+   * @param delColName delColName
+   * @title isDeleted
+   * @description isDeleted
+   * @author BiJi'an
+   * @date 2023-12-30 22:24
+   */
+  boolean isDeleted(String tableName, String delColName, String pkColName, String dataId);
 }

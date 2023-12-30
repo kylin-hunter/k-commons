@@ -16,7 +16,7 @@ a Common tool collection
 ### 2、gradle (gradle.org)
 
 ```
-        implementation 'io.github.kylin-hunter:k-jdbc:1.0.5' 
+        implementation 'io.github.kylin-hunter:k-jdbc:1.0.6' 
         //The latest version can be found in the Maven repository 
 
 ```
@@ -27,7 +27,7 @@ a Common tool collection
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-jdbc</artifactId>
-          <version>1.0.5</version> //The latest version can be found in the Maven repository
+          <version>1.0.6</version> //The latest version can be found in the Maven repository
         </dependency>
 
 ```

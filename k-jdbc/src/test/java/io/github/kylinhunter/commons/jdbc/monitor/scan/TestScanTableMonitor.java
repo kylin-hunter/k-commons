@@ -5,7 +5,7 @@ import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.monitor.TableMonitor;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.ScanTable;
 import io.github.kylinhunter.commons.jdbc.monitor.scan.bean.TableScanConfig;
-import io.github.kylinhunter.commons.jdbc.monitor.task.TestRowListener;
+import io.github.kylinhunter.commons.jdbc.monitor.task.TestScanRowListener;
 import javax.sql.DataSource;
 
 class TestScanTableMonitor {
@@ -19,7 +19,7 @@ class TestScanTableMonitor {
     TableMonitor tableMonitor = new ScanTableMonitor(dataSource, tablescanConfig);
     tableMonitor.reset();
 
-    TestRowListener testRowListener = new TestRowListener();
+    TestScanRowListener testRowListener = new TestScanRowListener();
     tableMonitor.setRowListener(testRowListener);
     tableMonitor.start();
 
@@ -36,6 +36,7 @@ class TestScanTableMonitor {
     ScanTable scanTable2 = getScanTable();
     scanTable2.setTableName(TestHelper.TEST_TABLE_ROLE2);
     tableScanConfig.add(scanTable2);
+    tableScanConfig.setMaxRetryTimes(1);
     return tableScanConfig;
   }
 
@@ -45,6 +46,7 @@ class TestScanTableMonitor {
     scanTable.setDatabase(TestHelper.DATABASE);
     scanTable.setDestination(TestHelper.TEST_SCAN_TASK);
     scanTable.setPkColName("id");
+    scanTable.setDelColName("sys_delete_flag");
     scanTable.setTableTimeName("sys_auto_updated");
     scanTable.setScanLimit(1);
     scanTable.setScanInterval(100);

@@ -31,12 +31,12 @@ class TableTaskManagerTest {
     manager.save(scanTable, scanRecord.getId(), RowOP.UPDATE);
     manager.clean("destination", "databae", "testTable");
     manager.ensureDestinationExists("destination");
-    manager.findWaitDatas(scanTable.getDestination(), LocalDateTime.now(), 10);
+    manager.findWaitDatas(scanTable.getDestination(), LocalDateTime.now(), 1, 10);
     Table table = new ScanTable();
     manager.reset(table);
 
     manager.batchError("", 3, LocalDateTime.now());
-    manager.batchRetry("", RowStatus.RETRYING, 3, LocalDateTime.now());
+    manager.batchRetry("", RowStatus.RETRYING, LocalDateTime.now());
     manager.setSuccess("", new TableMonitorTask());
     manager.setError("", new TableMonitorTask());
     manager.setRetry("", new TableMonitorTask());

@@ -85,11 +85,11 @@ class MysqlTableMonitorTaskDAOTest {
     Assertions.assertEquals(21, tableMonitorTask3.getStatus());
 
     Mockito.when(sqlExecutor.query(anyString(), any(ResultSetHandler.class),
-        any(LocalDateTime.class),
+        anyInt(), any(LocalDateTime.class),
         anyInt())).thenReturn(ListUtils.newArrayList(new TableMonitorTask()));
 
     List<TableMonitorTask> waitDatas = scanProcessorDAO.findWaitDatas(destination,
-        LocalDateTime.now(), 10);
+        LocalDateTime.now(), 1, 10);
     Assertions.assertEquals(1, waitDatas.size());
 
     Mockito.when(sqlExecutor.execute(anyString(),

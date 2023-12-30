@@ -35,7 +35,7 @@ public class Config {
 
   private int retryInterval = 5000; // re-try interval
 
-  private int errorInterval = 10000; // error interval
+  private int errorInterval = 5000; // error interval
 
   private int execBefore = 3000; // execute before some time
 
@@ -43,5 +43,5 @@ public class Config {
 
   private int processTimeout = 60 * 1000; // process timeout
 
-  private int maxRetryTimes = 3; // max retry times
+  private int maxRetryTimes = 1; // max retry times
 }

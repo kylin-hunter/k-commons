@@ -74,7 +74,7 @@ public class TestMysqlTableMonitorTaskDAO {
     int maxRetryCount = 3;
 
     List<TableMonitorTask> waitDatas = monitorTaskDAO.findWaitDatas(destination,
-        LocalDateTime.now(), 10);
+        LocalDateTime.now(), 1, 10);
 
     Assertions.assertEquals(2, waitDatas.size());
     TableMonitorTask tableMonitorTask = waitDatas.get(0);
@@ -88,7 +88,7 @@ public class TestMysqlTableMonitorTaskDAO {
 
     Assertions.assertEquals(RowStatus.PROCESSING.getCode(), tableMonitorTask.getStatus());
 
-    waitDatas = monitorTaskDAO.findWaitDatas(destination, LocalDateTime.now(), 10);
+    waitDatas = monitorTaskDAO.findWaitDatas(destination, LocalDateTime.now(), 1, 10);
 
     Assertions.assertEquals(1, waitDatas.size());
 
@@ -100,7 +100,7 @@ public class TestMysqlTableMonitorTaskDAO {
 
     Assertions.assertEquals(RowStatus.RETRYING.getCode(), tableMonitorTask.getStatus());
 
-    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, LocalDateTime.now());
 
     tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
 
@@ -109,7 +109,7 @@ public class TestMysqlTableMonitorTaskDAO {
     // update to retring 2
     monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
         dataId, RowStatus.RETRYING, RowStatus.WAIT);
-    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, LocalDateTime.now());
     tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
 
     Assertions.assertEquals(2, tableMonitorTask.getRetryTimes());
@@ -117,21 +117,21 @@ public class TestMysqlTableMonitorTaskDAO {
     // update to retring 3
     monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
         dataId, RowStatus.RETRYING, RowStatus.WAIT);
-    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, LocalDateTime.now());
     tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
     Assertions.assertEquals(3, tableMonitorTask.getRetryTimes());
 
     // update to retring 4
     monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
         dataId, RowStatus.RETRYING, RowStatus.WAIT);
-    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, LocalDateTime.now());
     tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
     Assertions.assertEquals(4, tableMonitorTask.getRetryTimes());
 
     // update to retring 5
     monitorTaskDAO.updateStatusByStatus(destination, datbase, tableName,
         dataId, RowStatus.RETRYING, RowStatus.WAIT);
-    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, maxRetryCount, LocalDateTime.now());
+    monitorTaskDAO.batchRetry(destination, RowStatus.RETRYING, LocalDateTime.now());
     tableMonitorTask = monitorTaskDAO.findById(destination, datbase, tableName, dataId);
     Assertions.assertEquals(4, tableMonitorTask.getRetryTimes());
 

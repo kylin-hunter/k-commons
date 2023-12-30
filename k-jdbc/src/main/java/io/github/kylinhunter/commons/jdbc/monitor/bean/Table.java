@@ -31,5 +31,6 @@ public class Table {
   @Include private String database;
   @Include private String tableName;
   private String pkColName; // primary key
+  private String delColName = ""; // delete  column name
   private String destination = "k_table_monitor_task";
 }

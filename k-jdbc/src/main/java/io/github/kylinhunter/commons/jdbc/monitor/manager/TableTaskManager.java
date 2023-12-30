@@ -146,6 +146,7 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
   /**
    * @param dest dest
    * @param endTime endTime
+   * @param maxRetry maxRetry
    * @param limit limit
    * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
    * @title findWaitDatas
@@ -153,9 +154,10 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-23 22:10
    */
-  public List<TableMonitorTask> findWaitDatas(String dest, LocalDateTime endTime, int limit) {
+  public List<TableMonitorTask> findWaitDatas(
+      String dest, LocalDateTime endTime, int maxRetry, int limit) {
 
-    List<TableMonitorTask> datas = dao.findWaitDatas(dest, endTime, limit);
+    List<TableMonitorTask> datas = dao.findWaitDatas(dest, endTime, maxRetry, limit);
 
     if (datas.size() > 0) {
       return datas.stream()
@@ -183,7 +185,6 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
    * @date 2023-12-23 23:36
    */
   public boolean setSuccess(String destination, TableMonitorTask task) {
-
     return dao.updateStatusByStatus(
             destination,
             task.getDb(),
@@ -222,20 +223,12 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
    * @date 2023-12-24 01:35
    */
   public boolean setRetry(String destination, TableMonitorTask task) {
-    return dao.updateStatusByStatus(
-            destination,
-            task.getDb(),
-            task.getTableName(),
-            task.getDataId(),
-            RowStatus.RETRYING,
-            RowStatus.PROCESSING)
-        > 0;
+    return dao.setRetry(destination, task.getDb(), task.getTableName(), task.getDataId()) > 0;
   }
 
   /**
    * @param destination destination
    * @param rowStatus rowStatus
-   * @param maxRetry maxRetry
    * @param startDate startDate
    * @return int
    * @title batchRetry
@@ -243,9 +236,8 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
    * @author BiJi'an
    * @date 2023-12-24 01:36
    */
-  public int batchRetry(
-      String destination, RowStatus rowStatus, int maxRetry, LocalDateTime startDate) {
-    return dao.batchRetry(destination, rowStatus, maxRetry, startDate);
+  public int batchRetry(String destination, RowStatus rowStatus, LocalDateTime startDate) {
+    return dao.batchRetry(destination, rowStatus, startDate);
   }
 
   /**
@@ -260,5 +252,9 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
    */
   public int batchError(String destination, int maxRetry, LocalDateTime startDate) {
     return dao.batchError(destination, maxRetry, startDate);
+  }
+
+  public boolean isDeleted(Table table, String dataId) {
+    return dao.isDeleted(table.getTableName(), table.getDelColName(), table.getPkColName(), dataId);
   }
 }

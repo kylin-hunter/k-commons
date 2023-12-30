@@ -28,12 +28,9 @@ import javax.sql.DataSource;
  */
 public class ScanTaskProcessor extends AbstractTaskProcessor {
 
-  private final DataSource dataSource;
-
   private final TableScanConfig tableScanConfig;
 
   public ScanTaskProcessor(DataSource dataSource, TableScanConfig tableScanConfig) {
-    this.dataSource = dataSource;
     this.taskManager = new TableTaskManager(dataSource);
     this.tableScanConfig = tableScanConfig;
     this.config = tableScanConfig;

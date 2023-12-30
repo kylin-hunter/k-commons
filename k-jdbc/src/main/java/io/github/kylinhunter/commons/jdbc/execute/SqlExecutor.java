@@ -70,6 +70,7 @@ public class SqlExecutor {
    */
   public <T> T query(String sql, ResultSetHandler<T> rsh, Object... params) {
     try {
+
       return queryRunner.query(sql, rsh, params);
     } catch (SQLException e) {
       throw new JdbcException("execute sql error", e);

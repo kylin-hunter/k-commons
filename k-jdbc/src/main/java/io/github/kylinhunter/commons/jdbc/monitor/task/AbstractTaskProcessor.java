@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractTaskProcessor implements TaskProcessor {
 
   private ScheduledExecutorService scheduler;
+
   protected List<Table> tables;
 
   protected TableTaskManager taskManager;
@@ -95,6 +96,7 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
    */
   private void execJob() {
     try {
+      int maxRetryTimes = config.getMaxRetryTimes();
       for (Table table : tables) {
 
         String destination = table.getDestination();
@@ -104,12 +106,14 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
         LocalDateTime endTime =
             LocalDateTime.now().minus(this.config.getExecBefore(), ChronoUnit.MILLIS);
 
-        List<TableMonitorTask> waitDatas = this.taskManager.findWaitDatas(destination, endTime, 10);
+        List<TableMonitorTask> waitDatas =
+            this.taskManager.findWaitDatas(destination, endTime, maxRetryTimes, 100);
         if (waitDatas.size() > 0) {
           log.info("wait data size=>{}", waitDatas.size());
           for (TableMonitorTask waitData : waitDatas) {
             log.info("process data {}/{}", waitData.getTableName(), waitData.getDataId());
-            this.rowListener.onEvent(this.taskManager, destination, waitData);
+
+            this.rowListener.onEvent(this.taskManager, table, destination, waitData);
           }
         }
       }
@@ -131,14 +135,12 @@ public abstract class AbstractTaskProcessor implements TaskProcessor {
       LocalDateTime beforTime = now.minus(this.config.getTryMinTime(), ChronoUnit.MILLIS);
 
       for (Table scanTable : tables) {
-        taskManager.batchRetry(
-            scanTable.getDestination(), RowStatus.RETRYING, config.getMaxRetryTimes(), beforTime);
+        taskManager.batchRetry(scanTable.getDestination(), RowStatus.RETRYING, beforTime);
       }
 
       beforTime = now.minus(this.config.getProcessTimeout(), ChronoUnit.MILLIS);
       for (Table scanTable : tables) {
-        taskManager.batchRetry(
-            scanTable.getDestination(), RowStatus.PROCESSING, config.getMaxRetryTimes(), beforTime);
+        taskManager.batchRetry(scanTable.getDestination(), RowStatus.PROCESSING, beforTime);
       }
     } catch (Exception e) {
       log.error("exec retring Job error", e);

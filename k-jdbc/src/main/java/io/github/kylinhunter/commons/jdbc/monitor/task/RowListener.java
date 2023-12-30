@@ -15,10 +15,12 @@
  */
 package io.github.kylinhunter.commons.jdbc.monitor.task;
 
+import io.github.kylinhunter.commons.jdbc.monitor.bean.Table;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.TableTaskManager;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
 
 public interface RowListener {
 
-  void onEvent(TableTaskManager taskManager, String destination, TableMonitorTask task);
+  void onEvent(
+      TableTaskManager taskManager, Table table, String destination, TableMonitorTask task);
 }

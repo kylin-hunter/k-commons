@@ -20,11 +20,14 @@ import io.github.kylinhunter.commons.jdbc.execute.SqlReader;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.TableMonitorTaskDAO;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.constant.RowStatus;
 import io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask;
+import io.github.kylinhunter.commons.util.ObjectValues;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import javax.sql.DataSource;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapHandler;
 
 /**
  * @author BiJi'an
@@ -65,18 +68,28 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
           + ",op ,status from %s"
           + " where status="
           + RowStatus.WAIT.getCode()
+          + " and   retry_times <=? "
           + " and   sys_auto_updated <? "
           + " order by sys_auto_updated desc limit ?";
 
   private static final String SQL_UPDATE_STATUS_BY_STATUS =
       "update  %s  set status=? where db=? and table_name=? and data_id=?  and status=?";
 
+  private static final String SQL_RETRY =
+      "update  %s  set status="
+          + RowStatus.RETRYING.getCode()
+          + " retry_times=retry_times+1 "
+          + "where db=? and table_name=? and data_id=?  and status="
+          + RowStatus.PROCESSING.getCode();
+
   private static final String SQL_RETRY_BATCH =
       "update  %s  set status="
           + RowStatus.WAIT.getCode()
           + " ,sys_auto_updated=sys_auto_updated "
-          + " , retry_times=retry_times+1 "
-          + " where status=?  and retry_times<=? and sys_auto_updated <?";
+          + " where status=?  and sys_auto_updated <?";
+
+  private static final String SQL_IS_LOGIC_DELETED =
+      "select %s  as deleteFlag from  %s where %s " + "=?";
 
   private static final String SQL_ERROR_BATCH =
       "update  %s  set status="
@@ -221,18 +234,20 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
 
   /**
    * @param destination destination
-   * @param limit limit
    * @param time time
+   * @param maxRetry maxRetry
+   * @param limit limit
    * @return io.github.kylinhunter.commons.jdbc.monitor.manager.dao.entity.TableMonitorTask
    * @title findWaitDatas
    * @description findWaitDatas
    * @author BiJi'an
    * @date 2023-12-23 21:48
    */
-  public List<TableMonitorTask> findWaitDatas(String destination, LocalDateTime time, int limit) {
+  public List<TableMonitorTask> findWaitDatas(
+      String destination, LocalDateTime time, int maxRetry, int limit) {
     String sql = String.format(SQL_FIND_WAIT_DATAS, destination);
 
-    return this.getSqlExecutor().query(sql, beanHandlers, time, limit);
+    return this.getSqlExecutor().query(sql, beanHandlers, maxRetry, time, limit);
   }
 
   /**
@@ -260,6 +275,11 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
         .execute(sql, newRowStatus.getCode(), db, tableName, dataId, oldRowStatus.getCode());
   }
 
+  public int setRetry(String destination, String db, String tableName, String dataId) {
+    String sql = String.format(SQL_RETRY, destination);
+    return this.getSqlExecutor().execute(sql, db, tableName, dataId);
+  }
+
   /**
    * @param destination destination
    * @param startDate startDate
@@ -269,10 +289,9 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
    * @author BiJi'an
    * @date 2023-12-24 00:25
    */
-  public int batchRetry(
-      String destination, RowStatus status, int maxRetry, LocalDateTime startDate) {
+  public int batchRetry(String destination, RowStatus status, LocalDateTime startDate) {
     String sql = String.format(SQL_RETRY_BATCH, destination);
-    return this.getSqlExecutor().execute(sql, status.getCode(), maxRetry, startDate);
+    return this.getSqlExecutor().execute(sql, status.getCode(), startDate);
   }
 
   /**
@@ -288,5 +307,23 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   public int batchError(String destination, int maxRetry, LocalDateTime startDate) {
     String sql = String.format(SQL_ERROR_BATCH, destination);
     return this.getSqlExecutor().execute(sql, maxRetry, startDate);
+  }
+
+  /**
+   * @param tableName tableName
+   * @param delColName delColName
+   * @param dataId dataId
+   * @title isDeleted
+   * @description isDeleted
+   * @author BiJi'an
+   * @date 2023-12-30 22:32
+   */
+  @Override
+  public boolean isDeleted(String tableName, String delColName, String pkColName, String dataId) {
+    String sql = String.format(SQL_IS_LOGIC_DELETED, delColName, tableName, pkColName);
+
+    Map<String, Object> map = this.getSqlExecutor().query(sql, new MapHandler(), dataId);
+
+    return ObjectValues.getBoolean(map.get("deleteFlag"), false);
   }
 }

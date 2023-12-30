@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023-12-24 18:12
  */
 @Slf4j
-public class TestRowListener extends AbstractRowListener {
+public class TestScanRowListener extends AbstractScanRowListener {
 
   /**
    * @param table  table
