@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.exception.common.KThrowable;
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import io.github.kylinhunter.commons.sys.KGenerated;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,11 +30,21 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@KGenerated
 public class ExplainResult {
 
   private ErrInfo errInfo;
   private Object extra;
   private String msg;
+
+  public ExplainResult(KThrowable throwable) {
+    this.errInfo = throwable.getErrInfo();
+    if (this.errInfo == null) {
+      this.errInfo = ErrInfos.UNKNOWN;
+    }
+    this.extra = throwable.getExtra();
+    this.msg = throwable.getMessage();
+  }
 
   public ExplainResult(KThrowable throwable, String msg) {
     this.errInfo = throwable.getErrInfo();

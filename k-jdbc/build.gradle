@@ -1,17 +1,23 @@
 dependencies {
     api project(":k-utils")
-    api project(":k-clazz")
-    api("commons-io:commons-io")
     api("com.zaxxer:HikariCP")
     api("commons-dbutils:commons-dbutils")
 
-    implementation("ch.qos.logback:logback-classic")
-    implementation("org.codehaus.janino:janino")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.codehaus.janino:janino")
 
 
     implementation("mysql:mysql-connector-java")
     implementation("com.oracle.database.jdbc:ojdbc8")
     implementation fileTree(dir: 'lib', includes: ['*.jar'])
+    implementation 'com.zendesk:mysql-binlog-connector-java'
+    implementation 'io.lettuce:lettuce-core'
+    //   json
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+
+
 }
 
 
@@ -19,7 +25,6 @@ jar {
     exclude("logback.xml")
 }
 test {
-    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     println jvmArgs
 }
 

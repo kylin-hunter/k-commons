@@ -17,8 +17,13 @@ package io.github.kylinhunter.commons.log.jul;
 
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
-import java.io.IOException;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import io.github.kylinhunter.commons.reflect.ClassUtil;
+import io.github.kylinhunter.commons.reflect.ReflectUtils;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.Objects;
+import java.util.Properties;
 import java.util.logging.LogManager;
 
 /**
@@ -28,41 +33,142 @@ import java.util.logging.LogManager;
  */
 public class JULManager {
 
-  private static String CONFIG_FILE = "k-jul-logging.properties";
+  private static volatile Boolean initialized;
+
+  private static final String DEFAULT_CONFIG_FILE = "k-jul-logging.properties";
 
   /**
-   * @return
+   * @return boolean
+   * @title init
+   * @description init
+   * @author BiJi'an
+   * @date 2023-10-17 23:45
+   */
+  public static boolean init() {
+    return init(DEFAULT_CONFIG_FILE, true);
+  }
+
+  public static boolean init(boolean slf4jSupported) {
+    return init(DEFAULT_CONFIG_FILE, slf4jSupported);
+  }
+
+  public static boolean init(String configFile) {
+    return init(configFile, true);
+  }
+
+  /**
+   * @return boolean
    * @title init
    * @description
    * @author BiJi'an
    * @date 2023-04-22 16:41
    */
-  public static boolean init() {
-    try {
-      InputStream inputStream = ResourceHelper.getInputStreamInClassPath(CONFIG_FILE);
-      if (inputStream != null) {
-        LogManager logManager = LogManager.getLogManager();
-        logManager.readConfiguration(inputStream);
-        return true;
-      } else {
-        System.err.println("no config file  be found :" + CONFIG_FILE);
-        return false;
+  public static synchronized boolean init(String configFile, boolean slf4jSupported) {
+    if (initialized != null) {
+      return initialized;
+    }
+    synchronized (JULManager.class) {
+      if (initialized != null) {
+        return initialized;
       }
+      try {
+        if (StringUtil.isEmpty(configFile)) {
+          configFile = DEFAULT_CONFIG_FILE;
+        }
+        readConfiguration(configFile);
 
-    } catch (IOException e) {
-      throw new GeneralException(" jul init error", e);
+        if (slf4jSupported) {
+          trySlf4jSupport(configFile);
+        }
+        initialized = true;
+      } catch (Exception e) {
+        System.err.println("init error:" + e.getMessage());
+        initialized = false;
+      }
+      return initialized;
     }
   }
 
   /**
    * @param configFile configFile
-   * @return void
-   * @title reset
-   * @description
+   * @title initFromConfiguration
+   * @description initFromConfiguration
    * @author BiJi'an
-   * @date 2023-05-15 01:15
+   * @date 2023-10-17 23:57
    */
-  public static void setConfigFile(String configFile) {
-    CONFIG_FILE = configFile;
+  private static void readConfiguration(String configFile) {
+
+    try (InputStream inputStream = ResourceHelper.getInputStreamInClassPath(configFile)) {
+      LogManager logManager = LogManager.getLogManager();
+      logManager.readConfiguration(inputStream);
+    } catch (Exception e) {
+      throw new GeneralException("read " + configFile + "error:" + e.getMessage());
+    }
+  }
+
+  private static Properties readProperties(String configFile) {
+
+    try (InputStream inputStream = ResourceHelper.getInputStreamInClassPath(configFile)) {
+      Properties properties = new Properties();
+      properties.load(inputStream);
+      return properties;
+    } catch (Exception e) {
+      System.err.println("read readProperties error" + e.getMessage());
+    }
+    return null;
+  }
+
+  /**
+   * @param configFile configFile
+   * @title trySlf4jSupport
+   * @description
+   *     <p>duplicate log outputs
+   *     <p>Jul bridging SLF4J failure for duplicate log output
+   *     <p>Solution1: configure in jul configuration file,just like:
+   *     <p>handlers =org.slf4j.bridge.SLF4JBridgeHandler
+   *     <p>Solution2: remove handlers for root logger ,and then install
+   *     <p>SLF4JBridgeHandler.removeHandlersForRootLogger();
+   *     <p>SLF4JBridgeHandler.install();
+   * @author BiJi'an
+   * @date 2023-10-18 01:04
+   */
+  public static void trySlf4jSupport(String configFile) {
+
+    Properties properties = readProperties(configFile);
+    Objects.requireNonNull(properties);
+    String handlers = properties.getProperty("handlers");
+    if (StringUtil.isEmpty(handlers) || !handlers.contains("SLF4J")) {
+      trySlf4jSupport();
+    }
+  }
+
+  /**
+   * @title trySlf4jSupport
+   * @description trySlf4jSupport
+   *     <p>SLF4JBridgeHandler.removeHandlersForRootLogger();
+   *     <p>SLF4JBridgeHandler.install();
+   * @author BiJi'an
+   * @date 2023-10-18 01:05
+   */
+  public static void trySlf4jSupport() {
+    Class<Object> clazz = ClassUtil.findClass("org.slf4j.bridge.SLF4JBridgeHandler");
+    if (clazz != null) {
+      Method methodRemoveHandlersForRootLogger =
+          ReflectUtils.getMethod(clazz, "removeHandlersForRootLogger");
+      ReflectUtils.invoke(null, methodRemoveHandlersForRootLogger);
+
+      Method methodInstall = ReflectUtils.getMethod(clazz, "install");
+      ReflectUtils.invoke(null, methodInstall);
+    }
+  }
+
+  /**
+   * @title reset
+   * @description reset
+   * @author BiJi'an
+   * @date 2023-10-20 01:48
+   */
+  public static void reset() {
+    initialized = null;
   }
 }

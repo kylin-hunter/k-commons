@@ -1,11 +1,16 @@
 dependencies {
     api project(":k-commons")
+// guava
+    api("com.google.guava:guava")
+    implementation("com.github.rholder:guava-retrying:2.0.0")
+
 // logging
-    implementation("ch.qos.logback:logback-classic")
-    implementation("org.codehaus.janino:janino")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.codehaus.janino:janino")
 // commons
     implementation("commons-io:commons-io")
     implementation("commons-codec:commons-codec")
+    implementation("org.apache.commons:commons-lang3")
     implementation("org.apache.commons:commons-compress")
 
 //   xml
@@ -28,7 +33,6 @@ jar {
     exclude("k-jul-logging.properties")
 }
 test {
-    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
 
     println jvmArgs

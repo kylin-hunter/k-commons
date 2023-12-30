@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.component;
 
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.collections.SetUtils;
+import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.GenericTypeUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
  * @date 2023-01-19 02:19
  */
 public class CMethodDepCalculator {
+
   private final Map<CMethod, Set<CMethod>> dependencies = MapUtils.newHashMap();
   private final CMethodManager methodManager;
 
@@ -41,7 +43,6 @@ public class CMethodDepCalculator {
   }
 
   /**
-   * @return void
    * @title clear
    * @description
    * @author BiJi'an
@@ -70,7 +71,6 @@ public class CMethodDepCalculator {
 
   /**
    * @param cmethod cmethod
-   * @return void
    * @title calDependencies
    * @description
    * @author BiJi'an
@@ -83,7 +83,6 @@ public class CMethodDepCalculator {
 
   /**
    * @param oriCmethod oriCmethod
-   * @return void
    * @title calDependencies
    * @description
    * @author BiJi'an
@@ -107,22 +106,26 @@ public class CMethodDepCalculator {
 
       Method method = cmethod.getMethod();
       if (method.getParameterCount() > 0) {
-        Set<CMethod> tmpCMethods = SetUtils.newHashSet();
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        Type[] genericParameterTypes = method.getGenericParameterTypes();
-        for (int i = 0; i < parameterTypes.length; i++) {
-          Class<?> curParametorClass = parameterTypes[i];
-          if (Collection.class.isAssignableFrom(curParametorClass)) {
-            Type type = genericParameterTypes[i];
-            Class<?>[] actualTypeArgumentClasses = GenericTypeUtils.getActualTypeArguments(type);
-            for (Class<?> actualTypeArgumentClass : actualTypeArgumentClasses) {
-              Collection<CMethod> all = methodManager.getAll(actualTypeArgumentClass);
-              tmpCMethods.addAll(all);
+        try {
+          Set<CMethod> tmpCMethods = SetUtils.newHashSet();
+          Class<?>[] parameterTypes = method.getParameterTypes();
+          Type[] genericParameterTypes = method.getGenericParameterTypes();
+          for (int i = 0; i < parameterTypes.length; i++) {
+            Class<?> curParametorClass = parameterTypes[i];
+            if (Collection.class.isAssignableFrom(curParametorClass)) {
+              Type type = genericParameterTypes[i];
+              Class<?>[] actualTypeArgumentClasses = GenericTypeUtils.getActualTypeArguments(type);
+              for (Class<?> actualTypeArgumentClass : actualTypeArgumentClasses) {
+                Collection<CMethod> all = methodManager.getAll(actualTypeArgumentClass);
+                tmpCMethods.addAll(all);
+              }
+            } else {
+              tmpCMethods.add(methodManager.get(curParametorClass, true));
             }
-          } else {
-            tmpCMethods.add(methodManager.get(curParametorClass, true));
+            calculate(oriCmethod, tmpCMethods);
           }
-          calculate(oriCmethod, tmpCMethods);
+        } catch (Exception e) {
+          throw new InitException("init method error" + method, e);
         }
       }
     }

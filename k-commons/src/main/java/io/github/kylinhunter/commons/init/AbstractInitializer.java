@@ -32,7 +32,7 @@ public abstract class AbstractInitializer implements Initializer {
 
   @Setter protected DebugOption debugOption;
 
-  protected static volatile Map<Class<?>, Boolean> INITIALIZED_TAGS = MapUtils.newHashMap();
+  protected static volatile Map<Class<?>, Object> INITIALIZED_TAGS = MapUtils.newHashMap();
 
   @Setter protected ClassScanner classScanner;
 
@@ -51,12 +51,18 @@ public abstract class AbstractInitializer implements Initializer {
    * @date 2023-06-21 00:57
    */
   public synchronized void initialize() throws InitException {
-    Boolean initialized = INITIALIZED_TAGS.get(this.getClass());
-    if (initialized == null) {
-      INITIALIZED_TAGS.put(this.getClass(), true);
-      log.info("Initializer = {}", this.getClass().getName());
+    Object initializedObj = INITIALIZED_TAGS.get(this.getClass());
+    if (initializedObj == null) {
+      INITIALIZED_TAGS.put(this.getClass(), this);
+      log.info("Initializer = {} start ####", this.getClass().getName());
       init();
+      log.info("Initializer = {} end ####", this.getClass().getName());
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T> T get(Class<T> clazz) {
+    return (T) INITIALIZED_TAGS.get(clazz);
   }
 
   public abstract void init() throws InitException;

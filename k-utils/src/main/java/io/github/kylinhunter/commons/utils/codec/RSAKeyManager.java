@@ -15,8 +15,8 @@
  */
 package io.github.kylinhunter.commons.utils.codec;
 
-import io.github.kylinhunter.commons.cache.guava.Cache;
 import io.github.kylinhunter.commons.exception.embed.CryptException;
+import io.github.kylinhunter.commons.utils.cache.guava.Cache;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;

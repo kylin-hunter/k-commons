@@ -1,8 +1,9 @@
 dependencies {
-    implementation project(":k-utils")
     implementation project(":k-jdbc")
-    implementation("ch.qos.logback:logback-classic")
-    implementation("org.codehaus.janino:janino")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.codehaus.janino:janino")
+
+    implementation("commons-io:commons-io")
 
     implementation("org.apache.velocity:velocity-engine-core")
     implementation("org.apache.velocity.tools:velocity-tools-generic")
@@ -22,13 +23,12 @@ jar {
     exclude("logback.xml")
 
 }
-sourceSets {
-    main {
-        java.srcDirs += ['src_generator']
-    }
-}
+//sourceSets {
+//    main {
+//        java.srcDirs += ['src_generator']
+//    }
+//}
 test {
-    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
     println jvmArgs
 }

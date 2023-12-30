@@ -16,8 +16,6 @@
 package io.github.kylinhunter.commons.generator.context;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
-import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.component.CSet;
 import io.github.kylinhunter.commons.generator.config.bean.Config;
 import io.github.kylinhunter.commons.generator.config.bean.Database;
 import io.github.kylinhunter.commons.generator.config.bean.Module;
@@ -35,7 +33,7 @@ import io.github.kylinhunter.commons.generator.function.ExpressionExecutor;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -43,26 +41,40 @@ import lombok.extern.slf4j.Slf4j;
  * @description
  * @date 2023-02-12 10:24
  */
-@C
-@RequiredArgsConstructor
 @Slf4j
 public class TemplateContextBuilder {
 
-  @CSet private Config config;
-  @CSet private ModuleInfoReader moduleInfoReader;
-  @CSet private ExpressionExecutor expressionExecutor;
-  @CSet private FieldInfoConvertor fieldInfoConvertor;
+  private final Config config;
+  private final ModuleInfoReader moduleInfoReader;
+  private final ExpressionExecutor expressionExecutor = new ExpressionExecutor();
+  private final FieldInfoConvertor fieldInfoConvertor = new FieldInfoConvertor();
 
-  public List<TemplateContext> calculateContext() {
+  public TemplateContextBuilder(Config config, DataSource dataSource) {
+    this.config = config;
+    this.moduleInfoReader = new ModuleInfoReader(dataSource);
+  }
+
+  public TemplateContextBuilder(Config config, ModuleInfoReader moduleInfoReader) {
+    this.config = config;
+    this.moduleInfoReader = moduleInfoReader;
+  }
+
+  /**
+   * @return java.util.List<io.github.kylinhunter.commons.generator.context.bean.TemplateContext>
+   * @title calculateContext
+   * @description calculateContext
+   * @author BiJi'an
+   * @date 2023-12-17 16:07
+   */
+  public List<TemplateContext> build() {
     List<TemplateContext> templateContexts = ListUtils.newArrayList();
     Modules modules = config.getModules();
-    Database database = modules.getDatabase();
     for (Module module : modules.getList()) {
-      ModuleInfo moduleInfo = moduleInfoReader.read(database, module);
+      ModuleInfo moduleInfo = moduleInfoReader.read(module);
       for (Template template : config.getTemplates().getList()) {
         if (template.isEnabled()) {
           TemplateContext templateContext = new TemplateContext(moduleInfo, template);
-          calculateContext(templateContext);
+          build(templateContext);
           templateContexts.add(templateContext);
         }
       }
@@ -73,13 +85,12 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return io.github.kylinhunter.commons.generator.context.bean.TemplateContext
-   * @title toTemplateContext
-   * @description
+   * @title calculateContext
+   * @description calculateContext
    * @author BiJi'an
-   * @date 2023-02-19 00:23
+   * @date 2023-12-12 01:10
    */
-  private void calculateContext(TemplateContext templateContext) {
+  private void build(TemplateContext templateContext) {
     templateContext.putContext(ContextConsts.CLASS, templateContext.getClassInfo());
     templateContext.putContext(ContextConsts.MODULE, templateContext.getModuleInfo());
     templateContext.putContext(templateContext.getTemplate().getContext());
@@ -94,7 +105,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processFields
    * @description
    * @author BiJi'an
@@ -118,7 +128,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processPackageName
    * @description
    * @author BiJi'an
@@ -134,7 +143,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processClassName
    * @description
    * @author BiJi'an
@@ -150,7 +158,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processSuperClass
    * @description
    * @author BiJi'an
@@ -164,7 +171,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processSerilizeable
    * @description
    * @author BiJi'an
@@ -178,7 +184,6 @@ public class TemplateContextBuilder {
 
   /**
    * @param templateContext templateContext
-   * @return void
    * @title processComment
    * @description
    * @author BiJi'an

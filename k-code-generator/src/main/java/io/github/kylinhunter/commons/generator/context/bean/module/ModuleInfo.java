@@ -32,14 +32,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ModuleInfo {
+
   @EqualsAndHashCode.Include private String name;
   private Database database;
   private TableInfo tableInfo;
   private Module module;
 
-  public ModuleInfo(Database database, Module module, TableInfo tableInfo) {
-    this.database = database;
+  public ModuleInfo(Module module, TableInfo tableInfo) {
     this.module = module;
+    this.database = module.getDatabase();
     this.name = module.getName();
     this.tableInfo = tableInfo;
   }

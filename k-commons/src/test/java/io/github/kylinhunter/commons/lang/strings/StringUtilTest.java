@@ -3,6 +3,7 @@ package io.github.kylinhunter.commons.lang.strings;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {
@@ -25,5 +26,15 @@ class StringUtilTest {
   void split() {
     String str = "a.b.c.d.";
     assertEquals(4, StringUtil.split(str, '.').length);
+  }
+
+  @Test
+  void split2() {
+    String str = "a=b&b=c&c=d&d=";
+    Map<String, String> result = StringUtil.split(str, '&', '=');
+    result.forEach((k, v) -> {
+      System.out.println(k + ":" + v);
+    });
+    assertEquals(3, result.size());
   }
 }

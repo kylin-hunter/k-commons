@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.date;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -54,12 +55,12 @@ public class DateUtils {
   }
 
   /**
+   * @param timestamp timestamp
+   * @return java.lang.String
    * @title format
    * @description
    * @author BiJi'an
-   * @param timestamp timestamp
    * @date 2022-12-13 14:50
-   * @return java.lang.String
    */
   public static String format(long timestamp) {
     return format(DateUtils.toLocalDateTime(timestamp));
@@ -155,7 +156,7 @@ public class DateUtils {
   }
 
   public static LocalDateTime toLocalDateTime(long date) {
-    return new Date(date).toInstant().atOffset(zoneOffset).toLocalDateTime();
+    return Instant.ofEpochMilli(date).atOffset(zoneOffset).toLocalDateTime();
   }
 
   public static LocalDateTime toLocalDateTime(Date date, ZoneOffset zoneOffset) {

@@ -2,8 +2,10 @@ package io.github.kylinhunter.commons.reflect;
 
 import io.github.kylinhunter.commons.reflect.test.ReflectBeanChild;
 import io.github.kylinhunter.commons.reflect.test.TestClass;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,9 +21,8 @@ class ReflectUtilsTest {
 
     Assertions.assertThrows(
         RuntimeException.class,
-        () -> {
-          ReflectUtils.invoke(testClass, testClass.getClass().getMethod("setA", int.class), "1");
-        });
+        () -> ReflectUtils.invoke(testClass, testClass.getClass().getMethod("setA", int.class),
+            "1"));
   }
 
   @Test
@@ -105,5 +106,55 @@ class ReflectUtilsTest {
             e -> !e.getSimpleName().equals("ReflectInterface2"));
     result23.forEach(System.out::println);
     Assertions.assertEquals(2, result23.size());
+  }
+
+  @Test
+  void testFields() {
+
+    System.out.println("#### get1");
+    Set<Field> result12 = ReflectUtils.getFields(ReflectBeanChild.class);
+    result12.forEach(System.out::println);
+    Assertions.assertEquals(3, result12.size());
+
+    System.out.println("#### get + predicate ");
+    Set<Field> result13 =
+        ReflectUtils.getFields(ReflectBeanChild.class, e -> e.getName().equals("c2"));
+    result13.forEach(System.out::println);
+
+    Assertions.assertEquals(1, result13.size());
+
+    System.out.println("####getAll");
+    Set<Field> result22 = ReflectUtils.getAllFields(ReflectBeanChild.class);
+    result22.forEach(System.out::println);
+
+    Assertions.assertEquals(7, result22.size());
+
+    System.out.println("####getAll + predicate ");
+    Set<Field> result23 =
+        ReflectUtils.getAllFields(
+            ReflectBeanChild.class,
+            e -> !e.getName().equals("c2"),
+            e -> !e.getName().equals("gf2"));
+    result23.forEach(System.out::println);
+
+    Assertions.assertEquals(5, result23.size());
+  }
+
+  @SuppressWarnings("OptionalGetWithoutIsPresent")
+  @Test
+  void tesetSetField() {
+
+    ReflectBeanChild obj = new ReflectBeanChild();
+    Assertions.assertEquals(0, obj.getC1());
+
+    Optional<Field> c1Field = ReflectUtils.getAllFields(ReflectBeanChild.class).stream()
+        .filter(e -> e.getName().equals(
+            "c1")).findFirst();
+
+    ReflectUtils.setField(obj, c1Field.get(), 2);
+    Assertions.assertEquals(2, obj.getC1());
+    ReflectUtils.setField(obj, "c1", 3);
+    Assertions.assertEquals(3, obj.getC1());
+
   }
 }

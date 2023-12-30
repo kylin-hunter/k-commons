@@ -15,9 +15,9 @@
  */
 package io.github.kylinhunter.commons.utils.codec;
 
-import io.github.kylinhunter.commons.cache.guava.AbstractCache;
-import io.github.kylinhunter.commons.cache.guava.CacheConfig;
-import io.github.kylinhunter.commons.cache.guava.CacheKey;
+import io.github.kylinhunter.commons.utils.cache.guava.AbstractCache;
+import io.github.kylinhunter.commons.utils.cache.guava.CacheConfig;
+import io.github.kylinhunter.commons.utils.cache.guava.CacheKey;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 

@@ -19,6 +19,7 @@ import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.collections.SetUtils;
 import io.github.kylinhunter.commons.exception.ExceptionFinder;
 import io.github.kylinhunter.commons.exception.ExceptionFinder.ExceptionFind;
+import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.common.KThrowable;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 import java.util.List;
@@ -64,21 +65,24 @@ public class Explainers {
    */
   public ExplainResult explain(Throwable throwable) {
 
-    ExplainResult explainResult = null;
+    ExplainResult result = new ExplainResult(ErrInfos.UNKNOWN, throwable.getMessage());
     if (throwable instanceof KThrowable) {
-      explainResult = new ExplainResult((KThrowable) throwable, throwable.getMessage());
+      result = new ExplainResult((KThrowable) throwable, throwable.getMessage());
     } else {
-      ExceptionFind exceptionFind = ExceptionFinder.find(throwable, true, this.allExceptions);
-      if (exceptionFind != null) {
-        Explainer explainer = this.getExplain(exceptionFind.getSource());
-        if (explainer != null) {
-          explainResult = explainer.explain(exceptionFind.getTarget());
+
+      KRuntimeException exception = ExceptionFinder.find(throwable, true, KRuntimeException.class);
+      if (exception != null) {
+        result = new ExplainResult(exception);
+      } else {
+        ExceptionFind exceptionFind = ExceptionFinder.find(throwable, true, this.allExceptions);
+        if (exceptionFind != null) {
+          Explainer explainer = this.getExplain(exceptionFind.getSource());
+          if (explainer != null) {
+            result = explainer.explain(exceptionFind.getTarget());
+          }
         }
       }
-      if (explainResult == null) {
-        explainResult = new ExplainResult(ErrInfos.UNKNOWN, throwable.getMessage());
-      }
     }
-    return explainResult;
+    return result;
   }
 }

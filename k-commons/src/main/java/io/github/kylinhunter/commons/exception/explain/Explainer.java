@@ -25,10 +25,10 @@ import lombok.RequiredArgsConstructor;
  * @date 2022-11-24 02:45
  */
 @RequiredArgsConstructor
-public class Explainer {
+public class Explainer<T extends Throwable> {
 
   @Getter private final Class<? extends Throwable> source;
-  private Function<Throwable, ExplainResult> explainFun;
+  private Function<T, ExplainResult> explainFun;
 
   /**
    * @param throwable throwable
@@ -38,7 +38,7 @@ public class Explainer {
    * @author BiJi'an
    * @date 2023-06-22 00:38
    */
-  public ExplainResult explain(Throwable throwable) {
+  public ExplainResult explain(T throwable) {
     return explainFun.apply(throwable);
   }
 
@@ -49,7 +49,7 @@ public class Explainer {
    * @author BiJi'an
    * @date 2023-06-22 00:49
    */
-  public void explain(Function<Throwable, ExplainResult> explainer) {
+  public void explain(Function<T, ExplainResult> explainer) {
     this.explainFun = explainer;
   }
 }

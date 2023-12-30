@@ -2,9 +2,7 @@
 .gitee/
 
 # gradle ignore
-target/
-output/
-build/
+
 .gradle/
 gradle/wrapper/gradle-wrapper.jar
 gradlew
@@ -27,8 +25,7 @@ gradlew.bat
 *.iws
 
 # temp ignore
-logs/
-tmp/
+
 *.log
 *.cache
 *.diff
@@ -38,8 +35,19 @@ tmp/
 # system ignore
 .DS_Store
 Thumbs.db
-/k-code-generator/src_generator/*
-!/k-commons/src/main/resources/io/github/kylinhunter/commons/logs
 
+
+/output/
+/*/output/
+/build/
+/*/build/
+/out/
 /*/out/
+/logs/
+/*/logs/
+/tmp/
+/*/tmp/
+/target/
+/*/target/
 /k-commons/src/test/resources/test/java-io-test/
+

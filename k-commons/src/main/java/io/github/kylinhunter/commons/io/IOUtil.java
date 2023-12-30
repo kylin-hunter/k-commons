@@ -15,8 +15,12 @@
  */
 package io.github.kylinhunter.commons.io;
 
+import io.github.kylinhunter.commons.collections.ArrayUtils;
+import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.output.StringBuilderWriter;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -281,10 +286,12 @@ public class IOUtil {
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-  public static byte[] toByteArray(final InputStream inputStream) throws IOException {
+  public static byte[] toByteArray(final InputStream inputStream) {
     try (final ByteArrayOutputStream ubaOutput = new ByteArrayOutputStream()) {
       copy(inputStream, ubaOutput);
       return ubaOutput.toByteArray();
+    } catch (IOException e) {
+      throw new KIOException("toByteArray error", e);
     }
   }
 
@@ -297,8 +304,7 @@ public class IOUtil {
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-  public static int copy(final InputStream inputStream, final OutputStream outputStream)
-      throws IOException {
+  public static int copy(final InputStream inputStream, final OutputStream outputStream) {
     final long count = copyLarge(inputStream, outputStream);
     if (count > Integer.MAX_VALUE) {
       return EOF;
@@ -315,8 +321,7 @@ public class IOUtil {
    * @author BiJi'an
    * @date 2023-06-12 23:35
    */
-  public static long copyLarge(final InputStream inputStream, final OutputStream outputStream)
-      throws IOException {
+  public static long copyLarge(final InputStream inputStream, final OutputStream outputStream) {
     return copy(inputStream, outputStream, DEFAULT_BUFFER_SIZE);
   }
 
@@ -331,8 +336,7 @@ public class IOUtil {
    * @date 2023-06-12 23:35
    */
   public static long copy(
-      final InputStream inputStream, final OutputStream outputStream, final int bufferSize)
-      throws IOException {
+      final InputStream inputStream, final OutputStream outputStream, final int bufferSize) {
     return copyLarge(inputStream, outputStream, IOUtil.byteArray(bufferSize));
   }
 
@@ -347,22 +351,24 @@ public class IOUtil {
    * @date 2023-06-12 23:35
    */
   public static long copyLarge(
-      final InputStream inputStream, final OutputStream outputStream, final byte[] buffer)
-      throws IOException {
+      final InputStream inputStream, final OutputStream outputStream, final byte[] buffer) {
     Objects.requireNonNull(inputStream, "inputStream");
     Objects.requireNonNull(outputStream, "outputStream");
     long count = 0;
     int n;
-    while (EOF != (n = inputStream.read(buffer))) {
-      outputStream.write(buffer, 0, n);
-      count += n;
+    try {
+      while (EOF != (n = inputStream.read(buffer))) {
+        outputStream.write(buffer, 0, n);
+        count += n;
+      }
+    } catch (IOException e) {
+      throw new KIOException("copyLarge error", e);
     }
     return count;
   }
 
   /**
    * @param c c
-   * @return void
    * @title closeQuietly
    * @description closeQuietly
    * @author BiJi'an
@@ -375,5 +381,89 @@ public class IOUtil {
       } catch (final IOException ignored) { // NOPMD NOSONAR
       }
     }
+  }
+
+  /**
+   * @param c c
+   * @title closeQuietly
+   * @description closeQuietly
+   * @author BiJi'an
+   * @date 2023-12-03 00:15
+   */
+  public static void closeQuietly(final AutoCloseable c) {
+    if (c != null) {
+      try {
+        c.close();
+      } catch (final Exception ignored) { // NOPMD NOSONAR
+      }
+    }
+  }
+
+  /**
+   * @param body body
+   * @param charset charset
+   * @param charLen charLen
+   * @return java.lang.String
+   * @title toString
+   * @description toString
+   * @author BiJi'an
+   * @date 2023-09-26 19:39
+   */
+  public static String toString(byte[] body, Charset charset, int charLen) {
+    if (ArrayUtils.isEmpty(body)) {
+      return StringUtil.EMPTY;
+    }
+    charset = Charsets.defaultCharset(charset, Charsets.UTF_8);
+    if (charLen <= 0 || body.length < charLen) {
+      return new String(body, charset);
+    }
+    try (Reader reader = new InputStreamReader(new ByteArrayInputStream(body), charset)) {
+      return toString(reader, charLen);
+    } catch (IOException e) {
+      throw new KIOException("toString error", e);
+    }
+  }
+
+  public static String toString(InputStream input, Charset charset, int charLen) {
+    if (input == null) {
+      return StringUtil.EMPTY;
+    }
+    charset = Charsets.defaultCharset(charset, Charsets.UTF_8);
+    if (charLen <= 0) {
+
+      byte[] bytes = IOUtil.toByteArray(input);
+      return new String(bytes, charset);
+    }
+    try (Reader reader = new InputStreamReader(input, charset)) {
+      return toString(reader, charLen);
+    } catch (IOException e) {
+      throw new KIOException("toString error", e);
+    }
+  }
+
+  /**
+   * @param reader reader
+   * @param charLen charLen
+   * @return java.lang.String
+   * @throws IOException IOException
+   * @title toString
+   * @description toString
+   * @author BiJi'an
+   * @date 2023-09-26 23:59
+   */
+  public static String toString(Reader reader, int charLen) throws IOException {
+    CharBuffer result = CharBuffer.allocate(charLen);
+    int readLength = reader.read(result);
+    result.flip();
+    if (readLength > 0) {
+      String resultText = result.toString();
+      result.clear();
+      readLength = reader.read(result);
+      if (readLength > 0) {
+        resultText += "...";
+      }
+      return resultText;
+    }
+    return "";
   }
 }

@@ -75,7 +75,7 @@ public class ObjectCreator {
     try {
       return constructor.newInstance(initargs);
     } catch (Exception e) {
-      throw new InitException("init createBean error", e);
+      throw new InitException("create Bean error:" + constructor, e);
     }
   }
 

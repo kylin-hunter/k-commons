@@ -4,37 +4,12 @@
 
 一个基于位运算的状态管理工具
 
-### 软件架构
+### 设计说明
+
+![bitset](./bitset.png)
 
 利用位运算，以及java的枚举类型，管理状态
 
-### 安装教程
-
-#### 1、编译并发布到本地仓库
-
-```java
-        gradle clean build publishToMavenLocal-x test
-```
-
-#### 2、gradle (gradle.org)
-
-```java
-
-        implementation 'io.github.kylin-hunter:k-commons:1.0.9'
-
-```
-
-#### 3、maven (maven.apache.org)
-
-```java
-
-        <dependency>
-          <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>k-commons</artifactId>
-          <version>1.0.9</version>
-        </dependency>
-
-```
 
 ### 使用说明
 
@@ -42,7 +17,7 @@
 
 ##### 1.1 api
 
-```java
+```
 
 
 /**
@@ -85,7 +60,7 @@ public final boolean hasState(E... states)
 
 ###### 1.2.1 代码
 
-```java
+```
 
     // 定义一个基于枚举类型的状态
     public enum TestState {
@@ -99,37 +74,37 @@ public final boolean hasState(E... states)
 
     }
     // 测试用例
-    TestStateBitState abstractBitState = new TestStateBitState();
-    abstractBitState.setState(TestState.STATE1);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState.STATE1));
-    assertFalse(abstractBitState.hasState(TestState.STATE2));
-    assertFalse(abstractBitState.hasState(TestState.STATE3));
+    TestStateBitState stateBitState = new TestStateBitState();
+    stateBitState.setState(TestState.STATE1);
+    System.out.println(stateBitState);
+    assertTrue(stateBitState.hasState(TestState.STATE1));
+    assertFalse(stateBitState.hasState(TestState.STATE2));
+    assertFalse(stateBitState.hasState(TestState.STATE3));
 
-    abstractBitState.setState(TestState.STATE2);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState.STATE1));
-    assertTrue(abstractBitState.hasState(TestState.STATE2));
-    assertFalse(abstractBitState.hasState(TestState.STATE3));
+    stateBitState.setState(TestState.STATE2);
+    System.out.println(stateBitState);
+    assertTrue(stateBitState.hasState(TestState.STATE1));
+    assertTrue(stateBitState.hasState(TestState.STATE2));
+    assertFalse(stateBitState.hasState(TestState.STATE3));
 
-    abstractBitState.setState(TestState.STATE3);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState.STATE1));
-    assertTrue(abstractBitState.hasState(TestState.STATE2));
-    assertTrue(abstractBitState.hasState(TestState.STATE3));
+    stateBitState.setState(TestState.STATE3);
+    System.out.println(stateBitState);
+    assertTrue(stateBitState.hasState(TestState.STATE1));
+    assertTrue(stateBitState.hasState(TestState.STATE2));
+    assertTrue(stateBitState.hasState(TestState.STATE3));
 
-    abstractBitState.removeState(TestState.STATE3, TestState.STATE1);
-    System.out.println(abstractBitState);
+    stateBitState.removeState(TestState.STATE3, TestState.STATE1);
+    System.out.println(stateBitState);
 
-    assertFalse(abstractBitState.hasState(TestState.STATE1));
-    assertTrue(abstractBitState.hasState(TestState.STATE2));
-    assertFalse(abstractBitState.hasState(TestState.STATE3));
+    assertFalse(stateBitState.hasState(TestState.STATE1));
+    assertTrue(stateBitState.hasState(TestState.STATE2));
+    assertFalse(stateBitState.hasState(TestState.STATE3));
        
 ```
 
 ###### 1.2.2 打印结果
 
-```java
+```
     AbstractBitState[bitStates[0]=1]
     AbstractBitState[bitStates[0]=11]
     AbstractBitState[bitStates[0]=111]
@@ -141,7 +116,7 @@ public final boolean hasState(E... states)
 
 ###### 1.3.1 代码
 
-```java
+```
 
     // 定义一个基于枚举类型的状态 65个状态
     public enum TestState2 {
@@ -217,54 +192,54 @@ public final boolean hasState(E... states)
 
     }
 
-    TestStateBitState2 abstractBitState = new TestStateBitState2();
-    abstractBitState.setState(TestState2.STATE1);
-    abstractBitState.setState(TestState2.STATE63);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState2.STATE1));
-    assertFalse(abstractBitState.hasState(TestState2.STATE2));
-    assertFalse(abstractBitState.hasState(TestState2.STATE3));
+    TestStateBitState2 stateBitState = new TestStateBitState2();
+    stateBitState.setState(TestState2.STATE1);
+    stateBitState.setState(TestState2.STATE63);
+    System.out.println(stateBitState);
+    assertTrue(stateBitState.hasState(TestState2.STATE1));
+    assertFalse(stateBitState.hasState(TestState2.STATE2));
+    assertFalse(stateBitState.hasState(TestState2.STATE3));
 
-    assertTrue(abstractBitState.hasState(TestState2.STATE63));
-    assertFalse(abstractBitState.hasState(TestState2.STATE64));
-    assertFalse(abstractBitState.hasState(TestState2.STATE65));
+    assertTrue(stateBitState.hasState(TestState2.STATE63));
+    assertFalse(stateBitState.hasState(TestState2.STATE64));
+    assertFalse(stateBitState.hasState(TestState2.STATE65));
 
-    abstractBitState.setState(TestState2.STATE2);
-    abstractBitState.setState(TestState2.STATE64);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState2.STATE1));
-    assertTrue(abstractBitState.hasState(TestState2.STATE2));
-    assertFalse(abstractBitState.hasState(TestState2.STATE3));
-    assertTrue(abstractBitState.hasState(TestState2.STATE63));
-    assertTrue(abstractBitState.hasState(TestState2.STATE64));
-    assertFalse(abstractBitState.hasState(TestState2.STATE65));
+    stateBitState.setState(TestState2.STATE2);
+    stateBitState.setState(TestState2.STATE64);
+    System.out.println(stateBitState);
+    assertTrue(stateBitState.hasState(TestState2.STATE1));
+    assertTrue(stateBitState.hasState(TestState2.STATE2));
+    assertFalse(stateBitState.hasState(TestState2.STATE3));
+    assertTrue(stateBitState.hasState(TestState2.STATE63));
+    assertTrue(stateBitState.hasState(TestState2.STATE64));
+    assertFalse(stateBitState.hasState(TestState2.STATE65));
 
-    abstractBitState.setState(TestState2.STATE3);
-    abstractBitState.setState(TestState2.STATE65);
-    System.out.println(abstractBitState);
-    assertTrue(abstractBitState.hasState(TestState2.STATE1));
-    assertTrue(abstractBitState.hasState(TestState2.STATE2));
-    assertTrue(abstractBitState.hasState(TestState2.STATE3));
-    assertTrue(abstractBitState.hasState(TestState2.STATE63));
-    assertTrue(abstractBitState.hasState(TestState2.STATE64));
-    assertTrue(abstractBitState.hasState(TestState2.STATE65));
+    stateBitState.setState(TestState2.STATE3);
+    stateBitState.setState(TestState2.STATE65);
+    System.out.println(stateBitState);
+    assertTrue(stateBitState.hasState(TestState2.STATE1));
+    assertTrue(stateBitState.hasState(TestState2.STATE2));
+    assertTrue(stateBitState.hasState(TestState2.STATE3));
+    assertTrue(stateBitState.hasState(TestState2.STATE63));
+    assertTrue(stateBitState.hasState(TestState2.STATE64));
+    assertTrue(stateBitState.hasState(TestState2.STATE65));
 
-    abstractBitState.removeState(TestState2.STATE1, TestState2.STATE3,TestState2.STATE63,TestState2.STATE65);
-    System.out.println(abstractBitState);
+    stateBitState.removeState(TestState2.STATE1, TestState2.STATE3,TestState2.STATE63,TestState2.STATE65);
+    System.out.println(stateBitState);
 
-    assertFalse(abstractBitState.hasState(TestState2.STATE1));
-    assertTrue(abstractBitState.hasState(TestState2.STATE2));
-    assertFalse(abstractBitState.hasState(TestState2.STATE3));
+    assertFalse(stateBitState.hasState(TestState2.STATE1));
+    assertTrue(stateBitState.hasState(TestState2.STATE2));
+    assertFalse(stateBitState.hasState(TestState2.STATE3));
 
-    assertFalse(abstractBitState.hasState(TestState2.STATE63));
-    assertTrue(abstractBitState.hasState(TestState2.STATE64));
-    assertFalse(abstractBitState.hasState(TestState2.STATE65));
+    assertFalse(stateBitState.hasState(TestState2.STATE63));
+    assertTrue(stateBitState.hasState(TestState2.STATE64));
+    assertFalse(stateBitState.hasState(TestState2.STATE65));
        
 ```
 
 ###### 1.3.2 打印结果
 
-```java
+```
     AbstractBitState[bitStates[0]=100000000000000000000000000000000000000000000000000000000000001, bitStates[1]=0]
     AbstractBitState[bitStates[0]=1100000000000000000000000000000000000000000000000000000000000011, bitStates[1]=0]
     AbstractBitState[bitStates[0]=1100000000000000000000000000000000000000000000000000000000000111, bitStates[1]=1]

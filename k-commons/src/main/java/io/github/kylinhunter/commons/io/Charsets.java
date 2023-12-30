@@ -53,4 +53,16 @@ public class Charsets {
   public static Charset toCharset(final Charset charset) {
     return charset == null ? Charset.defaultCharset() : charset;
   }
+
+  /**
+   * @param charset charset
+   * @return java.nio.charset.Charset
+   * @title defaultCharset
+   * @description toCharset
+   * @author BiJi'an
+   * @date 2023-09-26 23:24
+   */
+  public static Charset defaultCharset(final Charset charset, final Charset defaultCharset) {
+    return charset == null ? defaultCharset : charset;
+  }
 }

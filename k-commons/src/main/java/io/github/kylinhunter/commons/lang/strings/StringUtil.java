@@ -15,8 +15,10 @@
  */
 package io.github.kylinhunter.commons.lang.strings;
 
+import io.github.kylinhunter.commons.collections.MapUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author BiJi'an
@@ -195,27 +197,29 @@ public class StringUtil {
 
     return str.substring(start, end);
   }
+
   /**
+   * @param str str
+   * @param separatorChar separatorChar
+   * @return java.lang.String[]
    * @title split
    * @description split
    * @author BiJi'an
-   * @param str str
-   * @param separatorChar separatorChar
    * @date 2023-06-11 00:16
-   * @return java.lang.String[]
    */
   public static String[] split(final String str, final char separatorChar) {
     return splitWorker(str, separatorChar, false);
   }
+
   /**
-   * @title splitWorker
-   * @description splitWorker
-   * @author BiJi'an
    * @param str str
    * @param separatorChar separatorChar
    * @param preserveAllTokens preserveAllTokens
-   * @date 2023-06-11 00:16
    * @return java.lang.String[]
+   * @title splitWorker
+   * @description splitWorker
+   * @author BiJi'an
+   * @date 2023-06-11 00:16
    */
   private static String[] splitWorker(
       final String str, final char separatorChar, final boolean preserveAllTokens) {
@@ -251,5 +255,33 @@ public class StringUtil {
       list.add(str.substring(start, i));
     }
     return list.toArray(EMPTY_STRING_ARRAY);
+  }
+
+  /**
+   * @param str str
+   * @param splitchar1 splitchar1
+   * @param splitchar2 splitchar2
+   * @return java.util.Map<java.lang.String, java.lang.String>
+   * @title split
+   * @description split
+   * @author BiJi'an
+   * @date 2023-11-25 20:39
+   */
+  public static Map<String, String> split(
+      final String str, final char splitchar1, final char splitchar2) {
+    Map<String, String> result = MapUtils.newLinkedHashMap();
+    if (str != null && str.length() > 0) {
+
+      String[] split1s = split(str, splitchar1);
+
+      for (String split1 : split1s) {
+        String[] split2s = StringUtil.split(split1, splitchar2);
+        if (split2s != null && split2s.length == 2) {
+
+          result.put(split2s[0], split2s[1]);
+        }
+      }
+    }
+    return result;
   }
 }

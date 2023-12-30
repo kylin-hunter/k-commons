@@ -10,13 +10,11 @@ class ErrInfoManagerTest {
     ErrInfoManager.println();
 
     Assertions.assertEquals("UNKNOWN", ErrInfoManager.getDefaultMsg(-1));
-    Assertions.assertEquals("FORMAT", ErrInfoManager.getDefaultMsg(10001));
-    Assertions.assertEquals("INIT", ErrInfoManager.getDefaultMsg(10002));
-    Assertions.assertEquals("INTERNAL", ErrInfoManager.getDefaultMsg(10003));
-    Assertions.assertEquals("IO", ErrInfoManager.getDefaultMsg(10004));
-    Assertions.assertEquals("PARAM", ErrInfoManager.getDefaultMsg(10005));
-    Assertions.assertEquals("BIZ", ErrInfoManager.getDefaultMsg(20001));
-    Assertions.assertEquals("DB", ErrInfoManager.getDefaultMsg(20002));
-    Assertions.assertEquals("DB_NO_EXIST", ErrInfoManager.getDefaultMsg(20003));
+    Assertions.assertEquals("FORMAT", ErrInfoManager.getDefaultMsg(1001));
+    Assertions.assertEquals("INIT", ErrInfoManager.getDefaultMsg(1002));
+    Assertions.assertEquals("INTERNAL", ErrInfoManager.getDefaultMsg(1003));
+    Assertions.assertEquals("IO", ErrInfoManager.getDefaultMsg(1004));
+    Assertions.assertEquals("PARAM", ErrInfoManager.getDefaultMsg(1005));
+    Assertions.assertEquals("BIZ", ErrInfoManager.getDefaultMsg(1101));
   }
 }

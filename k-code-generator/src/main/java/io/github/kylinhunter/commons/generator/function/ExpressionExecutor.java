@@ -17,8 +17,6 @@ package io.github.kylinhunter.commons.generator.function;
 
 import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.Expression;
-import io.github.kylinhunter.commons.component.C;
-import io.github.kylinhunter.commons.component.CAfter;
 import io.github.kylinhunter.commons.exception.ExCatcher;
 import io.github.kylinhunter.commons.io.IOUtil;
 import io.github.kylinhunter.commons.io.ResourceHelper;
@@ -32,8 +30,12 @@ import java.util.Map;
  * @description
  * @date 2023-03-19 01:05
  */
-@C
 public class ExpressionExecutor {
+
+  static {
+    AviatorEvaluator.addFunction(new StringToCamel());
+    AviatorEvaluator.addFunction(new StringToLower());
+  }
 
   /**
    * @param expression expression
@@ -117,11 +119,5 @@ public class ExpressionExecutor {
   public <T> T executeByFile(final String path, final Map<String, Object> env, Class<T> type) {
 
     return ExCatcher.run(() -> ObjectValues.get(executeByFile(path, env), type));
-  }
-
-  @CAfter
-  private void init() {
-    AviatorEvaluator.addFunction(new StringToCamel());
-    AviatorEvaluator.addFunction(new StringToLower());
   }
 }

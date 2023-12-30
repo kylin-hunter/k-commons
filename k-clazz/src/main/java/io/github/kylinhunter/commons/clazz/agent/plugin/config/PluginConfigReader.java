@@ -18,7 +18,7 @@ package io.github.kylinhunter.commons.clazz.agent.plugin.config;
 import io.github.kylinhunter.commons.clazz.agent.config.AgentArgsHelper;
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig;
 import io.github.kylinhunter.commons.clazz.exception.AgentException;
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.utils.properties.PropertiesHelper;
 import java.util.Properties;
 
@@ -60,7 +60,7 @@ public class PluginConfigReader {
 
     String configFile = AgentArgsHelper.getConfigFilePath();
     System.out.println("configFile=>" + configFile);
-    ExceptionChecker.checkNotEmpty(configFile, " no config file be specified ");
+    ThrowChecker.checkNotEmpty(configFile, " no config file be specified ");
     Properties propertiesOld = PropertiesHelper.load(configFile);
     Properties propertiesNew = new Properties();
     String prefix = FIX_PREFIX + pluginName + ".";

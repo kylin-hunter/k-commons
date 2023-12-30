@@ -15,7 +15,11 @@
  */
 package io.github.kylinhunter.commons.utils.json;
 
+import static io.github.kylinhunter.commons.utils.json.ObjectMapperProxy.EMPTY_BYTES;
+
 import com.fasterxml.jackson.databind.JavaType;
+import io.github.kylinhunter.commons.exception.embed.FormatException;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +42,14 @@ public class JsonUtils {
    * @date 2022-11-21 19:02
    */
   public static <T> T readToObject(String content, Class<T> valueType, JsonOption jsonOption) {
-    return ObjectMapperProxy.readValue(content, valueType, jsonOption);
+    try {
+      return ObjectMapperProxy.readValue(content, valueType, jsonOption);
+    } catch (Exception e) {
+      if (jsonOption.isThrowIfFailed()) {
+        throw new FormatException("text readValue error", e);
+      }
+    }
+    return null;
   }
 
   /**
@@ -66,7 +77,14 @@ public class JsonUtils {
    */
   public static <T> T readToObject(byte[] data, Class<T> type, JsonOption jsonOption) {
 
-    return ObjectMapperProxy.readValue(data, type, jsonOption);
+    try {
+      return ObjectMapperProxy.readValue(data, type, jsonOption);
+    } catch (Exception e) {
+      if (jsonOption.isThrowIfFailed()) {
+        throw new FormatException("text readValue error", e);
+      }
+    }
+    return null;
   }
 
   /**
@@ -92,7 +110,14 @@ public class JsonUtils {
    * @date 2022-11-21 16:32
    */
   public static String writeToString(Object value, JsonOption jsonOption) {
-    return ObjectMapperProxy.writeValueAsString(value, jsonOption);
+    try {
+      return ObjectMapperProxy.writeValueAsString(value, jsonOption);
+    } catch (Exception e) {
+      if (jsonOption.isThrowIfFailed()) {
+        throw new FormatException("text readValue error", e);
+      }
+    }
+    return StringUtil.EMPTY;
   }
 
   /**
@@ -129,7 +154,14 @@ public class JsonUtils {
    * @date 2022/01/01 4:29 下午
    */
   public static byte[] wirteToBytes(Object source, JsonOption jsonOption) {
-    return ObjectMapperProxy.writeValueAsBytes(source, jsonOption);
+    try {
+      return ObjectMapperProxy.writeValueAsBytes(source, jsonOption);
+    } catch (Exception e) {
+      if (jsonOption.isThrowIfFailed()) {
+        throw new FormatException("text readValue error", e);
+      }
+    }
+    return EMPTY_BYTES;
   }
 
   /**
@@ -143,7 +175,14 @@ public class JsonUtils {
    */
   @SuppressWarnings("unchecked")
   public static Map<String, Object> readToMap(String content, JsonOption jsonOption) {
-    return ObjectMapperProxy.readValue(content, Map.class, jsonOption);
+    try {
+      return ObjectMapperProxy.readValue(content, Map.class, jsonOption);
+    } catch (Exception e) {
+      if (jsonOption.isThrowIfFailed()) {
+        throw new FormatException("text readValue error", e);
+      }
+    }
+    return null;
   }
 
   /**
@@ -171,7 +210,14 @@ public class JsonUtils {
   public static <T> List<T> readToListObject(
       String content, Class<T> clazz, JsonOption jsonOption) {
     JavaType javaType = constructCollectionType(List.class, clazz);
-    return ObjectMapperProxy.readValue(content, javaType, jsonOption);
+    try {
+      return ObjectMapperProxy.readValue(content, javaType, jsonOption);
+    } catch (Exception e) {
+      if (jsonOption.isThrowIfFailed()) {
+        throw new FormatException("text readValue error", e);
+      }
+    }
+    return null;
   }
 
   /**
@@ -199,7 +245,14 @@ public class JsonUtils {
    */
   public static <T> T readValue(String content, JavaType valueType, JsonOption jsonOption) {
 
-    return ObjectMapperProxy.readValue(content, valueType, jsonOption);
+    try {
+      return ObjectMapperProxy.readValue(content, valueType, jsonOption);
+    } catch (Exception e) {
+      if (jsonOption.isThrowIfFailed()) {
+        throw new FormatException("text readValue error", e);
+      }
+    }
+    return null;
   }
 
   /**

@@ -20,6 +20,7 @@ import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import io.github.kylinhunter.commons.exception.explain.ExplainManager;
 import io.github.kylinhunter.commons.exception.explain.ExplainResult;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
+import java.util.logging.Logger;
 
 /**
  * @author BiJi'an
@@ -27,6 +28,8 @@ import io.github.kylinhunter.commons.exception.info.ErrInfos;
  * @date 2021/8/1
  */
 public class ExceptionConvertor {
+
+  private static Logger logger = Logger.getLogger(ExceptionConvertor.class.toString());
 
   /**
    * @param exception source
@@ -69,7 +72,7 @@ public class ExceptionConvertor {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.warning("convert error" + e.getMessage());
     }
     return new KRuntimeException(ErrInfos.UNKNOWN, exception.getMessage());
   }

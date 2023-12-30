@@ -1,0 +1,22 @@
+#parse("templates_sample/commons/swagger.vm")
+package ${class.packageName};
+${class.imports}
+
+/**
+ * @description  $!{class.comment}
+ * @author ${author}
+ * @since ${date}
+ * ${basic_swagger_snippet_vm_custom_property}
+ **/
+${class.snippets('class_before')}
+public class ${class.name} ${class.superClass} ${class.interfaces}{
+#foreach($field in ${class.fields})
+    ${field.snippets('field_before')}
+    private ${field.type} ${field.name};
+#end
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}

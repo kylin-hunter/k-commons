@@ -19,7 +19,7 @@ import static java.lang.reflect.Array.newInstance;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.date.DateUtils;
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.exception.embed.GeneralException;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.Charsets;
@@ -58,7 +58,6 @@ public class PropertiesHelper {
 
   /**
    * @param keyCorrector keyCorrector
-   * @return void
    * @title resetKeyCorrector
    * @description
    * @author BiJi'an
@@ -172,7 +171,7 @@ public class PropertiesHelper {
       properties.forEach((k, v) -> newProperties.put(defaultKeyCorrector.correct(k, nameRule), v));
       properties = newProperties;
     }
-    ExceptionChecker.checkNotNull(clazz);
+    ThrowChecker.checkNotNull(clazz);
     PropObjectPool objectPool = createPropObjectPool(properties, clazz);
     List<PropObject> propObjects = objectPool.getSortedPropObjes(); // resort
     propObjects.forEach(
@@ -239,7 +238,6 @@ public class PropertiesHelper {
   /**
    * @param objectPool objectPool
    * @param curPropObject curPropObject
-   * @return void
    * @title processPropFileds
    * @description
    * @author BiJi'an
@@ -409,7 +407,6 @@ public class PropertiesHelper {
    * @param parent parent
    * @param obj obj
    * @param exPd exPd
-   * @return void
    * @title toProperties
    * @description
    * @author BiJi'an

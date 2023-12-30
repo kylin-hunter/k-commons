@@ -6,32 +6,33 @@
 
 ### 软件架构
 
+![code-generator](./doc/code-generator.png)
+
 利用jdbc读取表信息，生成源代码
 
 ### 安装教程
 
 #### 1、编译并发布到本地仓库
 
-```java
+```
         gradle clean build publishToMavenLocal-x test
 ```
 
 #### 2、gradle (gradle.org)
 
-```java
-
-        implementation 'io.github.kylin-hunter:k-code-generator:1.0.2'
+```
+        implementation 'io.github.kylin-hunter:k-code-generator:1.0.4'
+        //最新版本号可以去中央仓库查找
 
 ```
 
 #### 3、maven (maven.apache.org)
 
-```java
-
+```
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-code-generator</artifactId>
-          <version>1.0.2</version>
+          <version>1.0.4</version>//最新版本号可以去中央仓库查找
         </dependency>
 
 ```
@@ -39,7 +40,7 @@
 ### 使用说明
 
 #### 1.  创建一个表 test_user
-```java
+```
 
 CREATE TABLE IF NOT EXISTS `test_user`(
         `id`                  bigint(20)     NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
@@ -73,11 +74,11 @@ CREATE TABLE IF NOT EXISTS `test_user`(
 
 ##### 2.1 k-db-config.yaml (放到classpath下)
 
-```java
+```
 
 datasources:
   - driverClassName: 'com.mysql.cj.jdbc.Driver'
-    jdbcUrl: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
+    url: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
     username: 'root'
     password: 'root'
     pool:
@@ -87,7 +88,7 @@ datasources:
       idleTimeout: 600000 # default: 600000 (10 minutes)
       maxLifetime: 1800000  # default: 1800000 (30 minutes
       validationTimeout: 5000 # default: 5000
-    dataSourceProperties:
+    properties:
       cachePrepStmts: true
       prepStmtCacheSize: 250
       prepStmtCacheSqlLimit: 2048
@@ -96,7 +97,7 @@ datasources:
 #### 3.  创建模板的配置文件
 ##### 3.1 k-generator-config.yaml (放到classpath下)
 
-```java
+```
 global: # 全局配置
   template_path: '/User/bijian/template'   # 模板所在目录，可以使用当前目录， 例如 $user.dir$/templates
   output:
@@ -181,22 +182,22 @@ templates: # 模板定义
 ##### 4.1 基本使用
 
 
-基本示例       | 释义
-------------- | -------------
-${class.packageName} |输出包名
-${class.name} | 输出类名
-${class.imports("import ",";")} | 输出所有的引用包， 'import '开头 ;结尾，自动回车，简写为${class.imports}
-$!{class.comment}  | 类的注释，默认为数据库表的注释
-${class.superClass("extends ")} | 输出父类， extends开头 ,简写为 ${class.superClass}
-${class.interfaces("implements ")}  | 输出所有接口， 'implements '开头，简写为 ${class.interfaces}
-#foreach($field in ${class.fields}) <br>&nbsp;&nbsp;${field.comment}<br>&nbsp;&nbsp;${field.type}<br>&nbsp;&nbsp;${field.name}<br>#end  |<li>${class.fields} => 遍历输出所有类型<br><li>${field.comment}=>属性注释，来自数据库的列注释<br><li>${field.type}==>属性类型，例如 String Long等等<br><li>${field.name}==>属性名，来自数据库列的名字（驼峰形式）
-#call($class.imports.add("io.swagger.annotations.ApiModel"))  | 添加一个import引用类到文件头部
-#call($class.snippets.add("class_before","xxx")) |定义一个代码片段，片段名字是 class_before
-${class.snippets('class_before')} |输出名为 class_before 的 代码片段
+| 基本示例       | 释义|
+| ------------- | -------------|
+| ${class.packageName} |输出包名|
+| ${class.name} | 输出类名|
+| ${class.imports("import ",";")} | 输出所有的引用包， 'import '开头 ;结尾，自动回车，简写为${class.imports}|
+| $!{class.comment}  | 类的注释，默认为数据库表的注释|
+| ${class.superClass("extends ")} | 输出父类， extends开头 ,简写为 ${class.superClass}|
+| ${class.interfaces("implements ")}  | 输出所有接口， 'implements '开头，简写为 ${class.interfaces}|
+| #foreach($field in ${class.fields}) <br>&nbsp;&nbsp;${field.comment}<br>&nbsp;&nbsp;${field.type}<br>&nbsp;&nbsp;${field.name}<br>#end  |<li>${class.fields} => 遍历输出所有类型<br><li>${field.comment}=>属性注释，来自数据库的列注释<br><li>${field.type}==>属性类型，例如 String Long等等<br><li>${field.name}==>属性名，来自数据库列的名字（驼峰形式）|
+| #call($class.imports.add("io.swagger.annotations.ApiModel"))  | 添加一个import引用类到文件头部|
+| #call($class.snippets.add("class_before","xxx")) |定义一个代码片段，片段名字是 class_before|
+| ${class.snippets('class_before')} |输出名为 class_before 的 代码片段|
 
 
 ##### 4.2 velocity GenericTools
-```java
+```
 在模板中，你可以使用velocity GenericTools
 官网参考: https://velocity.apache.org/tools/devel/generic.html
 默认的配置读取自：io/github/kylinhunter/commons/template/velocity-tools.xml（k-commons.jar)
@@ -224,7 +225,7 @@ ${date}=>输出日期
  2. templates.context
  3. templates.list[x].context
 
-```java
+```
 
 示例：
 templates:
@@ -238,7 +239,7 @@ ${author}=>输出变量author的值
 
 ##### 5.1 定义模板 basic.vm
 
-```java
+```
 package ${class.packageName};
 ${class.imports("import ",";")}
  /**
@@ -259,13 +260,13 @@ ${class.imports("import ",";")}
 
 ##### 5.2 执行代码生成
 
-```java
+```
 new CodeGenerator().execute();
 ```
 
 ##### 5.3 最终生成的源代码
 
-```java
+```
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;
@@ -309,7 +310,7 @@ public class UserBasic extends ArrayList implements Serializable,Cloneable{
 
 ##### 6.1 定义模板 basic_swagger.vm 
 
-```java
+```
 package ${class.packageName};
 ${class.imports("import ",";")}
 import io.swagger.annotations.ApiModel;
@@ -336,13 +337,13 @@ public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("i
 
 ##### 6.2 执行代码生成
 
-```java
+```
 new CodeGenerator().execute();
 ```
 
 ##### 6.3 最终生成的源代码
 
-```java
+```
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;
@@ -407,7 +408,7 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
 
 ##### 7.1 利用 snippets 定义swagger代码片段  swagger.vm
 
-```java
+```
 
 #parse("io/github/kylinhunter/commons/generator/common.vm")
 ##添加开发包导入
@@ -426,7 +427,7 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
 ```
 ##### 7.2 定义模板 basic_swagger_snippet.vm ,引用 swagger.vm
 
-```java
+```
 
 #parse("commons/swagger.vm")
 package ${class.packageName};
@@ -454,13 +455,13 @@ public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("i
 
 ##### 7.3 执行代码生成
 
-```java
+```
 new CodeGenerator().execute();
 ```
 
 ##### 7.4 最终生成的源代码
 
-```java
+```
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;

@@ -67,7 +67,7 @@ class CFieldCompSetter {
         Class<?> actualTypeArgumentClasses =
             GenericTypeUtils.getActualTypeArgument(cfield.getGenericType(), 0);
         value = compManager.getAll(actualTypeArgumentClasses, true);
-        ReflectUtils.set(compObject, field, value);
+        ReflectUtils.setField(compObject, field, value);
       } else {
         value = compManager.get(compClazz, false);
         if (value == null) {
@@ -75,7 +75,7 @@ class CFieldCompSetter {
               compObject.getClass().getName() + " can't set " + compClazz.getName());
         }
       }
-      ReflectUtils.set(compObject, field, value);
+      ReflectUtils.setField(compObject, field, value);
     }
   }
 

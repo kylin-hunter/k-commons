@@ -19,20 +19,24 @@ import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.collections.MapUtils;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.init.ClassScanner;
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2023-02-11 10:52
  */
+@Slf4j
 public class CompManager {
 
-  protected final Map<Class<?>, CObjects> allComponents = MapUtils.newHashMap();
+  protected final Map<Object, CObjects> allComponents = MapUtils.newHashMap();
+
   @Getter protected ClassScanner classScanner;
   protected final ConstructorCompManager constructorCompManager;
   protected final MethodCompManager methodCompManager;
@@ -99,7 +103,7 @@ public class CompManager {
   }
 
   /**
-   * @param compClazz compClazz
+   * @param key key
    * @param required required
    * @return java.util.List<T>
    * @title getComp
@@ -108,14 +112,14 @@ public class CompManager {
    * @date 2023-02-12 22:22
    */
   @SuppressWarnings("unchecked")
-  public <T, S extends T> T get(Class<S> compClazz, boolean required) {
-    Objects.requireNonNull(compClazz, "clazz can't be null");
-    CObjects cobjects = allComponents.get(compClazz);
+  public <T> T get(Object key, boolean required) {
+    Objects.requireNonNull(key, "key can't be null");
+    CObjects cobjects = allComponents.get(key);
     if (cobjects != null && !cobjects.isEmpty()) {
       return (T) cobjects.getObject();
     }
     if (required) {
-      throw new InitException("no component for :" + compClazz);
+      throw new InitException("no component for :" + key);
     }
     return null;
   }
@@ -132,6 +136,7 @@ public class CompManager {
    */
   @SuppressWarnings("UnusedReturnValue")
   public List<CObjects> register(Class<?> clazz, CConstructor cconstructor, Object obj) {
+    log.info("register {},{}", clazz.getName(), cconstructor.toString());
     CObject cobject = new CObject(cconstructor, obj);
     return register(clazz, cobject);
   }
@@ -163,7 +168,7 @@ public class CompManager {
    */
   @SuppressWarnings("UnusedReturnValue")
   public List<CObjects> register(Class<?> clazz, Object obj) {
-    CObject cobject = new CObject(true, 0, obj);
+    CObject cobject = new CObject(true, 0, clazz.getSimpleName(), obj);
     return register(clazz, cobject);
   }
 
@@ -175,10 +180,11 @@ public class CompManager {
    * @author BiJi'an
    * @date 2023-02-04 20:29
    */
-  private List<CObjects> register(Class<?> clazz, CObject ccbject) {
+  private List<CObjects> register(Class<?> clazz, CObject cobject) {
     try {
 
       List<CObjects> allAffectedCObjects = ListUtils.newArrayList();
+
       CObjects affectedCObject =
           allComponents.compute(
               clazz,
@@ -186,9 +192,16 @@ public class CompManager {
                 if (cobjects == null) {
                   cobjects = new CObjects();
                 }
-                cobjects.add(ccbject);
+                cobjects.add(cobject);
                 return cobjects;
               });
+      register(clazz.getSimpleName(), cobject);
+
+      String name = cobject.getName();
+      if (!StringUtil.isEmpty(name) && !name.equals(clazz.getSimpleName())) {
+        register(name, cobject);
+      }
+
       allAffectedCObjects.add(affectedCObject);
       Set<Class<?>> allInterfaces = classScanner.getAllInterface(clazz);
       if (allInterfaces != null && allInterfaces.size() > 0) {
@@ -200,7 +213,7 @@ public class CompManager {
                     if (cobjects == null) {
                       cobjects = new CObjects();
                     }
-                    cobjects.add(ccbject);
+                    cobjects.add(cobject);
                     return cobjects;
                   });
           allAffectedCObjects.add(affectedCObjects);
@@ -226,6 +239,40 @@ public class CompManager {
       if (this.get(compClazz, false) == null) {
         throw new InitException("no    component be initialized " + compClazz.getName());
       }
+    }
+  }
+
+  /**
+   * @param name name
+   * @param obj obj
+   * @title register
+   * @description register
+   * @author BiJi'an
+   * @date 2023-11-25 18:06
+   */
+  public void register(String name, Object obj) {
+    CObjects objects = new CObjects();
+    objects.add(new CObject(name, obj));
+    this.allComponents.put(name, objects);
+  }
+
+  /**
+   * @param name name
+   * @param cobject cobject
+   * @title register
+   * @description register
+   * @author BiJi'an
+   * @date 2023-11-25 18:57
+   */
+  private void register(String name, CObject cobject) {
+    if (!StringUtil.isEmpty(name)) {
+      CObjects cObjects = this.allComponents.get(name);
+      if (cObjects != null) {
+        throw new InitException("invalid cobject name:" + cobject.getName());
+      }
+      CObjects objects = new CObjects();
+      objects.add(cobject);
+      this.allComponents.put(name, objects);
     }
   }
 }

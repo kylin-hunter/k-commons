@@ -2,7 +2,7 @@ datasources:
   - driverClassName: 'com.mysql.cj.jdbc.Driver'
     #oracle=> oracle.jdbc.OracleDriver
     #sqlserver=>com.microsoft.sqlserver.jdbc.SQLServerDrive
-    jdbcUrl: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
+    url: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
     #oracle=> jdbc:oracle:thin:@localhost:1521:ORACLE
     #sqlserver=> jdbc:sqlserver://localhost:1433; DatabaseName=test
     username: 'root'
@@ -14,16 +14,12 @@ datasources:
       idleTimeout: 600000 # default: 600000 (10 minutes)
       maxLifetime: 1800000  # default: 1800000 (30 minutes
       validationTimeout: 5000 # default: 5000
-    dataSourceProperties:
+    properties:
       cachePrepStmts: true
       prepStmtCacheSize: 250
       prepStmtCacheSqlLimit: 2048
   - driverClassName: 'com.mysql.cj.jdbc.Driver'
-    #oracle=> oracle.jdbc.OracleDriver
-    #sqlserver=>com.microsoft.sqlserver.jdbc.SQLServerDrive
-    jdbcUrl: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
-    #oracle=> jdbc:oracle:thin:@localhost:1521:ORACLE
-    #sqlserver=> jdbc:sqlserver://localhost:1433; DatabaseName=test
+    url: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
     username: 'root'
     password: 'root'
     pool:
@@ -33,7 +29,7 @@ datasources:
       idleTimeout: 600000 # default: 600000 (10 minutes)
       maxLifetime: 1800000  # default: 1800000 (30 minutes
       validationTimeout: 5000 # default: 5000
-    dataSourceProperties:
+    properties:
       cachePrepStmts: true
       prepStmtCacheSize: 250
       prepStmtCacheSqlLimit: 2048

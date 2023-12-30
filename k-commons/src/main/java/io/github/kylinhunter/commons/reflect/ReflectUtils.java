@@ -52,24 +52,6 @@ public class ReflectUtils {
   /**
    * @param obj obj
    * @param field field
-   * @param value value
-   * @title set
-   * @description
-   * @author BiJi'an
-   * @date 2023-02-11 01:07
-   */
-  public static void set(Object obj, Field field, Object value) {
-    try {
-      field.setAccessible(true);
-      field.set(obj, value);
-    } catch (Exception e) {
-      throw new InitException("invoke error", e);
-    }
-  }
-
-  /**
-   * @param obj obj
-   * @param field field
    * @title get
    * @description get
    * @author BiJi'an
@@ -152,6 +134,16 @@ public class ReflectUtils {
     return Methods.get(clazz, predicates);
   }
 
+  public static Method getMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
+
+    try {
+      return clazz.getMethod(name, parameterTypes);
+    } catch (NoSuchMethodException e) {
+      // no method
+    }
+    return null;
+  }
+
   /**
    * @param clazz clazz
    * @param predicates predicates
@@ -194,5 +186,94 @@ public class ReflectUtils {
   public static Set<Constructor<?>> getAllConstructors(
       Class<?> clazz, Predicate<Constructor<?>>... predicates) {
     return Constructors.getAll(clazz, predicates);
+  }
+
+  /**
+   * @param clazz clazz
+   * @param predicates predicates
+   * @return java.util.Set<java.lang.reflect.Method>
+   * @title get
+   * @description
+   * @author BiJi'an
+   * @date 2023-05-13 00:29
+   */
+  @SafeVarargs
+  public static Set<Field> getFields(Class<?> clazz, Predicate<Field>... predicates) {
+    return Fields.get(clazz, predicates);
+  }
+
+  /**
+   * @param clazz clazz
+   * @param name name
+   * @return java.lang.reflect.Field
+   * @title getField
+   * @description getField
+   * @author BiJi'an
+   * @date 2023-12-17 15:32
+   */
+  public static Field getField(Class<?> clazz, String name) {
+
+    try {
+      return getAllFields(clazz).stream()
+          .filter(field -> name.equals(field.getName()))
+          .findFirst()
+          .orElse(null);
+    } catch (Exception e) {
+      // no method
+    }
+    return null;
+  }
+
+  /**
+   * @param clazz clazz
+   * @param predicates predicates
+   * @return java.util.Set<java.lang.reflect.Method>
+   * @title getAll
+   * @description
+   * @author BiJi'an
+   * @date 2023-05-13 00:29
+   */
+  @SafeVarargs
+  public static Set<Field> getAllFields(Class<?> clazz, Predicate<Field>... predicates) {
+    return Fields.getAll(clazz, predicates);
+  }
+
+  /**
+   * @param obj obj
+   * @param fieldName fieldName
+   * @param value value
+   * @title setField
+   * @description setField
+   * @author BiJi'an
+   * @date 2023-12-17 16:24
+   */
+  public static void setField(Object obj, String fieldName, Object value) {
+    try {
+      Field field = getField(obj.getClass(), fieldName);
+      setField(obj, field, value);
+    } catch (Exception e) {
+      throw new InitException("invoke error", e);
+    }
+  }
+
+  /**
+   * @param obj obj
+   * @param field field
+   * @param value value
+   * @title set
+   * @description
+   * @author BiJi'an
+   * @date 2023-02-11 01:07
+   */
+  public static void setField(Object obj, Field field, Object value) {
+    try {
+
+      if (!field.canAccess(obj)) {
+        field.setAccessible(true);
+      }
+      field.set(obj, value);
+    } catch (Exception e) {
+      throw new InitException("invoke error", e);
+    }
   }
 }

@@ -25,10 +25,9 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public enum DbType {
-  MYSQL(ColumnParserType.MYSQL),
-  ORACLE(ColumnParserType.ORACLE),
-  SQL_SERVER(ColumnParserType.SQL_SERVER),
-  OTHERS(ColumnParserType.MYSQL);
+  MYSQL("Mysql"),
+  ORACLE("Oracle"),
+  SQL_SERVER("SqlServer");
 
-  @Getter private final ColumnParserType columnParserType;
+  @Getter private final String prefix;
 }

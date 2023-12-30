@@ -20,13 +20,13 @@ import io.github.kylinhunter.commons.generator.template.AbstractTemplateEngine;
 import io.github.kylinhunter.commons.generator.template.TemplateExecutor;
 import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
 import io.github.kylinhunter.commons.generator.template.constant.VelocityConst;
+import io.github.kylinhunter.commons.io.file.FileUtil;
 import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.ToolManager;
@@ -40,6 +40,7 @@ import org.apache.velocity.tools.ToolManager;
 @EqualsAndHashCode(callSuper = false)
 @Slf4j
 public class VelocityTemplateEngine extends AbstractTemplateEngine {
+
   private VelocityEngine velocityEngine;
   private ToolManager toolManager;
 
@@ -48,7 +49,6 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
   }
 
   /**
-   * @return void
    * @title reInit
    * @description
    * @author BiJi'an
@@ -59,18 +59,18 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
     properties.setProperty(Velocity.RESOURCE_LOADERS, "class,file");
     properties.setProperty(Velocity.INPUT_ENCODING, Velocity.ENCODING_DEFAULT);
 
-    // resource.loader.class
+    // the class loader
     properties.setProperty(
         VelocityConst.KEY_RESOURCE_LOADER_CLASS_CLASS,
         VelocityConst.VALUE_RESOURCE_LOADER_CLASS_CLASS);
-
+    // the file loader
     properties.setProperty(
         VelocityConst.KEY_RESOURCE_LOADER_FILE_CLASS,
         VelocityConst.VALUE_RESOURCE_LOADER_FILE_CLASS);
 
     // resource.loader.file
     String templatePath = templateConfig.getTemplatePath().toFile().getAbsolutePath();
-    log.info("resource.loader.file.path=>" + templatePath);
+    log.info("resource.loader.file.path=>{}", templatePath);
     properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, templatePath);
 
     properties.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, "true");
@@ -89,7 +89,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
       if (!ArrayUtils.isEmpty(files)) {
         for (File file : files) {
           log.info("delete file=>" + file.getAbsolutePath());
-          FileUtils.deleteQuietly(file);
+          FileUtil.deleteQuietly(file);
         }
       }
     }

@@ -67,7 +67,7 @@ public class ExceptionWarapperInitializer extends AbstractInitializer {
   private void initClassName() {
 
     allClazzNames.add("io.github.kylinhunter.commons.classloader.ExClassLoaderUtil");
-    allClazzNames.add("io.github.kylinhunter.commons.exception.wrapper.ExceptionWrapperBean");
+    //  allClazzNames.add("io.github.kylinhunter.commons.exception.wrapper.ExceptionWrapperBean");
   }
 
   /**

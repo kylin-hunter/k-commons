@@ -1,14 +1,16 @@
 dependencies {
     api("org.reflections:reflections")
-    api("com.google.guava:guava")
+    api 'com.google.code.findbugs:jsr305:3.0.2'
     api("net.bytebuddy:byte-buddy")
     api("net.bytebuddy:byte-buddy-agent")
     api("org.slf4j:slf4j-api")
 
+
 // logging
-    implementation("ch.qos.logback:logback-classic")
-    implementation("org.codehaus.janino:janino")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.codehaus.janino:janino")
 // testing
+    testImplementation("org.slf4j:jul-to-slf4j")
     testImplementation("commons-io:commons-io")
     testImplementation("org.apache.commons:commons-lang3")
 }
@@ -19,7 +21,6 @@ jar {
 }
 
 test {
-    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
     jvmArgs('--add-opens', 'java.base/java.net=ALL-UNNAMED')
     println jvmArgs
     jacoco {

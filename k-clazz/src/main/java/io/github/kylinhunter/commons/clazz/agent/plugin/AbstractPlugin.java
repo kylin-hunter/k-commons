@@ -23,7 +23,7 @@ import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PluginConfig
 import io.github.kylinhunter.commons.clazz.agent.plugin.config.bean.PointCut;
 import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.ListUtils;
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.io.file.FileUtil;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
@@ -55,7 +55,6 @@ public abstract class AbstractPlugin implements Plugin {
   private PluginConfig config;
 
   /**
-   * @return void
    * @title buildConfig
    * @description
    * @author BiJi'an
@@ -63,7 +62,7 @@ public abstract class AbstractPlugin implements Plugin {
    */
   protected void buildConfig() {
     Class<? extends PluginConfig> configClazz = this.configDefinition();
-    ExceptionChecker.checkNotNull(configClazz, "config definition can't be null");
+    ThrowChecker.checkNotNull(configClazz, "config definition can't be null");
     this.config = pluginConfigReader.read(configClazz, this.name);
     DebugConfig debug = this.config.getDebug();
     if (debug.isEnabled()) {
@@ -98,7 +97,6 @@ public abstract class AbstractPlugin implements Plugin {
   }
 
   /**
-   * @return void
    * @title buildPluginPoint
    * @description
    * @author BiJi'an
@@ -117,7 +115,6 @@ public abstract class AbstractPlugin implements Plugin {
   }
 
   /**
-   * @return void
    * @title buildTransformer
    * @description
    * @author BiJi'an
@@ -138,7 +135,6 @@ public abstract class AbstractPlugin implements Plugin {
 
   /**
    * @param inst inst
-   * @return void
    * @title init
    * @description
    * @author BiJi'an

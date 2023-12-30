@@ -10,14 +10,14 @@ class DSCreatorTest {
 
   @Test
   void create() {
-    Class<? extends DataSourceEx> clazz =
+    Class<? extends ExDataSource> clazz =
         DSCreator.create(HikariDataSource.class, DebugOption.INSTANCE);
-    DataSourceEx dataSourceEx = ObjectCreator.create(clazz);
+    ExDataSource exDataSource = ObjectCreator.create(clazz);
 
-    dataSourceEx.setDsName("aaa");
-    Assertions.assertEquals("aaa", dataSourceEx.getDsName());
+    exDataSource.setDsName("aaa");
+    Assertions.assertEquals("aaa", exDataSource.getDsName());
 
-    dataSourceEx.setDsNo(999);
-    Assertions.assertEquals(999, dataSourceEx.getDsNo());
+    exDataSource.setDsNo(999);
+    Assertions.assertEquals(999, exDataSource.getDsNo());
   }
 }

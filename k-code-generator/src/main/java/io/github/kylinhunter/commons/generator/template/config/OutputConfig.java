@@ -15,10 +15,9 @@
  */
 package io.github.kylinhunter.commons.generator.template.config;
 
-import io.github.kylinhunter.commons.io.ResourceHelper;
+import io.github.kylinhunter.commons.io.ResourceHelper.PathInfo;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.io.file.path.PathUtil;
-import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -42,7 +41,6 @@ public class OutputConfig {
 
   /**
    * @param outputPath outputDir
-   * @return void
    * @title setOutputDir
    * @description
    * @author BiJi'an
@@ -56,14 +54,14 @@ public class OutputConfig {
 
   /**
    * @param outputPath outputPath
-   * @return void
    * @title setOutputPath
    * @description
    * @author BiJi'an
    * @date 2023-02-26 15:20
    */
   public void setOutputPath(String outputPath) {
-    File dir = ResourceHelper.getDir(outputPath, ResourceHelper.PathType.FILESYSTEM, true);
-    this.setOutputPath(dir.toPath());
+    PathInfo info = new PathInfo(outputPath);
+    Path path = Path.of(info.getPath());
+    this.setOutputPath(path);
   }
 }

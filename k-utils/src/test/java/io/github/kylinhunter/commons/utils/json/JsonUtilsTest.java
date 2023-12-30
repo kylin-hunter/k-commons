@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.utils.json;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.mockito.ArgumentMatchers.any;
+
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.exception.common.KRuntimeException;
 import java.nio.charset.StandardCharsets;
@@ -10,10 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mockit.Mock;
-import mockit.MockUp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 public class JsonUtilsTest {
 
@@ -68,33 +69,30 @@ public class JsonUtilsTest {
     text = JsonUtils.writeToString(testBean, JsonOptions.FAIL_SNAKE);
     Assertions.assertEquals(
         "snakeValue", JsonUtils.readToObject(text, Map.class).get("snake_test"));
+    try (MockedStatic<ObjectMapperProxy> proxy = Mockito.mockStatic(ObjectMapperProxy.class)) {
+      proxy.when(() -> ObjectMapperProxy.writeValueAsString(any(), any()))
+          .thenThrow(new RuntimeException("mock writeValueAsString error"));
+      Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.writeToString(testBean));
 
-    new MockUp<ObjectMapper>(ObjectMapper.class) {
-      @Mock
-      public String writeValueAsString(Object value) {
-        throw new RuntimeException("mock writeValueAsString error");
-      }
-    };
-    Assertions.assertThrows(KRuntimeException.class, () -> JsonUtils.writeToString(testBean));
-
-    Assertions.assertEquals("", JsonUtils.writeToString(testBean, JsonOptions.NO_FAIL));
+      Assertions.assertEquals("", JsonUtils.writeToString(testBean, JsonOptions.NO_FAIL));
+    }
   }
 
   @Test
   public void testWriteToBytes() {
     Assertions.assertTrue(JsonUtils.wirteToBytes(testBean).length > 0);
 
-    new MockUp<ObjectMapper>(ObjectMapper.class) {
-      @Mock
-      public byte[] writeValueAsBytes(Object value) {
-        throw new RuntimeException("mock writeValueAsBytes error");
-      }
-    };
+    try (MockedStatic<ObjectMapperProxy> proxy = Mockito.mockStatic(ObjectMapperProxy.class)) {
+      proxy.when(() -> ObjectMapperProxy.writeValueAsBytes(any(), any()))
+          .thenThrow(new RuntimeException("mock writeValueAsBytes error"));
 
-    Assertions.assertThrows(
-        KRuntimeException.class, () -> JsonUtils.wirteToBytes(testBean, JsonOptions.DEFAULT));
+      Assertions.assertThrows(
+          KRuntimeException.class, () -> JsonUtils.wirteToBytes(testBean, JsonOptions.DEFAULT));
 
-    Assertions.assertEquals(0, JsonUtils.wirteToBytes(testBean, JsonOptions.NO_FAIL).length);
+      Assertions.assertEquals(0, JsonUtils.wirteToBytes(testBean, JsonOptions.NO_FAIL).length);
+    }
+
+
   }
 
   @Test

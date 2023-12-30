@@ -6,32 +6,35 @@ A code generator
 
 ### Software Architecture
 
+![code-generator](./doc/code-generator.png)
+
 read table info using jdbc,to generate source code。
 
 ### Installation
 
 ####1、build and publish to local
 
-```java
+```
         gradle clean build publishToMavenLocal-x test
 ```
 
 #### 2、gradle (gradle.org)
 
-```java
+```
 
-        implementation 'io.github.kylin-hunter:k-code-generator:1.0.2'
+        implementation 'io.github.kylin-hunter:k-code-generator:1.0.4'
+         //The latest version can be found in the Maven repository 
 
 ```
 
 #### 3、maven (maven.apache.org)
 
-```java
+```
 
         <dependency>
           <groupId>io.github.kylin-hunter</groupId>
           <artifactId>k-code-generator</artifactId>
-          <version>1.0.2</version>
+          <version>1.0.4</version> //The latest version can be found in the Maven repository 
         </dependency>
 
 ```
@@ -39,7 +42,7 @@ read table info using jdbc,to generate source code。
 ### Instructions
 
 #### 1. create a table
-```java
+```
 
 CREATE TABLE IF NOT EXISTS `test_user`(
         `id`                  bigint(20)     NOT NULL COMMENT 'primary unique id' AUTO_INCREMENT,
@@ -73,11 +76,11 @@ CREATE TABLE IF NOT EXISTS `test_user`(
 
 ##### 2.1  k-db-config.yaml (put it to classpath)
 
-```java
+```
 
 datasources:
   - driverClassName: 'com.mysql.cj.jdbc.Driver'
-    jdbcUrl: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
+    url: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
     username: 'root'
     password: 'root'
     pool:
@@ -87,7 +90,7 @@ datasources:
       idleTimeout: 600000 # default: 600000 (10 minutes)
       maxLifetime: 1800000  # default: 1800000 (30 minutes
       validationTimeout: 5000 # default: 5000
-    dataSourceProperties:
+    properties:
       cachePrepStmts: true
       prepStmtCacheSize: 250
       prepStmtCacheSqlLimit: 2048
@@ -96,7 +99,7 @@ datasources:
 #### 3.  create a template config file 
 ##### 3.1 k-generator-config.yaml (put it to classpath)
 
-```java
+```
 global: # global config
   template_path: '/User/bijian/template'   # template dir,can use current dir: $user.dir$/templates
   output:
@@ -181,22 +184,22 @@ templates: # tempalte definition
 ##### 4.1 basic  usage
 
 
-example      | explain
-------------- | -------------
-${class.packageName} |output pakageName
-${class.name} | output class simple name
-${class.imports("import ",";")} | output imports  start with import,end with; <br>Abbreviated as ${class.imports}
-$!{class.comment}  | output comment of the class , the table's remarks
-${class.superClass("extends ")} | output superclass ,start with 'extends' ,<br>Abbreviated as ${class.superClass}
-${class.interfaces("implements ")}  | output all interfaces ,start with 'implements'，<br>Abbreviated as ${class.interfaces}
-#foreach($field in ${class.fields}) <br>&nbsp;&nbsp;${field.comment}<br>&nbsp;&nbsp;${field.type}<br>&nbsp;&nbsp;${field.name}<br>#end  |<li>${class.fields} => Traverse all fields<br><li>${field.comment}=>the comment of field from the table column's remarks <br><li>${field.type}==>the type of field ,for example String  Long<br><li>${field.name}==>the name of field from the table column with camel style
-#call($class.imports.add("io.swagger.annotations.ApiModel"))  | add a class to imports
-#call($class.snippets.add("class_before","xxx")) |add a  code Snippet with name 'class_before'
-${class.snippets('class_before')} |output the code Snippet with name 'class_before'
+| example      | explain|
+| ------------- | -------------|
+| ${class.packageName} |output pakageName|
+| ${class.name} | output class simple name|
+| ${class.imports("import ",";")} | output imports  start with import,end with; <br>Abbreviated as ${class.imports}|
+| $!{class.comment}  | output comment of the class , the table's remarks|
+| ${class.superClass("extends ")} | output superclass ,start with 'extends' ,<br>Abbreviated as ${class.superClass}|
+| ${class.interfaces("implements ")}  | output all interfaces ,start with 'implements'，<br>Abbreviated as ${class.interfaces}|
+| #foreach($field in ${class.fields}) <br>&nbsp;&nbsp;${field.comment}<br>&nbsp;&nbsp;${field.type}<br>&nbsp;&nbsp;${field.name}<br>#end  |<li>${class.fields} => Traverse all fields<br><li>${field.comment}=>the comment of field from the table column's remarks <br><li>${field.type}==>the type of field ,for example String  Long<br><li>${field.name}==>the name of field from the table column with camel style|
+| #call($class.imports.add("io.swagger.annotations.ApiModel"))  | add a class to imports|
+| #call($class.snippets.add("class_before","xxx")) |add a  code Snippet with name 'class_before'|
+| ${class.snippets('class_before')} |output the code Snippet with name 'class_before'|
 
 
 ##### 4.2 velocity GenericTools
-```java
+```
 you can use velocity GenericTools in the template
 official website reference: https://velocity.apache.org/tools/devel/generic.html
 the default configuration location: io/github/kylinhunter/commons/template/velocity-tools.xml（k-commons.jar)
@@ -224,7 +227,7 @@ ${date}=>output a date
  2. templates.context
  3. templates.list[x].context
 
-```java
+```
 
 for examples:
 templates:
@@ -239,7 +242,7 @@ ${author}=>output the variable author
 
 ##### 5.1 difine template basic.vm
 
-```java
+```
 package ${class.packageName};
 ${class.imports("import ",";")}
  /**
@@ -260,13 +263,13 @@ ${class.imports("import ",";")}
 
 ##### 5.2 exec
 
-```java
+```
 new CodeGenerator().execute();
 ```
 
 ##### 5.3 the file generated
 
-```java
+```
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;
@@ -309,7 +312,7 @@ public class UserBasic extends ArrayList implements Serializable,Cloneable{
 
 ##### 6.1 define basic_swagger.vm 
 
-```java
+```
 package ${class.packageName};
 ${class.imports("import ",";")}
 import io.swagger.annotations.ApiModel;
@@ -336,13 +339,13 @@ public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("i
 
 ##### 6.2 exec
 
-```java
+```
 new CodeGenerator().execute();
 ```
 
 ##### 6.3 the file generated
 
-```java
+```
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;
@@ -408,7 +411,7 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
 
 ##### 7.1 define a code snippet tempalte： swagger.vm
 
-```java
+```
 
 #parse("io/github/kylinhunter/commons/generator/common.vm")
 ##add  package import
@@ -427,7 +430,7 @@ public class UserBasicSwagger extends ArrayList implements Serializable,Cloneabl
 ```
 ##### 7.2 define basic_swagger_snippet.vm , using swagger.vm
 
-```java
+```
 
 #parse("commons/swagger.vm")
 package ${class.packageName};
@@ -455,13 +458,13 @@ public class ${class.name} ${class.superClass("extends ")} ${class.interfaces("i
 
 ##### 7.3 exec
 
-```java
+```
 new CodeGenerator().execute();
 ```
 
 ##### 7.4 the file generated
 
-```java
+```
 package com.kylinhunter.user;
 import java.util.ArrayList;
 import java.io.Serializable;

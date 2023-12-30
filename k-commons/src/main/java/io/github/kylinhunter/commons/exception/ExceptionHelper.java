@@ -17,7 +17,6 @@ package io.github.kylinhunter.commons.exception;
 
 import io.github.kylinhunter.commons.exception.common.KThrowable;
 import io.github.kylinhunter.commons.exception.info.ErrInfo;
-import io.github.kylinhunter.commons.exception.info.ErrInfoManager;
 import io.github.kylinhunter.commons.exception.info.ErrInfos;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 
@@ -43,7 +42,7 @@ public class ExceptionHelper {
         return errInfo.getCode();
       }
     }
-    return ErrInfos.CODE_UNKNOWN;
+    return ErrInfos.UNKNOWN.getCode();
   }
 
   /**
@@ -60,7 +59,7 @@ public class ExceptionHelper {
 
   /**
    * @param e e
-   * @param showUnknownMsg showUnknownMsg
+   * @param debug debug
    * @param max max
    * @return java.lang.String
    * @title 获取异常消息
@@ -68,26 +67,23 @@ public class ExceptionHelper {
    * @author BiJi'an
    * @date 2022/01/01 5:23 下午
    */
-  public static String getMessage(Throwable e, boolean showUnknownMsg, int max) {
+  public static String getMessage(Throwable e, boolean debug, int max) {
+
+    String message = null;
 
     if (e instanceof KThrowable) {
       ErrInfo errInfo = ((KThrowable) e).getErrInfo();
-      if (errInfo != null) {
-        int code = errInfo.getCode();
-        if (code != ErrInfos.UNKNOWN.getCode()) {
-          String msg =
-              StringUtil.defaultIfBlank(e.getMessage(), ErrInfoManager.getDefaultMsg(code));
-          return StringUtil.substring(msg, 0, max);
+      if (errInfo != null && errInfo != ErrInfos.UNKNOWN) {
+        message = e.getMessage();
+        if (StringUtil.isBlank(message)) {
+          message = errInfo.getDefaultMsg();
         }
       }
-    }
-    String returnMsg;
-    if (showUnknownMsg) {
-      returnMsg = StringUtil.defaultString(e.getMessage(), ErrInfos.MSG_UNKNOWN);
-    } else {
-      returnMsg = ErrInfos.MSG_UNKNOWN;
-    }
 
-    return StringUtil.substring(returnMsg, 0, max);
+    } else if (debug) {
+      message = e.getMessage();
+    }
+    message = StringUtil.defaultString(message, ErrInfos.UNKNOWN.getDefaultMsg());
+    return StringUtil.substring(message, 0, max);
   }
 }

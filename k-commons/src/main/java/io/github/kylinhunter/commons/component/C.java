@@ -31,6 +31,10 @@ import java.lang.annotation.Target;
 @Documented
 public @interface C {
 
+  String value() default "";
+
+  String name() default "";
+
   boolean primary() default false;
 
   int order() default 0;

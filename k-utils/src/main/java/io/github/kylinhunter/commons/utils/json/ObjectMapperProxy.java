@@ -16,6 +16,7 @@
 package io.github.kylinhunter.commons.utils.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -26,8 +27,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.github.kylinhunter.commons.date.DatePatterns;
-import io.github.kylinhunter.commons.exception.embed.FormatException;
-import io.github.kylinhunter.commons.lang.strings.StringUtil;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,8 +40,8 @@ import java.util.TimeZone;
  */
 public class ObjectMapperProxy {
 
-  private static ObjectMapper defaultObjectMapper;
-  private static ObjectMapper snakeObjectMapper;
+  private static final ObjectMapper defaultObjectMapper;
+  private static final ObjectMapper snakeObjectMapper;
   public static final byte[] EMPTY_BYTES = new byte[0];
 
   static {
@@ -57,9 +57,9 @@ public class ObjectMapperProxy {
    * @date 2022-11-21 23:30
    */
   private static ObjectMapper createSnakeObjectMapper() {
-    snakeObjectMapper = createDefaultObjectMapper();
-    snakeObjectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-    return snakeObjectMapper;
+    ObjectMapper objectMapper = createDefaultObjectMapper();
+    objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    return objectMapper;
   }
 
   /**
@@ -130,15 +130,10 @@ public class ObjectMapperProxy {
    * @author BiJi'an
    * @date 2022-11-21 20:08
    */
-  public static <T> T readValue(String content, JavaType javaType, JsonOption jsonOption) {
-    try {
-      return getObjectMapper(jsonOption).readValue(content, javaType);
-    } catch (Exception e) {
-      if (jsonOption.isThrowIfFailed()) {
-        throw new FormatException("text readValue error", e);
-      }
-    }
-    return null;
+  public static <T> T readValue(String content, JavaType javaType, JsonOption jsonOption)
+      throws JsonProcessingException {
+
+    return getObjectMapper(jsonOption).readValue(content, javaType);
   }
 
   /**
@@ -151,15 +146,10 @@ public class ObjectMapperProxy {
    * @author BiJi'an
    * @date 2022-11-21 20:08
    */
-  public static <T> T readValue(String content, Class<T> valueType, JsonOption jsonOption) {
-    try {
-      return getObjectMapper(jsonOption).readValue(content, valueType);
-    } catch (Exception e) {
-      if (jsonOption.isThrowIfFailed()) {
-        throw new FormatException("text readValue error", e);
-      }
-    }
-    return null;
+  public static <T> T readValue(String content, Class<T> valueType, JsonOption jsonOption)
+      throws JsonProcessingException {
+
+    return getObjectMapper(jsonOption).readValue(content, valueType);
   }
 
   /**
@@ -172,15 +162,10 @@ public class ObjectMapperProxy {
    * @author BiJi'an
    * @date 2022-11-21 20:14
    */
-  public static <T> T readValue(byte[] content, Class<T> valueType, JsonOption jsonOption) {
-    try {
-      return getObjectMapper(jsonOption).readValue(content, valueType);
-    } catch (Exception e) {
-      if (jsonOption.isThrowIfFailed()) {
-        throw new FormatException("text readValue error", e);
-      }
-    }
-    return null;
+  public static <T> T readValue(byte[] content, Class<T> valueType, JsonOption jsonOption)
+      throws IOException {
+
+    return getObjectMapper(jsonOption).readValue(content, valueType);
   }
 
   /**
@@ -192,15 +177,10 @@ public class ObjectMapperProxy {
    * @author BiJi'an
    * @date 2022-11-21 20:14
    */
-  public static String writeValueAsString(Object content, JsonOption jsonOption) {
-    try {
-      return getObjectMapper(jsonOption).writeValueAsString(content);
-    } catch (Exception e) {
-      if (jsonOption.isThrowIfFailed()) {
-        throw new FormatException("text readValue error", e);
-      }
-    }
-    return StringUtil.EMPTY;
+  public static String writeValueAsString(Object content, JsonOption jsonOption)
+      throws JsonProcessingException {
+
+    return ObjectMapperProxy.getObjectMapper(jsonOption).writeValueAsString(content);
   }
 
   /**
@@ -212,14 +192,9 @@ public class ObjectMapperProxy {
    * @author BiJi'an
    * @date 2022-11-21 20:14
    */
-  public static byte[] writeValueAsBytes(Object content, JsonOption jsonOption) {
-    try {
-      return getObjectMapper(jsonOption).writeValueAsBytes(content);
-    } catch (Exception e) {
-      if (jsonOption.isThrowIfFailed()) {
-        throw new FormatException("text readValue error", e);
-      }
-    }
-    return EMPTY_BYTES;
+  public static byte[] writeValueAsBytes(Object content, JsonOption jsonOption)
+      throws JsonProcessingException {
+
+    return getObjectMapper(jsonOption).writeValueAsBytes(content);
   }
 }

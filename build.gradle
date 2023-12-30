@@ -28,8 +28,8 @@ allprojects {
     apply plugin: 'maven-publish'
     apply from: "$rootProject.rootDir/script/gradle-script/k-gradle-allprojects.gradle"
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     repositories {
         mavenLocal()
         maven {
@@ -49,7 +49,7 @@ allprojects {
 
 subprojects {
 
-//  apply plugin: 'org.springframework.boot'
+
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.bmuschko.docker-remote-api'
     apply plugin: 'signing'
@@ -87,7 +87,7 @@ subprojects {
         testImplementation 'org.junit.platform:junit-platform-suite'
         testImplementation 'org.mockito:mockito-core'
         testImplementation 'org.mockito:mockito-inline'
-        testImplementation 'org.jmockit:jmockit'
+
     }
 
     jar {
@@ -231,7 +231,7 @@ subprojects {
         showProgress = true
         effort = 'max'  // -effort[:min|less|default|more|max]:
         reportLevel = 'medium' // low medium high
-        excludeFilter = file("../auto-test/spotbugs/exclude.xml")
+        excludeFilter = file("../script/auto-test/spotbugs/exclude.xml")
         onlyAnalyze = ['io.github.kylinhunter.-']
         maxHeapSize = '1g'
         extraArgs = ['-nested:false']
@@ -264,7 +264,8 @@ subprojects {
 //            importOrder()
 //            removeUnusedImports()
             googleJavaFormat()
-            licenseHeaderFile "$rootProject.rootDir/spotless.license-java"
+//            formatAnnotations()
+            licenseHeaderFile "$rootProject.rootDir/script/spotless/spotless.license-java"
         }
     }
 

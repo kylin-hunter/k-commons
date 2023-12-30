@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import lombok.Getter;
 import org.reflections.ReflectionUtils;
@@ -81,7 +82,7 @@ class CMethodManager {
   @SuppressWarnings("unchecked")
   private void calculate(Class<?> compClazz) {
     Object ccObject = ObjectCreator.create(compClazz);
-    compManager.register(compClazz, ccObject);
+    compManager.register(compClazz, ccObject); // register CC object
     Set<Method> methods = ReflectionUtils.getAllMethods(compClazz);
     for (Method method : methods) {
       C c = method.getAnnotation(C.class);
@@ -163,7 +164,7 @@ class CMethodManager {
       return methods.get(0);
     }
     if (required) {
-      throw new InitException(" no cmethods ");
+      throw new InitException(" no cmethods " + compClazz.getName());
     }
     return null;
   }
@@ -178,10 +179,6 @@ class CMethodManager {
    */
   public List<CMethod> getAll(Class<?> compClazz) {
     List<CMethod> cConstructors = cmethodsMap.get(compClazz);
-    if (cConstructors != null) {
-      return cConstructors;
-    } else {
-      return Collections.emptyList();
-    }
+    return Objects.requireNonNullElse(cConstructors, Collections.emptyList());
   }
 }

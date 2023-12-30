@@ -15,6 +15,7 @@
  */
 package io.github.kylinhunter.commons.component;
 
+import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import java.lang.reflect.Method;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,7 +35,16 @@ class CMethod {
   private int depLevel;
   private int order;
 
+  private String name;
+
   public CMethod(Method method, Object compObject, C c) {
+    String name = c.name();
+    if (StringUtil.isEmpty(name)) {
+      this.name = c.value();
+    }
+    if (StringUtil.isEmpty(this.name)) {
+      this.name = method.getName();
+    }
     this.method = method;
     this.compObject = compObject;
     this.primary = c.primary();

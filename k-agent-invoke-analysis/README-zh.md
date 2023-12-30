@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `test_user`(
 
 datasources:
   - driverClassName: 'com.mysql.cj.jdbc.Driver'
-    jdbcUrl: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
+    url: 'jdbc:mysql://localhost:3306/kp?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai'
     username: 'root'
     password: 'root'
     pool:
@@ -87,7 +87,7 @@ datasources:
       idleTimeout: 600000 # default: 600000 (10 minutes)
       maxLifetime: 1800000  # default: 1800000 (30 minutes
       validationTimeout: 5000 # default: 5000
-    dataSourceProperties:
+    properties:
       cachePrepStmts: true
       prepStmtCacheSize: 250
       prepStmtCacheSqlLimit: 2048

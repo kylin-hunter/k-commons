@@ -4,37 +4,12 @@
 
 A Unique ID Generator Based on Snowflake Algorithm
 
-### Software Architecture
+### design specification
+
+![uid](./uid.png)
 
 Based on Snowflake Algorithm
 
-### Installation
-
-####1、build and publish to local
-
-```java
-        gradle clean build publishToMavenLocal -x test
-```
-
-#### 2、gradle (gradle.org)
-
-```java
-
-    implementation'io.github.kylin-hunter:k-commons:1.0.9'
-
-```
-
-#### 3、maven (maven.apache.org)
-
-```java
-
-        <dependency>
-          <groupId>io.github.kylin-hunter</groupId>
-            <artifactId>io.github.kylin-hunter:k-commons</artifactId>
-          <version>1.0.9</version>
-        </dependency>
-
-```
 
 ### Instructions
 
@@ -42,7 +17,7 @@ Based on Snowflake Algorithm
 
 ##### 1.1 api
 
-```java
+```
 
 /**
  * @param type business  type
@@ -71,7 +46,7 @@ public UidGenerator(int sequenceBits,int typeBits,int workerIdBits,int datacente
 
 /**
  * @return long
- * @title 获取下一个uid
+ * @title next uid
  * @description
  * @author BiJi'an
  * @date 2022-12-11 00:39
@@ -96,7 +71,7 @@ public UidInfo parse(long uid);
 
 ###### 1.2.1 code
 
-```java
+```
 
     // business type =3
     // worker id = 4
@@ -111,7 +86,7 @@ public UidInfo parse(long uid);
 
 ###### 1.2.2 print result
 
-```java
+```
 
         2022-12-13 16:54:26.177 [Test worker] INFO   -  i.g.k.commons.uid.UidGenerator[107]: timestampBits 41, datacenterIdBits 2, workerIdBits 4,typeBits 4, sequenceBits 12
         161155503589961728=>UidInfo[sequence=0, type=3, workerId=4, datacenterId=1, timestamp=1670921666180/2022-12-13 16:54:26]

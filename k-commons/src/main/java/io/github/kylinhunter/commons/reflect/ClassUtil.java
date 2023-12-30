@@ -101,6 +101,16 @@ public class ClassUtil {
     }
   }
 
+  public static <T> Class<T> findClass(String className) {
+    try {
+
+      return (Class<T>) Class.forName(className);
+    } catch (Exception e) {
+      // load class error
+    }
+    return null;
+  }
+
   /**
    * @param className className
    * @return java.lang.String

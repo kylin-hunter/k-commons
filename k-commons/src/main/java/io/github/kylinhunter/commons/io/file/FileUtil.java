@@ -17,7 +17,7 @@ package io.github.kylinhunter.commons.io.file;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.exception.ExCatcher;
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.file.filter.DefaultPathFilter;
 import io.github.kylinhunter.commons.io.file.filter.PathFilter;
@@ -96,7 +96,6 @@ public class FileUtil {
 
   /**
    * @param file file
-   * @return java.io.File
    * @title delete
    * @description
    * @author BiJi'an
@@ -132,7 +131,7 @@ public class FileUtil {
     Objects.requireNonNull(names, "names");
     File file = directory;
     for (final String name : names) {
-      ExceptionChecker.checkNotEmpty(name, "name can't be empty");
+      ThrowChecker.checkNotEmpty(name, "name can't be empty");
       if (file == null) {
         file = newFile(name);
       } else {
@@ -352,7 +351,6 @@ public class FileUtil {
 
   /**
    * @param file file
-   * @return void
    * @title forceMkdirParent
    * @description
    * @author BiJi'an
@@ -378,7 +376,6 @@ public class FileUtil {
 
   /**
    * @param file file
-   * @return void
    * @title delte
    * @description
    * @author BiJi'an
@@ -394,7 +391,6 @@ public class FileUtil {
 
   /**
    * @param directory directory
-   * @return void
    * @throws KIOException KIOException
    * @title cleanDirectory
    * @description
@@ -462,7 +458,6 @@ public class FileUtil {
 
   /**
    * @param file file
-   * @return void
    * @title forceDelete
    * @description
    * @author BiJi'an

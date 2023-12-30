@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.collections;
 
-import io.github.kylinhunter.commons.exception.check.ExceptionChecker;
+import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -37,8 +37,8 @@ public class StreamUtils {
    * @date 2023-05-12 15:51
    */
   public static <T> Stream<T> andFilter(final Stream<T> stream, Predicate<T>... predicates) {
-    ExceptionChecker.checkNotNull(stream);
-    ExceptionChecker.checkNotEmpty(predicates);
+    ThrowChecker.checkNotNull(stream);
+    ThrowChecker.checkNotEmpty(predicates);
     return stream.filter(Arrays.stream(predicates).reduce(t -> true, Predicate::and));
   }
 
@@ -52,8 +52,8 @@ public class StreamUtils {
    * @date 2023-05-12 16:14
    */
   public static <T> Stream<T> orFilter(final Stream<T> stream, Predicate<T>... predicates) {
-    ExceptionChecker.checkNotNull(stream);
-    ExceptionChecker.checkNotEmpty(predicates);
+    ThrowChecker.checkNotNull(stream);
+    ThrowChecker.checkNotEmpty(predicates);
     return stream.filter(Arrays.stream(predicates).reduce(t -> false, Predicate::or));
   }
 }
