@@ -254,7 +254,22 @@ public class TableTaskManager extends AbstractDatabaseVisitor {
     return dao.batchError(destination, maxRetry, startDate);
   }
 
+  /**
+   * @param table table
+   * @param dataId dataId
+   * @return boolean
+   * @title isDeleted
+   * @description isDeleted
+   * @author BiJi'an
+   * @date 2023-12-31 01:17
+   */
   public boolean isDeleted(Table table, String dataId) {
-    return dao.isDeleted(table.getTableName(), table.getDelColName(), table.getPkColName(), dataId);
+    try {
+      return dao.isDeleted(
+          table.getTableName(), table.getDelColName(), table.getPkColName(), dataId);
+    } catch (Exception e) {
+      log.error("can't find isDeleted", e);
+    }
+    return false;
   }
 }

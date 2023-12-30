@@ -78,8 +78,8 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
   private static final String SQL_RETRY =
       "update  %s  set status="
           + RowStatus.RETRYING.getCode()
-          + " retry_times=retry_times+1 "
-          + "where db=? and table_name=? and data_id=?  and status="
+          + ", retry_times=retry_times+1 "
+          + " where db=? and table_name=? and data_id=?  and status="
           + RowStatus.PROCESSING.getCode();
 
   private static final String SQL_RETRY_BATCH =
@@ -323,7 +323,9 @@ public class MysqlTableMonitorTaskDAO extends AbsctractBasicDAO implements Table
     String sql = String.format(SQL_IS_LOGIC_DELETED, delColName, tableName, pkColName);
 
     Map<String, Object> map = this.getSqlExecutor().query(sql, new MapHandler(), dataId);
-
+    if (map == null) {
+      return false;
+    }
     return ObjectValues.getBoolean(map.get("deleteFlag"), false);
   }
 }
