@@ -36,6 +36,8 @@
 
 > [binlog-table-monitor](doc/binlog-table-monitor/binlog-table-monitor-zh.md)
 
+> [scan-table-monitor](doc/scan-table-monitor/scan-table-monitor-zh.md)
+
 
 #### 版权 | License
 

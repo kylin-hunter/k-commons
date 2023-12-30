@@ -34,7 +34,9 @@ a Common tool collection
 
 ## Document
 
-> [binlog-table-monitor](doc/binlog-table-monitor/binlog-table-monitor.md)
+> [binlog-table-monitor](doc/binlog-table-monitor/binlog-table-monitor-en.md)
+ 
+> [scan-table-monitor](doc/scan-table-monitor/scan-table-monitor-en.md)
 
 #### License
 
