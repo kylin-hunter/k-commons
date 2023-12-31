@@ -2,13 +2,15 @@
 
 ### Description
 
-![beanutil](./beanutil.png)
+![BeanCopyUtils](./BeanCopyUtils.png)
 
-A bean copy util  based on spring BeanUtil
+
+BeanCopyUtils, a bean replication tool that supports JSON, XML, and YAML replication
+
 
 ### design specification
 
-A bean copy util  based on spring BeanUtil
+BeanCopyUtils, a bean replication tool that supports JSON, XML, and YAML replication
 
 ### Installation
 
@@ -23,6 +25,9 @@ A bean copy util  based on spring BeanUtil
 ```
         implementation 'org.yaml:snakeyaml:1.29' // support yaml , if needed
         implementation 'org.dom4j:dom4j:2.1.3' // support xml, if needed
+         // support json , if needed
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4.2")
 
 ```
 
@@ -38,6 +43,16 @@ A bean copy util  based on spring BeanUtil
           <groupId>org.dom4j</groupId>
           <artifactId>dom4j</artifactId>
           <version>2.1.3</version>
+        </dependency>
+         <dependency> <!-- support json , if needed-->
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.13.4.2</version>
+        </dependency>
+        <dependency> <!-- support json , if needed-->
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+          <version>2.13.4.2</version>
         </dependency>
 
 ```

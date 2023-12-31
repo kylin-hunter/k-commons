@@ -2,13 +2,15 @@
 
 ### 介绍
 
-一个基于spring BeanUtils的扩展工具
+一个支持 json、xml、yaml复制的bean 复制工具 BeanCopyUtils
+
 
 ### 设计说明
 
-![beanutil](./beanutil.png)
+![BeanCopyUtils](./BeanCopyUtils.png)
 
-一个基于spring BeanUtils的扩展工具
+一个支持 json、xml、yaml复制的bean 复制工具 BeanCopyUtils
+
 
 ### 安装教程
 
@@ -18,6 +20,9 @@
         implementation 'org.yaml:snakeyaml:1.29' // 如果需要支持yaml 才需要引用
 
         implementation 'org.dom4j:dom4j:2.1.3' // 如果需要支持xml 才需要引用
+         // 如果支持json，才需要引入
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4.2")
 
 ```
 
@@ -25,15 +30,26 @@
 
 ```
        
-        <dependency>  <!-- 可选支持snake->
+
+        <dependency>  <!-- 如果需要支持yaml 才需要引用-->
           <groupId>org.yaml</groupId>
           <artifactId>snakeyaml</artifactId>
           <version>1.29</version>
         </dependency>
-        <dependency> <!-- 可选 支持 xml-->
+        <dependency> <!-- 如果需要支持xml 才需要引用-->
           <groupId>org.dom4j</groupId>
           <artifactId>dom4j</artifactId>
           <version>2.1.3</version>
+        </dependency>
+        <dependency> <!-- 如果需要支持xml 才需要引用-->
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.13.4.2</version>
+        </dependency>
+        <dependency> <!-- 如果需要支持xml 才需要引用-->
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+          <version>2.13.4.2</version>
         </dependency>
 
 ```
