@@ -15,7 +15,9 @@
  */
 package io.github.kylinhunter.commons.utils.json;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author BiJi'an
@@ -23,8 +25,12 @@ import lombok.Data;
  * @date 2022-11-21 16:38
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class JsonOption {
 
-  private final boolean throwIfFailed;
-  private final boolean snake;
+  private boolean throwIfFailed = true;
+  private boolean snake;
+  private boolean autoType;
+  private boolean pretty;
 }

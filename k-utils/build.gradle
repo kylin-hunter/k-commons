@@ -1,28 +1,39 @@
 dependencies {
     api project(":k-commons")
-// guava
-    api("com.google.guava:guava")
-    implementation("com.github.rholder:guava-retrying:2.0.0")
 
 // logging
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.codehaus.janino:janino")
+
+// guava
+    api("com.google.guava:guava")
+    compileOnly("com.github.rholder:guava-retrying:2.0.0")
+    testImplementation("com.github.rholder:guava-retrying:2.0.0")
 // commons
-    implementation("commons-io:commons-io")
-    implementation("commons-codec:commons-codec")
-    implementation("org.apache.commons:commons-lang3")
-    implementation("org.apache.commons:commons-compress")
+    api("commons-io:commons-io")
+    api("org.apache.commons:commons-lang3")
+
+    compileOnly("commons-codec:commons-codec")
+    testImplementation("commons-codec:commons-codec")
+    compileOnly("org.apache.commons:commons-compress")
+    testImplementation("org.apache.commons:commons-compress")
 
 //   xml
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
-    implementation 'com.sun.xml.bind:jaxb-impl'
+    compileOnly 'jakarta.xml.bind:jakarta.xml.bind-api'
+    testImplementation 'jakarta.xml.bind:jakarta.xml.bind-api'
+    compileOnly 'com.sun.xml.bind:jaxb-impl'
+    testImplementation 'com.sun.xml.bind:jaxb-impl'
 
 //   json
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compileOnly("com.fasterxml.jackson.core:jackson-databind")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind")
+    compileOnly("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
 
 //   yaml
-    implementation('org.yaml:snakeyaml')
+    compileOnly('org.yaml:snakeyaml')
+    testImplementation('org.yaml:snakeyaml')
 
 
 }

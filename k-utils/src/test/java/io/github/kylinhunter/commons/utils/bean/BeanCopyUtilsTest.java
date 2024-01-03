@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.utils.bean;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.serialize.ObjectBytesSerializer;
-import io.github.kylinhunter.commons.utils.json.JsonUtils;
+import io.github.kylinhunter.commons.utils.json.JsonTool;
 import io.github.kylinhunter.commons.utils.xml.JAXBHelper;
 import io.github.kylinhunter.commons.utils.yaml.YamlHelper;
 import java.util.List;
@@ -40,12 +40,12 @@ class BeanCopyUtilsTest {
 
     Bean2 beanDist = new Bean2();
     BeanCopyUtils.copyProperties(beanSource, beanDist, "name2");
-
+    JsonTool jsonTool = JsonTool.get();
     Assertions.assertEquals(beanSource.getName1(), beanDist.getName1());
     Assertions.assertNull(beanDist.getName2());
-    Assertions.assertEquals(JsonUtils.writeToString(subBean), beanDist.getJson());
+    Assertions.assertEquals(jsonTool.writeToString(subBean), beanDist.getJson());
     Assertions.assertEquals(
-        JsonUtils.writeToString(ListUtils.newArrayList(subBean)), beanDist.getJsonList());
+        jsonTool.writeToString(ListUtils.newArrayList(subBean)), beanDist.getJsonList());
     Assertions.assertEquals(
         subBean.getText(),
         ((SubBean) ObjectBytesSerializer.deserialize(beanDist.getBytes())).getText());

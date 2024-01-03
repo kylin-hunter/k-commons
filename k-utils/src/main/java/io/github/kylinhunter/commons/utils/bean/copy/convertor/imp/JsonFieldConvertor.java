@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.utils.bean.copy.AbstractFieldConvertor;
 import io.github.kylinhunter.commons.utils.bean.copy.convertor.Direction;
-import io.github.kylinhunter.commons.utils.json.JsonUtils;
+import io.github.kylinhunter.commons.utils.json.JsonTool;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -33,6 +33,7 @@ import java.util.List;
  */
 public class JsonFieldConvertor extends AbstractFieldConvertor {
 
+  private final JsonTool jsonTool = JsonTool.get();
   private JavaType targetType;
 
   public JsonFieldConvertor(
@@ -52,7 +53,7 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
         if (targetReturnType instanceof ParameterizedType) {
           ParameterizedType type = (ParameterizedType) targetReturnType;
           Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
-          targetType = JsonUtils.constructCollectionType(List.class, clazz);
+          targetType = jsonTool.constructCollectionType(List.class, clazz);
         }
       }
     }
@@ -61,7 +62,7 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
   @Override
   public void forword(Object source, Object target) {
     Object sourceValue = this.read(source);
-    String targetValue = JsonUtils.writeToString(sourceValue);
+    String targetValue = jsonTool.writeToString(sourceValue);
     this.write(target, targetValue);
   }
 
@@ -70,9 +71,9 @@ public class JsonFieldConvertor extends AbstractFieldConvertor {
     Object sourceValue = this.read(source);
     Object targetValue;
     if (targetType != null) {
-      targetValue = JsonUtils.readValue(String.valueOf(sourceValue), targetType);
+      targetValue = jsonTool.readValue(String.valueOf(sourceValue), targetType);
     } else {
-      targetValue = JsonUtils.readToObject(String.valueOf(sourceValue), targetPD.getPropertyType());
+      targetValue = jsonTool.readToObject(String.valueOf(sourceValue), targetPD.getPropertyType());
     }
     this.write(target, targetValue);
   }

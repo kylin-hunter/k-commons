@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true">
+  <property name="app.name" value="k-images"/>
+  <property name="app.logging.log_level" value="INFO"/>
+
+  <include resource="io/github/kylinhunter/commons/logs/app/kylinhunter-app-default.xml"/>
+  <include resource="io/github/kylinhunter/commons/logs/app/kylinhunter-app.xml"/>
+</configuration>
