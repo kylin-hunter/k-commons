@@ -29,5 +29,21 @@ public interface EnumService<T> {
    * @author BiJi'an
    * @date 2024-01-04 22:34
    */
-  Class<? extends T> getClazz();
+  Class<? extends T> getSrvClazz();
+
+  default Class[] getInitArgTypes() {
+    return null;
+  }
+
+  /**
+   * @return java.lang.Object[]
+   * @title getInitargs
+   * @description getInitargs
+   * @author BiJi'an
+   * @date 2024-01-05 00:17
+   */
+  default Object[] getInitArgs() {
+    return null;
+  }
+
 }

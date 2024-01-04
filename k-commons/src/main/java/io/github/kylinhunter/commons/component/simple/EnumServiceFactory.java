@@ -17,6 +17,7 @@ package io.github.kylinhunter.commons.component.simple;
 
 import io.github.kylinhunter.commons.exception.embed.InitException;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
+import java.lang.reflect.Constructor;
 
 /**
  * @author BiJi'an
@@ -36,7 +37,7 @@ public class EnumServiceFactory {
    * @date 2024-01-04 22:34
    */
   @SuppressWarnings("unchecked")
-  public <S> S getService(Enum<? extends EnumService<S>> service) {
+  public <S> S get(Enum<? extends EnumService<S>> service) {
     return (S) services[service.ordinal()];
   }
 
@@ -57,7 +58,20 @@ public class EnumServiceFactory {
         if (enumConstant instanceof EnumService) {
           EnumService enumService = (EnumService) enumConstant;
           try {
-            Object service = ObjectCreator.create(enumService.getClazz().getDeclaredConstructor());
+            Class[] initArgTypes = enumService.getInitArgTypes();
+            Constructor declaredConstructor = null;
+            Object service = null;
+            if (initArgTypes != null) {
+              declaredConstructor = enumService.getSrvClazz().getDeclaredConstructor(initArgTypes);
+              Object[] initArgs = enumService.getInitArgs();
+              service = ObjectCreator.create(declaredConstructor, initArgs);
+
+            } else {
+              declaredConstructor = enumService.getSrvClazz().getDeclaredConstructor();
+              service = ObjectCreator.create(declaredConstructor);
+
+            }
+
             services[enumConstant.ordinal()] = service;
           } catch (NoSuchMethodException e) {
             throw new InitException("init error", e);

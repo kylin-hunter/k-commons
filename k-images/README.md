@@ -4,6 +4,11 @@
 
 a common utils 
 
+Prerequisites
+Install GraphicsMagick
+GraphicsMagic not natively supports some formats. Refer to this list. To support more formats, you must install the required software.
+
+
 
 ## Installation
 

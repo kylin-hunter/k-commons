@@ -11,10 +11,10 @@ class EnumServiceFactoryTest {
     EnumServiceFactory enumServiceFactory = new EnumServiceFactory();
     enumServiceFactory.init(ServiceService.class);
 
-    A service1 = enumServiceFactory.getService(ServiceService.S1);
+    A service1 = enumServiceFactory.get(ServiceService.S1);
     Assertions.assertEquals("A1", service1.call());
 
-    A service2 = enumServiceFactory.getService(ServiceService.S2);
+    A service2 = enumServiceFactory.get(ServiceService.S2);
     Assertions.assertEquals("A2", service2.call());
 
 
@@ -32,7 +32,7 @@ class EnumServiceFactoryTest {
     }
 
     @Override
-    public Class<? extends A> getClazz() {
+    public Class<? extends A> getSrvClazz() {
       return clazz;
     }
   }
