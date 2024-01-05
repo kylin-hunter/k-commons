@@ -25,7 +25,7 @@ import io.github.kylinhunter.commons.collections.CollectionUtils;
 import io.github.kylinhunter.commons.collections.ListUtils;
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import io.github.kylinhunter.commons.io.file.FileUtil;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.lang.strings.StringUtil;
 import io.github.kylinhunter.commons.reflect.ObjectCreator;
 import java.io.File;
@@ -71,8 +71,8 @@ public abstract class AbstractPlugin implements Plugin {
         File dir = FileUtil.getDir(true, classSaveDir);
         debug.setFileClassSaveDir(dir);
       } else {
-        debug.setFileClassSaveDir(UserDirUtils.getTmpDir());
-        System.out.println("====>" + UserDirUtils.getTmpDir());
+        debug.setFileClassSaveDir(TmpDirUtils.getUserDir());
+        System.out.println("====>" + TmpDirUtils.getUserDir());
       }
 
       if (debug.isClassSaveDirAutoClean()) {

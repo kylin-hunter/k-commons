@@ -5,6 +5,7 @@ import io.github.kylinhunter.commons.compiler.KplatCompiler;
 import io.github.kylinhunter.commons.exception.embed.KIOException;
 import io.github.kylinhunter.commons.io.ResourceHelper;
 import io.github.kylinhunter.commons.io.file.FileUtil;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import io.github.kylinhunter.commons.jdbc.datasource.DataSourceManager;
 import io.github.kylinhunter.commons.jdbc.execute.SqlExecutor;
@@ -49,8 +50,8 @@ class TestCodeGenerator {
 
   static void execute() throws NoSuchFieldException {
 
-    File sourceDir = UserDirUtils.getTmpDir("generator/src");
-    File compileOutputDir = UserDirUtils.getTmpDir("generator/classes");
+    File sourceDir = TmpDirUtils.getUserDir("generator/src");
+    File compileOutputDir = TmpDirUtils.getUserDir("generator/classes");
 
     FileUtil.cleanDirectoryQuietly(compileOutputDir);
     CodeGenerator codeGenerator = new CodeGenerator();

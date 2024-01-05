@@ -2,7 +2,6 @@ package io.github.kylinhunter.commons.images.gm.arg;
 
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 /**
  * @author BiJi'an
@@ -12,18 +11,32 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public abstract class AbstractArg implements Arg {
 
-  protected final String argName;
-  protected final int argLength;
-  @Setter
-  private ArgContext argContext;
+  protected final String name;
+  protected final int minLen;
 
+  /**
+   * @param cmdContext cmdContext
+   * @param args       args
+   * @title build the arg
+   * @description build
+   * @author BiJi'an
+   * @date 2024-01-05 10:16
+   */
 
-  public void build(ArgContext argContext, Object... args) {
-    ThrowChecker.checkArgument(args.length >= this.argLength, "arguments length");
-    process(argContext, args);
-
+  public void build(CmdContext cmdContext, Object... args) {
+    ThrowChecker.checkArgument(args.length >= this.minLen, "arguments length ");
+    process(cmdContext, args);
   }
 
-  public abstract void process(ArgContext argContext, Object... args);
+  /**
+   * @param cmdContext cmdContext
+   * @param args       args
+   * @title the arg processing detail
+   * @description process
+   * @author BiJi'an
+   * @date 2024-01-05 10:17
+   */
+
+  public abstract void process(CmdContext cmdContext, Object... args);
 
 }

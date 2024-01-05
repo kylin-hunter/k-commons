@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.compiler;
 
 import io.github.kylinhunter.commons.collections.SetUtils;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import java.io.File;
 import java.util.Set;
@@ -17,14 +18,12 @@ class KplatCompilerTest {
     kplatCompiler.findClassPath("com", path);
 
     path.forEach(
-        e -> {
-          System.out.println("classpath=" + e);
-        });
+        e -> System.out.println("classpath=" + e));
 
     File source =
         UserDirUtils.getFile(
             "/src/main/java/io/github/kylinhunter/commons" + "/compiler/KplatCompiler.java");
-    File compile = UserDirUtils.getTmpDir();
+    File compile = TmpDirUtils.getUserDir();
 
     kplatCompiler.addSource(source);
     kplatCompiler.setOutput(compile);

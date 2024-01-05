@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.utils.properties;
 
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.name.NameRule;
 import io.github.kylinhunter.commons.utils.properties.data.Grandfather;
 import io.github.kylinhunter.commons.utils.properties.data.TestDataHelper;
@@ -17,9 +17,7 @@ class PropertiesHelperTest {
     Properties properties = PropertiesHelper.toProperties(grandfather1);
     System.out.println("properties:" + properties);
     properties.forEach(
-        (k, v) -> {
-          System.out.println(k + ":" + v);
-        });
+        (k, v) -> System.out.println(k + ":" + v));
 
     Grandfather grandfather2 = PropertiesHelper.toBean(properties, Grandfather.class);
 
@@ -40,7 +38,7 @@ class PropertiesHelperTest {
   void testStoreAndLoad() {
     Grandfather grandfather = TestDataHelper.prepareData();
     System.out.println("grandfather-before:" + grandfather);
-    File propFile = UserDirUtils.getTmpFile("properties/store.properties");
+    File propFile = TmpDirUtils.getUserFile("properties/store.properties");
     Properties properties = PropertiesHelper.store(grandfather, propFile);
     Assertions.assertEquals(286, properties.size());
     Grandfather loadGrandFather =
@@ -53,7 +51,7 @@ class PropertiesHelperTest {
   public void testStoreSnake() {
     Grandfather grandfather = TestDataHelper.prepareData();
     System.out.println("grandfather:" + grandfather);
-    File propFile = UserDirUtils.getTmpFile("properties/store_SNAKE_LOW_UNDERSCORE.properties");
+    File propFile = TmpDirUtils.getUserFile("properties/store_SNAKE_LOW_UNDERSCORE.properties");
     Properties properties =
         PropertiesHelper.store(grandfather, NameRule.SNAKE_LOW_UNDERSCORE, propFile);
     Assertions.assertEquals(286, properties.size());
@@ -67,7 +65,7 @@ class PropertiesHelperTest {
   public void testStoreCamel() {
     Grandfather grandfather = TestDataHelper.prepareData();
     System.out.println("grandfather:" + grandfather);
-    File propFile = UserDirUtils.getTmpFile("properties/store_CAMEL_UPPER.properties");
+    File propFile = TmpDirUtils.getUserFile("properties/store_CAMEL_UPPER.properties");
     Properties properties = PropertiesHelper.store(grandfather, NameRule.CAMEL_UPPER, propFile);
     Assertions.assertEquals(286, properties.size());
     Grandfather loadGrandFather =

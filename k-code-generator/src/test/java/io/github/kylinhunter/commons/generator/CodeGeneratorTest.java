@@ -13,7 +13,7 @@ import io.github.kylinhunter.commons.generator.context.TemplateContextBuilder;
 import io.github.kylinhunter.commons.generator.context.bean.module.ModuleInfo;
 import io.github.kylinhunter.commons.generator.context.bean.module.TableInfo;
 import io.github.kylinhunter.commons.io.file.FileUtil;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.jdbc.meta.bean.ColumnMeta;
 import io.github.kylinhunter.commons.jdbc.meta.bean.TableMeta;
 import java.io.File;
@@ -33,8 +33,8 @@ class CodeGeneratorTest {
 
   @Test
   void execute() throws NoSuchFieldException, SQLException {
-    File sourceDir = UserDirUtils.getTmpDir("generator/src");
-    File compileOutputDir = UserDirUtils.getTmpDir("generator/classes");
+    File sourceDir = TmpDirUtils.getUserDir("generator/src");
+    File compileOutputDir = TmpDirUtils.getUserDir("generator/classes");
 
     DataSource dataSource = TestHelper.mockDataSource();
 

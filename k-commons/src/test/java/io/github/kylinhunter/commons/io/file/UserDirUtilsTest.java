@@ -24,7 +24,7 @@ class UserDirUtilsTest {
 
   @AfterAll
   static void afterAll() {
-    UserDirUtils.deleteQuietly(BASE_DIR);
+    FileUtil.deleteQuietly(BASE_DIR);
   }
 
   @Test

@@ -1,8 +1,8 @@
 package io.github.kylinhunter.commons.images.gm;
 
 import io.github.kylinhunter.commons.component.simple.EnumServiceFactory;
-import io.github.kylinhunter.commons.images.gm.arg.ArgContext;
 import io.github.kylinhunter.commons.images.gm.arg.Args;
+import io.github.kylinhunter.commons.images.gm.arg.CmdContext;
 import java.util.List;
 
 /**
@@ -12,34 +12,44 @@ import java.util.List;
  */
 public class AbstractCmd {
 
-  private String[] cmd;
-  protected static EnumServiceFactory factory = new EnumServiceFactory();
+  protected static EnumServiceFactory argFactory = new EnumServiceFactory();
 
   static {
-    factory.init(Args.class);
+    argFactory.init(Args.class);
   }
 
-  protected ArgContext argContext = new ArgContext();
+  protected CmdContext cmdContext = new CmdContext();
 
   public AbstractCmd() {
 
   }
 
+  /**
+   * @param cmd cmd
+   * @title setCmd
+   * @description setCmd  e.g.   gm convert
+   * @author BiJi'an
+   * @date 2024-01-05 14:15
+   */
   public void setCmd(String... cmd) {
-    this.cmd = cmd;
+    cmdContext.setCmd(cmd);
   }
 
-  public List<String> getArgs() {
+  /**
+   * @return java.util.List<java.lang.String>
+   * @title getCmdline
+   * @description getCmdline e.g.   gm convert -resize 100x100 a.jgp
+   * @author BiJi'an
+   * @date 2024-01-05 14:17
+   */
 
-    List<String> args = argContext.getArgs();
-    for (int i = cmd.length - 1; i >= 0; i--) {
-      args.add(0, cmd[i]);
-    }
+  public List<String> getCmdline() {
 
-    return args;
-
+    return cmdContext.getCmdline();
 
   }
 
-
+  public void addSourceImage(String source) {
+//    cmdContext.addSourceImage(source);
+  }
 }

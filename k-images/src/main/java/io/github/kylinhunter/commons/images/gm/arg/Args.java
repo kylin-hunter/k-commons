@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Args implements EnumService<Arg> {
   RESIZE(ArgSize.class, new Object[]{"resize"}),
+  SIZE(ArgSize.class, new Object[]{"size"}),
   DEPTH(ArgInt.class, new Object[]{"depth"});
+
   @Getter
   private final Class<? extends Arg> srvClazz;
   @Getter

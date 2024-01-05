@@ -15,7 +15,7 @@
  */
 package io.github.kylinhunter.commons.init;
 
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.sys.KGenerated;
 import java.io.File;
 import lombok.Getter;
@@ -32,5 +32,5 @@ import lombok.Setter;
 public class DebugOption {
 
   public static final DebugOption INSTANCE = new DebugOption();
-  private File classSaveDir = UserDirUtils.getTmpDir("k-debug", "clazz");
+  private File classSaveDir = TmpDirUtils.getUserDir("k-debug", "clazz");
 }

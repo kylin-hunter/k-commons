@@ -1,10 +1,11 @@
 package io.github.kylinhunter.commons.jdbc.bytebuddy.test;
 
 import com.zaxxer.hikari.HikariDataSource;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.jdbc.datasource.DSAccessor;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import net.bytebuddy.ByteBuddy;
@@ -21,9 +22,9 @@ import net.bytebuddy.implementation.FieldAccessor;
 public class Test {
 
   public static void main(String[] args)
-      throws IOException, IllegalAccessException, InstantiationException, SQLException {
+      throws IOException, IllegalAccessException, InstantiationException, SQLException, NoSuchMethodException, InvocationTargetException {
 
-    File tmpDir = UserDirUtils.getTmpDir("bytebuddy-test");
+    File tmpDir = TmpDirUtils.getUserDir("bytebuddy-test");
     DynamicType.Unloaded<?> dynamicType =
         new ByteBuddy()
             .subclass(HikariDataSource.class)
@@ -35,6 +36,6 @@ public class Test {
 
     dynamicType.saveIn(tmpDir);
     Class<?> loaded = dynamicType.load(Test.class.getClassLoader(), Default.WRAPPER).getLoaded();
-    DataSource o = (DataSource) loaded.newInstance();
+    DataSource o = (DataSource) loaded.getDeclaredConstructor().newInstance();
   }
 }

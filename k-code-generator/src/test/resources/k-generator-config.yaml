@@ -2,7 +2,7 @@ global: # global config
   template_path: '$user.dir$/templates'   # $user.dir$ is same with:System.getProperty("user.dir")
    #  template_path: 'file://User/bijian/template' # same with: new File('/User/bijian/template');
   output:
-    path: '$user.dir$/tmp/generator/src'# $user.dir$ is same with:System.getProperty("user.dir")
+    path: '$user.dir$/k-tmp/generator/src'# $user.dir$ is same with:System.getProperty("user.dir")
     #  output_path: '/Users/bijian/workspace_gitee/k-commons/k-generator/output'
     auto_clean: false # auto clean the output path
     auto_create: true # create the output path if not exists

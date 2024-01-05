@@ -2,7 +2,7 @@ package io.github.kylinhunter.commons.io.file.path;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.kylinhunter.commons.io.file.FileUtil;
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.io.file.filter.SuffixPathFilter;
 import java.io.File;
 import java.nio.file.Files;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 class PathUtilTest {
 
   static String base_dir = "path-util-test";
-  static File baseDir = UserDirUtils.getTmpDir(base_dir);
+  static File baseDir = TmpDirUtils.getUserDir(base_dir);
   static File dir1;
   static File dir2;
   static File dir3;
@@ -25,9 +25,9 @@ class PathUtilTest {
   static void beforeAll() {
 
     FileUtil.cleanDirectoryQuietly(baseDir);
-    dir1 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir1");
-    dir2 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir2");
-    dir3 = UserDirUtils.getTmpDir(base_dir + File.separator + "dir3");
+    dir1 = TmpDirUtils.getUserDir(base_dir + File.separator + "dir1");
+    dir2 = TmpDirUtils.getUserDir(base_dir + File.separator + "dir2");
+    dir3 = TmpDirUtils.getUserDir(base_dir + File.separator + "dir3");
 
     System.out.println(dir1.getAbsolutePath());
     System.out.println(dir2.getAbsolutePath());

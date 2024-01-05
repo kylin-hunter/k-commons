@@ -16,18 +16,25 @@
 package io.github.kylinhunter.commons.io.file;
 
 import java.io.File;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author BiJi'an
  * @description
  * @date 2022/1/1
  */
+@Slf4j
 public class UserDirUtils {
 
   private static final File USER_DIR = new File(System.getProperty("user.dir"));
-  private static final String PATH_OF_USER_DIR = USER_DIR.getAbsolutePath();
-  private static final File USER_DIR_CONFIG = new File(System.getProperty("user.dir"), "config");
-  private static final File USER_DIR_TMP = new File(System.getProperty("user.dir"), "tmp");
+
+  static {
+    if (!USER_DIR.exists()) {
+      log.error("user.dir no exists={}", USER_DIR.getAbsolutePath());
+    } else {
+      log.info("user.dir  exists ={}", USER_DIR.getAbsolutePath());
+    }
+  }
 
   /**
    * @return java.io.File
@@ -82,78 +89,5 @@ public class UserDirUtils {
    */
   public static File getFile(boolean createParent, boolean createFile, String child) {
     return FileUtil.getFile(USER_DIR, createParent, createFile, child);
-  }
-
-  /**
-   * @return java.io.File
-   * @title getUserDirTmp
-   * @description
-   * @author BiJi'an
-   * @date 2022-01-01 01:57
-   */
-  public static File getTmpDir() {
-    return FileUtil.getDir(USER_DIR_TMP, true);
-  }
-
-  public static File getTmpDir(String... child) {
-    return FileUtil.getDir(USER_DIR_TMP, true, child);
-  }
-
-  /**
-   * @param child the children file
-   * @param create whether to create file or dir
-   * @return java.io.File
-   * @title getUserDirTmp
-   * @description
-   * @author BiJi'an
-   * @date 2022-01-01 01:57
-   */
-  public static File getTmpDir(boolean create, String child) {
-    return FileUtil.getDir(USER_DIR_TMP, true, child);
-  }
-
-  public static File getTmpFile(String child) {
-    return FileUtil.getFile(USER_DIR_TMP, true, false, child);
-  }
-
-  /**
-   * @param child the children file
-   * @return java.io.File
-   * @title getUserDir
-   * @description
-   * @author BiJi'an
-   * @date 2022-01-01 01:57
-   */
-  public static File getTmpFile(boolean createParent, String... child) {
-    return FileUtil.getFile(USER_DIR_TMP, createParent, false, child);
-  }
-
-  public static File getTmpFile(boolean createParent, boolean createFile, String... child) {
-    return FileUtil.getFile(USER_DIR_TMP, createParent, createFile, child);
-  }
-
-  /**
-   * @return java.io.File
-   * @title getExClassPath
-   * @description
-   * @author BiJi'an
-   * @date 2022-01-01 01:58
-   */
-  public static File getDirConfig() {
-    return FileUtil.getDir(USER_DIR_TMP, true);
-  }
-
-  /**
-   * @param file the file to delete
-   * @title deleteQuietly
-   * @description
-   * @author BiJi'an
-   * @date 2022-01-01 01:58
-   */
-  public static void deleteQuietly(final File file) {
-
-    if (file != null && file.getAbsolutePath().startsWith(PATH_OF_USER_DIR)) {
-      FileUtil.deleteQuietly(file);
-    }
   }
 }

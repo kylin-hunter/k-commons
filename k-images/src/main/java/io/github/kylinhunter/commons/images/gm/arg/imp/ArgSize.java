@@ -1,7 +1,8 @@
 package io.github.kylinhunter.commons.images.gm.arg.imp;
 
+import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.images.gm.arg.AbstractArg;
-import io.github.kylinhunter.commons.images.gm.arg.ArgContext;
+import io.github.kylinhunter.commons.images.gm.arg.CmdContext;
 import io.github.kylinhunter.commons.util.ObjectValues;
 
 /**
@@ -16,26 +17,29 @@ public class ArgSize extends AbstractArg {
     super(argName, 1);
   }
 
+  /**
+   * @param cmdContext cmdContext
+   * @param args       args
+   * @title process
+   * @description process size arg, e.g. -size 100x200
+   * @author BiJi'an
+   * @date 2024-01-05 10:33
+   */
+
   @Override
-  public void process(ArgContext argContext, Object... args) {
+  public void process(CmdContext cmdContext, Object... args) {
 
     int width = ObjectValues.getInt(args[0], 0);
     int height = ObjectValues.getInt(args[1], 0);
 
-    StringBuilder stringBuilder = new StringBuilder();
-    argContext.add("-" + argName);
-
     if (width > 0) {
-      stringBuilder.append(width);
-    }
-    if (width > 0 && height > 0) {
-      stringBuilder.append("x");
-    }
-    if (height > 0) {
-      stringBuilder.append(height);
-    }
-    if (stringBuilder.length() > 0) {
-      argContext.add(stringBuilder.toString());
+      if (height <= 0) {
+        cmdContext.addArg(name, String.valueOf(width));
+      } else {
+        cmdContext.addArg(name, width + "x" + height);
+      }
+    } else {
+      throw new ParamException("arg:" + name + ":the width must be greater than 0");
     }
   }
 }

@@ -4,6 +4,7 @@ import io.github.kylinhunter.commons.generator.template.config.OutputConfig;
 import io.github.kylinhunter.commons.generator.template.velocity.VelocityTemplateEngine;
 import io.github.kylinhunter.commons.io.file.FileExtensions;
 import io.github.kylinhunter.commons.io.file.FileUtil;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import io.github.kylinhunter.commons.io.file.UserDirUtils;
 import java.io.File;
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ class VelocityTemplateExecutorTest {
     }
     templateExecutor.tmplate(templateInClass).outputRelativePath("output1_result1.html").build();
 
-    File outpuFile2 = UserDirUtils.getTmpFile("template_output2/output2_result1.html");
+    File outpuFile2 = TmpDirUtils.getUserFile("template_output2/output2_result1.html");
     if (outpuFile2.exists()) {
       FileUtil.delete(outpuFile2);
     }
@@ -49,7 +50,7 @@ class VelocityTemplateExecutorTest {
     //  template_in_file  and setOutputDir
     templateEngine.customize(
         config -> {
-          File defaultDir = UserDirUtils.getTmpDir("template_output3");
+          File defaultDir = TmpDirUtils.getUserDir("template_output3");
           OutputConfig outputConfig = config.getOutputConfig();
           outputConfig.setOutputPath(defaultDir.toPath());
           outputConfig.setAutoClean(true);
@@ -63,7 +64,7 @@ class VelocityTemplateExecutorTest {
         .build();
     templateExecutor.output(System.out::println);
 
-    File outpuFile3 = UserDirUtils.getTmpFile("template_output3/output3_result1.html");
+    File outpuFile3 = TmpDirUtils.getUserFile("template_output3/output3_result1.html");
 
     Assertions.assertTrue(outpuFile3.exists());
   }

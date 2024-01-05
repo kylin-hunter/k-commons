@@ -1,6 +1,6 @@
 package io.github.kylinhunter.commons.clazz.test;
 
-import io.github.kylinhunter.commons.io.file.UserDirUtils;
+import io.github.kylinhunter.commons.io.file.TmpDirUtils;
 import java.io.File;
 import java.io.IOException;
 import net.bytebuddy.ByteBuddy;
@@ -17,7 +17,7 @@ public class Test {
 
   public static void main(String[] args) throws IOException {
 
-    File tmpDir = UserDirUtils.getTmpDir("bytebuddy-test");
+    File tmpDir = TmpDirUtils.getUserDir("bytebuddy-test");
     DynamicType.Unloaded<?> dynamicType =
         new ByteBuddy()
             .with(

@@ -43,11 +43,17 @@ Thumbs.db
 /*/build/
 /out/
 /*/out/
-/logs/
-/*/logs/
-/tmp/
-/*/tmp/
 /target/
 /*/target/
+
+# logs dir
+/logs/
+/*/logs/
+# tmp dir
+/tmp/
+/*/tmp/
+/k-tmp/
+/*/k-tmp/
+
 /k-commons/src/test/resources/test/java-io-test/
 
