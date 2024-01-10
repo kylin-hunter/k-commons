@@ -3,7 +3,7 @@ package io.github.kylinhunter.commons.images.gm;
 /**
  * @author BiJi'an
  * @description
- * @date 2024-01-11 00:28
+ * @date 2024-01-01 00:28
  */
 public class GmFactory {
 
@@ -12,7 +12,7 @@ public class GmFactory {
    * @title getConvert
    * @description getConvert
    * @author BiJi'an
-   * @date 2024-01-11 00:28
+   * @date 2024-01-01 00:28
    */
   public static GmConvert convert() {
     return new GmConvert();

@@ -52,7 +52,7 @@ public abstract class AbstractCmd {
    * @param args args x   * @title addArg
    * @description addArg
    * @author BiJi'an
-   * @date 2024-01-10 15:42
+   * @date 2024-01-01 15:42
    */
 
   public void addArg(String... args) {
@@ -65,7 +65,7 @@ public abstract class AbstractCmd {
    * @title addInputImage
    * @description addInputImage
    * @author BiJi'an
-   * @date 2024-01-10 01:17
+   * @date 2024-01-01 01:17
    */
   public void addImageInput(File file) {
 
@@ -83,7 +83,7 @@ public abstract class AbstractCmd {
    * @title addInputImage
    * @description addInputImage
    * @author BiJi'an
-   * @date 2024-01-10 17:05
+   * @date 2024-01-01 17:05
    */
 
   public void addImageInput(Path path) {
@@ -96,7 +96,7 @@ public abstract class AbstractCmd {
    * @title addOutImage
    * @description addOutImage
    * @author BiJi'an
-   * @date 2024-01-10 17:01
+   * @date 2024-01-01 17:01
    */
 
   public void addImageOut(File file) {
@@ -110,7 +110,7 @@ public abstract class AbstractCmd {
    * @title addOutImage
    * @description addOutImage
    * @author BiJi'an
-   * @date 2024-01-10 10:19
+   * @date 2024-01-01 10:19
    */
 
   public void addImageOut(Path path) {
@@ -124,7 +124,7 @@ public abstract class AbstractCmd {
    * @title addImageInput
    * @description addImageInput
    * @author BiJi'an
-   * @date 2024-01-11 01:11
+   * @date 2024-01-01 01:11
    */
 
   public void addImageInput(InputStream in, Format format) {
@@ -140,7 +140,7 @@ public abstract class AbstractCmd {
    * @title addImage
    * @description addImage
    * @author BiJi'an
-   * @date 2024-01-10 15:45
+   * @date 2024-01-01 15:45
    */
   public void addImageInput(InputStream in, String format) {
     ThrowChecker.checkNotEmpty(format, "format can't be empty");
@@ -162,7 +162,7 @@ public abstract class AbstractCmd {
    * @title addImageOut
    * @description addImageOut
    * @author BiJi'an
-   * @date 2024-01-11 01:12
+   * @date 2024-01-01 01:12
    */
 
   public void addImageOut(OutputStream out, Format format) {
@@ -174,7 +174,7 @@ public abstract class AbstractCmd {
    * @title addImage
    * @description addImage
    * @author BiJi'an
-   * @date 2024-01-10 15:59
+   * @date 2024-01-01 15:59
    */
 
   public void addImageOut(OutputStream out, String format) {
@@ -191,7 +191,7 @@ public abstract class AbstractCmd {
    * @title run
    * @description run
    * @author BiJi'an
-   * @date 2024-01-10 15:40
+   * @date 2024-01-01 15:40
    */
   public ExecResult run() {
     ExecResult execResult = cmdExecutor.exec(this.cmdContext.getCmds());
@@ -212,7 +212,7 @@ public abstract class AbstractCmd {
    * @title after
    * @description after
    * @author BiJi'an
-   * @date 2024-01-11 00:13
+   * @date 2024-01-01 00:13
    */
   private void after(ExecResult execResult) {
     if (tmpFiles == null) {

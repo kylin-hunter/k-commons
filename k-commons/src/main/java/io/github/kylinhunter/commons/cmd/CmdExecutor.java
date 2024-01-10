@@ -50,7 +50,7 @@ public class CmdExecutor implements AutoCloseable, Closeable {
    * @title exec
    * @description exec
    * @author BiJi'an
-   * @date 2024-01-10 01:03
+   * @date 2024-01-01 01:03
    */
   public ExecResult exec(List<String> cmds) {
     return exec(cmds.toArray(new String[0]));

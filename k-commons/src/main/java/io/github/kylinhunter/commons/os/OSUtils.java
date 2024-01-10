@@ -14,7 +14,7 @@ public class OSUtils {
    * @title os
    * @description os
    * @author BiJi'an
-   * @date 2024-01-10 00:12
+   * @date 2024-01-01 00:12
    */
   public static OS os() {
     if (os == null) {

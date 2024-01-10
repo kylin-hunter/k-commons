@@ -55,7 +55,7 @@ public class GmConvert extends AbstractCmd {
    * @title profile
    * @description profile
    * @author BiJi'an
-   * @date 2024-01-11 01:36
+   * @date 2024-01-01 01:36
    */
   public void removeProfile(String profile) {
     argFactory.get(Args.REMOVE_PROFILE).build(this.cmdContext, profile);
@@ -66,7 +66,7 @@ public class GmConvert extends AbstractCmd {
    * @title addProfile
    * @description addProfile
    * @author BiJi'an
-   * @date 2024-01-11 02:00
+   * @date 2024-01-01 02:00
    */
 
   public void addProfile(String profile) {
