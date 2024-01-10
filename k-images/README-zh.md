@@ -3,12 +3,12 @@
 ## 介绍
 
 一个操作图像的工具类
-参考：http://www.graphicsmagick.org/NEWS.html
+参考：
+http://www.graphicsmagick.org/utilities.html
 
 ## 使用前准备
 安装 [GraphicsMagick](http://www.graphicsmagick.org/download.html)
 
-GraphicsMagic not natively supports some formats. Refer to this list. To support more formats, you must install the required software.
 
 ## 安装教程
 

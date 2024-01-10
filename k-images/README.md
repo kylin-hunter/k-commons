@@ -2,11 +2,13 @@
 
 ## Description
 
-a common utils 
+A tool  for manipulating images
+Reference:
+http://www.graphicsmagick.org/utilities.html
 
-Prerequisites
-Install GraphicsMagick
-GraphicsMagic not natively supports some formats. Refer to this list. To support more formats, you must install the required software.
+## Prerequisites
+[Install GraphicsMagick](http://www.graphicsmagick.org/download.html)
+
 
 
 

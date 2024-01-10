@@ -3,6 +3,7 @@ package io.github.kylinhunter.commons.images.gm.arg.imp;
 import io.github.kylinhunter.commons.exception.embed.ParamException;
 import io.github.kylinhunter.commons.images.gm.arg.AbstractArg;
 import io.github.kylinhunter.commons.images.gm.arg.CmdContext;
+import io.github.kylinhunter.commons.images.gm.arg.constant.ArgPrefix;
 import io.github.kylinhunter.commons.util.ObjectValues;
 
 /**
@@ -12,8 +13,8 @@ import io.github.kylinhunter.commons.util.ObjectValues;
  */
 public class ArgInt extends AbstractArg {
 
-  public ArgInt(String argName) {
-    super(argName, 1);
+  public ArgInt(String argName, ArgPrefix argPrefix) {
+    super(argName, argPrefix, 1);
   }
 
   /**
@@ -27,9 +28,9 @@ public class ArgInt extends AbstractArg {
 
   @Override
   public void process(CmdContext cmdContext, Object... args) {
-    int width = ObjectValues.getInt(args[0], 0);
-    if (width > 0) {
-      cmdContext.addArg(name, String.valueOf(width));
+    int arg0 = ObjectValues.getInt(args[0], 0);
+    if (arg0 > 0) {
+      cmdContext.addArg(argPrefix.getPrefix() + name, String.valueOf(arg0));
     } else {
       throw new ParamException("arg:" + name + ":must be greater than 0");
     }

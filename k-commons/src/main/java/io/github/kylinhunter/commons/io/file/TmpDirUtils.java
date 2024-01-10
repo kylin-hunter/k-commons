@@ -127,7 +127,7 @@ public class TmpDirUtils {
    * @author BiJi'an
    * @date 2024-01-05 17:17
    */
-  public static File getUserFile(boolean createParent, String child) {
+  public static File getUserFile(boolean createParent, String... child) {
     return FileUtil.getFile(USER_DIR, createParent, false, child);
   }
 
@@ -139,7 +139,7 @@ public class TmpDirUtils {
    * @author BiJi'an
    * @date 2022-01-01 01:57
    */
-  public static File getUserFile(boolean createParent, boolean createFile, String child) {
+  public static File getUserFile(boolean createParent, boolean createFile, String... child) {
     return FileUtil.getFile(USER_DIR, createParent, createFile, child);
   }
 
@@ -165,7 +165,7 @@ public class TmpDirUtils {
    * @author BiJi'an
    * @date 2024-01-05 17:17
    */
-  public static File getSysFile(boolean createParent, String child) {
+  public static File getSysFile(boolean createParent, String... child) {
     return FileUtil.getFile(SYS_DIR, createParent, false, child);
   }
 
@@ -177,7 +177,7 @@ public class TmpDirUtils {
    * @author BiJi'an
    * @date 2022-01-01 01:57
    */
-  public static File getSysFile(boolean createParent, boolean createFile, String child) {
+  public static File getSysFile(boolean createParent, boolean createFile, String... child) {
     return FileUtil.getFile(SYS_DIR, createParent, createFile, child);
   }
 }

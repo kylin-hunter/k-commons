@@ -1,7 +1,8 @@
 package io.github.kylinhunter.commons.cmd;
 
-import io.github.kylinhunter.commons.juc.ThreadPoolExecutorFactory;
-import java.util.List;
+import io.github.kylinhunter.commons.os.OS;
+import io.github.kylinhunter.commons.os.OSUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class CmdExecutorTest {
@@ -9,16 +10,30 @@ class CmdExecutorTest {
   @Test
   void run() {
     CmdExecutor cmdExecutor = new CmdExecutor();
-    cmdExecutor.setPoolExecutor(ThreadPoolExecutorFactory.register("1", 1, 2, 1));
-    List<CmdResult> cmdResults = cmdExecutor.exec("pwd 1", "ls /");
-    cmdResults.forEach(
-        e -> {
-          System.out.println(e.isSuccess());
-          System.out.println("#stdOut");
-          e.getStdOuts().forEach(System.out::println);
-          System.out.println("#stdErr");
-          e.getStdErrs().forEach(System.out::println);
-          System.out.println("#end");
-        });
+    OS os = OSUtils.os();
+    if (os == OS.MAC) {
+      ExecResult execResult = cmdExecutor.exec("pwd", "1");
+
+      System.out.println(execResult.isSuccess());
+      Assertions.assertFalse(execResult.isSuccess());
+      System.out.println("#stdOut");
+      execResult.getStdOuts().forEach(System.out::println);
+      System.out.println("#stdErr");
+      execResult.getStdErrs().forEach(System.out::println);
+      System.out.println("#end");
+
+      execResult = cmdExecutor.exec("ls", "/");
+
+      System.out.println(execResult.isSuccess());
+      Assertions.assertTrue(execResult.isSuccess());
+
+      System.out.println("#stdOut");
+      execResult.getStdOuts().forEach(System.out::println);
+      System.out.println("#stdErr");
+      execResult.getStdErrs().forEach(System.out::println);
+      System.out.println("#end");
+
+    }
+    cmdExecutor.close();
   }
 }

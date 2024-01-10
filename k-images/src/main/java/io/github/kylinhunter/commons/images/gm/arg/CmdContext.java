@@ -1,10 +1,9 @@
 package io.github.kylinhunter.commons.images.gm.arg;
 
 import io.github.kylinhunter.commons.collections.ListUtils;
-import java.io.File;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
 import lombok.Getter;
 
 /**
@@ -15,74 +14,51 @@ import lombok.Getter;
 public class CmdContext {
 
   @Getter
-  private List<String> cmdline = ListUtils.newArrayList();
-  private static final String ARG_SEPARATOR = " ";
+  private List<String> cmds = ListUtils.newArrayList();
 
-  private List<File> tmpFiles = ListUtils.newArrayList();
-  private static final String TMP_PREFIX = "tmp";
-
-  private static final String ARG_PREFIX = "-";
 
   /**
-   * @param name name
-   * @return io.github.kylinhunter.commons.images.gm.arg.CmdContext
-   * @title add arg name to context
-   * @description addName
+   * @param args args
+   * @title addArg
+   * @description addArg
    * @author BiJi'an
-   * @date 2024-01-05 11:08
-   */
-  @SuppressWarnings("UnusedReturnValue")
-  public CmdContext addArg(String name, String... values) {
-    cmdline.add(ARG_PREFIX + name);
-    Collections.addAll(cmdline, values);
-    return this;
-  }
-
-  /**
-   * @param file file
-   * @return io.github.kylinhunter.commons.images.gm.arg.CmdContext
-   * @title addImage
-   * @description addImage
-   * @author BiJi'an
-   * @date 2024-01-05 15:11
-   */
-  public CmdContext addImage(File file) {
-    cmdline.add(file.getAbsolutePath());
-    return this;
-  }
-
-  /**
-   * @return io.github.kylinhunter.commons.images.gm.arg.CmdContext
-   * @title addImage
-   * @description addImage
-   * @author BiJi'an
-   * @date 2024-01-05 15:12
+   * @date 2024-01-10 15:27
    */
 
-  public CmdContext addImage(InputStream inputStream) {
-//    File tmpFiles = UserDirUtils
-//    IOUtils.copy(inputStream, tmpFiles);
-
-    return this;
+  public void addArg(String... args) {
+    if (args.length > 0) {
+      if (args.length == 1) {
+        cmds.add(args[0]);
+      } else {
+        Collections.addAll(cmds, args);
+      }
+    }
   }
 
 
   /**
-   * @param cmd cmd
-   * @return io.github.kylinhunter.commons.images.gm.arg.CmdContext
+   * @param cmds cmds
    * @title setCmd
    * @description setCmd
    * @author BiJi'an
    * @date 2024-01-05 14:01
    */
 
-  @SuppressWarnings("UnusedReturnValue")
-  public CmdContext setCmd(String... cmd) {
-    for (int i = 0; i < cmd.length; i++) {
-      cmdline.add(i, cmd[i]);
+  public void setCmd(String... cmds) {
+    for (int i = 0; i < cmds.length; i++) {
+      this.cmds.add(i, cmds[i]);
     }
-    return this;
   }
+
+  @Override
+  public String toString() {
+    StringJoiner stringJoiner = new StringJoiner(" ");
+    for (String s : cmds) {
+      stringJoiner.add(s);
+    }
+    return stringJoiner.toString();
+  }
+
 }
 
 

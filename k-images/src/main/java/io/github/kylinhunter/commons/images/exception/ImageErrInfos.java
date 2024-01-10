@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.kylinhunter.commons.cmd;
+package io.github.kylinhunter.commons.images.exception;
 
-import java.util.List;
-import lombok.Data;
+import io.github.kylinhunter.commons.exception.info.ErrInfo;
+import io.github.kylinhunter.commons.exception.info.ErrInfoAware;
 
 /**
  * @author BiJi'an
  * @description
- * @date 2023-03-04 02:03
+ * @date 2022-01-01 00:53
  */
-@Data
-public class CmdResult {
-  private int exitValue;
-  private List<String> stdOuts;
-  private List<String> stdErrs;
+@ErrInfoAware
+public class ImageErrInfos {
 
-  public boolean isSuccess() {
-    return exitValue == 0;
-  }
+  static int BASE_CODE = 4000;
+
+  public static final ErrInfo IMAGE = new ErrInfo(++BASE_CODE);
 }

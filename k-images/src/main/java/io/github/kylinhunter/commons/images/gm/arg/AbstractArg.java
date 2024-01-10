@@ -1,6 +1,7 @@
 package io.github.kylinhunter.commons.images.gm.arg;
 
 import io.github.kylinhunter.commons.exception.check.ThrowChecker;
+import io.github.kylinhunter.commons.images.gm.arg.constant.ArgPrefix;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public abstract class AbstractArg implements Arg {
 
   protected final String name;
+  protected final ArgPrefix argPrefix;
   protected final int minLen;
 
   /**
