@@ -40,7 +40,7 @@ public interface EnumService<T> {
    * @title getInitargs
    * @description getInitargs
    * @author BiJi'an
-   * @date 2024-01-05 00:17
+   * @date 2024-01-01 00:17
    */
   default Object[] getInitArgs() {
     return null;

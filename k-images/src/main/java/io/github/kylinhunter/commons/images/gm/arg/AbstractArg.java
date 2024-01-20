@@ -22,7 +22,7 @@ public abstract class AbstractArg implements Arg {
    * @title build the arg
    * @description build
    * @author BiJi'an
-   * @date 2024-01-05 10:16
+   * @date 2024-01-01 10:16
    */
 
   public void build(CmdContext cmdContext, Object... args) {
@@ -36,7 +36,7 @@ public abstract class AbstractArg implements Arg {
    * @title the arg processing detail
    * @description process
    * @author BiJi'an
-   * @date 2024-01-05 10:17
+   * @date 2024-01-01 10:17
    */
 
   public abstract void process(CmdContext cmdContext, Object... args);

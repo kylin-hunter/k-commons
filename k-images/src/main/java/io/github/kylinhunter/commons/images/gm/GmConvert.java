@@ -19,7 +19,7 @@ public class GmConvert extends AbstractCmd {
    * @title resize
    * @description resize
    * @author BiJi'an
-   * @date 2024-01-05 15:01
+   * @date 2024-01-01 15:01
    */
 
   public void resize(int width, int height) {
@@ -32,7 +32,7 @@ public class GmConvert extends AbstractCmd {
    * @title size
    * @description size
    * @author BiJi'an
-   * @date 2024-01-05 15:02
+   * @date 2024-01-01 15:02
    */
   public void size(int width, int height) {
     argFactory.get(Args.SIZE).build(this.cmdContext, width, height);
@@ -43,7 +43,7 @@ public class GmConvert extends AbstractCmd {
    * @title depth
    * @description depth
    * @author BiJi'an
-   * @date 2024-01-05 15:01
+   * @date 2024-01-01 15:01
    */
   public void depth(int depth) {
     argFactory.get(Args.DEPTH).build(this.cmdContext, depth);
@@ -72,5 +72,6 @@ public class GmConvert extends AbstractCmd {
   public void addProfile(String profile) {
     argFactory.get(Args.ADD_PROFILE).build(this.cmdContext, profile);
   }
+
 
 }

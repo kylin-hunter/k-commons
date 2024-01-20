@@ -54,7 +54,7 @@ public class TmpDirUtils {
    * @title get
    * @description get
    * @author BiJi'an
-   * @date 2024-01-05 17:08
+   * @date 2024-01-01 17:08
    */
 
   public static File getSysDir() {
@@ -67,7 +67,7 @@ public class TmpDirUtils {
    * @title getUserDir
    * @description getUserDir
    * @author BiJi'an
-   * @date 2024-01-05 22:58
+   * @date 2024-01-01 22:58
    */
   public static File getUserDir(String... child) {
     return FileUtil.getDir(USER_DIR, true, child);
@@ -93,7 +93,7 @@ public class TmpDirUtils {
    * @title getSysDir
    * @description getSysDir
    * @author BiJi'an
-   * @date 2024-01-05 17:15
+   * @date 2024-01-01 17:15
    */
 
   public static File getSysDir(String... child) {
@@ -111,7 +111,7 @@ public class TmpDirUtils {
    * @title getUserFile
    * @description getUserFile
    * @author BiJi'an
-   * @date 2024-01-05 17:13
+   * @date 2024-01-01 17:13
    */
 
   public static File getUserFile(String... child) {
@@ -125,7 +125,7 @@ public class TmpDirUtils {
    * @title getUserFile
    * @description getUserFile
    * @author BiJi'an
-   * @date 2024-01-05 17:17
+   * @date 2024-01-01 17:17
    */
   public static File getUserFile(boolean createParent, String... child) {
     return FileUtil.getFile(USER_DIR, createParent, false, child);
@@ -149,7 +149,7 @@ public class TmpDirUtils {
    * @title getSysFile
    * @description getSysFile
    * @author BiJi'an
-   * @date 2024-01-05 17:18
+   * @date 2024-01-01 17:18
    */
 
   public static File getSysFile(String... child) {
@@ -163,7 +163,7 @@ public class TmpDirUtils {
    * @title getSysFile
    * @description getSysFile
    * @author BiJi'an
-   * @date 2024-01-05 17:17
+   * @date 2024-01-01 17:17
    */
   public static File getSysFile(boolean createParent, String... child) {
     return FileUtil.getFile(SYS_DIR, createParent, false, child);

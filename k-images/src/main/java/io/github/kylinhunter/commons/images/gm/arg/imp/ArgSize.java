@@ -24,7 +24,7 @@ public class ArgSize extends AbstractArg {
    * @title process
    * @description process size arg, e.g. -size 100x200
    * @author BiJi'an
-   * @date 2024-01-05 10:33
+   * @date 2024-01-01 10:33
    */
 
   @Override

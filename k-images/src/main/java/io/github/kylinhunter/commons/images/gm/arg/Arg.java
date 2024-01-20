@@ -14,7 +14,7 @@ public interface Arg {
    * @description Abstract tool methods for building arguments, such as: -szie 100x100, -gravity
    * center
    * @author BiJi'an
-   * @date 2024-01-05 10:45
+   * @date 2024-01-01 10:45
    */
   void build(CmdContext cmdContext, Object... args);
 
