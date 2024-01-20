@@ -1,3 +1,4 @@
 1、k-code-generator 等项目，出现警告日志
 2、调整implementation 为 compileOnly
 3、优化jsonutil，支持 activateDefaultTyping
+4
